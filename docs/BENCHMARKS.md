@@ -190,9 +190,13 @@ detected only where the keyed lattice survives.
 
 ### 3.4 The image-quality trade, stated as a trade
 
-Block fitting (A-029) shifts a block by up to 16 luma levels so the mark cannot
-clip. That is what buys the last points of detection, and it is what costs the
-worst-case PSNR. Measured, n=200, identical code otherwise:
+Block fitting (A-029) shifts a whole block by the smallest integer offset that
+gives the mark headroom, so that it cannot clip. That is what buys the last
+points of detection, and it is what costs the worst-case PSNR. Measured over
+all 200 images, the largest shift used anywhere is **4 levels** — the margin
+itself — and capping the shift at 8 or 12 produces identical results, so the
+cost is the *number* of shifted blocks on a frame with a narrow gamut window,
+not the size of any one shift. Measured, n=200, identical code otherwise:
 
 | FIT_MARGIN | detection | IoU | PSNR mean | PSNR worst | coverage |
 |---|---|---|---|---|---|

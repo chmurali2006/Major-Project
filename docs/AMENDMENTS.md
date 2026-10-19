@@ -1013,9 +1013,20 @@ otherwise:
 | **4** | **0.9970** | **0.9367** | **38.27** | 35.52 | **0.926** | `n200-v5` |
 
 **The cost, stated plainly.** The worst image drops from 37.65 dB to 35.52 dB,
-below the 37.8 dB bar, while the mean stays above it. The fit shifts a block by
-up to 16 luma levels; on a frame where the mark cannot fit anywhere, that shift
-is the difference between a 35 dB and a 37 dB plane.
+below the 37.8 dB bar, while the mean stays above it.
+
+**What the cost is, measured — and what it is not.** The fit shifts a block by
+the *smallest* offset that satisfies the margin, so the shifts are bounded by
+the margin itself. Measured over all 200 images: the largest shift used
+anywhere is **exactly 4 levels**, the margin; the per-image mean shift ranges
+from 0.07 to 2.15. `MAX_SHIFT = 16` is never reached, and running the same 60
+images with the cap at 8 or at 12 produces **identical** results. The worst-case
+cost is therefore not a large displacement on a few blocks; it is a
+one-to-four-level offset applied to *most* blocks of a frame whose gamut window
+is narrow — a uniform 4-level offset over a whole image is 35.5 dB by
+arithmetic. A smaller margin buys the quality back (margin 3: 37.65 dB) at the
+price of detection. That is the frontier, and there is no third point on it
+without changing how the mark is scaled where the gamut is tight.
 
 **Why 4 is the default anyway.** The bar is a minimum on the mean, and detection
 at 0.9760 is a coin-flip against a re-run: the corpus is fixed, so it will
