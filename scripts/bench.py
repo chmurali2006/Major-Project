@@ -228,6 +228,9 @@ def main() -> int:
 
     if args.receipt:
         out = Path(args.receipt)
+        if str(args.receipt).endswith("/"):
+            out = out / "receipt.json"
+        out.parent.mkdir(parents=True, exist_ok=True)
         out.parent.mkdir(parents=True, exist_ok=True)
         receipt = {
             "kind": "benchmark",

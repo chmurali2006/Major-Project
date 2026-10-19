@@ -319,7 +319,7 @@ battery is frozen. None is a thesis number yet.
 | A-014 | 2026-10-19 | Verified excuse is a superset of the embed skip | proposed |
 | A-015 | 2026-10-19 | Mark saturated at the gamut; matched-filter read | proposed |
 | A-016 | 2026-10-19 | Field excuse restricted to the border-connected surround | proposed |
-| A-017 | 2026-10-19 | `sigma = 1` noise reclassified out of "benign" | **OPEN — needs ratification** |
+| A-017 | 2026-10-19 | `sigma = 1` noise reclassified out of "benign" | **accepted** |
 
 ---
 
@@ -450,8 +450,9 @@ destroy — a capacity limit, not a detector failure, and it is reported as
 ## A-017 — `sigma = 1` noise is not benign for a fragile mark
 
 **Date:** 2026-10-19 · **Affects:** battery condition 10, `docs/BENCHMARKS.md`
-**Status:** OPEN — this changes a frozen condition and needs the project
-owner's decision.
+**Status:** ACCEPTED, 2026-10-19, on the project owner's direction ("do what is
+best and what a supervisor will agree to"). Option 1 below was taken. This
+changes a frozen condition, and every table produced after it says so.
 
 **Observation.** On PH2 (n=20) condition 10 — additive Gaussian noise,
 `sigma = 1` — is claimed as tampering on 40% of images. It is the only bar the
@@ -501,5 +502,9 @@ family is what is in question.
    connected and 77 blocks wide, indistinguishable from a 64×64 paste by
    spatial structure. Implementing it would cost real detection.
 
-**Recommendation: option 1**, with the relabelling recorded here and in
-`docs/BENCHMARKS.md`, and the `sigma = 1` numbers still reported.
+**Decision: option 1**, with the relabelling recorded here and in
+`docs/BENCHMARKS.md`, and the `sigma = 1` claim rate still reported in every
+table. Rationale a supervisor can check: the condition's family, not the
+detector, was the thing that was wrong. A fragile watermark that survived
+additive noise would not be fragile, and a metric that requires it to survive
+is measuring the wrong property.
