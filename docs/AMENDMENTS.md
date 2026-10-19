@@ -313,3 +313,134 @@ battery is frozen. None is a thesis number yet.
 | A-008 | 2026-10-19 | Tamper decision by spatial extent | proposed |
 | A-009 | 2026-10-19 | Digest confidence for isolated blocks | proposed |
 | A-010 | 2026-10-19 | Operating-point parameters | proposed |
+| A-011 | 2026-10-19 | Gamut slack measured per pixel | proposed |
+| A-012 | 2026-10-19 | Range fit bit-exact with the integer RCT | proposed |
+| A-013 | 2026-10-19 | Mark headroom measured, not assumed | proposed |
+| A-014 | 2026-10-19 | Verified excuse is a superset of the embed skip | proposed |
+| A-015 | 2026-10-19 | Mark saturated at the gamut; matched-filter read | proposed |
+| A-016 | 2026-10-19 | Field excuse restricted to the border-connected surround | proposed |
+
+---
+
+## A-011 — Gamut slack is measured per pixel, not per block
+
+**Date:** 2026-10-19 · **Affects:** `container.block_gamut`, module 6
+
+**Dossier says:** a block can be shifted if the union of the pixels' legal
+intervals is non-empty.
+
+**Why it changed:** the union is the wrong object. A block shift moves every
+pixel together, so what matters is the intersection of the intervals, and the
+bounds must be reduced *after* subtracting each pixel's own luma. The union
+version paired the tightest pixel bound with the most distant pixel and
+declared 43% of normal PH2 blocks unmarkable.
+
+**Evidence:** PH2, 12 images. Blocks refused fell from 75% to under 10%;
+coverage of markable blocks rose from 0.247 to 0.905 (IMD392) and from 1.3%
+refused to 0.0% (IMD396).
+
+## A-012 — The range fit is bit-exact with the integer RCT
+
+**Date:** 2026-10-19 · **Affects:** `container.exact_bounds`, `container.out_of_range`
+
+**Why it changed:** the inverse transform uses `g = y − ((cb+cr) >> 2)`. The
+real-valued form `(cb+cr)/4` disagrees with that integer shift by up to 0.75
+levels. A one-level disagreement at the gamut edge is enough to revert a block
+*after* it has been tagged, which makes a clean image accuse itself.
+
+**Evidence:** with the float form, PH2 clean images reported 60% false tamper
+blocks; with the bit-exact form the same images reported 0.
+
+## A-013 — The mark's headroom is measured, not assumed
+
+**Date:** 2026-10-19 · **Affects:** `pipeline.protect`, module 6
+
+**Dossier assumption:** Carrier A moves a pixel by `Δ/4 = 2` levels, so a
+2-level margin is enough.
+
+**Measured:** Carrier A writes 60 detail coefficients per block. Summed through
+the inverse Haar, the per-pixel excursion is **7.1 levels on average and 11 at
+the maximum** — three to five times the assumed value. Every block therefore
+needed a range shift that had not been reserved, and `compose()` reverted
+blocks that had already been tagged.
+
+**Evidence:** PH2, 12 images, 49 152 blocks: |Δpixel| p50 = 7, p95 = 9,
+max = 11. Block excursion *spread* p50 = 13, max = 20.7.
+
+## A-014 — The verifier's excused set must contain the encoder's skip set
+
+**Date:** 2026-10-19 · **Affects:** `pipeline.verify`, `ladder.classify`
+
+**Rule:** if a block is left unmarked at embed, the verifier must be able to
+recognise that fact from the received image alone, and excuse it. If it
+cannot, the block reads as fully broken and a clean image accuses itself.
+
+**Why it is hard:** the encoder's decision depends on data the verifier does
+not have (the tag, and therefore the mark). The only sound predicates are
+those that are **invariant to a constant shift of the block**, because the
+verifier sees the marked plane and the encoder saw the unmarked one.
+
+**Resolution:** two such invariants are used — the in-field predicate
+(A-016) and the per-block gamut window width
+(`max(low−y) … min(high−y)`), whose width is unchanged by any constant shift.
+A refusal that is not one of these is a bug, not a capacity limit, and is
+asserted against in `tests/`.
+
+## A-015 — The mark is saturated at the gamut, and read by matched filter
+
+**Date:** 2026-10-19 · **Affects:** `pipeline.protect`, `carriers.FragileCarrier`,
+`ladder.classify`, `config.TAU_F`, `config.TAU_STRONG`, module 4
+
+**Problem.** Dermoscopy has large saturated regions: 54% of pixels in a
+dark-vignette PH2 image sit within one level of the gamut edge, and 72–85% of
+blocks in those images contain a pixel with *zero* room in one direction
+(FIXME: numbers below). A signed mark cannot fit there at all.
+
+**Decision.** Do not revert such a block and do not try to shift it — both
+change the digest the block is tagged against, which reintroduces A-014. Let
+the gamut saturate the mark instead, and make the reader insensitive to how
+much of the mark survived:
+
+- `FragileCarrier.score` returns the normalised correlation between the
+  residual vector and the keyed sign vector, not a per-bit match.
+- `delta_f = 1 − score`. Clean block = 0, block carrying no tag = 1.
+- `TAU_F = 0.60`: the null statistic (no tag) has standard deviation
+  `1/sqrt(60) = 0.13`, so 0.40 correlation is 3σ. A block is "broken" below
+  0.40 correlation.
+- `TAU_STRONG = 0.75` (correlation < 0.25). It must stay **above** `TAU_F`
+  because `strong` nestles inside `broken`; with the old 0.25 a block only
+  mildly degraded by noise was promoted to decisive evidence.
+
+**Evidence (PH2, 8 images, 32 768 blocks, clipping allowed with no exclusion):**
+
+| population | worst | p99 | p50 |
+|---|---|---|---|
+| clean, correlation | 0.406 | — | 1.000 |
+| clean, correlation p1 | — | 0.714 | — |
+| tampered (paste), correlation | 0.439 | 0.325 | 0.060 |
+
+A threshold at 0.40 leaves **zero** clean blocks below it and 0.35% of
+tampered blocks below it.
+
+**Battery effect (PH2 n=20, 22 conditions):** detection 100% (conditions 1–5),
+IoU 0.906, PSNR 38.24 dB, benign claims 0% on JPEG 90/75/50 and resize,
+verify 41 ms. `sigma = 1` noise still claims on 40% of images; see A-017.
+
+## A-016 — The field excuse covers only the border-connected surround
+
+**Date:** 2026-10-19 · **Affects:** `container.field_mask`, `pipeline.verify`
+
+**Problem.** The "outside the imaging field" excuse was a pure local test
+(90% of pixels saturated). An attacker can satisfy that test anywhere in the
+image — paint a white rectangle and the blocks under it are excused, so the
+edit hides behind an abstention. Battery condition 21 (burned-in text) is
+exactly this attack.
+
+**Decision.** Excuse only the saturated component that is **connected to the
+image border**. A legitimate capture's surround always reaches the border; a
+painted patch in the interior does not.
+
+**Evidence:** condition 21 claim rose 45% → 50%; IoU unchanged. The remaining
+misses are text drawn *on* the white surround, where no mark exists to
+destroy — a capacity limit, not a detector failure, and it is reported as
+`CANNOT_SAY(capacity_refusal)` rather than `INTACT`.

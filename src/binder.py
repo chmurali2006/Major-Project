@@ -56,6 +56,8 @@ def digest_margin(ll2: np.ndarray, q: float = Q_DIGEST) -> np.ndarray:
 class Binder:
     """Keyed, position-bound tag generator. The key never travels."""
 
+    _ADDR = tuple(i.to_bytes(4, "big") for i in range(4096))
+
     def __init__(self, key: bytes, image_id: int, bind_address: bool = True):
         if not key:
             raise ValueError("empty key")
@@ -68,18 +70,28 @@ class Binder:
         # every block MAC starts from this prefix; copy() avoids re-keying
         self._base = base
 
-    def tag(self, address: int, digest: int) -> np.ndarray:
+    def _raw(self, address: int, digest: int) -> bytes:
         m = self._base.copy()
         if self.bind_address:
-            m.update(int(address).to_bytes(4, "big"))
-        m.update(int(digest).to_bytes(2, "big"))
-        raw = m.digest()
+            m.update(self._ADDR[address])
+        m.update(digest.to_bytes(2, "big"))
+        return m.digest()
+
+    def tag(self, address: int, digest: int) -> np.ndarray:
+        raw = self._raw(int(address), int(digest))
         return np.unpackbits(np.frombuffer(raw, dtype=np.uint8))[:TAG_BITS].copy()
 
     def tags(self, addresses: np.ndarray, digests: np.ndarray) -> np.ndarray:
+        """All block tags at once.
+
+        The per-block cost here is the single largest item in verify, so the
+        loop builds the raw MAC bytes and unpacks them in one numpy call
+        instead of once per block. Same tags, same security argument.
+        """
         ny, nx = digests.shape
-        out = np.empty((ny, nx, TAG_BITS), dtype=np.uint8)
+        buf = bytearray()
         for r in range(ny):
             for c in range(nx):
-                out[r, c] = self.tag(int(addresses[r, c]), int(digests[r, c]))
-        return out
+                buf += self._raw(int(addresses[r, c]), int(digests[r, c]))
+        bits = np.unpackbits(np.frombuffer(bytes(buf), dtype=np.uint8))
+        return bits.reshape(ny, nx, -1)[:, :, :TAG_BITS]

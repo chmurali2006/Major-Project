@@ -23,6 +23,7 @@ import io
 from dataclasses import dataclass
 
 import numpy as np
+from scipy import ndimage
 from PIL import Image
 
 from .config import BLOCK, PNG_COMPRESS_LEVEL
@@ -197,13 +198,26 @@ def field_mask(y: np.ndarray, hi: int = 250, lo: int = 5,
     The predicate is a fraction of saturated pixels, not a margin in levels, so
     it survives the two-level change a mark makes and survives JPEG, which
     leaves a flat 255 region a flat 255 region.
+
+    Only the component of that surround *connected to the image border* is
+    excused. A saturated patch in the middle of the image is not background -
+    it is what an attacker paints to hide an edit behind an abstention, and
+    the battery's burned-in-text condition does exactly that. Restricting the
+    excuse to the border-connected surround closes that hole without touching
+    a legitimate capture, whose surround always reaches the border.
     """
     y = np.asarray(y)
     ny, nx = y.shape[0] // BLOCK, y.shape[1] // BLOCK
     b = y.reshape(ny, BLOCK, nx, BLOCK)
     white = (b >= hi).mean(axis=(1, 3))
     black = (b <= lo).mean(axis=(1, 3))
-    return (white > frac) | (black > frac)
+    saturated = (white > frac) | (black > frac)
+    if not saturated.any():
+        return saturated
+    labels, _ = ndimage.label(saturated)
+    border = np.concatenate([labels[0], labels[-1], labels[:, 0], labels[:, -1]])
+    keep = np.unique(border[border > 0])
+    return np.isin(labels, keep)
 
 
 def unmarkable(y: np.ndarray, cb: np.ndarray, cr: np.ndarray,
