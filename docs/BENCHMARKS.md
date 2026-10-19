@@ -65,6 +65,16 @@ to, not a claim to have beaten anyone.
 PSNR 38.27 dB (worst 35.52) · coverage 0.926 · protect 143 ms/img · verify 43.3 ms/img.
 <!-- END MEASURED TABLES -->
 
+> **Provenance note.** The v5 receipt records commit `f0d7cc8`, which is the
+> tree that ran. This branch's history was rebuilt when the workspace was
+> restored from a snapshot, so that hash no longer resolves in this checkout.
+> What changed after the run, exhaustively: comments in `src/config.py` (no
+> value), all of `docs/`, and three new scripts (`make_tables.py`,
+> `make_figures.py`, `probe_coverage.py`) that nothing in the benchmark
+> imports. `src/pipeline.py`, `src/container.py`, `src/ladder.py` and
+> `scripts/bench.py` were not touched. The receipt is checked in exactly as it
+> was written — a receipt patched after the fact is not a receipt.
+
 **On the "met" column.** The bar is a minimum on the *mean over images*; a
 reviewer should ask what the distribution looks like behind it, so:
 
