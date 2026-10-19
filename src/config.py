@@ -44,13 +44,17 @@ TEXTURE_MIN = 3.0             # CHOSEN  dossier §11, validated in S2
 GATE_ENABLED = False          # CHOSEN  by measurement, A-007: the gate costs
                               #          11 points of detection and half the IoU
                               #          for 0.08 dB. Falsification check 3.
+MAX_SHIFT = 16.0              # CHOSEN  largest block DC shift allowed to fit
+                              #         the mark inside the RGB gamut
+EXCUSE_SLACK = 3.0            # CHOSEN  widening of the excused set at verify
+TAU_SHIFT_EXCUSE = 5.0        # DERIVED the mark moves a pixel by at most this much
 TAU_F = 0.05                  # CHOSEN  grid-searched in S2, frozen after
 TAU_SR = 0.25                 # CHOSEN  paste32 p50 0.54; safe because a clean
                               # block has delta_f == 0 and never reaches this cell
 TAU_STRONG = 0.25             # CHOSEN  decisive-evidence floor (see ladder.py)
 DIGEST_MARGIN_MIN = 2.0       # CHOSEN  LL2 levels from a quantisation boundary below
                               #         which the digest is not trustworthy
-TAU_SR_LONE = 0.45            # CHOSEN  a lone block with a marginal digest is still
+TAU_SR_LONE = 0.55            # CHOSEN  PH2: clean lone blocks reach 0.49,
                               #         called tampered if its reference is decisively
                               #         broken (two-sided evidence)
 TAU_AREA = 0.05               # CHOSEN  fraction of blocks that may be broken
@@ -93,6 +97,9 @@ class Config:
     dct_hi: int = DCT_HI
     texture_min: float = TEXTURE_MIN
     gate_enabled: bool = GATE_ENABLED
+    max_shift: float = MAX_SHIFT
+    excuse_slack: float = EXCUSE_SLACK
+    tau_shift_excuse: float = TAU_SHIFT_EXCUSE
     tau_f: float = TAU_F
     tau_sr: float = TAU_SR
     tau_strong: float = TAU_STRONG

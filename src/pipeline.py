@@ -34,8 +34,8 @@ import numpy as np
 from .binder import Binder, coarse_digest, digest_margin
 from .carriers import FragileCarrier, RobustCarrier, block_region
 from .config import Config, DEFAULT
-from .container import (Protected, compose, fit_block_luma, png_bytes, png_read,
-                        png_text, recover_luma, split_rct)
+from .container import (Protected, clip_safe_shift, compose, field_mask, png_bytes,
+                        png_read, png_text, recover_luma, split_rct)
 from .ladder import LadderResult, all_cannot_say, classify, texture_of
 from .transform import Haar2
 
@@ -103,6 +103,13 @@ class System:
 
         y0, cb, cr = split_rct(rgb)
         addresses = np.arange(ny * nx).reshape(ny, nx)
+        field = field_mask(y0)
+        # headroom the mark needs: half the quantisation step, plus the
+        # strongest Carrier B excursion, plus one level for rounding
+        headroom = self.cfg.delta_f / 2 + 1.0 + self.cfg.beta0 * (1.0 + self.cfg.lam) / 8.0
+        # blocks the mark cannot occupy without leaving the RGB gamut
+        _, excused = clip_safe_shift(y0, cb, cr, margin=0.0,
+                                     max_shift=self.cfg.tau_shift_excuse, slack=0.0)
 
         # ---- 1. Carrier B first (A-002)
         region = block_region(region_mask, ny, nx) if region_mask is not None \
@@ -112,12 +119,14 @@ class System:
         y_b = haar.from_blocks(robust.write(haar.to_blocks(y0.astype(np.float64)), region))
 
         # ---- 2. range fitting, so Carrier A can never clip
-        # margin must cover the largest pixel change Carrier A can make
-        # (about delta/2) plus the strongest Carrier B excursion inside the
-        # lesion (beta0*(1+lam)/8). Too small a margin manufactures refusals,
-        # and a refused block reads as a broken tag at verify time.
-        margin = self.cfg.delta_f / 2.0 + 1.0 + self.cfg.beta0 * (1.0 + self.cfg.lam) / 8.0
-        y_fit, refused_fit = fit_block_luma(y_b, cb, cr, margin=margin, max_shift=16.0)
+        skip = field | excused
+        skip_px = skip.repeat(8, 0).repeat(8, 1)
+        y_b[skip_px] = y0.astype(np.float64)[skip_px]
+        shift, refused_fit = clip_safe_shift(y_b, cb, cr, margin=headroom,
+                                             max_shift=self.cfg.max_shift)
+        refused_fit |= skip
+        shift = np.where(refused_fit, 0.0, shift)
+        y_fit = haar.from_blocks(haar.to_blocks(y_b) + shift[:, :, None, None])
 
         # ---- 3. digest and tag from the fitted luma
         c = haar.forward(y_fit)
@@ -138,11 +147,14 @@ class System:
         fragile = FragileCarrier(self.cfg.delta_f)
         flat = Haar2.details_flat(c)
         marked_flat = fragile.write(flat, tags)
-        # a refused block carries no tag: keep its original coefficients so the
-        # verifier reads noise and the ladder can abstain with a reason
-        if refused_gate.any():
-            keep = np.repeat(np.repeat(refused_gate, 1, 0), 1, 1)
-            marked_flat[keep] = flat[keep]
+        # A block that was skipped must be skipped by BOTH carriers. Marking it
+        # with A alone would push an already out-of-gamut block past the edge,
+        # force a revert after tagging, and manufacture a false tamper on a
+        # clean image. The verifier excuses these blocks by an independent
+        # rule (field or unmarkable), so nothing is lost.
+        no_mark = refused_gate | skip
+        if no_mark.any():
+            marked_flat[no_mark] = flat[no_mark]
         y_marked = haar.inverse({**c, **Haar2.details_unflat(c, marked_flat)})
 
         # ---- 5. container
@@ -194,7 +206,13 @@ class System:
 
         tex = texture_of(y)
         margin = digest_margin(c["LL2"], self.cfg.q_digest)
-        lad = classify(delta_f, delta_sr, tex, self.cfg, digest_margin=margin)
+        _, cb_r, cr_r = split_rct(rgb)
+        _, excused_v = clip_safe_shift(y, cb_r, cr_r, margin=0.0,
+                                       max_shift=self.cfg.tau_shift_excuse,
+                                       slack=self.cfg.excuse_slack)
+        excluded = field_mask(y) | excused_v
+        lad = classify(delta_f, delta_sr, tex, self.cfg, digest_margin=margin,
+                       excluded=excluded)
         return VerifyResult(delta_f=delta_f, delta_sr=delta_sr, ladder=lad,
                             texture=tex, image_id=image_id, key_ok=True,
                             digest_margin=margin)

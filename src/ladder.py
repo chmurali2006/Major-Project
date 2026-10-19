@@ -70,7 +70,8 @@ def _neighbour_count(mask: np.ndarray) -> np.ndarray:
 
 
 def classify(delta_f: np.ndarray, delta_sr: np.ndarray, texture: np.ndarray,
-             cfg: Config, digest_margin: np.ndarray | None = None) -> LadderResult:
+             cfg: Config, digest_margin: np.ndarray | None = None,
+             excluded: np.ndarray | None = None) -> LadderResult:
     df = np.asarray(delta_f, dtype=np.float64)
     dsr = np.asarray(delta_sr, dtype=np.float64)
     tex = np.asarray(texture, dtype=np.float64)
@@ -101,7 +102,16 @@ def classify(delta_f: np.ndarray, delta_sr: np.ndarray, texture: np.ndarray,
     # thresholds overlap (JPEG 90 delta_f ~ 0.37; paste ~ 0.50).
     broken = f_hi                          # any mismatch at all
     strong = df > cfg.tau_strong           # decisive: content or digest moved
-    area = float(broken.mean())
+
+    # Blocks outside the imaging field carry no mark and no evidence. They are
+    # removed from the area count, or a white surround would be read as a
+    # globally degraded image and every clean PH2 scan would abstain.
+    if excluded is not None:
+        excluded = np.asarray(excluded, bool)
+        broken = broken & ~excluded
+        strong = strong & ~excluded
+
+    area = float(broken.mean()) if broken.size else 0.0
     widespread = bool(area > cfg.tau_area)
 
     # NOTE: `not widespread`, never `~widespread`. On a Python bool the tilde
@@ -155,6 +165,11 @@ def classify(delta_f: np.ndarray, delta_sr: np.ndarray, texture: np.ndarray,
         isolated = weak & (support < cfg.corroborate_min)
         verdict[isolated] = CANNOT_SAY
         reason[isolated] = ROUTINE_HANDLING
+
+    # ---- outside the imaging field: no mark, no evidence
+    if excluded is not None and excluded.any():
+        verdict[excluded] = CANNOT_SAY
+        reason[excluded] = CAPACITY_REFUSAL
 
     # ---- rung 3: flat block, no reliable tag can have been written.
     # Only meaningful while the gate is on: if the embedder marked every block,

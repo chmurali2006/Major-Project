@@ -175,3 +175,97 @@ def fit_block_luma(y: np.ndarray, cb: np.ndarray, cr: np.ndarray,
     shift = np.where(refused, 0.0, shift)
     out = (yb + shift[:, None, :, None]).reshape(y.shape)
     return out, refused
+
+
+def field_mask(y: np.ndarray, hi: int = 250, lo: int = 5,
+               frac: float = 0.9) -> np.ndarray:
+    """Blocks outside the imaging field: saturated white or black surround.
+
+    Dermoscopy images are a circular field of view on a white or black
+    background. Those blocks have no headroom to carry a mark, and they say
+    nothing about integrity. They are excluded at embed time and excused at
+    verify time, and they never count toward the tamper decision.
+
+    The predicate is a fraction of saturated pixels, not a margin in levels, so
+    it survives the two-level change a mark makes and survives JPEG, which
+    leaves a flat 255 region a flat 255 region.
+    """
+    y = np.asarray(y)
+    ny, nx = y.shape[0] // BLOCK, y.shape[1] // BLOCK
+    b = y.reshape(ny, BLOCK, nx, BLOCK)
+    white = (b >= hi).mean(axis=(1, 3))
+    black = (b <= lo).mean(axis=(1, 3))
+    return (white > frac) | (black > frac)
+
+
+def unmarkable(y: np.ndarray, cb: np.ndarray, cr: np.ndarray,
+               margin: float, max_shift: float, slack: float = 0.0) -> np.ndarray:
+    """Blocks whose luma cannot carry the mark without leaving the RGB gamut.
+
+    Depends only on chroma (which no carrier touches) and on the block's luma
+    extent (which a mark moves by at most two levels). The verifier can compute
+    it from the received image alone, so these blocks are excused rather than
+    accused - and they never count toward the tamper decision.
+
+    `slack` widens the excused set. Verification passes slack > 0 so that any
+    block marked at embed time is still considered markable later; a block can
+    only ever be excused, never newly accused, by this rule.
+    """
+    lo_b, hi_b = luma_bounds(cb, cr)
+    ny, nx = y.shape[0] // BLOCK, y.shape[1] // BLOCK
+    lo_b = lo_b.reshape(ny, BLOCK, nx, BLOCK).max(axis=(1, 3))
+    hi_b = hi_b.reshape(ny, BLOCK, nx, BLOCK).min(axis=(1, 3))
+    yb = np.asarray(y, np.float64).reshape(ny, BLOCK, nx, BLOCK)
+    need = np.maximum.reduce([
+        np.zeros_like(lo_b),
+        lo_b + margin - yb.min(axis=(1, 3)),
+        -(hi_b - margin - yb.max(axis=(1, 3))),
+    ])
+    return need > (max_shift - slack)
+
+
+# ---------------------------------------------------------------- exact gamut
+
+
+def exact_bounds(cb: np.ndarray, cr: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+    """Exact per-pixel luma interval for the *integer* inverse RCT.
+
+    The inverse uses `g = y - ((cb+cr) >> 2)`, so the bounds depend on that
+    integer shift t, not on (cb+cr)/4. Using the real-valued form leaves a
+    one-level disagreement, and a one-level disagreement at the gamut edge is
+    exactly what makes a block revert after it was already tagged.
+    """
+    cb = np.asarray(cb, np.int32)
+    cr = np.asarray(cr, np.int32)
+    t = (cb + cr) >> 2
+    low = t - np.minimum(0, np.minimum(cb, cr))
+    high = 255 + t - np.maximum(0, np.maximum(cb, cr))
+    return low, high
+
+
+def block_gamut(y: np.ndarray, cb: np.ndarray, cr: np.ndarray):
+    """Per-block exact [low, high] luma interval, and the block's own extent."""
+    low, high = exact_bounds(cb, cr)
+    ny, nx = y.shape[0] // BLOCK, y.shape[1] // BLOCK
+    lo_b = low.reshape(ny, BLOCK, nx, BLOCK).max(axis=(1, 3))
+    hi_b = high.reshape(ny, BLOCK, nx, BLOCK).min(axis=(1, 3))
+    yb = np.asarray(y, np.float64).reshape(ny, BLOCK, nx, BLOCK)
+    return lo_b, hi_b, yb.min(axis=(1, 3)), yb.max(axis=(1, 3))
+
+
+def clip_safe_shift(y: np.ndarray, cb: np.ndarray, cr: np.ndarray,
+                    margin: float, max_shift: float, slack: float = 0.0):
+    """Smallest-magnitude integer shift that keeps a whole block in gamut.
+
+    Returns (shift, impossible). `impossible` marks blocks where no shift
+    within +-max_shift works; those are excused, never silently clipped.
+    """
+    lo_b, hi_b, y_min, y_max = block_gamut(y, cb, cr)
+    need_lo = np.ceil(lo_b + margin - y_min)
+    need_hi = np.floor(hi_b - margin - y_max)
+    impossible = (need_lo > need_hi) | (need_lo > max_shift) | (need_hi < -max_shift)
+    shift = np.where(need_lo > 0, need_lo, np.where(need_hi < 0, need_hi, 0.0))
+    # an excused set is only ever widened, never narrowed
+    impossible = impossible | (np.abs(shift) > max_shift - slack)
+    shift = np.where(impossible, 0.0, shift)
+    return shift, impossible
