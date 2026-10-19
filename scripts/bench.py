@@ -37,6 +37,8 @@ from src.pipeline import System
 
 # The paper's operating point, for context only. Cross-paper comparison is
 # forbidden (Trap 21); these are the levels we hold ourselves to.
+CODE_PATHS = ("src", "scripts", "tests", "pytest.ini", "requirements.txt")
+
 BARS = {
     "detection": ("min", 0.976),
     "iou": ("min", 0.832),
@@ -290,12 +292,21 @@ def main() -> int:
 
     if args.receipt:
         try:
-            dirty = subprocess.run(["git", "status", "--porcelain"], cwd=ROOT,
-                                   capture_output=True, text=True).stdout.strip()
+            # Only the code that actually ran counts. Editing a document while
+            # a twelve-minute run is in flight does not make the receipt lie
+            # about which code produced the numbers, and demanding a clean tree
+            # for prose would push people to stop the run or doctor the
+            # receipt. The code paths are what the receipt is about.
+            dirty = subprocess.run(["git", "status", "--porcelain", "--", *CODE_PATHS],
+                                   cwd=ROOT, capture_output=True, text=True).stdout.strip()
+            tree = subprocess.run(["git", "status", "--porcelain"], cwd=ROOT,
+                                  capture_output=True, text=True).stdout.strip()
         except Exception:
-            dirty = ""
+            dirty = tree = ""
+        if tree and not dirty:
+            print("note: documents changed during the run; code paths were clean.")
         if dirty:
-            print("WARNING: working tree is dirty; the receipt records the "
+            print("WARNING: code paths are dirty; the receipt records the "
                   "commit but the run used uncommitted code.")
         out = Path(args.receipt)
         if str(args.receipt).endswith("/"):
@@ -311,6 +322,7 @@ def main() -> int:
             "command": " ".join(sys.argv),
             "config": cfg.__dict__,
             "code_dirty": bool(dirty),
+            "tree_dirty": bool(tree),
             "code": {"git_commit": git_commit()},
             "environment": {
                 "python": platform.python_version(),
