@@ -251,6 +251,14 @@ def main() -> int:
     print(f"\ntotal wall clock {elapsed:.1f} s")
 
     if args.receipt:
+        try:
+            dirty = subprocess.run(["git", "status", "--porcelain"], cwd=ROOT,
+                                   capture_output=True, text=True).stdout.strip()
+        except Exception:
+            dirty = ""
+        if dirty:
+            print("WARNING: working tree is dirty; the receipt records the "
+                  "commit but the run used uncommitted code.")
         out = Path(args.receipt)
         if str(args.receipt).endswith("/"):
             out = out / "receipt.json"
@@ -264,6 +272,7 @@ def main() -> int:
             "created_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
             "command": " ".join(sys.argv),
             "config": cfg.__dict__,
+            "code_dirty": bool(dirty),
             "code": {"git_commit": git_commit()},
             "environment": {
                 "python": platform.python_version(),
