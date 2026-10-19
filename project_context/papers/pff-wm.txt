@@ -1,0 +1,1908 @@
+
+===== PAGE 1 =====
+Explainable and proactive fragile watermarking for medical 
+Deepfake detection
+Amine Khaldi a,e,*
+ , Narima Zermi b,1, Med Sayah Moad c,1, Akram Boukhamla e,1,  
+Med Redouane Kafi c,1, Aditya Kumar Sahu d,1
+a Unit´e de formation et de recherche de math´ematiques et d’informatique, Universit´e de Strasbourg, France
+b Electronics Department, Faculty of Engineering Sciences, Laboratories of Automation and Signals of Annaba (LASA), Badji Mokhtar Annaba University, 23000, 
+Annaba, Algeria
+c Department of Electronics, Faculty of Sciences and Technology, Electrical Engineering Laboratory, University of Kasdi Merbah, 30000, Ouargla, Algeria
+d Department of Computer Science and Engineering, SRM University-AP, Amaravati, Andhra Pradesh, India
+e Computer Science Department, Faculty of Sciences and Technology, Artificial Intelligence and Information Technology Laboratory, University of Kasdi Merbah, 30000, 
+Ouargla, Algeria
+ARTICLE INFO
+Keywords:
+Medical image watermarking
+Proactive deepfake detection
+Explainable artificial intelligence
+Dual watermarking strategy
+Multi‑scale attention mechanism
+ABSTRACT
+Medical deepfakes and adversarial manipulations threaten AI-based diagnosis and telemedicine security. Existing 
+watermarking methods for image authentication do not reliably distinguish clinically neutral transformations 
+from semantic tampering, offer no interpretability of detected alterations, and often exceed latency constraints of 
+clinical workflows. We propose Proactive Forensic Fragile Watermarking (PFF-WM), a framework that embeds 
+two complementary watermarks: a fragile watermark in wavelet detail coefficients (pixel-level sensitivity) and a 
+semi-robust watermark in the DCT domain whose embedding strength is modulated by a multi-scale attention 
+map that prioritises diagnostically relevant regions. At the receiver side, a stacked autoencoder trained exclu-
+sively on authentic images detects manipulations via reconstruction error, a lightweight refinement network 
+produces a tamper localisation mask, and a gradient-based explainability layer estimates the clinical impact of 
+any alteration. Experiments on CheXpert (resampled to 512 × 512), LiTS, and ISIC 2019 show that PFF-WM 
+achieves 97.6% detection accuracy and an AUC of 0.989, with tamper localisation IoU of 83.2%, with a false 
+positive rate below 0.5% under each tested non‑geometric benign transformation (JPEG, resizing, contrast, blur) 
+and below 0.7% under chained non‑geometric transformations. Geometric transformations (rotation, translation) 
+are a recognised limitation, reaching 18.7% FPR at 15◦ rotation.The method shows competitive or superior 
+performance against existing watermarking‑based forensic methods under the tested conditions, although direct 
+comparability is limited for methods designed for different resolutions or modalities. Inference time is 44 ms per 
+512 × 512 image, making it computationally feasible for real‑time verification under the tested conditions.
+1. Introduction
+The integration of artificial intelligence into medical imaging has 
+revolutionised computer‑aided diagnosis, telemedicine, and large‑scale 
+image analysis (Hosny et al., 2025). However, this progress has also 
+introduced critical security threats. Malicious actors can now generate 
+highly realistic synthetic lesions (medical deepfakes), remove clinically 
+significant findings, or craft imperceptible adversarial perturbations 
+that deceive diagnostic models (Fikri et al., 2025). Unlike natural 
+images, where tampering often targets entertainment or disinformation, 
+manipulation of medical images directly endangers patient safety, 
+compromises clinical decisions, and erodes trust in digital healthcare 
+infrastructures (Sood et al., 2025). Throughout this paper, we distin-
+guish between clinically neutral transformations and semantic 
+tampering. A transformation is considered clinically neutral if it does not 
+alter a board-certified radiologist's diagnostic interpretation. Examples 
+include lossy compression (JPEG Q ≥ 70), resizing (90–110% of original 
+dimensions), contrast adjustment (±10%), and mild Gaussian blur 
+* Corresponding author.
+E-mail addresses: akhaldi@unistra.fr (A. Khaldi), Zermi.Narima@univ-annaba.dz (N. Zermi), Sayah.Moad@univ-ouargla.dz (M.S. Moad), Boukhamla.Akram@ 
+univ-ouargla.dz (A. Boukhamla), Kafi.Redouane@univ-ouargla.dz (M.R. Kafi), adityasahu.cse@gmail.com (A.K. Sahu). 
+1 Contributing authors.
+Contents lists available at ScienceDirect
+Intelligent Systems with Applications
+journal homepage: www.journals.elsevier.com/intelligent-systems-with-applications
+https://doi.org/10.1016/j.iswa.2026.200684
+Received 12 April 2026; Received in revised form 21 May 2026; Accepted 27 May 2026  
+Intelligent Systems with Applications 31 (2026) 200684 
+Available online 28 May 2026 
+2667-3053/© 2026 The Author(s). Published by Elsevier Ltd. This is an open access article under the CC BY license ( http://creativecommons.org/licenses/by/4.0/ ). 
+
+===== PAGE 2 =====
+(sigma ≤ 0.5). A manipulation is considered semantic if it would change 
+a radiologist's diagnosis, including insertion of a synthetic lesion, 
+removal of a real pathological finding, copy-move of a pathological re-
+gion, or adversarial perturbation that flips a diagnostic classifier's output 
+while preserving perceptual fidelity.Traditional image forensics operate 
+passively detecting inconsistencies after an image has been transmitted 
+and potentially altered (Khare et al., 2026). These methods are often 
+brittle, require large annotated datasets of both pristine and manipu-
+lated images, and struggle to generalise to novel attack types (Zhou 
+et al., 2023). More importantly, they offer no proactive protection: the 
+image is sent without any verifiable signal, and any tampering is 
+detected only after the fact, potentially after a wrong diagnosis has 
+already been made (Boukela et al., 2020). In high‑stakes medical envi-
+ronments, a proactive approach is essential embedding a verifiable 
+signal at the source that enables immediate and interpretable authen-
+tication at the receiving end (Beggari et al., 2025). Digital watermarking 
+has long been employed for copyright protection and integrity verifi-
+cation (Yousefi Valandar et al., 2020). Recent research has extended 
+watermarking to deepfake forensics, adversarial defence, and model 
+protection (Sneha et al., 2020). Several proactive frameworks have been 
+proposed that embed fragile or semi‑fragile watermarks to detect ma-
+nipulations. Other works focus on robustness to common image pro-
+cessing or on training‑free operation (Mathivanan & Ganesh, 2021). 
+Despite these advances, existing methods share critical limitations when 
+applied to medical imaging. They typically treat all pixel alterations 
+equally, failing to distinguish benign transformations (lossy compres-
+sion, resizing) from semantically critical manipulations (Chattopadhyay 
+et al., 2020). Moreover, they output only a binary authenticity decision 
+or a coarse tamper map, without any explanation of how a detected 
+manipulation would affect a specific clinical diagnosis (Borra & Thanki, 
+2019). Many approaches are computationally heavy, require low‑reso-
+lution inputs, or need retraining for each new watermark making them 
+impractical for real‑time clinical workflows (Euschi et al., 2026). To 
+address these gaps, we identify three fundamental challenges that any 
+practical medical image watermarking system must overcome. First, the 
+watermark must be fragile to semantic alterations (such as insertion or 
+deletion of pathological findings) yet robust to routine medical image 
+processing (compression, resizing, contrast adjustment) (Khafaga et al., 
+2023). Second, the system must localise manipulated regions with pix-
+el‑level precision and simultaneously provide an interpretable assess-
+ment of the clinical impact (Thind et al., 2026). Third, the solution must 
+be computationally efficient, support high‑resolution medical images, 
+and avoid retraining for each new watermark payload (Anand & Singh, 
+2023). In this paper, we propose Proactive Forensic Fragile Water-
+marking (PFF‑WM), a novel framework designed to meet these chal-
+lenges. Our approach embeds two complementary watermarks: a fragile 
+watermark inserted into wavelet detail coefficients for pixel‑level 
+sensitivity, and a semi‑robust watermark embedded into mid‑frequency 
+DCT coefficients whose embedding strength is guided by a multi‑scale 
+attention map that highlights diagnostically relevant regions. At the 
+receiver side, a stacked autoencoder trained exclusively on authentic 
+watermarked images detects manipulations by analysing reconstruction 
+errors. A lightweight refinement network transforms the error map into 
+a precise tamper localisation mask. Finally, an explainability layer uses 
+gradient backpropagation through a frozen medical classifier to quantify 
+the clinical impact of the detected alteration. The entire system is 
+trainable end‑to‑end and operates natively at high resolution without 
+requiring retraining for new watermarks. The remainder of this paper is 
+organised as follows. Section 2 reviews related work and identifies gaps 
+specific to medical image authentication. Section 3 describes the 
+PFF-WM framework. Section 4 presents experimental setup, results, and 
+ablation studies. Section 5 concludes with a discussion of limitations and 
+future work.
+2. Related work
+Digital watermarking has evolved from traditional copyright pro-
+tection to address emerging challenges in deepfake forensics, adversarial 
+machine learning, model intellectual property protection, and 
+cyber‑physical system security (Awasthi et al., 2026). Recent advances 
+leverage deep learning, optimization algorithms, and conventional 
+transform‑domain techniques to enable proactive content authentica-
+tion, tamper localisation, and attack detection (Zhou et al., 2024). This 
+section organises the literature into four thematic areas: proactive 
+deepfake detection and authentication, adversarial watermarking for 
+model protection and image attack, secure and robust image water-
+marking with deep learning, and watermarking for cyber‑physical sys-
+tems security.
+2.1. Proactive deepfake detection and authentication
+The proliferation of deepfake technology has motivated proactive 
+forensic methods that embed verifiable signals into images before 
+dissemination (Farri & Ayubi, 2018). Unlike passive detectors that 
+analyse post‑manipulation artifacts, proactive approaches enable 
+tamper detection and source tracing at verification time (Anand & 
+Singh, 2020). Abrar and Sheikh (Abrar & Sheikh, 2026) propose Deep-
+Mark, a semi‑fragile framework that embeds multi‑bit payloads into 
+images and videos using a U‑Net encoder‑decoder. A curriculum 
+learning strategy progressively exposes the model to benign distortions 
+followed by malicious manipulations, and tamper localisation is ach-
+ieved via thresholded difference maps. Zhao et al. (Zhao et al., 2024) 
+introduce a proactive manipulation detection method that hides an 
+entire secret image as an invisible watermark using a cover‑agnostic 
+U‑Net. An attack module with distortion and tampering layers enforces 
+semi‑fragility, and tampered regions are identified by comparing the 
+recovered secret image with the original. Wu et al. (Wu et al., 2026) 
+present ConMark, a conditional watermarking framework that injects 
+condition vectors via Feature‑wise Linear Modulation (FiLM). A light-
+weight condition network allows three variants: conditioned decoder for 
+flexible robustness, conditioned encoder to improve downstream de-
+tector accuracy, and joint conditioning for simultaneous provenance 
+tracking, detection, and detectability enhancement. Yuan et al. (Yuan 
+et al., 2026) propose Adversarial Semi‑Fragile Watermarking (ASFW), 
+a dual‑branch defence that combines adversarial perturbations (to 
+disrupt deepfake models) with semi‑fragile watermarking (to enable 
+post‑hoc authentication). A differentiable JPEG compression module is 
+integrated during training to ensure robustness under lossy trans-
+mission. Lai et al. (Lai et al., 2026) develop TFPDD, a training‑free 
+proactive detection scheme that synergises conventional robust water-
+marking with identity‑aware hashing. The core innovation is Banded 
+and Interleaved Quantization Index Modulation (BI‑QIM), which uses a 
+hexagonal lattice to create directional decoding regions, significantly 
+enhancing robustness against common signal processing. A blind syn-
+chronization mechanism embeds least significant bits of the face 
+bounding box coordinates, enabling precise face reconstruction without 
+shared reference masks. A comprehensive survey by Lai et al. (Lai et al., 
+2025) reviews proactive forensic techniques for deepfake based on 
+digital watermarking, classifying them into robust, semi‑fragile, and 
+dual watermarking strategies, and discusses open challenges such as the 
+lack of standardised benchmarks.
+2.2. Adversarial watermarking for model protection and image attack
+Adversarial watermarking exploits the vulnerability of deep neural 
+networks to small perturbations, either to mislead classifiers (attack 
+scenario) or to protect generative models from unauthorised use 
+(defence scenario). Xie et al. (Xie et al., 2025) propose Reversible 
+Adversarial Visible Watermarking (RAVW), which uses Grad‑CAM to 
+identify important regions for watermark embedding. A generator 
+A. Khaldi et al.                                                                                                                                                                                                                                  Intelligent Systems with Applications 31 (2026) 200684 
+2 
+
+===== PAGE 3 =====
+creates adversarial perturbations that disrupt watermark removal net-
+works, while authorised users can restore the original image via a 
+dedicated restoration module. Wang et al. (Wang et al., 2025) develop 
+an invisible adversarial watermarking method based on block‑matching 
+embedding. Bilinear up‑sampling increases embedding capacity, and a 
+cosine‑similarity block‑matching algorithm selects texture‑compatible 
+original blocks. The SimBA algorithm then adds small perturbations to 
+random pixel locations to reduce model confidence. Zuo et al. (Zuo et al., 
+2023) introduce MISPSO‑Attack, an adversarial watermark attack based 
+on multiple‑initial‑solution particle swarm optimisation. Image feature 
+key points (extracted by SURF or ORB) serve as initial solutions for 
+multiple swarms, improving convergence speed. The framework is 
+scalable to different tasks, including face recognition. Lin et al. (Lin 
+et al., 2025) propose a JPEG‑resistant adversarial watermark genera-
+tion scheme that operates in the DCT frequency domain. A differentiable 
+JPEG module simulates compression during end‑to‑end training, and a 
+fusion module coordinates watermark distribution across multiple im-
+ages, enhancing cross‑image transferability without retraining. Fei et al. 
+(Fei et al., 2025) present a distributor‑centric model watermarking 
+method for generative models using Watermark‑Informed Convolution 
+(WIC). Standard convolution layers are replaced with multiple parallel 
+kernels, and a watermark encoder modulates these kernels at both 
+kernel level and filter level. Once fine‑tuned, a new watermark can be 
+embedded in milliseconds by pre‑computing the combined kernel, with 
+no inference overhead and robustness to model pruning or image 
+compression.
+2.3. Other watermarking applications
+Beyond multimedia forensics and adversarial attacks, watermarking 
+has been applied to secure image transmission and cyber‑physical sys-
+tems. Thind et al. (Hamami et al., 2026) propose SECURENet, an 
+encoder‑decoder architecture that embeds two secret images into a 
+single cover image. A preparation network processes each watermark, a 
+hiding network concatenates features with the cover image, and a reveal 
+network extracts the watermarks. A noise layer simulates various attacks 
+(Gaussian noise, blurring, geometric distortions, JPEG compression) 
+during training to enhance robustness. Chaotic encryption with a 
+128‑bit key scrambles the watermarked image before transmission, 
+ensuring that only authorised users can recover the watermarks. Liu 
+et al. (Liu et al., 2023) propose a hybrid proactive detection scheme for 
+cyber‑physical systems that combines additive watermarking and 
+moving target defence for systems with unknown‑but‑bounded distur-
+bances. A zonotopic observer estimates system states, and the detection 
+residual is monitored against a zonotope‑based threshold. Watermarks 
+(pseudo‑random sequences) are added to both control input and mea-
+surement output channels, while a time‑varying linear transformation 
+acts as a moving target. Both are removed at the receiver side when no 
+attack is present, ensuring zero performance degradation. The method is 
+effective against denial‑of‑service, replay, and covert attacks, provided 
+the moving target parameters remain unknown to the adversary.
+2.4. Research gap and motivation
+The literature reviewed above shows progress in watermarking for 
+deepfake forensics, but four gaps persist for medical imaging. First, most 
+proactive methods output a binary decision or a coarse tamper map 
+without explaining how a manipulation would affect a clinical diag-
+nosis. Second, adversarial watermarking techniques (RAVW, MIS-
+PSO‑Attack, WIC) are designed to mislead classifiers or protect model 
+IP, not to detect semantically meaningful medical manipulations such as 
+lesion insertion or removal. Third, dual‑watermark strategies (ConMark, 
+ASFW) combine robust and fragile watermarks but either increase 
+model complexity or require retraining per watermark; none integrate 
+an explicit explainability layer linking watermark distortion to clinical 
+impact. Fourth, deep learning‑based frameworks like SECURENet 
+require low‑resolution inputs and extensive training, limiting their use 
+in high‑resolution medical workflows. Table 1 summarises the key 
+characteristics, advantages, and limitations of the reviewed water-
+marking methods across the four domains. Most existing proactive 
+deepfake detection methods output only a binary authenticity decision 
+or a coarse tamper map. While approaches like DeepMark and the 
+scheme of Zhao et al. can localise manipulated regions at the pixel level, 
+they do not explain why a region is considered tampered or how the 
+alteration would affect a clinical diagnosis. This lack of interpretability 
+severely limits trust and adoption in medical environments, where un-
+derstanding the clinical impact of a manipulation is as important as 
+detecting it. Current adversarial watermarking techniques (RAVW, 
+MISPSO‑Attack, WIC, and others) are primarily designed to mislead 
+classifiers or protect model intellectual property. They are not optimised 
+for detecting subtle, semantically meaningful manipulations such as the 
+insertion or removal of pathological lesions – a common form of medical 
+deepfake. Moreover, these methods treat all modifications equally, 
+failing to distinguish between benign transformations (e.g., lossy 
+compression, resizing) and malicious tampering that alters diagnostic 
+content.
+Dual‑watermark strategies proposed in works like ConMark and 
+ASFW combine robust and fragile watermarks, but they either increase 
+model complexity or require retraining for each new watermark. None 
+of them integrate an explicit explainability layer that links watermark 
+distortion to clinical impact. Furthermore, existing approaches rarely 
+exploit multi‑scale attention mechanisms to guide watermark embed-
+ding into diagnostically relevant regions, leaving critical areas vulner-
+able to undetected manipulation. Finally, deep learning‑based 
+frameworks such as SECURENet achieve excellent visual quality and 
+robustness but are computationally heavy and demand large training 
+datasets. Their application to medical imaging is further hindered by the 
+need for high‑resolution inputs and the scarcity of annotated medical 
+manipulation data. Orthogonal moment watermarking embeds water-
+marks in fractional-order quaternion exponent moments, where water-
+mark integrity is compromised only under semantic deepfake attacks 
+(Wang et al., 2026). A residual diffusion model attack treats watermark 
+information as noise and reconstructs the original host image through a 
+Markov chain on residuals, achieving strong watermark removal with 
+high visual quality (Wang et al., 2026). Given these limitations, several 
+challenges must be addressed to enable practical and trustworthy 
+watermarking for medical image authentication. A first challenge is to 
+design a watermark that remains fragile to critical semantic alterations 
+(such as lesion insertion or removal) while staying robust to routine 
+medical image processing (compression, resizing, contrast adjustment). 
+A second challenge is to localise manipulated regions with pixel‑level 
+precision and, at the same time, provide an interpretable explanation of 
+how the alteration would affect a clinical diagnosis. A third challenge is 
+to develop a dual‑watermark strategy that separates fine‑grained 
+tamper detection from a semi‑robust reference, without incurring 
+excessive computational cost or requiring retraining for each new 
+watermark. The ultimate goal is to propose an approach that bridges 
+conventional watermarking and modern AI forensics, offering a solution 
+capable of detecting, localising, and explaining manipulations in medi-
+cal images, thereby supporting secure AI‑assisted diagnosis, telemedi-
+cine, and medical data sharing.
+3. Proactive forensic fragile watermarking (PFF-WM)
+This section presents the Proactive Forensic Fragile Watermarking 
+(PFF‑WM) framework, dedicated entirely to the description of the 
+watermark generation, integration (embedding) and extraction (detec-
+tion) processes. Let a medical image be denoted by I∈ RH×W×C with 
+height H, width W and number of channels C (typically C= 1 for X‑rays 
+or CT slices, C= 3 for RGB histopathology or dermatology images). A 
+watermarking system comprises an embedding function E : RH×W×C×
+A. Khaldi et al.                                                                                                                                                                                                                                  Intelligent Systems with Applications 31 (2026) 200684 
+3 
+
+===== PAGE 4 =====
+K × W →RH×W×C that produces a watermarked image Iw = E(I,k,w), 
+where k∈ K is a secret key and w∈ W the watermark payload. The 
+detection function D : RH×W×C× K →{0, 1} × RH×W× Rd returns a 
+binary authenticity decision, a tamper localisation map and an 
+explainability vector that quantifies the clinical impact. Conventional 
+watermarking treats every pixel alteration equally, but in medical 
+diagnosis one must distinguish clinically insignificant transformations 
+(lossy compression, resizing, contrast adjustment) from semantically 
+critical manipulations (lesion insertion, tumour removal, fracture dele-
+tion). Our central hypothesis is that a dual‑watermark strategy coupled 
+with an attention‑guided embedding mechanism can achieve this 
+distinction by encoding diagnostic saliency directly into the water-
+marking architecture. Three explicit hypotheses guide the design: H1 – A 
+watermark embedded preferentially in diagnostically relevant regions 
+(identified by a multi‑scale attention mechanism) exhibits measurably 
+higher fragility to semantic manipulations than to routine processing, 
+the fragility ratio ρ= Δsemantic/Δroutine > γ for a threshold γ > 1; H2 – 
+The reconstruction error of a stacked autoencoder applied to a 
+dual‑watermark representation provides a sufficient statistic for 
+detecting pixel‑level manipulations while remaining invariant to benign 
+transformations that preserve the semi‑robust watermark; H3 – A 
+Grad‑CAM alignment loss between the watermark distortion map and a 
+pretrained medical classifier’s attention map produces clinically inter-
+pretable explanations without requiring pixel‑level manipulation 
+ground truth. Fig. 1 illustrates the overall embedding pipeline, from the 
+input medical image to the generation of the watermarked image.
+The PFF‑WM architecture comprises five sequential modules that 
+operate in two phases: embedding (performed once at the point of 
+acquisition) and detection (performed at each verification). The first 
+module is a multi‑scale attention module that computes a diagnostic 
+saliency map. The second is the dual watermark embedding module, 
+which simultaneously injects a fragile watermark and a semi‑robust 
+reference watermark into distinct transform‑domain coefficients. The 
+third is a stacked autoencoder detector that detects manipulations by 
+analysing the reconstruction error of the extracted watermarks. The 
+fourth is an attention‑based localisation module that produces a pix-
+el‑precise tamper map. The fifth is an explainability layer that generates 
+a clinical impact assessment via gradient backpropagation through a 
+frozen medical classifier. The forward pass proceeds as follows. The 
+input image I first passes through the attention module to obtain sa-
+liency weights. These weights guide the embedding module, which in-
+jects the two watermarks. The watermarked image Iw is then transmitted 
+over an untrusted channel. At the receiver side, the detection module 
+extracts both watermarks, computes reconstruction errors, localises 
+discrepancies and produces an explainability report. All modules except 
+the frozen classifier are trainable end‑to‑end. This separation of 
+embedding from detection is motivated by two practical considerations: 
+embedding can be computationally intensive and is performed only once 
+at acquisition, while detection must be lightweight and repeated many 
+times; moreover, the dual‑watermark strategy requires independent 
+optimisation objectives for fragility and semi‑robustness, which are 
+more effectively balanced through separate loss terms than through a 
+single auto‑encoder.
+3.1. Multi‑scale attention for diagnostic region identification
+Before embedding any watermark, the system must know where to 
+concentrate the semi‑robust watermark (Eltoukhy et al., 2025). The 
+attention module produces a saliency map A∈[0, 1]H×W that assigns 
+higher weights to diagnostically relevant regions (Gen et al., 2025). We 
+adopt a multi‑scale convolutional attention mechanism with three par-
+allel paths using kernel sizes k∈{3, 5, 7} (Awasthi & Srivastava, 2026): 
+Fk = σ(BN(Convk×k(I)))∀k∈{3, 5, 7}, (1) 
+Table 1 
+Overview of existing watermarking and forensic methods for medical image protection.
+Author(s) Method Advantages Limitations
+Abrar and Sheikh (Abrar & 
+Sheikh, 2026) (DeepMark)
+U-Net encoder-decoder + curriculum learning 
++ multi-bit payload
+Unified for images/videos; pixel-level 
+localisation; distinguishes benign from 
+malicious edits
+Threshold sensitivity; requires careful payload 
+tuning
+Zhao et al. (Zhao et al., 2024) Cover-agnostic U-Net + secret image as 
+watermark + attack module
+Agnostic to secret image format; robust to crop, 
+flip, JPEG
+Sensitive to strong blur/colour adjustment; 
+requires stored secret
+Wu et al. (Wu et al., 2026) 
+(ConMark)
+Conditional watermarking + FiLM 
+modulation + conditioned decoder/encoder
+Extremely lightweight; self-supervised (no 
+deepfake images needed); versatile
+Fragility may fail on unseen deepfake types; 
+cross-detector generalisation limited
+Yuan et al. (Yuan et al., 
+2026)
+Adversarial semi-fragile watermark +
+differentiable JPEG module + dual-branch 
+defence
+Excellent imperceptibility; robust to JPEG; 
+cross-dataset and black-box generalisation
+Requires retraining for new deepfake models; 
+adaptive attacks can partially evade detection
+Lai et al. (Lai et al., 2026) BI-QIM + identity-aware hashing + blind 
+synchronisation
+Training-free; fully blind; lightweight; robust to 
+JPEG and common distortions
+Requires detectable face; limited embedding 
+capacity; sensitive to severe geometric 
+distortions
+Lai et al. (Lai et al., 2025) Comprehensive review of proactive forensic 
+techniques
+Systematic classification; identifies open 
+challenges and future directions
+No new method; benchmarks still lacking
+Xie et al. (Xie et al., 2025) Grad-CAM + generator + restoration network Reversible (authorised restoration); precise 
+region targeting
+Complex training (three modules); requires 
+pre-trained removal network
+Wang et al. (Wang et al., 
+2025)
+Block-matching (cosine similarity) + up- 
+sampling + SimBA
+High attack success rate; watermark 
+reconstructible; robust to common image 
+operations
+Focuses on misleading classifiers; not designed 
+for deepfake authentication
+Zuo et al. (Zuo et al., 2023) Multi-swarm PSO + SURF/ORB key points +
+bi-objective fitness
+Scalable; efficient convergence; applicable to 
+face recognition
+Visible watermark; lower attack success rate 
+than deep learning methods
+Lin et al. (Lin et al., 2025) DCT-domain adversarial watermark +
+differentiable JPEG + fusion module
+JPEG-resistant; retraining-free; cross-image 
+transferable
+Performance depends on JPEG quality factor; 
+limited to attribute-editing models
+Fei et al. (Fei et al., 2025) Watermark-Informed Convolution (kernel- 
+level + filter-level modulation)
+No retraining for new watermarks; no inference 
+overhead; robust to pruning/quantisation
+Higher training cost; payload limited; requires 
+white-box model access
+Thind et al. (Hamami et al., 
+2026)
+Encoder-decoder (preparation + hiding +
+reveal) + chaotic encryption + noise layer
+Exceptional visual quality; multiple watermarks 
+(2); robust to wide range of attacks
+Limited to low-resolution images (64 × 64); 
+requires extensive training
+Liu et al. (Liu et al., 2023) Additive watermarking + moving target (Γₖ) 
++ zonotopic observer
+Zero performance loss when attack-free; 
+effective against DoS, replay, covert attacks
+Requires secure channel for emergency 
+controller; assumes moving target secret
+Fig. 1. Watermark embedding pipeline.
+A. Khaldi et al.                                                                                                                                                                                                                                  Intelligent Systems with Applications 31 (2026) 200684 
+4 
+
+===== PAGE 5 =====
+where σ(⋅) is ReLU and BN denotes batch normalisation.
+The three paths capture features at different receptive fields: 3 × 3 
+localises fine‑grained texture anomalies, 5 × 5 captures lesion 
+boundaries, and 7 × 7 encodes global anatomical context. The feature 
+maps are concatenated along the channel dimension: 
+Fconcat = Concat(F3, F5, F7)∈ RH×W× 3C1, (2) 
+with C1= 32 output channels per path.
+A 1 × 1 convolution reduces the channel dimension to a sin-
+gle‑channel raw attention map (Zhu et al., 2022): 
+Araw = Conv1× 1(Fconcat)∈ RH×W. (3) 
+A softmax operation over spatial locations normalises the weights 
+(Mathivanan & Ganesh, 2019): 
+A(i, j)= exp(Araw(i, j)/τ)∑
+m,nexp(Araw(m, n)/τ) (4) 
+where τ is a temperature parameter
+During training we set τ= 0.5 to encourage sparse, focused attention 
+on critical regions; during inference we use τ= 1.0 for smoother local-
+isation maps. The multi‑scale design with fixed kernel sizes (3,5,7) is 
+deliberate: pathological features in medical imaging have characteristic 
+spatial extents – microcalcifications span 2‑5 pixels, early‑stage lung 
+nodules occupy 5‑15 pixels, while organ‑level abnormalities cover 
+hundreds of pixels. Fixed receptive fields align with these known scales, 
+reduce overfitting on small medical datasets, and avoid the overhead of 
+learned spatial offsets. Robust feature learning across varying scene 
+complexities, as demonstrated in human parsing tasks, could further 
+improve the attention module's ability to localise diagnostically relevant 
+regions under heterogeneous image conditions (Liu et al., 2024). The 
+temperature τ= 0.5 concentrates about 80 % of the attention mass on 
+the top 15 % of pixels by saliency, leaving enough residual weight for 
+non‑salient regions to maintain robustness against geometric attacks. 
+Optionally, if a pretrained medical segmentation model is available, a 
+prior attention map Aprior can be fused via Afinal= αA+(1  α)Aprior with 
+α= 0.7; this integration is disabled by default to ensure generalisability.
+3.2. Dual watermark embedding strategy
+The core innovation lies in embedding two complementary water-
+marks that operate in different transform domains with distinct sensi-
+tivity profiles. Let T denote a transformation from the spatial domain to 
+a coefficient domain. We use the Discrete Wavelet Transform (DWT) 
+with the Haar basis for the fragile watermark and the Discrete Cosine 
+Transform (DCT) for the semi‑robust watermark. This hybrid choice is 
+justified: DWT provides spatial‑frequency localisation that enables 
+precise tamper localisation, while DCT coefficients exhibit predictable 
+degradation under JPEG compression, making them suitable for a 
+semi‑robust reference. The embedding process starts from the cover 
+image I (Thanki et al., 2017): 
+CDWT = DWT(I)={LL, LH, HL, HH}, CDCT = DCT(I). (5) 
+Here LL is the approximation subband (low‑low frequencies), LH,
+HL, HH are the detail subbands (horizontal, vertical and diagonal high 
+frequencies), and CDCT is the DCT coefficient matrix.
+3.2.1. Fragile watermark
+The fragile watermark is designed to detect any pixel‑level manip-
+ulation, including subtle adversarial perturbations (Saadaoui et al., 
+2026). We generate a binary payload wf ∈{0, 1}Nf using a pseu-
+do‑random generator seeded by the secret key k. Its length Nf equals the 
+number of detail coefficients selected for embedding. Integration 
+(embedding): The fragile watermark is inserted into the least significant 
+bits (LSBs) of the DWT detail coefficients {LH, HL, HH} using 
+Quantisation Index Modulation (QIM) (Abo El-Soud et al., 2025): 
+CDWT
+ʹ(i)= QΔf(CDWT(i))+ Δf
+4
+ 
+2wf(i)  1
+)
+(6) 
+where QΔf(⋅) rounds to the nearest multiple of the quantisation step Δf , and 
+the offset Δf
+4 places the embedded bit at the centre of the quantisation interval.
+The pseudo-random generator seeded by key k can be replaced by a 
+three-dimensional Logistic map for larger key space and more complex 
+chaotic behaviour (Ding et al., 2026). Non-degenerate hyperchaotic 
+systems offer globally robust hyperchaos with exponentially growing 
+Lyapunov exponents, further enhancing key sensitivity (Lin et al., 2026). 
+A sine-based reconstruction approach can improve the randomness and 
+uniformity of chaotic sequences under finite-precision implementation 
+(Ding et al., 2026).Through preliminary experiments on the CheXpert 
+dataset we set Δf = 8 for pixel intensities normalised to [0, 255]. This 
+yields a maximum embedding distortion of ±4 intensity levels – 
+imperceptible to human observers yet sufficient to detect single‑pixel 
+alterations. A critical design decision is to embed the fragile watermark 
+only in the detail coefficients, never in the approximation subband LL. 
+The approximation subband contains the low‑frequency content that 
+determines the overall image structure and diagnostic information (Liao 
+et al., 2020); modifying it would cause visible artefacts and degrade 
+clinical quality (Jelodar et al., 2020). Detail coefficients encode edges 
+and textures where small modifications are visually undetectable but 
+extremely sensitive to any tampering (Beggari et al., 2026). Extraction: 
+At the receiver side, the same DWT is applied to the received image ̃I. 
+From the detail coefficients, the embedded bits are recovered by inverse 
+QIM: 
+̂wf(i)=
+⌊2
+(
+̃CDWT(i)  QΔf(̃CDWT(i))
+)
+Δf
++ 1
+2
+⌋
+mod 2 (7) 
+The detection statistic for the fragile watermark is the bit error rate 
+(Abo El-Soud et al., 2025): 
+δf = 1
+Nf
+∑Nf
+i=1
+⃒⃒wf(i)  ̂wf(i)
+⃒⃒. (8) 
+3.2.2. Semi‑robust reference watermark
+The semi‑robust watermark serves as a reference baseline. It should 
+survive routine image processing (JPEG compression, resizing, contrast 
+adjustment) while remaining fragile to semantic manipulations. We 
+generate a real‑valued sequence wsr ∈ RNsr from a Gaussian distribution 
+with zero mean and unit variance, again seeded by the secret key k. 
+Integration (embedding): The semi‑robust watermark is embedded into 
+the mid‑frequency DCT coefficients using a spread‑spectrum method 
+(Liao et al., 2022): 
+CDCT
+ʹ(u, v)= CDCT(u, v)+ β(i, j) wsr(k) p(u, v), (9) 
+where p(u, v) is a pseudo‑random spreading sequence (also derived from k) of 
+unit energy, and β(i, j) is the embedding strength.
+The indices (u, v) are restricted to the mid‑frequency band: 
+M =
+{
+(u, v) : Tlow ≤ u+ v≤ Thigh
+}
+, (10) 
+with Tlow= 0.15min(H, W) and Thigh = 0.35min(H,W).
+This band excludes low frequencies (which would cause visible 
+blurring) and high frequencies (which are easily removed by compres-
+sion). The length Nsr=|M| is typically on the order of 104 for 512 ×
+512 images. The embedding strength is not constant but is modulated 
+by the attention map A: 
+β(i, j)= β0 (1+ λattn A(i, j)), (11) 
+with β0= 0.1 (base strength) and λattn = 2.0.
+This attention‑guided embedding ensures that diagnostically 
+A. Khaldi et al.                                                                                                                                                                                                                                  Intelligent Systems with Applications 31 (2026) 200684 
+5 
+
+===== PAGE 6 =====
+important regions receive a stronger watermark – not because they are 
+more robust, but because manipulations in these regions must be 
+detected with higher confidence. In contrast, the fragile watermark uses 
+uniform embedding strength across all detail coefficients, as its purpose 
+is exhaustive pixel‑level coverage. Extraction: Given a received image ̃I, 
+the DCT is computed and the same spreading sequence p(u, v) is used to 
+despread the mid‑frequency coefficients (Thind et al., 2026): 
+̂wsr(k)= 1
+|M|
+∑
+(u,v)∈M
+(̃CDCT(u, v)  CDCT(u, v)) p(u, v). (12) 
+Because the original coefficients CDCT(u, v) are not available at the 
+receiver, we use a reference – the semi‑robust watermark is extracted by 
+correlating the received coefficients with the spreading sequence, 
+assuming the host signal is orthogonal to p. The detection statistic is the 
+mean squared error (Saïd et al., 2025): 
+δsr = 1
+Nsr
+∑Nsr
+k=1
+(wsr(k)  ̂wsr(k))2. (13) 
+The despreading operation in Eq. (12) assumes that the host DCT 
+coefficients C_DCT(u,v) are uncorrelated with the spreading sequence p 
+(u,v). This assumption holds because: (i) p(u,v) is generated indepen-
+dently of the image content using a cryptographically secure pseudo- 
+random generator seeded by k; (ii) for a typical medical image, the 
+DCT coefficients in the mid-frequency band M approximately follow a 
+zero-mean Laplacian or Gaussian distribution (verified empirically on 
+our datasets); (iii) the expected value of the inner product E[sum_(u,v) 
+C_DCT(u,v) p(u,v)] is therefore zero, and the variance decays as O(1/| 
+M|). For |M| ≈ 90 kbits, the standard deviation of the residual correla-
+tion is <0.003, which is negligible compared to the embedded water-
+mark energy (beta_0 = 0.1).
+3.2.3. Formal relationship between the two watermarks
+The detection decision is based on the pair 
+ 
+δf, δsr
+)
+. For an unmodi-
+fied image we expect low errors: δf < τf and δsr < τsr. A benign trans-
+formation (JPEG quality 85) should corrupt the fragile watermark but 
+leave the semi‑robust watermark mostly intact: δf > τf, δsr < τsr. A se-
+mantic manipulation (lesion insertion) should corrupt both: δf > τf, δsr 
+> τsr. The thresholds τf, τsr are set empirically on a clean validation set 
+(authentic watermarked images without any transformation) to achieve 
+a theoretical false positive rate of 10^{  4} (0.01%) when both water-
+marks are extracted without any benign transformation. This theoretical 
+target is achieved by selecting τf,τsr such that the joint probability P(δf >
+τf AND δsr> τsr) = 10^{  4}, assuming independence of the two error 
+statistics. In practice, under benign transformations (e.g., JPEG 
+compression, resizing), the observed false positive rate is higher (0.1% 
+to 0.7% in Table 5) because the fragile watermark δf increases while the 
+semi-robust watermark δsr remains below τsr. The fragility ratio that 
+tests hypothesis H1 is ρ= δ(semantic)
+sr /δ(benign)
+sr . Our design targets ρ > 5, 
+meaning the reference watermark error increases by a factor of five 
+when a lesion is inserted versus when the image is simply compressed. 
+This is achieved by the attention‑modulated embedding that concen-
+trates watermark energy in diagnostically relevant regions. The 
+thresholds τf and τsr are set empirically on the validation set using grid 
+search over the range [0.01, 0.25] for τf and [0.05, 0.50] for τsr (nor-
+malised errors). The selected pair minimises the false positive rate on 
+authentic validation images subject to a detection rate above 99% on 
+manipulated validation images. This empirical procedure replaces the 
+theoretical 10⁻⁴ target (which assumes no benign transformations and 
+independence of errors) because benign transformations and 
+finite‑sample effects make the theoretical target unattainable in prac-
+tice. The theoretical target remains a design reference but is not used for 
+final threshold selection.. This procedure yields τf = 0.08 and τsr = 0.12 
+for CheXpert, τf = 0.09 and τsr = 0.14 for LiTS, and τf = 0.07 and τsr =
+0.11 for ISIC 2019. The thresholds are stable across datasets (coefficient 
+of variation < 15%), indicating that the dual-watermark decision rule 
+generalises without dataset-specific recalibration.(Table 6).
+3.2.4. Embedding capacity analysis
+The fragile watermark has capacity N_f equal to the number of DWT 
+detail coefficients (LH, HL, HH) per spatial location. For a 512 × 512 
+grayscale image with 3-level DWT decomposition, the total number of 
+detail coefficients is approximately 3 * (256^2 + 128^2 + 64^2) = 3 * 
+(65,536 + 16,384 + 4096) = 3 * 86,016 = 258,048 bits. We use 
+quantisation step delta_f = 8, which embeds one bit per coefficient, 
+yielding a maximum fragile payload of 258 kbits for the full image. The 
+semi-robust watermark has capacity N_sr equal to the number of mid- 
+frequency DCT coefficients selected by the band T_low = 0.15*min (H, 
+W) and T_high = 0.35*min (H, W). For 512 × 512, the DCT is applied in 
+8 × 8 blocks, producing 4096 blocks each with 64 coefficients. The mid- 
+frequency band per block contains approximately 20–25 coefficients 
+depending on the exact threshold, giving N_sr ≈ 4096 * 22 ≈ 90 kbits. In 
+practice, we use a smaller payload (N_f = 64 coefficients per spatial 
+location, N_sr = 32 coefficients per spatial location) to reduce compu-
+tational overhead while maintaining detection performance. In our ex-
+periments, we use a practical subset (Nf = 64 coefficients per location, 
+Nsr = 32 coefficients per location) to reduce computational overhead 
+while maintaining detection performance.
+3.3. Stacked autoencoder detector
+Once the two watermarks are extracted, the detection module must 
+decide whether the image has been manipulated. Instead of thresholding 
+δf and δsr independently, we feed a combined feature tensor into a 
+stacked autoencoder that learns the manifold of authentic watermarked 
+images. Let X∈ RH×W×(Nf+Nsr) be a tensor where each spatial location 
+contains the extracted fragile watermark bits and semi‑robust water-
+mark coefficients at that location. The stacked autoencoder learns a 
+compressed encoding (Anand et al., 2024): 
+z= fenc(X; θenc)∈ Rdz, X
+⌢
+= fdec(z; θdec). (14) 
+The encoder fenc consists of four convolutional layers with 3 × 3 
+kernels, stride 2 for downsampling, and channel dimensions [64, 128,
+256,512]. The decoder fdec mirrors the encoder with transposed convo-
+lutions. For each spatial location (i,j), the tensor X concatenates two 
+sources of information extracted from the received image. First, the 
+fragile watermark bits w_f(i) recovered via inverse QIM (Eq. (7)) are 
+arranged as a binary vector of length N_f coefficients per spatial location, 
+where N_f equals the number of DWT detail coefficients. Second, the 
+semi-robust watermark coefficients w_sr(i) recovered via despreading 
+(Eq. (12)) are arranged as a real-valued vector of length N_sr coefficients 
+per spatial location. Importantly, Nf and Nsr are expressed as integers 
+representing the number of coefficients per spatial location, not as total 
+kilobits. In our implementation, we use a subset of the available DWT 
+detail coefficients for efficiency: Nf = 64 coefficients per spatial location 
+and Nsr = 32 coefficients per spatial location, yielding a channel 
+dimension of 96 for the feature tensor X. The fragile watermark embeds 
+1 bit per selected coefficient via QIM (Δf = 8). Thus, the fragile payload 
+per spatial location is 64 bits, and the total fragile payload for a 512 ×
+512 image is 64 × 65 536 ≈ 4 Mbits. This is a practical subset; the 
+maximum theoretical capacity (using all LH, HL, HH coefficients across 
+three DWT levels) is 258 kbits, as reported in Section 3.2.4. The sem-
+i‑robust payload similarly uses a subset (32 coefficients per location) of 
+the mid‑frequency DCT band. The bottleneck dimension is dz = 256 for 
+a 512 × 512 input. The reconstruction error map is: 
+E(i, j)=‖ X(i, j)  ̂X(i, j)‖
+2
+2. (15) 
+The autoencoder is trained exclusively on authentic watermarked 
+images (no manipulated images are shown during this training). Under 
+the manifold hypothesis, authentic images lie on a low‑dimensional 
+A. Khaldi et al.                                                                                                                                                                                                                                  Intelligent Systems with Applications 31 (2026) 200684 
+6 
+
+===== PAGE 7 =====
+manifold that the autoencoder learns to reconstruct faithfully. Manip-
+ulated images fall off this manifold and produce elevated reconstruction 
+errors precisely at the manipulated locations. The anomaly score for 
+detection is: 
+s= 1
+|R|
+∑
+(i,j)∈R
+E(i, j), (16) 
+where R is the set of pixels where the attention map A(i, j)> 0.1 (diagnos-
+tically relevant regions).
+Masking by attention focuses detection on regions that matter for 
+diagnosis, reducing false positives from background artefacts. The 
+detection threshold η is set to the 99.9‑th percentile of the validation 
+scores: η= μval+ 3.09 σval, assuming approximate Gaussianity. Fig. 2
+summarises the extraction of both watermarks, the construction of the 
+feature tensor, the autoencoder reconstruction, and the final binary 
+decision.
+3.4. Attention‑based localisation
+After the detector flags a manipulation, the localisation module 
+produces a pixel‑precise tamper map. The raw reconstruction error E 
+tends to be noisy; we refine it with a lightweight U‑Net that also in-
+corporates the attention map and the original image. The refinement 
+network takes as input the concatenation: 
+Mraw = RefineNet(Concat(E, A, Downsample(I))) (17) 
+where RefineNet has three encoder levels and skip connections.
+The final localisation mask is obtained by a sigmoid activation with 
+adaptive normalisation (Yang & Liao, 2023): 
+M(i, j)= σ
+(Mraw(i, j)  μM
+σM
+)
+, (18) 
+with running statistics μM, σM estimated during training.
+The localisation loss (used only during training when ground‑truth 
+manipulation masks are available from synthetic attacks) is the binary 
+cross‑entropy between M and the ground‑truth mask MGT.
+3.5. Explainability layer
+The explainability layer quantifies clinical impact by measuring how 
+a manipulation would alter a pretrained medical classifier’s output. Let 
+Φ : RH×W×C →[0, 1]K be a frozen classifier trained on authentic images to 
+predict K diagnostic labels. For a manipulated image ̃I, we compute the 
+gradient of the predicted probability for each class k with respect to the 
+input (Beggari et al., 2025): 
+∇˜IΦk(̃I)= ∂Φk
+∂̃I
+∈ RH×W×C. (19) 
+The difference between gradients on the manipulated image and on 
+the original watermarked image highlights pixels where the manipula-
+tion has altered the classifier’s sensitivity: 
+Gk(i, j)=‖∇˜IΦk(̃I)  ∇Iw Φk(Iw)‖2. (20) 
+The explainability vector e∈ RK aggregates this spatial information 
+over the tamper region: 
+ek = 1
+|R k|
+∑
+(i,j)∈R k
+Gk(i, j), (21) 
+where R k ={(i,j) : M(i,j)> 0.5 and(i,j) is in top 20%of Gk}.
+This ensures that explanations focus on manipulated regions that 
+actually affect the classifier. To regularise the whole framework toward 
+interpretable explanations, we introduce an alignment loss that maxi-
+mises the correlation between the localisation mask M and the 
+Grad‑CAM attention of the classifier: 
+Lexplain =  1
+K
+∑K
+k=1
+Corr
+ 
+vec(M), vec
+ 
+A(k)
+Grad  CAM
+))
+, (22) 
+where A(k)
+Grad  CAM is the Grad‑CAM map for class k.
+This loss is applied only on manipulated images where a 
+ground‑truth manipulation exists; on authentic images it is set to zero to 
+avoid forcing spurious correlations. Fig. 3 provides an overview of the 
+localisation refinement network and the Grad‑CAM based clinical 
+explanation pipeline.
+3.6. Training procedure and composite loss
+The full training objective combines four losses: 
+L total = λf L fragile+ λdL detection+ λlL localisation+ λeL explain. (23) 
+L fragile is the mean squared error between embedded and extracted 
+fragile watermark bits plus an imperceptibility penalty: 
+1
+Nf
+∑
+i
+ 
+wf(i)  ̂wf(i)
+)2
++ βf‖ Iw  I‖2
+2 with βf = 0.01. L detection is the bi-
+nary cross‑entropy for the decision y∈{0, 1} (authentic/manipulated) 
+based on the anomaly score s. L localisation is the binary cross‑entropy 
+between the predicted mask M and the ground‑truth manipulation mask 
+(available for synthetic attacks during training). L explain is the alignment 
+loss defined above. We set λf = 1.0, λd = 10.0, λl = 5.0, λe = 0.1. 
+Fig. 2. Dual-watermark extraction and anomaly detection.
+A. Khaldi et al.                                                                                                                                                                                                                                  Intelligent Systems with Applications 31 (2026) 200684 
+7 
+
+===== PAGE 8 =====
+Training proceeds in three phases: (1) embedding pretraining (only 
+L fragile), (2) joint embedding‑detector training (adding L detection), and 
+(3) full fine‑tuning with all losses, using a warm‑up schedule for λl and 
+λe. During training, attacks (adversarial FGSM/PGD, GAN‑based lesion 
+insertion/diffusion removal, copy‑move, inpainting) are simulated on-
+line to expose the detector to a diverse manipulation distribution.
+4. Experiments and results
+This section evaluates the proposed Proactive Forensic Fragile 
+Watermarking (PFF-WM) framework on multiple medical imaging 
+datasets, comparing it against state-of-the-art methods from the litera-
+ture. We assess detection accuracy, tamper localisation precision, 
+robustness to benign transformations, explainability quality, and 
+computational efficiency. Ablation studies isolate the contribution of 
+each architectural component.
+4.1. Experimental setup
+4.1.1. Datasets
+We use three public medical image datasets spanning different mo-
+dalities and diagnostic tasks: CheXpert (5000 frontal chest X-rays, 224 ×
+224 resolution) for pneumonia and cardiomegaly detection (Irvin et al., 
+2019); LiTS (Liver Tumour Segmentation, 130 CT volumes, 512 × 512 
+slices) for liver lesion insertion/removal (Bilic et al., 2023); and ISIC 
+2019 (2500 dermoscopy images, 512 × 512) for melanoma detection 
+(Codella et al., 2019). For CheXpert (native resolution 224 × 224), all 
+images were upsampled to 512 × 512 using bicubic interpolation to 
+maintain a consistent embedding and detection pipeline across datasets. 
+Runtime measurements were performed exclusively at 512 × 512. 
+Metrics are therefore comparable across datasets. Each dataset is split 
+into training (60%), validation (20%), and test (20%). Only the training 
+set is used for watermark embedding model training (autoencoder and 
+attention modules). The validation set is used for threshold selection, 
+and the test set for final evaluation.
+4.1.2. Manipulation generation
+To evaluate detection and localisation, we generate four types of 
+manipulations on test images: adversarial attacks (FGSM with ϵ = 4 and 
+PGD with 3 steps, ϵ= 4, step=1) targeting a pretrained DenseNet-121 
+classifier; medical deepfakes (GAN-based lesion insertion using Style-
+GAN2 trained on lesion patches, and diffusion-based lesion removal 
+using DDPM inpainting); classic tampering (copy-move of random 32 ×
+32 patches and removal via inpainting with Gaussian blur); and benign 
+transformations (JPEG compression at quality 70, 85, 95, resizing to 
+90% of original size, contrast adjustment of ±10%, Gaussian blur with σ 
+= 0.5). For each test image, we apply exactly one manipulation type, 
+except for robustness tests where multiple benign transformations are 
+chained. Ground-truth manipulation masks are available for localisation 
+evaluation.
+4.1.3. Evaluation metrics
+Detection performance is measured using accuracy, precision, recall, 
+F1-score, and area under the ROC curve (AUC). Localisation accuracy is 
+quantified by the intersection over union (IoU) between the predicted 
+tamper mask and the ground truth, pixel accuracy, and pixel-wise F1- 
+score (Sayah et al., 2024). Robustness is assessed as the detection rate 
+(or false positive rate) under benign transformations, with the design 
+target of maintaining a false positive rate below 1% while the fragile 
+watermark degrades as expected. Explainability is evaluated via (i) the 
+Pearson correlation between the predicted tamper mask M and the 
+Grad‑CAM attention map of a frozen medical classifier (DenseNet‑121) 
+(Dwivedi et al., 2026), and (ii) human evaluation by two board‑certified 
+radiologists. For the human evaluation, 100 manipulated images were 
+randomly selected from the CheXpert test set (50 with GAN‑based lesion 
+insertion, 50 with diffusion‑based removal). Both radiologists were 
+blinded to the ground truth, to the manipulation type, and to each 
+other's ratings. They independently rated the clinical relevance of the 
+predicted tamper mask on a 5-point Likert scale (1 = "no clinical rele-
+vance", 5 = "critical clinical relevance") using a standardised rubric: 1 =
+region has no anatomical structure; 2 = region corresponds to 
+non-diagnostic anatomy; 3 = region corresponds to diagnostic anatomy 
+but alteration is minor; 4 = region corresponds to diagnostic anatomy 
+and alteration would affect assessment; 5 = region corresponds to a 
+critical finding and alteration would change diagnosis. Inter-rater 
+agreement was measured using Cohen's kappa, yielding kappa = 0.81 
+(substantial agreement). Reported scores are the average of the two 
+raters. Imperceptibility of the embedded watermark is measured using 
+peak signal-to-noise ratio (PSNR) and the structural similarity index 
+(SSIM).
+4.1.4. Implementation details
+PFF-WM is implemented in PyTorch 2.0. Training uses the Adam 
+optimiser with a learning rate of 1 × 10  4 for the embedding modules 
+(attention network, fragile and semi-robust watermark inserters) and 
+1 × 10  3 for the stacked autoencoder detector, as the autoencoder 
+converges faster on the reconstruction task. A batch size of 8 is used on a 
+single NVIDIA A100 GPU (40 GB memory). Training proceeds in three 
+phases to avoid instability from multi-objective optimisation: Phase 1 
+(embedding pretraining, 10 epochs) minimises only L fragile to learn a 
+clean watermark embedding; Phase 2 (joint embedding-detector 
+training, 30 epochs) adds L detection and trains both parts simulta-
+Fig. 3. Tamper localisation and clinical explanation.
+A. Khaldi et al.                                                                                                                                                                                                                                  Intelligent Systems with Applications 31 (2026) 200684 
+8 
+
+===== PAGE 9 =====
+neously; Phase 3 (full fine-tuning, 20 epochs) introduces L localisation and 
+L explain with a linear warm-up over the first 10 epochs. The frozen 
+medical classifier is DenseNet-121 pretrained on CheXpert (for chest X- 
+rays) and fine-tuned on the LiTS and ISIC datasets using standard 
+transfer learning (20 epochs, learning rate 1× 10  5). All images are 
+normalised to [0, 1] intensity range before embedding; the DWT and DCT 
+are implemented using PyTorch’s built-in routines with fixed Haar 
+wavelets and 8 × 8 block DCT, respectively. The same three-phase 
+training protocol (Phase 1: 10 epochs on embedding, Phase 2: 30 
+epochs joint embedding-detector, Phase 3: 20 epochs fine-tuning) is 
+applied independently to each dataset without dataset-specific tuning of 
+hyperparameters lambda_f, lambda_d, lambda_l, lambda_e. The learning 
+rates (1e-4 for embedding modules, 1e-3 for the autoencoder) and batch 
+size (8) are kept identical across CheXpert, LiTS, and ISIC 2019. The 
+validation set (20% of each dataset) is used solely for threshold selection 
+and early stopping; the test set (20%) is held out until final evaluation.
+4.2. Detection performance
+Table 2 reports the detection performance on the CheXpert test set 
+for all manipulation types. PFF-WM achieves the highest overall accu-
+racy (97.6%) and AUC (0.989), significantly outperforming DeepMark 
+(Abrar & Sheikh, 2026) (94.1%) and ASFW (Yuan et al., 2026) (95.2%).
+The improvement is most pronounced for medical deepfakes (lesion 
+insertion/removal), where PFF-WM reaches 96.8% accuracy versus 
+88.3% for DeepMark (Abrar & Sheikh, 2026). This confirms hypothesis 
+H1: attention-guided dual watermarking is particularly effective against 
+semantic manipulations that alter diagnostic content. Fig. 4 presents the 
+ROC curves, where PFF-WM maintains a true positive rate above 0.95 at 
+a false positive rate of 0.01.
+When breaking down the performance of PFF-WM by manipulation 
+type, the method achieves 98.2% accuracy on adversarial attacks 
+(FGSM/PGD), 96.5% on GAN-based lesion insertion, 97.1% on 
+diffusion-based lesion removal, 98.9% on copy-move tampering, and 
+97.8% on removal by inpainting. On benign transformations (where the 
+image is expected to be classified as authentic), the true negative rate is 
+99.3%. The slightly lower performance on GAN-based lesion insertion is 
+due to the high visual quality of generated lesions that occasionally 
+mimic natural textures; nevertheless, the fragile watermark still de-
+grades sufficiently for detection.
+Table 3 compares PFF-WM performance on localised versus diffuse 
+pathologies. For diffuse interstitial lung disease, detection accuracy 
+drops by 6.9 percentage points and AUC falls from 0.992 to 0.912 
+compared to localised pneumonia or nodules. The underlying cause is 
+attention sparsity: the multi-scale attention module (Section 3.1) pro-
+duces a saliency map that is widely dispersed when pathology is 
+distributed throughout the lung parenchyma rather than concentrated in 
+a focal region. With attention sparsity exceeding 40%, the embedding 
+strength beta(i,j) = beta_0 * (1 + lambda_attn * A(i,j)) becomes nearly 
+uniform across the image. Consequently, the semi-robust watermark 
+loses its diagnostic prioritisation, making it less discriminative for se-
+mantic manipulations in low-saliency areas. The fragile watermark re-
+mains intact and continues to detect pixel-level changes, but the dual- 
+watermark decision rule becomes less selective. This represents a 
+known limitation of the current attention mechanism.
+4.3. Tamper localisation accuracy
+Table 4 compares localisation performance on the LiTS dataset, 
+where ground-truth manipulation masks are available for lesion in-
+sertions (synthetic tumours). PFF-WM achieves an IoU of 0.832, out-
+performing DeepMark (Abrar & Sheikh, 2026) (0.754) and ASFW (Yuan 
+et al., 2026) (0.761). The attention-based refinement U-Net (Section 3.4) 
+improves IoU by 6.2 percentage points over raw thresholding of the 
+reconstruction error.
+Table 5 shows the effect of varying payload lengths on detection 
+performance. Increasing the fragile payload from 16 kbits to 64 kbits 
+improves accuracy from 96.8% to 97.6% and AUC from 0.984 to 0.989, 
+but further increases yield diminishing returns (accuracy plateaus 
+around 97.5%). Larger payloads also increase inference time due to the Table 2 
+Detection performance (CheXpert test set, average over 5 runs).
+Method Accuracy 
+(%)
+Precision 
+(%)
+Recall 
+(%)
+F1 
+(%)
+AUC
+DeepMark (Abrar & 
+Sheikh, 2026)
+94.1 ± 1.2 93.2 ± 1.4 92.8 ±
+1.5
+93.0 0.971
+ASFW (Yuan et al., 
+2026)
+95.2 ± 0.9 94.5 ± 1.1 94.0 ±
+1.2
+94.2 0.978
+ConMark (Wu et al., 
+2026)
+93.5 ± 1.5 92.1 ± 1.6 92.5 ±
+1.7
+92.3 0.965
+SECURENet (Hamami 
+et al., 2026)
+90.8 ± 2.1 89.5 ± 2.3 88.9 ±
+2.4
+89.2 0.951
+TFPDD (Lai et al., 
+2026)
+91.2 ± 1.8 90.3 ± 2.0 89.8 ±
+2.1
+90.0 0.958
+PFF-WM (ours) 97.6 ± 0.6 97.1 ± 0.8 97.0 ±
+0.7
+97.0 0.989
+Fig. 4. ROC curves.
+Table 3 
+Detection performance on localised vs. diffuse pathologies (CheXpert test set).
+Pathology type Number of 
+test images
+Detection 
+accuracy 
+(%)
+AUC Explanation 
+(attention 
+sparsity)
+Localised 
+(pneumonia, 
+nodule, 
+cardiomegaly)
+450 98.1 ± 0.7 0.992 
+±
+0.005
+Low sparsity: 
+18.2% ± 3.1%
+Diffuse (interstitial 
+lung disease, 
+pulmonary 
+fibrosis)
+180 91.2 ± 1.8 0.912 
+±
+0.021
+High sparsity: 
+47.6% ± 5.4%
+Table 4 
+Tamper localisation performance (LiTS test set, 500 manipulated images).
+Method IoU (%) Pixel Accuracy 
+(%)
+Pixel F1 
+(%)
+DeepMark (Abrar & Sheikh, 2026) 
+(thresholded diff)
+75.4 ±
+2.1
+96.2 ± 0.8 85.1
+ASFW (Yuan et al., 2026) (difference 
+map)
+76.1 ±
+2.3
+96.5 ± 0.9 85.6
+SECURENet (Hamami et al., 2026) 
+(error map)
+71.2 ±
+2.8
+95.1 ± 1.1 82.3
+PFF-WM (raw AE error) 77.0 ±
+2.0
+96.8 ± 0.7 86.0
+PFF-WM (RefineNet, ours) 83.2 ±
+1.5
+98.1 ± 0.5 90.4
+A. Khaldi et al.                                                                                                                                                                                                                                  Intelligent Systems with Applications 31 (2026) 200684 
+9 
+
+===== PAGE 10 =====
+higher dimensionality of the feature tensor X in the stacked autoencoder 
+(from 41 ms at 16+8 kbits to 54 ms at 256+128 kbits). The default 
+conFig. uration (N_f = 64 kbits, N_sr = 32 kbits) balances performance 
+and efficiency.
+Note that the maximum theoretical capacities (258 kbits for fragile, 
+90 kbits for semi-robust) are not fully utilised because the stacked 
+autoencoder's memory scales with (N_f + N_sr) per spatial location. For 
+applications requiring higher embedding capacity (e.g., storing patient 
+metadata), the autoencoder could be replaced by a more efficient 
+transformer-based detector. To provide a more detailed breakdown, 
+Table 6 reports localisation IoU per manipulation type. PFF-WM 
+consistently outperforms DeepMark across all categories, with the 
+largest gain (+9.3 %) on GAN-based tumour insertion, where accurate 
+delineation is most challenging. Unlike DeepMark, which often produces 
+scattered detections, and ASFW, which tends to over-estimate the 
+manipulated region, PFF-WM delivers precise and complete masks with 
+few false positives.
+Table 7 evaluates PFF-WM against two medical deepfake generators 
+that were completely absent from the training set: Med-DDIM, a 
+diffusion-based model for lesion insertion, and StarGAN-v2 adapted for 
+pathology removal. Without any retraining or fine-tuning, PFF-WM 
+achieves detection accuracy of 93.8% and 92.9% respectively, with AUC 
+values of 0.943 and 0.931. The generalisation gap relative to seen at-
+tacks (approximately 4–5 percentage points) can be attributed to dif-
+ferences in the statistical distribution of perturbations introduced by 
+these unseen generators. Notably, the dual-watermark strategy does not 
+require retraining for new watermarks; the same secret key and 
+embedding scheme apply universally.
+4.4. Robustness to benign transformations
+A key requirement is that the semi-robust watermark survives 
+routine medical image processing, while the fragile watermark degrades 
+(but detection should not falsely trigger on authentic images). Table 8
+reports the false positive rate on authentic watermarked images sub-
+jected to benign transformations. PFF‑WM maintains a false positive 
+rate below 0.5% under each tested non‑geometric individual benign 
+transformation (JPEG, resizing, contrast, blur) and below 0.7% under 
+chained non‑geometric benign transformations. The following results 
+exclude geometric transformations (rotation, translation), which are 
+analysed separately in Table 9.
+The low false positive rate is due to the dual-watermark decision 
+rule: only when both δf and δsr exceed thresholds does the system clas-
+sify as manipulated. Benign transformations raise δf but leave δsr low, so 
+the image is correctly deemed authentic. Table 9 evaluates PFF-WM 
+under geometric transformations that were not included in the orig-
+inal robustness analysis. Small rotations (5 degrees) and translations (5 
+pixels) are detected with high accuracy (above 94%), but the false 
+positive rate increases with transformation magnitude, reaching 18.7% 
+for 15-degree rotation. This degradation occurs because both the fragile 
+watermark (embedded in DWT detail coefficients) and the semi-robust 
+watermark (embedded in DCT mid-frequencies) are sensitive to spatial 
+misalignment. Unlike JPEG compression or contrast adjustment, which 
+preserve pixel locations, geometric transformations disrupt the 
+synchronisation between embedding and extraction coordinates. The 
+restoration step (resizing back to original dimensions for scaling) 
+partially mitigates the effect, but rotation and translation remain 
+challenging.
+Table 10 confirms that the orthogonality assumption underlying Eq. 
+(12) holds empirically across all three datasets. The mean absolute 
+correlation between host mid-frequency DCT coefficients and the 
+spreading sequence p is below 0.01, and the maximum correlation 
+observed over 5000 test images is 0.021, which is an order of magnitude 
+smaller than the embedded watermark energy (beta_0 = 0.1). This 
+validates that the despreading operation reliably recovers the semi- 
+robust watermark without interference from the host signal.
+4.5. Explainability evaluation
+Hypothesis H3 states that the explainability layer produces clinically 
+interpretable outputs. We evaluate this in two ways: (i) the Pearson 
+correlation between the predicted tamper mask M and the Grad-CAM 
+attention of the frozen DenseNet-121 classifier, and (ii) human evalua-
+tion by two board-certified radiologists. Table 11 shows that the full 
+PFF-WM with the alignment loss achieves a correlation of 0.78 and a 
+radiologist score of 4.3 out of 5, both substantially higher than using 
+only the raw difference map from DeepMark (Abrar & Sheikh, 2026) or 
+the adversarial map from ASFW (Yuan et al., 2026). The 
+Grad-CAM-based explanation described in Section 3 relies on a frozen 
+classifier, DenseNet-121, fine-tuned on the target dataset. For rare dis-
+eases or unannotated datasets where such a classifier is not available, we 
+investigated two alternative conFig. urations. First, we replaced the 
+fine-tuned classifier with a DenseNet-121 pretrained only on ImageNet 
+(no medical fine-tuning). The Pearson correlation between the predicted 
+tamper mask and the resulting Grad-CAM maps dropped from 0.78 to 
+0.43, and the radiologist score fell from 4.3 to 2.2 (out of 5). Second, we 
+replaced the classifier entirely with a generic feature extractor 
+(ResNet-50 trained on ImageNet) and computed sensitivity as the 
+Euclidean distance between feature maps of the original and manipu-
+lated images. This unsupervised alternative achieved a Pearson corre-
+lation of 0.38 and a radiologist score of 2.0. These results indicate that 
+task-specific medical knowledge is essential for clinically meaningful 
+explanations. Consequently, PFF-WM as currently formulated is not 
+recommended for pathologies without a reliable pre-trained classifier. 
+The alignment loss (L explain) alone improves the correlation from 0.52 
+to 0.78, confirming its importance for clinical interpretability.
+4.6. Ablation studies
+We conduct ablation experiments on CheXpert to quantify the 
+contribution of each component: removing attention-guided embedding 
+(uniform β), removing the dual-watermark (using only the fragile 
+watermark), removing the stacked autoencoder (direct thresholding on 
+δf and δsr), removing the alignment loss, and replacing the multi-scale 
+attention with a single 5 × 5 kernel. Table 12 summarises the results.
+The dual-watermark strategy and the stacked autoencoder are the 
+most critical for detection performance, while attention guidance im-
+proves localisation IoU by 3.1 points, confirming that concentrating 
+embedding in diagnostically relevant regions aids precise tamper 
+mapping.
+4.7. Computational efficiency
+Table 13 compares inference time, number of parameters, and 
+memory usage across methods. PFF-WM operates at 44 ms per 512 ×
+512 image, which is faster than DeepMark (Abrar & Sheikh, 2026) (61 
+ms) and much faster than SECURENet (Hamami et al., 2026) (78 ms on a 
+resized 256 × 256 input). The frozen classifier for explainability adds 
+18 ms, but this can be disabled if not needed. The no-explain variant (26 
+Table 5 
+Impact of payload length on detection accuracy (CheXpert test set, average over 
+5 runs).
+Fragile payload 
+N_f (kbits)
+Semi-robust 
+payload N_sr 
+(kbits)
+Detection 
+accuracy (%)
+AUC Inference 
+time (ms)
+16 8 96.8 ± 0.7 0.984 41 ± 2
+32 16 97.2 ± 0.6 0.987 42 ± 2
+64 32 97.6 ± 0.6 0.989 44 ± 2
+128 64 97.5 ± 0.7 0.988 48 ± 3
+256 128 97.4 ± 0.8 0.988 54 ± 3
+A. Khaldi et al.                                                                                                                                                                                                                                  Intelligent Systems with Applications 31 (2026) 200684 
+10 
+
+===== PAGE 11 =====
+ms) is suitable for real-time telemedicine applications.
+4.8. Discussion and future work
+The experimental results provide strong support for the three hy-
+potheses that guided this work. Regarding H1, the measured fragility 
+ratio, defined as the increase in semi‑robust watermark error under se-
+mantic manipulations relative to benign transformations, reaches 
+approximately 6.2. This large separation confirms that attention‑guided 
+embedding successfully concentrates watermark energy in diagnosti-
+cally critical regions, making the system selectively sensitive to clini-
+cally meaningful alterations. For H2, the stacked autoencoder detector 
+achieves a detection AUC of 0.989, substantially higher than the 0.963 
+obtained by direct thresholding of the raw watermark errors, thereby 
+validating that reconstruction‑based anomaly detection on the 
+dual‑watermark feature tensor provides a more powerful and invariant 
+statistic for manipulation detection. H3 is supported by the Pearson 
+correlation of 0.78 between the predicted tamper mask and the 
+Grad‑CAM attention of a frozen medical classifier, as well as by the 
+average radiologist score of 4.3 out of 5, indicating that the alignment 
+loss effectively forces the localisation module to highlight regions that 
+are clinically relevant. When compared to existing proactive forensic 
+methods, PFF‑WM shows clear advantages. DeepMark and ASFW, both 
+designed primarily for natural images, lack any mechanism to incor-
+porate diagnostic saliency, which explains their lower performance on 
+medical deepfakes. SECURENet, while robust, operates on heavily 
+downsampled images (64 × 64) and thus loses the fine spatial details 
+essential for lesion detection in high‑resolution medical data. TFPDD, 
+although fast and training‑free, relies on detectable facial features and 
+therefore cannot be applied to most medical imaging modalities. The 
+proposed framework overcomes these limitations by combining 
+domain‑specific attention with a dual‑watermark strategy and an 
+explainable detection pipeline. To resolve any remaining ambiguity, the 
+theoretical false positive rate of 10⁻⁴ (0.01%) is a design goal used for 
+threshold selection on a clean validation set of authentic watermarked 
+images with no post-embedding processing. The empirical rate of 0.7% 
+reported in Table 8 is a test-set measurement under chained benign 
+transformations (JPEG + resizing + contrast). These two Figures are not 
+contradictory because the latter includes transformation-induced 
+watermark degradation that the former explicitly excludes. In Section 
+3.2.3, we describe two conceptually different criteria. The 10⁻⁴ theo-
+retical false positive rate assumes (i) no benign transformations, (ii) 
+independence of δf and δsr, and (iii) an ideal infinite sample. It is used 
+only as a design goal for choosing the quantisation step Δf. The actual 
+thresholds τf and τsr are selected empirically via grid search on the 
+validation set to balance a detection rate >99% on manipulated images 
+against a low false positive rate on authentic images. This is standard 
+practice in fragile watermarking and avoids over‑optimistic theoretical 
+claims.
+4.8.1. Limitation of the explainability module for rare diseases
+The Grad-CAM-based explanation requires a pre-trained medical 
+classifier fine-tuned on the target pathology. For rare diseases or un-
+annotated datasets where such a classifier is unavailable, the explain-
+ability module cannot operate in its current form. Replacing the fine- 
+tuned DenseNet-121 with an ImageNet-pretrained version reduces the 
+Pearson correlation from 0.78 to 0.43, while a generic ResNet-50 feature 
+extractor further drops the correlation to 0.38. These results indicate 
+that domain-specific medical knowledge is essential for clinically 
+meaningful explanations. Consequently, we do not recommend using 
+the explainability module of PFF-WM for pathologies without a reliable 
+pre-trained classifier. This is not a minor limitation but a fundamental 
+constraint of the current design: the Grad-CAM-based explanation 
+cannot be replaced by a generic feature extractor without losing clinical 
+meaning (Pearson correlation drops from 0.78 to 0.38). However, the 
+detection and localisation modules remain fully operational. For future 
+work, foundation models such as Med-SAM or BioViL-T could provide a 
+promising alternative: these models generate dense feature embeddings 
+without task-specific training, and a perturbation-based sensitivity 
+analysis could estimate clinical impact by measuring feature distortion 
+after masking the tampered region. The comparative evaluation in 
+Section 4.2 includes methods (DeepMark, ASFW, ConMark, SECURENet, 
+TFPDD) that were not all designed for medical imaging or for the same 
+operating conditions. SECURENet operates on heavily downsampled 64 
+× 64 images and therefore loses fine spatial details critical for lesion 
+detection; its lower performance on 512 × 512 medical images is ex-
+pected. TFPDD relies on detectable facial features and cannot be applied 
+to chest X-rays or CT slices at all; we included it only to demonstrate that 
+training-free methods are not a viable alternative for medical modalities 
+without facial structure. DeepMark and ASFW, while designed for im-
+ages, do not incorporate diagnostic saliency or explainability. The per-
+formance gap reported should therefore be interpreted as evidence that 
+domain-specific design choices (attention guidance, dual-watermark, 
+explainability) confer advantages for medical deepfake detection, not 
+as a claim that PFF-WM universally outperforms these methods on their 
+original tasks. A fairer comparison would require re-engineering these 
+baselines for medical imaging, which is beyond the scope of this work.
+4.8.2. Performance on diffuse pathologies
+Diffusely distributed pathologies such as interstitial lung disease or 
+pulmonary fibrosis reduce the effectiveness of the attention guidance 
+mechanism. When the diagnostic finding spans large areas of the image, 
+the attention map A(i,j) becomes widely dispersed (attention sparsity >
+40%), causing the semi-robust watermark's embedding strength to 
+approach a constant value. This reduces the fragility ratio rho from 
+approximately 6.2 for localised lesions to approximately 2.8 for diffuse 
+pathologies. PFF-WM still detects manipulations in diffuse pathologies, 
+but with lower confidence (AUC 0.912 vs 0.992). This degradation is 
+inherent to any attention-based mechanism that assumes pathology has 
+a focal spatial signature. Future work could address this limitation by 
+replacing the single attention map with a multi-branch architecture that 
+includes a "global context" branch explicitly designed for diffuse pat-
+terns, or by using an adaptive temperature parameter tau in the softmax 
+normalisation (Eq. (4)) that is learned per image based on the entropy of 
+the raw attention map.
+4.8.3. Generalisation to unseen deepfake attacks
+PFF-WM generalises reasonably well to unseen deepfake generators, 
+maintaining an AUC above 0.93 without retraining. However, a 
+completely novel attack distribution that differs substantially from the 
+training set in terms of perturbation statistics (e.g., amplitude spectrum, 
+spatial localisation, or frequency content) could reduce detection ac-
+curacy further. The framework does not require retraining for each new 
+watermark payload, thanks to the key-dependent pseudo-random gen-
+eration of both watermarks. Nevertheless, to handle evolving deepfake 
+threats without manual intervention, future work will incorporate an 
+adaptive attack simulation module that dynamically generates new 
+manipulation strategies based on the current detector's failure modes. 
+A. Khaldi et al.                                                                                                                                                                                                                                  Intelligent Systems with Applications 31 (2026) 200684 
+11 
+
+===== PAGE 12 =====
+This could be implemented as a generative adversarial training loop 
+where a generator learns to produce manipulations that maximise the 
+autoencoder's reconstruction error on authentic images, while the de-
+tector adapts online. The manipulations evaluated in this work (FGSM/ 
+PGD, StyleGAN2 lesion insertion, DDPM removal, copy-move, inpaint-
+ing) represent a broad range of tampering strategies, but they are syn-
+thetically generated and may not fully replicate real-world medical 
+deepfakes produced by adversaries with access to clinical data. Our 
+threat model assumes that the attacker can modify the watermarked 
+image after transmission but does not have access to the secret key k, the 
+attention map, or the autoencoder's parameters. Under this model, the 
+attacker's goal is to alter the diagnostic content (e.g., remove a tumour) 
+while preserving perceptual quality. The unseen attack evaluation in 
+Table 5 (Med-DDIM, StarGAN-v2) provides a stronger test of general-
+isation than evaluating only seen attacks. However, we acknowledge 
+that a definitive assessment of clinical realism would require a pro-
+spective study with real tampering attempts by radiologists or adver-
+sarial AI systems, which we leave to future work.
+4.8.4. Sensitivity to geometric transformations
+Geometric transformations such as rotation and translation pose a 
+challenge for PFF-WM. The method is sensitive beyond small magni-
+tudes, with a false positive rate of 18.7% at 15-degree rotation. This is 
+due to spatial synchronisation loss in DWT and DCT domains. Future 
+work could employ Fourier-Mellin transform or attention-based dy-
+namic realignment to achieve geometric invariance. We acknowledge 
+that this sensitivity is not a minor limitation but a genuine security 
+vulnerability. Attackers could deliberately rotate or translate images to 
+evade detection. Therefore, PFF‑WM should not be relied upon in sce-
+narios where geometric attacks are likely unless explicitly paired with a 
+synchronisation pre‑processing step. Because routine clinical workflows 
+may involve lossless rotation, cropping, or registration before interpre-
+tation, PFF‑WM in its current form must be preceded by a synchroni-
+sation module that re‑aligns the received image to the original 
+embedding coordinates. Without such a module, the system is vulner-
+able to even mild geometric attacks (e.g., 10◦ rotation yields 11.3% 
+FPR). We recommend using Fourier‑Mellin transform or feature‑based 
+registration as a pre‑processing step when geometric transformations 
+are expected. This limitation is not a minor caveat but a genuine security 
+constraint.The manuscript reports two different false positive Figures: a 
+theoretical target of 10⁻⁴ (0.01 percent) used for threshold selection in 
+Section 3.2.3, and empirical test set rates of 0.1 percent to 0.7 percent 
+under benign transformations. This discrepancy is not an inconsistency 
+but a consequence of applying benign transformations. The theoretical 
+target refers to the false positive rate on authentic watermarked images 
+with no post-embedding processing. When a benign transformation (e. 
+g., JPEG quality 70) is applied, the fragile watermark error δf increases, 
+moving some authentic images closer to the decision boundary. The 
+dual-watermark rule requires both δf > τf AND δsr > τsr to flag manip-
+ulation. Under benign transformations, δf may exceed τf, but δsr remains 
+low (because the semi-robust watermark survives), so the image is 
+correctly classified as authentic. The observed false positives (0.1 
+percent to 0.7 percent) occur only when both errors exceed their 
+thresholds simultaneously, which is rare. Thus, the two Figures are 
+complementary rather than contradictory. 4.8.5 Chaotic encryption for 
+watermark key security
+Our current pseudo-random watermark generator can be enhanced 
+using higher-dimensional chaotic systems (Section 3.2). Three- 
+dimensional Logistic maps, non-degenerate hyperchaotic systems, and 
+sine-based reconstruction approaches offer larger key spaces, greater 
+sensitivity to initial conditions, and improved randomness of chaotic 
+sequences under finite-precision implementation. Integrating these 
+chaotic systems would replace only the pseudo-random generator while 
+leaving the embedding and detection equations unchanged. We consider 
+this an orthogonal enhancement that can be incorporated without 
+retraining the autoencoder or attention modules. Future work will 
+compare these chaotic alternatives against the baseline in terms of key 
+space size, correlation of generated watermarks, and resistance to brute- 
+force attacks.
+4.8.5. Robust feature learning for attention guidance
+The feature learning approach proposed in "From simple to complex 
+scenes: Learning robust feature representations for accurate human 
+parsing" offers a promising direction for improving our multi-scale 
+attention module. That method learns feature representations 
+invariant to scene complexity, which could be adapted to medical im-
+aging where image quality and pathology appearance vary significantly. 
+A potential integration would replace fixed-kernel paths with learnable 
+kernels whose receptive fields adapt to local feature complexity, guided 
+by a robust feature loss. This could increase attention map precision for 
+diffuse pathologies and improve watermark concentration without 
+retraining the entire framework.
+4.8.6. Embedding capacity and payload length trade-offs
+PFF-WM supports a maximum fragile payload of 258 kbits and a 
+semi-robust payload of 90 kbits for a 512 × 512 image (Section 3.2). 
+However, increasing payload length beyond 64+32 kbits provides 
+negligible accuracy gains (<0.2%) while increasing inference time by up 
+to 23% (from 44 ms to 54 ms), as validated in Section 4.3. This trade-off 
+arises because the stacked autoencoder processes a feature tensor X of 
+size H x W x (N_f + N_sr), and the reconstruction error computation 
+scales linearly with the payload dimension. For practical deployment, 
+we recommend the default conFig. uration (N_f = 64 kbits, N_sr = 32 
+kbits). If higher capacity is required, a lightweight transformer-based 
+detector could replace the autoencoder to reduce the dimensionality 
+bottleneck.
+4.8.7. Uncertainty analysis and failure modes
+The results reported in Tables 2–8 include standard deviations over 5 
+runs (typically 0.6–1.8% for accuracy, 0.005–0.02 for AUC). Across the 
+three datasets, detection accuracy varies by <2 percentage points 
+(CheXpert: 97.6%, LiTS: 96.8%, ISIC 2019: 97.1%), indicating that PFF- 
+WM generalises across modalities. However, two failure modes are 
+notable. First, when the attention temperature τ in Eq. (4) is set too low 
+(τ < 0.3) or too high (τ > 1.5), the attention map becomes either too 
+sparse (concentrating on < 5% of pixels) or too diffuse (sparsity > 60%), 
+both of which degrade localisation IoU by 5–10 points. The chosen 
+Table 6 
+Per-manipulation localisation IoU (%) on LiTS test set.
+Manipulation type DeepMark (Abrar & 
+Sheikh, 2026)
+PFF-WM 
+(ours)
+Gain
+GAN-based lesion insertion 71.2 80.5 +9.3
+Diffusion-based lesion 
+removal
+73.8 82.1 +8.3
+Copy-move (bone patch) 78.4 85.7 +7.3
+Inpainting removal 
+(Gaussian blur)
+74.1 83.0 +8.9
+Average over all types 74.4 82.8 +8.4
+A. Khaldi et al.                                                                                                                                                                                                                                  Intelligent Systems with Applications 31 (2026) 200684 
+12 
+
+===== PAGE 13 =====
+values (τ = 0.5 for training, τ = 1.0 for inference) were optimised on the 
+validation set. Second, under domain shift from CheXpert (frontal X- 
+rays) to NIH ChestX-ray14 (different patient population and acquisition 
+protocols), detection AUC drops from 0.989 to 0.951, and localisation 
+IoU from 0.832 to 0.764. This degradation indicates that the attention 
+map's diagnostic priors are partly dataset-specific. Retraining the 
+attention module on 20% of NIH data restores AUC to 0.973, suggesting 
+that domain adaptation is feasible but not automatic.
+4.8.8. Future work directions
+Future work will address the remaining shortcomings by moving 
+towards self‑supervised explainability that no longer requires a dedi-
+cated pretrained classifier, for instance by leveraging foundation models 
+such as Med‑SAM to generate region‑of‑interest masks on the fly. This 
+shift will naturally facilitate the extension of PFF‑WM to video streams 
+like endoscopic or ultrasound sequences, where temporal consistency of 
+the watermarks can be exploited for additional robustness. At the same 
+time, the training pipeline will be enriched with an adaptive attack 
+simulator based on generative adversarial learning, enabling the de-
+tector to continuously adapt to novel manipulation strategies without 
+manual intervention. Finally, the system will be deployed in a 
+real‑world hospital pilot study to quantitatively assess its impact on 
+radiologists' workflow efficiency and diagnostic confidence, which re-
+mains the ultimate validation of any clinically oriented forensic tool.
+5. Conclusion
+This work introduced Proactive Forensic Fragile Watermarking (PFF- 
+WM) for medical image authentication. The framework combines a 
+fragile DWT watermark (pixel-level sensitivity) with an attention- 
+guided semi-robust DCT watermark that prioritises diagnostically rele-
+vant regions. Detection uses a stacked autoencoder trained on authentic 
+images, and a Grad-CAM-based explainability layer estimates clinical 
+impact. On CheXpert, LiTS, and ISIC 2019, PFF-WM achieves 97.6% 
+detection accuracy, 83.2% localisation IoU, and a false positive rate 
+below 0.5% under benign transformations, with 44 ms inference per 512 
+× 512 image. The main limitations are dependency on a pretrained 
+classifier for explainability (unavailable for rare pathologies), reduced 
+effectiveness for diffuse pathologies, and sensitivity to unseen attack 
+types and geometric transformations. Future work will eliminate the 
+dependency on a pretrained classifier by adopting self‑supervised 
+explainability grounded in foundation models such as Med‑SAM, which 
+will naturally enable extension to video streams (endoscopic or 
+ultrasound sequences). Concurrently, the training pipeline will incor-
+porate adaptive attack simulation through generative adversarial 
+learning to improve robustness against unseen manipulation strategies. 
+Finally, the system will be evaluated in hospital environments to mea-
+sure its effect on radiologists' workflow efficiency and diagnostic 
+confidence.
+Table 7 
+Generalisation to unseen medical deepfake generators (CheXpert test set, no 
+retraining).
+Attack type Seen during 
+training?
+Detection accuracy 
+(%)
+AUC
+FGSM (epsilon = 4) Yes 98.2 ± 0.8 0.992
+PGD (3 steps, epsilon = 4) Yes 98.1 ± 0.9 0.991
+StyleGAN2 lesion insertion Yes 96.5 ± 1.2 0.983
+DDPM inpainting removal Yes 97.1 ± 1.0 0.986
+Med-DDIM lesion insertion No 93.8 ± 1.4 0.943
+StarGAN-v2 pathology 
+removal
+No 92.9 ± 1.6 0.931
+Table 8 
+False positive rate (%) on authentic images after benign transformations (CheXpert).
+Transformation DeepMark (Abrar & Sheikh, 2026) ASFW (Yuan et al., 2026) ConMark (Wu et al., 2026) PFF-WM (ours)
+JPEG Q85 1.2 0.3 1.8 0.2
+JPEG Q70 2.1 0.5 2.9 0.4
+Resize 90% → restore 0.8 0.2 1.1 0.1
+Contrast +10% 0.5 0.1 0.9 0.1
+Gaussian blur (σ = 0.5) 1.5 0.4 2.0 0.3
+Chain (JPEG+resize+contrast) 3.2 0.9 4.1 0.7
+Table 9 
+Detection sensitivity under geometric transformations (CheXpert test set, 
+authentic watermarked images).
+Geometric 
+transformation
+Parameter Detection accuracy 
+(%)
+False positive rate 
+(%)
+Rotation 5 degrees 94.2 ± 1.1 5.8 ± 1.1
+Rotation 10 degrees 88.7 ± 1.8 11.3 ± 1.8
+Rotation 15 degrees 81.3 ± 2.2 18.7 ± 2.2
+Translation (x, y) 5 pixels 96.1 ± 0.9 3.9 ± 0.9
+Translation (x, y) 10 pixels 92.4 ± 1.4 7.6 ± 1.4
+Scaling (bicubic) 95% → 
+restore
+97.2 ± 0.7 2.8 ± 0.7
+Scaling (bicubic) 90% → 
+restore
+95.8 ± 1.0 4.2 ± 1.0
+Table 10 
+Empirical verification of the orthogonality assumption.
+Dataset Mean absolute 
+correlation
+Standard 
+deviation
+Maximum 
+correlation
+CheXpert 0.0082 0.0071 0.018
+LiTS 0.0091 0.0082 0.021
+ISIC 2019 0.0074 0.0065 0.017
+Table 11 
+Explainability metrics (CheXpert test set, 100 manipulated images with lesion 
+insertion).
+Method Pearson 
+correlation
+Radiologist score 
+(1-5)
+Random baseline 0.02 1.2
+DeepMark (Abrar & Sheikh, 2026) (raw 
+diff map)
+0.34 2.5
+ASFW (Yuan et al., 2026) (adversarial 
+map)
+0.41 2.8
+PFF-WM (no alignment loss) 0.52 3.4
+PFF-WM (full, ours) 0.78 4.3
+Table 12 
+Ablation results (detection AUC and localisation IoU).
+ConFig. uration AUC (detection) IoU (localisation)
+Full PFF-WM 0.989 0.832
+Attention guidance (uniform β) 0.971 0.801
+Dual watermark (only fragile) 0.952 0.765
+Stacked autoencoder 0.963 0.744
+Alignment loss (L _explain = 0) 0.985 0.828
+Multi-scale attention (single 5 × 5) 0.981 0.815
+A. Khaldi et al.                                                                                                                                                                                                                                  Intelligent Systems with Applications 31 (2026) 200684 
+13 
+
+===== PAGE 14 =====
+Compliance with ethical standards
+Funding
+This work was partially supported by " La Direction G´en´erale de la 
+Recherche Scientifique et du D´eveloppement Technologique (DGRSDT)" 
+of Algeria.
+Ethical approval and informed consent
+The retrospective study used publicly available anonymised datasets 
+(CheXpert, LiTS, ISIC 2019); therefore, no patient consent was required. 
+The radiologist evaluation involved two board‑certified radiologists 
+who provided anonymised ratings without access to patient data. This 
+evaluation was exempt from full ethics review by our institutional policy 
+for quality‑assurance studies involving medical professionals.
+CRediT authorship contribution statement
+Amine Khaldi: Conceptualization, Methodology, Formal analysis, 
+Investigation, Software, Writing – original draft, Writing – review & 
+editing. Narima Zermi: Methodology, Software, Writing – original 
+draft. Med Sayah Moad: Formal analysis, Resources, Software, Writing 
+– original draft. Akram Boukhamla: Formal analysis, Supervision, 
+Software, Resources. Med Redouane Kafi: Supervision, Resources, 
+Validation, Writing – original draft. Aditya Kumar Sahu: Software, 
+Validation, Writing – original draft.
+Declaration of competing interest
+The authors declare that they have no known competing financial 
+interests or personal relationships that could have appeared to influence 
+the work reported in this paper.
+Data availability
+Data will be made available on request.
+References
+Abo El-Soud, M. W., Meselhy Eltoukhy, M., Abdel-Aziz, M. M., Alourani, A.,  et, 
+Hosny, K. M. (2025). « Robust blind watermarking to secure color medical images 
+using multidimensional-FFT fusing LFSR-encryption and LZW compression ». IEEE 
+access : Practical Innovations, Open Solutions, 13, Article 46054‑46069. https://doi. 
+org/10.1109/ACCESS.2025.3547614
+Abrar, I.,  et, Sheikh, J. A. (2026). « DeepMark: A proactive deep learning-based 
+watermarking model for tamper detection and localization across images and videos 
+». Information Processing & Management, 63(4), Article 104600. https://doi.org/ 
+10.1016/j.ipm.2025.104600. juin.
+Anand, A., & Singh, A. K. (2020). An improved DWT-SVD domain watermarking for 
+medical information security. Computer Communications, 152, 72–80. https://doi. 
+org/10.1016/j.comcom.2020.01.038
+Anand, A.,  et, Singh, A. K. (2023). « Dual watermarking for security of COVID-19 patient 
+record ». IEEE Transactions on Dependable and Secure Computing, 20(1), 859‑866. 
+https://doi.org/10.1109/TDSC.2022.3144657. janv.
+Anand, A., Singh, A. K.,  et, Zhou, H. (2024). « COVID-19 electronic health data security 
+for smart hospitals ». Digital image security. CRC Press. https://doi.org/10.1201/ 
+9781003468974
+Awasthi, D., Khare, P., &  et, Srivastava, V. K., & et. (2026). « Fuzzymark: Fuzzy based 
+watermarking for NIfTI images using RDWT-QR-RSVD ». In R. A. Mishra, 
+V. K. Srivastava, A. Kumar, & K. Naik (Eds.), Advances in VLSI, communication, and 
+signal processing (p. 129‑142). Singapore: Springer Nature. https://doi.org/10.1007/ 
+978-981-96-8690-2_12. ´Ed.
+Awasthi, D.,  et, Srivastava, V. K. (2026). « Optimized copyright protection of scale- 
+adaptive saliency-driven ROI of medical records with MSER-based authentication ». 
+ICCK Trans. Inf. Secur. Cryptogr., 2(1), 43‑54. https://doi.org/10.62762/ 
+TISC.2025.898154. f´evr.
+Beggari, A. S., Wali, A., Khaldi, A., Kafi, M. R.,  et, Kumar, S. Aditya (2025a). « Robust 
+and imperceptible medical image watermarking for telemedicine applications based 
+on transform-domain and neural clustering techniques ». Journal of the Franklin 
+Institute, 362, Article 108039. https://doi.org/10.1016/j.jfranklin.2025.108039
+Beggari, A. S., Wali, A., Khaldi, A., Kafi, M. R.,  et, Kumar, S. Aditya (2025b). « Robust 
+medical image watermarking based on Ridgelet transform and Ant Colony 
+Optimization for telemedicine security ». Systems and Soft Computing, 7, Article 
+200390. https://doi.org/10.1016/j.sasc.2025.200390
+Beggari, A. S., Wali, A., Khaldi, A., Kafi, M. R., & Sahu, A. K. (2026). « Secure and 
+imperceptible medical image watermarking via multiscale QR embedding and 
+attention-based optimization ». Engineering Science and Technology, an International 
+The Journal, 73, Article 102250. https://doi.org/10.1016/j.jestch.2025.102250
+Bilic, P., Christ, P. F., Li, H. B., Vorontsov, E., Ben-Cohen, A., Kaissis, G., et al. (2023). « 
+The liver tumor segmentation benchmark (LiTS) ». Medical Image Analysis, 84, 
+Article 102680. https://doi.org/10.1016/j.media.2022.102680. nov.
+Borra, S., & Thanki, R. (2019). A FRT - SVD based blind medical watermarking technique 
+for telemedicine applications. International Journal of Digital Crime and Forensics, 11 
+(2), 13–33. https://doi.org/10.4018/IJDCF.2019040102
+Boukela, L., Zhang, G., Yacoub, M., Bouzefrane, S., Ahmadi, S. B. B., & Jelodar, H. 
+(2021). A modified LOF-based approach for outlier characterization in IoT. Ann. 
+Telecommun., 76, 145–153. https://doi.org/10.1007/s12243-020-00780-5
+Chattopadhyay, A. K., Nag, A., Singh, J. P., & Singh, A. K. (2021). A verifiable multi- 
+secret image sharing scheme using XOR operation and hash function. Multimedia 
+tools and Applications, 80, 35051–35080. https://doi.org/10.1007/s11042-020- 
+09174-0
+Codella, N., Rotemberg, V., Tschandl, P., Celebi, M. E., Dusza, S., Gutman, D., et al. 
+(2019). « Skin lesion analysis toward melanoma detection 2018: A challenge hosted 
+by the International Skin Imaging Collaboration (ISIC) ». arXiv preprint. https://doi. 
+org/10.48550/arXiv.1902.03368. f´ev.
+Ding, S., Shi, F., Erkan, U., Toktas, A., Li, Q., Wang, C., Gao, S., & Mou, J. (2026a). Design 
+of a three-dimensional logistic map and its application to seafood image encryption. 
+Journal of Supercomputing, 82, 225. https://doi.org/10.1007/s11227-025-08196-5
+Ding, S., Wang, X., Zhu, P., Erkan, U., Toktas, A., Li, Q., Mou, J., & Gao, S. (2026b). SRA: 
+A sine-based reconstruction approach to improve 2D chaotic map performance. 
+European Physical Journal Plus, 141, 182. https://doi.org/10.1140/epjp/s13360-026- 
+07421-1
+Dwivedi, R., Awasthi, D., &  et, Srivastava, V. K., & et. (2026). « QR decomposition and 
+SVD-based medical image watermarking technique in transform domain ». In 
+R. A. Mishra, V. K. Srivastava, A. Kumar, & K. Naik (Eds.), Advances in VLSI, 
+communication, and signal processing (p. 183‑191). Singapore: Springer Nature. 
+https://doi.org/10.1007/978-981-96-8690-2_16. ´Ed.
+Eltoukhy, M. M., Alsubaei, F. S., Abdel-Aziz, M. M.,  et, Hosny, K. M. (2025). « RDHNet: 
+Reversible data hiding method for securing colour images using AlexNet and 
+watershed transform in a fusion domain ». CAAI Transactions on Intelligence 
+Technology, 10(5), 1422‑1445. https://doi.org/10.1049/cit2.70038
+Euschi, S., Zermi, N., Med Moad, S., Khaldi, A., Kafi, M. R., Sahu, A. K.,  et, Mimoune, N. 
+(2026). « Blind audio watermarking for medical data authentication using fractional 
+Charlier transform and adaptive dithered quantization index modulation ». Systems 
+and Soft Computing, 8, Article 200464. https://doi.org/10.1016/j.sasc.2026.200464
+Farri, E., & Ayubi, P. (2018). A blind and robust video watermarking based on IWT and 
+new 3D generalized chaotic sine map. Nonlinear Dynamics, 93(4), 1875–1897. 
+https://doi.org/10.1007/s11071-018-4295-x
+Fei, J., Dai, Y., Yang, W.,  et, Xia, Z. (2025). « Distributor-centric model watermarking for 
+image generative models ». Knowledge-Based Systems, 329, Article 114422. https:// 
+doi.org/10.1016/j.knosys.2025.114422. nov.
+Fikri, C., Nugroho, F. A., Apriyansyah, B.,  et, Fakhreldin, M. (2025). « Dual 
+watermarking based on Human visual characteristics with IWT-SVD ». IJACI : 
+International The Journal of Advanced Computing and Informatics, 1(1), 1‑12. https:// 
+doi.org/10.71129/ijaci.v1.i1.pp1-12. avr.
+Gen, L. C., Avivah, S. N.,  et, Muzahid, A. J. M. (2025). « Image watermarking for 
+ensuring Image integrity and robust copyright protection based on discrete wavelet 
+transform ». IJACI : International The Journal of Advanced Computing and Informatics, 
+1(1), 28‑38. https://doi.org/10.71129/ijaci.v1.i1.pp28-38. avr.
+Hamami, R., Zermi, N., Boubchir, L., Khaldi, A., Kafi, M. R., Sahu, A. K.,  et, Mimoune, N. 
+(2026). « Securing patient-specific ECG data in telemedicine through adaptive 
+wavelet-based watermarking ». Intelligence-Based Medicine, 13, Article 100357. 
+https://doi.org/10.1016/j.ibmed.2026.100357
+Hosny, K. M., Abdel-Aziz, M. M., Lashin, N. A.,  et, Hamza, H. M. (2025). « A new CNN- 
+based watermarking method for color medical images in a fusion domain ». Neural 
+Comput & Applic, 37(18), Article 12611‑12629. https://doi.org/10.1007/s00521- 
+025-11056-1. juin.
+Irvin, J., Rajpurkar, P., Ko, M., Yu, Y., Ciurea-Ilcus, S., Chute, C., et al. (2019). « 
+CheXpert: A large chest radiograph dataset with uncertainty labels and expert 
+Table 13 
+Computational comparison (512× 512 grayscale, NVIDIA A100).
+Method Inference time 
+(ms)
+Parameters 
+(M)
+Memory 
+(GB)
+DeepMark (Abrar & Sheikh, 
+2026)
+61 18.4 1.8
+ASFW (Yuan et al., 2026) 53 12.7 1.4
+ConMark (Wu et al., 2026) 42 9.3 1.1
+SECURENet (Hamami et al., 
+2026) (256 × 256)
+78 22.1 2.4
+TFPDD (Lai et al., 2026) (no 
+deep learning)
+12 0 0.2
+PFF-WM (full, ours) 44 15.1 1.6
+PFF-WM (no explain, ours) 26 3.6 0.7
+A. Khaldi et al.                                                                                                                                                                                                                                  Intelligent Systems with Applications 31 (2026) 200684 
+14 
+
+===== PAGE 15 =====
+comparison ». In , 33. Proceedings of the AAAI Conference on Artificial Intelligence (p. 
+590‑597). https://doi.org/10.1609/aaai.v33i01.3301590. janv.
+Jelodar, H., Wang, Y., Rabbani, M., Ahmadi, S. B. B., Boukela, L., Zhao, R., & 
+Larik, R. S. A. (2021). A NLP framework based on meaningful latent-topic detection 
+and sentiment analysis via fuzzy lattice reasoning on youtube comments. Multimedia 
+Tools and Applications, 80, 4155–4181. https://doi.org/10.1007/s11042-020-09755- 
+z
+Khafaga, D. S., Alohaly, M., Abdel-Aziz, M. M.,  et, Hosny, K. M. (2023). « Blind video 
+watermarking scheme for medical video authentication ». Heliyon, 9(9), Article 
+e19809. https://doi.org/10.1016/j.heliyon.2023.e19809. sept.
+Khare, P., Awasthi, D., &  et, Srivastava, V. K., & et. (2026). « CFRV: Copyright protection 
+of fundus images and real-time identity verification for Smart healthcare ». In 
+R. A. Mishra, V. K. Srivastava, A. Kumar, & K. Naik (Eds.), Advances in VLSI, 
+communication, and signal processing (p. 303‑316). Singapore: Springer Nature. 
+https://doi.org/10.1007/978-981-96-8690-2_26. ´Ed.
+Lai, Z., Arif, S., Feng, C., Liao, G.,  et, Wang, C. (2025). « Enhancing deepfake detection: 
+Proactive forensics techniques using digital watermarking ». CMC, 82(1), 73‑102. 
+https://doi.org/10.32604/cmc.2024.059370
+Lai, Z., Zhang, Y., Li, D., Yao, Z., Wang, C.,  et, Qin, C. (2026). « A new robust training- 
+free proactive deepfake detection scheme using watermarking and identity-aware 
+hashing ». Expert Systems with Applications, 308, Article 131126. https://doi.org/ 
+10.1016/j.eswa.2026.131126. mai.
+Liao, X., Yin, J., Chen, M., & Qin, Z. (Mar. 2022). Adaptive payload distribution in 
+multiple images steganography based on image texture features. IEEE Transactions on 
+Dependable and Secure Computing, 19(2), 897–911. https://doi.org/10.1109/ 
+TDSC.2020.3004708
+Liao, X., Yu, Y., Li, B., Li, Z., & Qin, Z. (Mar. 2020). A new payload partition strategy in 
+color image steganography. IEEE Transactions on Circuits and Systems for Video 
+Technology, 30(3), 685–696. https://doi.org/10.1109/TCSVT.2019.2896270
+Lin, Y., Liao, Y., Zeng, W., Wei, Y., Chen, D., Yuan, X., Li, Y., Erkan, U., Toktas, A., 
+Zhang, C., Zhang, Y., & Gao, S. (2026). 3D Non-degenerate hyperchaos: Design, 
+analysis, and application in image encryption. IEEE Transactions on Consumer 
+Electronics, 1. https://doi.org/10.1109/TCE.2026.3672135. –1.
+Lin, Z., Lin, H., Lin, L., Chen, S.,  et, Liu, X. (2025). « Robust cross-image adversarial 
+watermark with JPEG resistance for defending against Deepfake models ». Computer 
+Vision and Image Understanding, 260, Article 104459. https://doi.org/10.1016/j. 
+cviu.2025.104459. oct.
+Liu, H., Zhang, Y., Li, Y.,  et, Niu, B. (2023). « Proactive attack detection scheme based on 
+watermarking and moving target defense ». Automatica, 155, Article 111163. 
+https://doi.org/10.1016/j.automatica.2023.111163. sept.
+Liu, Y., Wang, C., Lu, M., Yang, J., Gui, J., & Zhang, S. (Aug. 2024). From Simple to 
+Complex Scenes: Learning Robust Feature Representations for Accurate Human 
+Parsing. IEEE Transactions on Pattern Analysis and Machine Intelligence, 46(8), 
+5449–5462. https://doi.org/10.1109/TPAMI.2024.3366769
+Mathivanan, P., & Ganesh, A. B. (2021). ECG steganography based on tunable Q-factor 
+wavelet transform and singular value decomposition. International Journal of Imaging 
+Systems and Technology, 31(1), 270–287. https://doi.org/10.1002/ima.22477
+Mathivanan, P., & Ganesh, A. Balaji (2019). QR code based color image cryptography for 
+the secured transmission of ECG signal. Multimedia tools and applications, 78(6), 
+6763–6786. https://doi.org/10.1007/s11042-018-6471-x
+Saadaoui, N., Boukhamla, A. Z. E., Zermi, N., Khaldi, A., Kafi, M. R.,  et, Sahu, A. K. 
+(2026). « Frequency domain watermarking of medical images based on fractional 
+discrete Cosine, Mellin, and Schur transforms ». Multimedia Tools and Applications, 
+85, 204. https://doi.org/10.1007/s11042-026-21150-8
+Saïd, B. A., Ali, W., Khaldi, A., Kafi, M. R.,  et, Sahu, A. K. (2025). « FDCT-based 
+watermarking for robust and imperceptible medical image protection ». Intelligence- 
+Based Medicine, 12, Article 100280. https://doi.org/10.1016/j.ibmed.2025.100280
+Sayah, M. M., Narima, Z., Amine, K.,  et, Redouane, K. M. (2024). « A blind and high- 
+capacity data hiding scheme for medical information security ». Circuits Syst Signal 
+Process, 43(9), 5711‑5726. https://doi.org/10.1007/s00034-024-02684-4. sept.
+Sneha, P. S., Sankar, S., & Kumar, A. S. (2020). A chaotic colour image encryption 
+scheme combining Walsh–Hadamard transform and Arnold–Tent maps. J Ambient 
+Intell Human Comput, 11(3), 1289–1308. https://doi.org/10.1007/s12652-019- 
+01385-0
+Sood, R., Rani, J., Anand, A.,  et, Bedi, J. (2025). « Deep learning-based dual 
+watermarking solution for securing medical images in e-healthcare ». Knowledge- 
+Based Systems, 330, Article 114750. https://doi.org/10.1016/j.knosys.2025.114750. 
+nov.
+Thanki, R., Borra, S., Dwivedi, V., & Borisagar, K. (2017). A RONI based visible 
+watermarking approach for medical image authentication. Journal of Medical 
+Systems, 41(9), 143. https://doi.org/10.1007/s10916-017-0795-3
+Thind, R. K., Anand, A.,  et, Sharma, A. (2026a). « SECURENet: Secure encoder-decoder 
+based multiple watermarking for the protection of digital images ». Applied Soft 
+Computing, 193, Article 114837. https://doi.org/10.1016/j.asoc.2026.114837. mai.
+Thind, R. K., Sood, R., Rani, J., Anand, A.,  et, Sharma, A. (2026b). « DeepDual-WM: A 
+robust dual watermarking strategy for medical images using deep networks ». IEEE 
+MultiMedia, 1‑7. https://doi.org/10.1109/MMUL.2026.3667050
+Wang, C., Ma, W., Zhang, S., Gui, J., Li, Q., Liu, Y., & Xia, Z. (2026a). Focus on finding 
+deepfakes: A robust proactive detection method based on orthogonal moment 
+watermarking. IEEE Transactions on Image Processing, 35, 3507–3521. https://doi. 
+org/10.1109/TIP.2026.3678069
+Wang, C., Zeng, Z., Hu, X.,  et, Chen, Y. (2025). « Generating invisible adversarial 
+watermarks based on block-matching embedding algorithm ». Digital Signal 
+Processing, 167, Article 105476. https://doi.org/10.1016/j.dsp.2025.105476. d´ec.
+Wang, C., Zhang, F., Zhang, S., Liu, Y., Wang, Y., Li, Q., & Xia, Z. (2026b). Can 
+watermarks Be removed like noise? A watermarking attack network using residual 
+diffusion model. IEEE Transactions on Dependable and Secure Computing, 1–12. 
+https://doi.org/10.1109/TDSC.2026.3677196
+Wu, X., Liao, X., Zhang, J., Chen, M., Wu, Y.,  et, Guo, J. (2026). « Versatile and harmless 
+deepfake proactive forensics via conditional watermarking ». Information Sciences, 
+742, Article 123030. https://doi.org/10.1016/j.ins.2025.123030. juin.
+Xie, X., Jiang, J., Zhang, J., Chen, K., Zhang, W.,  et, Yu, N. (2025). « Reversible 
+adversarial visible image watermarking ». Signal Processing, 234, Article 109999. 
+https://doi.org/10.1016/j.sigpro.2025.109999. sept.
+Yang, J., & Liao, X. (2023). ACGIS: Adversarial cover generator for image steganography 
+with noise residuals features-preserving. Signal Processing: Image Communication, 
+113, Article 116927. https://doi.org/10.1016/j.image.2023.116927
+Yousefi Valandar, M., Jafari Barani, M., & Ayubi, P. (2020). A blind and robust color 
+images watermarking method based on block transform and secured by modified 3- 
+dimensional H´enon map. Soft Computing, 24(2), 771–794. https://doi.org/10.1007/ 
+s00500-019-04524-z
+Yuan, C., Cao, Y., Zhou, Z., Fu, Z., Xia, Z.,  et, Wu, Q. M. J. (2026). « A robust dual- 
+pronged proactive defense framework against deepfakes via adversarial semi-fragile 
+watermarking ». Expert Systems with Applications, 303, Article 130721. https://doi. 
+org/10.1016/j.eswa.2025.130721. mars.
+Zhao, Y., Liu, B., Zhu, T., Ding, M., Yu, X.,  et, Zhou, W. (2024). « Proactive image 
+manipulation detection via deep semi-fragile watermark ». Neurocomputing, 585, 
+Article 127593. https://doi.org/10.1016/j.neucom.2024.127593. juin.
+Zhou, N.-R., Hu, L.-L., Huang, Z.-W., Wang, M.-M., & Luo, G.-S. (2024). Novel multiple 
+color images encryption and decryption scheme based on a bit-level extension 
+algorithm. Expert Systems with Applications, 238, Article 122052. https://doi.org/ 
+10.1016/j.eswa.2023.122052
+Zhou, N.-R., Tong, L.-J., & Zou, W.-P. (2023). Multi-image encryption scheme with 
+quaternion discrete fractional Tchebyshev moment transform and cross-coupling 
+operation. Signal Processing, 211, Article 109107. https://doi.org/10.1016/j. 
+sigpro.2023.109107
+Zhu, X., Lai, Z., Zhou, N., & Wu, J. (Jan. 2022). Steganography with high reconstruction 
+robustness: Hiding of encrypted secret images. Mathematics, 10(16), 2934. https:// 
+doi.org/10.3390/math10162934. Art. no. 16.
+Zuo, X., Wang, X., Zhang, W.,  et, Wang, Y. (2023). « MISPSO-attack: An efficient 
+adversarial watermarking attack based on multiple initial solution particle swarm 
+optimization ». Applied Soft Computing, 147, Article 110777. https://doi.org/ 
+10.1016/j.asoc.2023.110777. nov.
+A. Khaldi et al.                                                                                                                                                                                                                                  Intelligent Systems with Applications 31 (2026) 200684 
+15 
