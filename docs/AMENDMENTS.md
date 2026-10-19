@@ -321,6 +321,8 @@ battery is frozen. None is a thesis number yet.
 | A-016 | 2026-10-19 | Field excuse restricted to the border-connected surround | proposed |
 | A-017 | 2026-10-19 | `sigma = 1` noise reclassified out of "benign" | **accepted** |
 | A-018 | 2026-10-19 | Region weighting removed (λ=0) | **accepted** |
+| A-019 | 2026-10-19 | Ground truth from the measured pixel diff | **accepted** |
+| A-020 | 2026-10-19 | Mean-only modifications are invisible | **OPEN — principal weakness** |
 
 ---
 
@@ -554,3 +556,67 @@ and it is recorded here rather than quietly corrected.
 **Consequence.** The "region preference" contribution is withdrawn from the
 thesis claims. The mask is still used for evaluation and for the (disabled)
 texture gate, so mask *awareness* in the metrics is unaffected.
+
+## A-019 — Ground truth is the measured pixel change, not the edit region
+
+**Date:** 2026-10-19 · **Affects:** `battery.conditions`, every IoU and
+detection number in `docs/BENCHMARKS.md`
+
+**Problem.** Each condition returned a geometric mask of "the region I edited".
+Condition 4 clones three 32×32 patches, and on PH2 one of them repeatedly lands
+white background on white background: **4 of its 48 labelled blocks (8.3%)
+never change a single pixel**. Scoring against that mask penalised the verifier
+for correctly reporting those blocks INTACT, and — worse — it made the new
+safety metric read *100% silent INTACT* on an image where nothing had been
+tampered with at all.
+
+**Decision.** Every condition's ground truth is now
+`changed_blocks(before, after)`: the set of 8×8 blocks whose pixels actually
+differ. Where the geometry changes (crop, shift) the mask follows the received
+geometry, because the verdict grid does.
+
+**Evidence (PH2, n=200):** condition 4 IoU **0.883 → 0.963**; mean IoU over the
+paste family **0.9055 → 0.9189**. Condition 4's `silent` column went from 100%
+to 2.0%, and every remaining silent block is a genuine miss, not a scoring
+artefact.
+
+**Consequence.** A condition that performs a no-op edit now has no ground truth
+at all. That is correct: there is nothing to detect, and a scorer should not
+invent it.
+
+## A-020 — Modifications that only move a block's mean are invisible
+
+**Date:** 2026-10-19 · **Affects:** `carriers.FragileCarrier`, `binder.coarse_digest`
+**Status:** OPEN — the principal weakness of the current design.
+
+**Finding.** Carrier A writes its tag into the Haar **detail** coefficients,
+and the digest that binds the tag is `LL2` quantised at Q = 32 levels. A
+modification that changes a block's average brightness while leaving its
+internal detail structure intact therefore changes neither the tag nor the
+digest, and the block verifies as intact.
+
+**Evidence.** PH2 n=200, conditions 21 and 22: the `silent` column reads 100%
+— on every image, at least one ground-truth changed block was reported INTACT.
+Measured directly on IMD390, block (57,25) under condition 21: the block's luma
+moved from 192–226 to 192–250 and it still scored a **perfect** correlation
+with its expected tag. The same mechanism covers Telea inpainting over smooth
+regions (condition 22).
+
+**What was tried and rejected.** An evidence floor — abstain when fewer than a
+threshold fraction of the 60 tag slots carry a readable residual. Measured:
+marked blocks sit at 0.63 (p5), changed blocks at 0.10–0.18 (p25–p50), so the
+populations do separate. But it did **not** move the `silent` column, because
+the surviving blocks hold their residuals normally, and it cost detection on
+conditions 21 and 22. It was reverted rather than shipped as decoration.
+
+**Fix to be measured.** Bind the block mean in the digest at a finer
+quantisation than 32. That is a direct trade: the current Q = 32 is 100% stable
+under JPEG 50, and a finer Q will flip digests under benign recompression,
+which shows up as false claims on conditions 7–9. The rule from A-009 — blocks
+whose digest sits near a quantisation boundary abstain — is what has to absorb
+the difference, and its margin needs to be re-measured at the new Q.
+
+**Why it is not fixed today.** It changes the digest, and the digest is the
+binding of the whole scheme. It needs its own sweep (Q ∈ {8, 16, 32} × benign
+stability × condition 21/22 detection) and a fresh amendment. Writing it down
+now is the honest alternative to shipping a claim it would falsify.

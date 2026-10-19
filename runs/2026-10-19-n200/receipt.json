@@ -3,7 +3,7 @@
   "labelled_as": "measured",
   "dataset": "/tmp/ph2full",
   "dataset_is_primary": false,
-  "created_utc": "2026-10-19T15:06:28+00:00",
+  "created_utc": "2026-10-19T15:23:00+00:00",
   "command": "scripts/bench.py --data /tmp/ph2full --limit 200 --receipt runs/2026-10-19-n200/",
   "config": {
     "delta_f": 8.0,
@@ -31,8 +31,9 @@
     "iou_detect": 0.1,
     "bind_address": true
   },
+  "code_dirty": false,
   "code": {
-    "git_commit": "e3290ca6cafd46f630a58698510aec4897674860"
+    "git_commit": "a9ea5a18400557c1a9139b8bf9b9e28b4e667e05"
   },
   "environment": {
     "python": "3.11.2",
@@ -45,8 +46,8 @@
     "psnr_mean": 38.72221492545174,
     "psnr_worst": 38.27675385038149,
     "coverage_mean": 0.935587158203125,
-    "protect_ms": 111.38562167999908,
-    "verify_ms": 40.38514946999385,
+    "protect_ms": 113.14346311002737,
+    "verify_ms": 40.50960854498044,
     "per_condition": {
       "1": {
         "n": 200,
@@ -8718,7 +8719,7 @@
       "iou": 0.9189169034090909,
       "benign_claim_rate": 0.0,
       "psnr": 38.72221492545174,
-      "verify_ms": 40.38514946999385
+      "verify_ms": 40.50960854498044
     },
     "verdicts": {
       "detection": "met",
@@ -8729,5 +8730,5 @@
     }
   },
   "violations": [],
-  "wall_clock_s": 610.206371581
+  "wall_clock_s": 617.4615836309995
 }

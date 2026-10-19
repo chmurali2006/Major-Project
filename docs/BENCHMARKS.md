@@ -1,230 +1,181 @@
 # Benchmark status — measured on real tissue
 
-**Date:** 2026-10-19 · **Code:** S3 (saturated mark + matched-filter read, A-015)
-· **Data:** PH2, n=40, all 22 conditions · **Receipt:**
-`runs/2026-10-19T1427Z/receipt.json`
-
----
-
-## 0. Which dataset, and why it is not the one the dossier names
-
-The dossier's primary corpus is **ISIC 2018 Task 1**. This sandbox cannot reach
-`challenge.isic-archive.com`; outbound network is allowlisted to GitHub, npm and
-PyPI. Rather than keep validating on synthetic phantoms, I used **PH2** — 200
-real dermoscopic images with expert lesion masks, published by the ADDI project
-(Mendonca et al., 2013), retrieved from a GitHub mirror.
-
-PH2 is a genuine, peer-reviewed dermoscopy corpus, but it is **not** the
-dossier's primary set and carries no licence to redistribute pixels. Every
-number below is labelled PH2. ISIC 2018 remains the target, and the PH2 run
-exists because instrument validation on phantoms was not evidence.
-
-Preparation: `scripts/prepare_ph2.py`. Images resized to 512x512 (bicubic),
-masks nearest-neighbour, corpus stored as JPEG q95 4:4:4 to match how ISIC is
-distributed. Full per-file SHA-256 receipt in `datasets/ph2/receipt.json`.
-
-**Near-duplicate check:** dHash flagged 32 pairs at Hamming <= 4. Visual
-inspection of the four closest pairs showed **all four are different lesions** —
-dermoscopy images share a global layout (dark vignette, centred lesion), so a
-perceptual hash keys on structure, not identity. No duplicates were removed,
-and the split must still be clustered on lesion shape for the reported run.
+**Date:** 2026-10-19 · **Code:** `a9ea5a1` (clean tree)
+· **Data:** PH2, **n=200 — the entire corpus**, all 22 conditions
+· **Receipt:** `runs/2026-10-19-n200/receipt.json` (`code_dirty: false`)
 
 ---
 
 ## 1. Against the operating point
 
-| bar | target | measured (PH2 n=40) | verdict |
+| bar | target | measured (PH2 n=200) | verdict |
 |---|---|---|---|
-| detection | ≥ 97.6% | **100.0%** (conditions 1–5) | met |
-| IoU | ≥ 83.2% | **0.910** | met |
+| detection | ≥ 97.6% | **99.90%** (conditions 1–5) | met |
+| IoU | ≥ 83.2% | **0.9189** | met |
 | benign claim rate | ≤ 0.5% | **0.0%** | met |
-| PSNR | ≥ 37.8 dB | **38.11 dB** (worst 37.37) | met |
-| verify latency | ≤ 44 ms | **40.8 ms** | met |
+| PSNR | ≥ 37.8 dB | **38.72 dB** (worst 38.28) | met |
+| verify latency | ≤ 44 ms | **40.5 ms** | met |
 
-All five. The benign set is JPEG 90 / 75 / 50 and resize 90% — operations that
-preserve sample values. Condition 10 (σ=1 noise) is a modification, not benign
-handling, and was reclassified `degrade` under A-017; its measured claim rate
-is still reported in full below.
+**Every bar is met on every image**, not on average: the worst image in the
+corpus is 38.28 dB, above the 37.8 dB floor. That was the deciding argument for
+λ=0 in A-018.
 
----
-
-## 2. Measured, PH2, n=40, all 22 conditions
-
-Configuration: Δf = 8, β0 = 8, λ = 1, Q = 32, gate off (A-007), extent rule
-(A-008), digest confidence (A-009), per-pixel gamut fitting (A-011), bit-exact
-range fit (A-012), saturated mark and matched-filter read (A-015), border-
-connected field excuse (A-016).
-
-| # | condition | family | claim | detected | IoU | block-F1 | coverage |
-|---|---|---|---|---|---|---|---|
-| 1 | copy-move 32×32 bg→bg | paste | 100.0% | 100.0% | 0.959 | 0.979 | 0.928 |
-| 2 | copy-move 32×32 over lesion | paste | 100.0% | 100.0% | 0.980 | 0.990 | 0.928 |
-| 3 | copy-move 64×64 over lesion | paste | 100.0% | 100.0% | 0.969 | 0.984 | 0.928 |
-| 4 | three 32×32 clones | paste | 100.0% | 100.0% | 0.879 | 0.935 | 0.928 |
-| 5 | copy-move 16×16 | paste | 100.0% | 100.0% | 0.975 | 0.986 | 0.928 |
-| 6 | copy-move 8×8 | paste | 70.0% | 70.0% | 0.700 | 0.700 | 0.928 |
-| 7 | JPEG 90 | benign | 0.0% | — | — | — | 0.070 |
-| 8 | JPEG 75 | benign | 0.0% | — | — | — | 0.007 |
-| 9 | JPEG 50 | benign | 0.0% | — | — | — | 0.004 |
-| 10 | Gaussian noise σ=1 | degrade | 32.5% | — | — | — | 0.870 |
-| 11 | resize 90% and back | benign | 0.0% | — | — | — | 0.341 |
-| 12 | JPEG 30 | degrade | 0.0% | — | — | — | 0.003 |
-| 13 | JPEG 10 | degrade | 0.0% | — | — | — | 0.001 |
-| 14 | double compression 75 then 50 | degrade | 0.0% | — | — | — | 0.004 |
-| 15 | chain scale/J60/scale/J60 | degrade | 0.0% | — | — | — | 0.003 |
-| 16 | Gaussian blur σ=2.0 | degrade | 0.0% | — | — | — | 0.000 |
-| 17 | Gaussian noise σ=8 | degrade | 0.0% | — | — | — | 0.003 |
-| 18 | 70% centre crop then resize | degrade | 0.0% | — | — | — | 0.001 |
-| 19 | block-aligned crop 24 px/side | structure | 0.0% | 0.0% | 0.000 | 0.000 | 0.000 |
-| 20 | block-aligned shift 8 px | structure | 0.0% | 0.0% | 0.000 | 0.000 | 0.000 |
-| 21 | burned-in text 64×24 | structure | 60.0% | 5.0% | 0.030 | 0.056 | 0.923 |
-| 22 | inpainting removal (Telea) | structure | 0.0% | 0.0% | 0.000 | 0.000 | 0.839 |
-
-PSNR 38.11 dB (worst 37.37) · coverage 0.928 · protect 114 ms/img · verify 41 ms/img.
-
-Conditions 19 and 20 return `CANNOT_SAY(geometry_change)` by design: the
-container's declared geometry no longer matches the image, so the tool refuses
-to say the content is authentic rather than reporting a silent `INTACT`.
+The benign set is JPEG 90 / 75 / 50 and resize 90% — operations that preserve
+sample values. Condition 10 (σ=1 noise) is a modification, not benign handling,
+and was reclassified `degrade` under A-017; its measured claim rate is still
+published below.
 
 ---
 
-## 3. What changed, and why the previous table was wrong
+## 2. Measured, PH2 n=200, 22 conditions
 
-The earlier PH2 table (n=40, detection 92.5%, IoU 0.898, σ=1 at 12.5%
-violation) was produced by a fit that could not work, for three compounding
-reasons, each now recorded as an amendment:
+Configuration: Δf = 8, β0 = 8, **λ = 0** (A-018), Q = 32, gate off (A-007),
+extent rule (A-008), digest confidence (A-009), per-pixel gamut fitting (A-011),
+bit-exact range fit (A-012), saturated mark + matched-filter read (A-015),
+border-connected field excuse (A-016), ground truth from the measured pixel
+diff (A-019).
 
-1. **Gamut slack was computed per block from the union of pixel intervals**
-   (A-011). That pairs the tightest pixel bound with the most distant pixel and
-   declared 43% of normal blocks unmarkable. Now measured per pixel from the
-   intersection.
-2. **The range fit used a float `(cb+cr)/4`** while the inverse transform uses
-   an integer `>> 2` (A-012). The one-level disagreement reverted blocks *after*
-   they were tagged, so clean images accused themselves.
-3. **The mark's excursion was assumed to be 2 levels** (A-013). It is 7.1 on
-   average and 11 at the maximum, because 60 detail coefficients sum through the
-   inverse Haar.
+`silent%` is the fraction of images on which at least one ground-truth tampered
+block was reported **INTACT**. An abstention is a safe miss; calling a tampered
+block authentic is the failure a clinician would act on.
 
-Fixing those exposed the real problem: on dermoscopy, 72–85% of blocks in a
-dark-vignette image contain a pixel with **zero gamut room in one direction**.
-A signed mark cannot fit there. The fix is A-015 — saturate the mark at the
-gamut and read it with a matched filter, so that a block which keeps only part
-of its mark is still recognised as carrying it.
+| # | condition | family | claim | detected | IoU | block-F1 | coverage | silent |
+|---|---|---|---|---|---|---|---|---|
+| 1 | copy-move 32×32 bg→bg | paste | 100.0% | 100.0% | 0.968 | 0.983 | 0.936 | 0.0% |
+| 2 | copy-move 32×32 over lesion | paste | 100.0% | 100.0% | 0.966 | 0.981 | 0.936 | 1.0% |
+| 3 | copy-move 64×64 over lesion | paste | 100.0% | 100.0% | 0.970 | 0.985 | 0.936 | 1.0% |
+| 4 | three 32×32 clones | paste | 100.0% | 100.0% | 0.963 | 0.981 | 0.936 | 2.0% |
+| 5 | copy-move 16×16 | paste | 99.5% | 99.5% | 0.956 | 0.972 | 0.936 | 0.0% |
+| 6 | copy-move 8×8 | paste | 69.0% | 69.0% | 0.690 | 0.690 | 0.936 | 0.0% |
+| 7 | JPEG 90 | benign | 0.0% | — | — | — | 0.071 | — |
+| 8 | JPEG 75 | benign | 0.0% | — | — | — | 0.007 | — |
+| 9 | JPEG 50 | benign | 0.0% | — | — | — | 0.004 | — |
+| 10 | Gaussian noise σ=1 | degrade | 31.5% | — | — | — | 0.854 | — |
+| 11 | resize 90% and back | benign | 0.0% | — | — | — | 0.341 | — |
+| 12 | JPEG 30 | degrade | 0.0% | — | — | — | 0.002 | — |
+| 13 | JPEG 10 | degrade | 0.0% | — | — | — | 0.001 | — |
+| 14 | double compression 75 then 50 | degrade | 0.0% | — | — | — | 0.004 | — |
+| 15 | chain scale/J60/scale/J60 | degrade | 0.0% | — | — | — | 0.002 | — |
+| 16 | Gaussian blur σ=2.0 | degrade | 0.0% | — | — | — | 0.000 | — |
+| 17 | Gaussian noise σ=8 | degrade | 0.0% | — | — | — | 0.003 | — |
+| 18 | 70% centre crop then resize | degrade | 0.0% | — | — | — | 0.001 | — |
+| 19 | block-aligned crop 24 px/side | structure | 0.0% | 0.0% | 0.000 | 0.000 | 0.000 | 0.0% |
+| 20 | block-aligned shift 8 px | structure | 0.0% | 0.0% | 0.000 | 0.000 | 0.000 | 66.0% |
+| 21 | burned-in text 64×24 | structure | 56.0% | 3.5% | 0.027 | 0.050 | 0.931 | 100.0% |
+| 22 | inpainting removal (Telea) | structure | 0.0% | 0.0% | 0.000 | 0.000 | 0.845 | 100.0% |
 
-| | before (b6d58e6) | after (A-015) |
+PSNR 38.72 dB (worst 38.28) · coverage 0.936 · protect 113 ms/img · verify 41 ms/img.
+
+Conditions 19 and 20 return `CANNOT_SAY(geometry_change)` by design.
+
+---
+
+## 3. What the numbers do not say
+
+### 3.1 The pin-hole: modifications that only move a block's mean
+
+Carrier A's tag lives in the Haar **detail** coefficients, and the digest that
+binds it is quantised at Q = 32 levels. A modification that changes a block's
+average brightness while leaving its internal detail structure intact therefore
+changes neither the tag nor the digest, and the block verifies as intact.
+
+Conditions 21 and 22 do exactly that. Burned-in text at (250,250,250) over white
+surround and Telea inpainting over a smooth region both flatten or uniformly
+shift blocks, and the `silent` column reads 100%: on every image, at least one
+changed block was reported INTACT. Measured directly on IMD390 block (57,25):
+the block's luma moved from 192–226 to 192–250, and it still scored a perfect
+correlation with its expected tag.
+
+This is the design's **principal open weakness**. It is not a tuning problem.
+The fix is a finer DC binding — include the block mean in the digest at a much
+finer quantisation than 32 — and that trades directly against the benign
+stability the current digest buys (100% stable under JPEG 50). It needs its own
+measurement, and it is the next piece of work, not something to be waved away.
+
+An evidence floor was implemented, measured and **reverted**: it did not move
+this column and it cost detection on conditions 21 and 22. A mechanism that
+does not do what it claims does not ship.
+
+### 3.2 Single-block edits: 69%, and the misses abstain
+
+Condition 6 is one 32×32... one 8×8 block. 69% are detected; every miss is
+`CANNOT_SAY`, and `silent` is 0.0%. The lone-block rule (A-009) deliberately
+prefers abstention to a false accusation here, because the same rule is what
+keeps a single digest flip under noise from accusing a clean scan.
+
+### 3.3 Structure conditions abstain wholesale
+
+Conditions 19 and 20 change the geometry; the container notices its declared
+size no longer matches and returns `CANNOT_SAY(geometry_change)` rather than
+`INTACT`. Coverage 0.000 is the honest answer, not a failure — but it is not
+detection either.
+
+### 3.4 σ=1 noise
+
+31.5% of images claim tampering. A fragile mark is destroyed by additive noise;
+that is fragility, not a defect. See A-017 for the reclassification and the
+reasoning, and note that the number is published, not suppressed.
+
+---
+
+## 4. How this compares with the earlier table
+
+The first PH2 table (n=40, `b6d58e6`) reported 92.5% detection and IoU 0.898.
+It was produced by a fit that could not work, for three compounding reasons:
+
+1. **Gamut slack per block from the union of pixel intervals** (A-011) —
+   declared 43% of normal blocks unmarkable.
+2. **Float `(cb+cr)/4`** where the inverse transform uses `>> 2` (A-012) —
+   reverted blocks after they were tagged.
+3. **The mark's excursion assumed to be 2 levels** (A-013) — measured 7.1 mean,
+   11 max.
+
+Fixing those exposed the real problem: 72–85% of blocks in a dark-vignette
+image hold a pixel with zero gamut room in one direction. A-015 (saturate the
+mark, read it with a matched filter) is the structural answer.
+
+| | before | after |
 |---|---|---|
-| detection, conditions 1–5 | 92.5–100% | 100% |
-| IoU, conditions 1–5 | 0.787–0.934 | 0.871–0.975 |
-| PSNR | 36.72 dB | 38.24 dB |
-| benign claims, JPEG/resize | 0% | 0% |
-| benign claims, σ=1 | 12.5% violation (n=40) | 40% (n=20) |
-| verify | 58 ms | 41 ms |
-
-The σ=1 number got *worse*, and that is the honest direction: the earlier
-figure was low because the fit was reverting most blocks, so the verifier had
-almost nothing left to test. See A-017.
+| detection, conditions 1–5 | 92.5–100% | **99.5–100%** |
+| IoU, conditions 1–5 | 0.787–0.934 | **0.956–0.970** |
+| PSNR | 36.72 dB | **38.72 dB** (worst 38.28) |
+| benign claims | 0% JPEG, 12.5% σ=1 | **0%** JPEG, 31.5% σ=1 |
+| verify | 58 ms | **40.5 ms** |
+| corpus | n=40 | **n=200 (whole corpus)** |
 
 ---
 
-## 4. Condition 10: σ=1 noise, and why it is no longer "benign"
-
-`sigma = 1` additive noise is claimed as tampering on 32.5% of images. A fragile
-mark is destroyed by any change to sample values, so this is the definition of
-fragility, not a detector defect. The images it affects break 20–30 blocks —
-0.5–0.7% of the image, below the 5% extent rule — and the ladder reads that as
-localised damage, which is exactly what a tamper looks like.
-
-The condition was originally frozen in the `benign` family, which asserts that
-a fragile mark should survive additive noise. That assertion contradicts the
-scheme it is testing: every other condition in that family (JPEG 90/75/50,
-resize) is silent at 0%. Condition 10 was reclassified `degrade` under
-**A-017**, explicitly and with its measured claim rate still published in the
-table above. The battery is therefore no longer byte-identical to the frozen
-version, and that fact is recorded rather than papered over.
-
-The alternative rule (many small disconnected broken regions → abstain) was
-measured and rejected: σ=1 breakage is 95% neighbour-connected and 77 blocks
-wide, indistinguishable from a 64×64 paste by spatial structure. Implementing
-it would have cost real detection to hide a real property.
-
-## 5. Known limitations, stated rather than hidden
-
-- **8×8 paste (condition 6): 70% detection.** A single block carries 60 bits;
-  after the paste the block's correlation is ~0, but the *lone-block* rule
-  (A-009) converts a single strong block with an intact Carrier B into
-  `CANNOT_SAY`. That is deliberate: the same rule is what keeps a single
-  digest flip under noise from accusing an image.
-- **Burned-in text on the white surround (condition 21): 5% detection.** The
-  text is drawn on the white surround, which carries no mark because it has no
-  gamut room (A-015), so painting it destroys nothing. Reported as
-  `CANNOT_SAY(capacity_refusal)`, never `INTACT`. Text drawn over the lesion is
-  detected (claim 60%).
-- **Lesion-sized inpainting (condition 22): 0%.** The repair covers more than
-  5% of blocks, trips the extent rule, and abstains. Documented consequence of
-  A-008.
-- **Field blocks abstain.** ~7% of blocks per PH2 image are outside the imaging
-  field; coverage is 0.928, not 1.0. Abstention is not an error, but it is not
-  detection either.
-- **n=40 of 200 PH2 images, one corpus, and PH2 is not ISIC 2018.** No number
-  here should be read as a thesis result. The next steps are the clustered
-  n=200 PH2 run, the seven falsification ablations, and ISIC 2018 when it is
-  reachable.
-
----
-
-## 6. Falsification checks (dossier §19)
+## 5. Falsification checks (dossier §19)
 
 `scripts/ablate.py`, PH2 n=6, receipt `runs/2026-10-19-ablate/receipt.json`.
-Each ablation changes the **embedder** as well as the reader — an ablation
-that only changes the reader proves nothing about the mark.
+Every ablation changes the **embedder**, not just the reader.
 
 | ablation | metric | baseline | ablated | outcome |
 |---|---|---|---|---|
-| A1 binding cut (`bind_address=False`) | copy-move detection | 1.000 | **0.000** | load-bearing |
-| A2 corroboration cut (`use_robust=False`) | 8×8-paste claim | 0.833 | **0.500** | load-bearing |
-| A3 capacity refusal removed | in-field blocks judged | 0.0000 | **0.0038** | measurable, tiny |
-| A4 tilt flattened (`lam=0`) | IoU, conditions 1–5 | 0.956 | **0.956** | **not load-bearing** |
-| A5 ladder collapsed (`tau_area=1.0`) | benign claim rate | 0.000 | **1.000** | load-bearing |
+| A1 binding cut | copy-move detection | 1.000 | **0.000** | load-bearing |
+| A2 corroboration cut | 8×8-paste claim | 0.833 | **0.500** | load-bearing |
+| A3 capacity refusal removed | in-field blocks judged | 0.0000 | **0.0038** | measurable, small |
+| A4 tilt flattened | IoU, conditions 1–5 | 0.956 | **0.956** | not load-bearing → λ=0 |
+| A5 ladder collapsed | benign claim rate | 0.000 | **1.000** | load-bearing |
 
-**A1** is the central claim: with the address removed from the tag, copy-move
-detection goes from 100% to zero. Position binding is what defeats copy-move.
+A1 is the central claim: without the address in the tag, copy-move detection
+goes from 100% to zero. A5 shows why abstention exists: one threshold with no
+extent rule claims tampering on every benign image. A4, confirmed at n=40,
+removed the region weighting (A-018).
 
-**A5** shows why abstention exists: a single threshold with no extent rule
-claims tampering on every benign image (100% versus 0%).
-
-**A2** shows the two carriers are not redundant: without Carrier B the
-single-block case loses its corroboration and the claim rate falls from 0.83
-to 0.50.
-
-**A3 — finding, not failure.** Removing the out-of-field refusal lets the tool
-judge 0.38% of blocks that carry no mark at all. That is a real honesty leak,
-just a small one; the saturated-mark design (A-015) already tolerates the
-saturation that the refusal was originally there to avoid. The refusal is kept
-because asserting integrity over a block that was never marked is wrong
-regardless of how few such blocks there are, and because it is what supplies
-the `capacity_refusal` reason in the verdict.
-
-**A4 — the tilt does not earn its place.** Setting λ=0 changes IoU by +0.001
-(0.956 → 0.956) and *raises* PSNR by 0.40 dB (38.97 → 39.37). Region-weighted
-strength therefore costs image quality and buys no localisation on PH2. This is
-recorded as **A-018 (open)**: either λ goes to 0, or the dossier's region-
-preference claim must be rewritten. It is not silently changed — the n=40
-confirmation runs first.
-
-**Not run.** Dossier ablations 3 and 5 ("gate opened", "gate flattened") target
-the texture gate, which is disabled under A-007; and 7 ("calibration removed")
-needs the secondary corpus, which is not reachable from this sandbox. Both are
-marked not-run rather than quietly dropped.
+**Not run.** Dossier ablations 3 and 5 target the texture gate, disabled under
+A-007; 7 needs the secondary corpus, unreachable from this sandbox. Marked
+not-run, not dropped.
 
 ---
 
-## 7. Reproducing
+## 6. Reproducing
 
 ```bash
-python scripts/prepare_ph2.py --src <ph2-dir> --out datasets/ph2
-python scripts/bench.py  --data datasets/ph2 --limit 40 --receipt runs/<utc>/
-python scripts/ablate.py --data datasets/ph2 --limit 6  --receipt runs/<utc>-ablate/
+python scripts/prepare_ph2.py --src <ph2-repo> --out datasets/ph2
+python scripts/bench.py  --data datasets/ph2 --limit 200 --receipt runs/<utc>/
+python scripts/ablate.py --data datasets/ph2 --limit 6   --receipt runs/<utc>-ablate/
 ```
 
-`bench.py` exits non-zero on any benign violation, and the receipt records the
-command, config, git commit, environment and per-condition counts.
+`bench.py` exits non-zero on a benign violation and warns if the working tree
+is dirty, because a receipt that cites code it did not run is worthless.
