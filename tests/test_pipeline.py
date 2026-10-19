@@ -125,5 +125,39 @@ def test_carrier_b_is_address_keyed():
     p = sysm.protect(rgb, mask, image_id=21)
     clean = sysm.verify(p.png)
     moved = sysm.verify(paste(p.png, (8, 8), (40, 40), blocks=4))
-    assert clean.delta_sr[40:44, 40:44].mean() < 0.25
-    assert moved.delta_sr[40:44, 40:44].mean() > 0.25
+    # Assert the contrast, not a constant: the absolute level of Carrier B's
+    # error depends on the mark Carrier A writes, while what A-004 claims is
+    # that moving content costs the block its semi-robust reference.
+    a = clean.delta_sr[40:44, 40:44].mean()
+    b = moved.delta_sr[40:44, 40:44].mean()
+    assert a < 0.35
+    assert b - a > 0.15, f"clean {a:.3f} moved {b:.3f}"
+
+
+# ---------------------------------------------------------------- A-021
+def test_resize_on_a_smooth_image_does_not_claim_tampering():
+    """The ISIC condition-11 failure, pinned as a regression.
+
+    On a smooth image most blocks carry almost no detail, so a +-2 level mark
+    survives a 90% resize round trip and only the blocks containing an edge
+    break. Few broken blocks, scattered along edges, look exactly like
+    localised tampering: measured 79-96% false claims on pre-blurred phantoms
+    and 27.3% on ISIC-300, against 0.0% on PH2. The global-attenuation rule
+    (A-021) must abstain on all of them.
+    """
+    import io
+
+    from PIL import Image, ImageFilter
+
+    from src.battery.conditions import resize_roundtrip
+
+    sysm = System(KEY)
+    claims = 0
+    for seed in (21, 22, 23, 24):
+        rgb, mask = phantom(seed=seed)
+        smooth = np.array(Image.fromarray(rgb).filter(ImageFilter.GaussianBlur(0.9)))
+        p = sysm.protect(smooth, mask, image_id=700 + seed)
+        out = resize_roundtrip(p.png, 0.90)
+        data = out[0] if isinstance(out, tuple) else out
+        claims += int(sysm.verify(data).ladder.tampered.any())
+    assert claims == 0, f"{claims}/4 smooth images claimed tampering after a resize"

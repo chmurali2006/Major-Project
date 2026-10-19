@@ -65,17 +65,32 @@ class Binder:
         if not 0 <= image_id < 2**32:
             raise ValueError("image_id must fit in 32 bits")
         self._image_id = image_id
+        if not 0 < len(key) <= 64:
+            raise ValueError("BLAKE2b keys must be 1..64 bytes")
+        self._key = key
+        prefix = image_id.to_bytes(4, "big")
+        self._prefix = prefix
         base = hmac.new(key, digestmod=hashlib.sha256)
-        base.update(image_id.to_bytes(4, "big"))
-        # every block MAC starts from this prefix; copy() avoids re-keying
+        base.update(prefix)
         self._base = base
 
     def _raw(self, address: int, digest: int) -> bytes:
-        m = self._base.copy()
+        """One keyed BLAKE2b call per block (RFC 7693).
+
+        HMAC-SHA256 is the conventional choice and was used until latency was
+        measured: it needs two padded compression calls per block, 4096 times
+        per verification, and that was half of verify's total cost. Keyed
+        BLAKE2b is a standard MAC with the key folded into its initial state,
+        so it needs one call, and it is bit-for-bit deterministic. Both give
+        2^-60 forgery resistance once truncated to the 60-bit tag, so the
+        security argument does not change; only the cost does. Recorded as
+        A-022 with both timings measured.
+        """
         if self.bind_address:
-            m.update(self._ADDR[address])
-        m.update(digest.to_bytes(2, "big"))
-        return m.digest()
+            msg = self._ADDR[address] + digest.to_bytes(2, "big")
+        else:
+            msg = digest.to_bytes(2, "big")
+        return hashlib.blake2b(msg, key=self._key, digest_size=8).digest()
 
     def tag(self, address: int, digest: int) -> np.ndarray:
         raw = self._raw(int(address), int(digest))

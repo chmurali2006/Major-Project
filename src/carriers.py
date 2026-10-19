@@ -44,6 +44,21 @@ class FragileCarrier:
         q = np.round(coeff / self.delta) * self.delta
         return (coeff - q > 0).astype(np.uint8)
 
+    def evidence(self, coeff: np.ndarray) -> np.ndarray:
+        """Fraction of the 60 tag slots holding a residual big enough to read.
+
+        A marked block whose pixels never touch the gamut holds a full mark in
+        every slot, so this is 1.0. A block that has been through a global
+        transform - resampling, added noise, recompression - holds a shrunken
+        one. Measured over blocks that are decidable (not excused for gamut
+        reasons), PH2 gives 1.00 for clean images and for every copy-move edit,
+        against 0.55-0.61 for a 90% resize round trip and 0.88 for sigma=1.
+        The populations do not overlap, which is what makes this the test for
+        'the image was changed as a whole'.
+        """
+        q = np.round(coeff / self.delta) * self.delta
+        return (np.abs(coeff - q) > 1.0).mean(axis=2)
+
     def score(self, coeff: np.ndarray, bits: np.ndarray) -> np.ndarray:
         """Per-block normalised correlation between residual and expected tag.
 

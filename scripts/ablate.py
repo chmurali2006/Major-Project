@@ -37,7 +37,7 @@ from src.container import field_mask, recover_luma      # noqa: E402
 KEY = b"falsification-key"
 
 PASTE = (1, 2, 3, 4, 5)
-BENIGN = (7, 8, 9, 11)     # sample-preserving handling (A-017)
+BENIGN = (7, 8, 9, 10)     # sample-preserving handling (A-017 withdrawn)
 
 
 def run_variant(rgb, mask, image_id, overrides, conds):
@@ -89,6 +89,8 @@ def summarise(rows, conds):
         agg["benign_claim"] = float(np.mean([r[cid]["claim"] for r in rows for cid in benign]))
     if 6 in conds:
         agg["cond6_claim"] = float(np.mean([r[6]["claim"] for r in rows]))
+    if 11 in conds:
+        agg["resize_claim"] = float(np.mean([r[11]["claim"] for r in rows]))
     agg["clean_claim"] = float(np.mean([r["clean_claim"] for r in rows]))
     agg["psnr"] = float(np.mean([r["psnr"] for r in rows]))
     agg["coverage"] = float(np.mean([r["clean_coverage"] for r in rows]))
@@ -113,6 +115,9 @@ ABLATIONS = [
     ("A4 tilt restored", {"lam": 1.0}, "psnr", "drop",
      "If restoring region weighting costs no measurable image quality, the "
      "decision to remove it (A-018) was not buying anything either."),
+    ("A6 global attenuation cut", {"use_attenuation": False}, "resize_claim", "rise",
+     "If a 90% resize of a smooth image still does not produce a false claim "
+     "without the attenuation rule, the rule is not what fixes condition 11."),
     ("A5 ladder collapsed", {"tau_area": 1.0}, "benign_claim", "rise",
      "If a single threshold with no abstention is equally quiet on benign "
      "handling, the ladder earns its complexity nowhere."),
@@ -145,13 +150,14 @@ def main() -> int:
                          "predicted_direction": direction, "claim": claim}
 
     hdr = (f"{'variant':30} {'det':>6} {'IoU':>6} {'paste':>6} {'benign':>7} "
-           f"{'c6':>6} {'clean':>6} {'inField':>8} {'PSNR':>6} {'cov':>6}")
+           f"{'c6':>6} {'r11':>6} {'clean':>6} {'inField':>8} {'PSNR':>6} {'cov':>6}")
     print("\n" + hdr)
     print("-" * len(hdr))
     for key in ["baseline"] + [a[0] for a in ABLATIONS]:
         m = results[key]["metrics"] if key != "baseline" else results[key]
         print(f"{key:30} {m['det']:6.3f} {m['iou']:6.3f} {m['paste_claim']:6.3f} "
               f"{m['benign_claim']:7.3f} {m.get('cond6_claim', float('nan')):6.3f} "
+              f"{m.get('resize_claim', float('nan')):6.3f} "
               f"{m['clean_claim']:6.3f} {m['surround_verdicts']:8.4f} "
               f"{m['psnr']:6.2f} {m['coverage']:6.3f}")
 

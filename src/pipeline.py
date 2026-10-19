@@ -36,7 +36,7 @@ from .carriers import FragileCarrier, RobustCarrier, block_region
 from .config import Config, DEFAULT
 from .container import (Protected, block_gamut, blocks_out_of_range, compose, exact_bounds,
                         field_mask, out_of_range, png_bytes, window_slack,
-                        png_read, png_text, recover_luma, split_rct)
+                        png_read, png_read_with_text, png_text, recover_luma, split_rct)
 from .ladder import GEOMETRY_CHANGE, LadderResult, all_cannot_say, classify, texture_of
 from .transform import Haar2
 
@@ -223,9 +223,8 @@ class System:
     # ------------------------------------------------------------ verify
     def verify(self, data: bytes, resync: bool = False) -> VerifyResult:
         """data: the received container bytes. No mask, no original, no sidecar."""
-        text = png_text(data)
+        rgb, text = png_read_with_text(data)
         if TEXT_IMAGE_ID not in text or TEXT_KEY_ID not in text:
-            rgb = png_read(data)
             shape = (rgb.shape[0] // 8, rgb.shape[1] // 8)
             y = recover_luma(rgb)
             return VerifyResult(delta_f=np.full(shape, np.nan), delta_sr=np.full(shape, np.nan),
@@ -234,14 +233,12 @@ class System:
 
         image_id = int(text[TEXT_IMAGE_ID])
         if text[TEXT_KEY_ID] != self._key_id(image_id):
-            rgb = png_read(data)
             shape = (rgb.shape[0] // 8, rgb.shape[1] // 8)
             y = recover_luma(rgb)
             return VerifyResult(delta_f=np.full(shape, np.nan), delta_sr=np.full(shape, np.nan),
                                 ladder=all_cannot_say(shape), texture=texture_of(y),
                                 image_id=image_id, key_ok=False)
 
-        rgb = png_read(data)
         y = recover_luma(rgb)
         h, w = y.shape
         declared = text.get(TEXT_SIZE)
@@ -275,7 +272,8 @@ class System:
         fragile = FragileCarrier(self.cfg.delta_f)
         # 1 - correlation, so delta_f keeps its meaning: 0 = the block carries
         # its own tag, 1 = it carries no relation to it.
-        delta_f = np.clip(1.0 - fragile.score(Haar2.details_flat(c), expected), 0.0, 1.0)
+        flat_c = Haar2.details_flat(c)
+        delta_f = np.clip(1.0 - fragile.score(flat_c, expected), 0.0, 1.0)
         if not valid.all():
             delta_f[~valid] = 1.0
 
@@ -295,11 +293,34 @@ class System:
         # unmarked - and therefore transmitted verbatim - yields exactly the
         # encoder's decision. A marked block's window only ever shrinks by its
         # own excursion, which is at most its reserved margin.
-        excused_v = window_slack(y, cb_r, cr_r) < self.cfg.window_min
+        room_lo_v, room_hi_v = block_gamut(y, cb_r, cr_r)
+        # width of each block's legal luma window (A-014); one gamut map serves
+        # both this and the gamut-safe test below.
+        slack_v = room_hi_v.min(axis=(1, 3)) - room_lo_v.max(axis=(1, 3))
+        excused_v = slack_v < self.cfg.window_min
         field_v = field_mask(y) if self.cfg.field_excuse else np.zeros((ny, nx), bool)
         excluded = field_v | excused_v | ~valid
+        # Was the image changed as a whole? If the mark is uniformly weak
+        # everywhere it should be strong, the sample values were transformed
+        # globally - resampled, recompressed, noised - and a fragile mark
+        # cannot certify any block afterwards. This is measured over the
+        # decidable blocks only, because an excused block holds a clipped mark
+        # by construction and would drag the median down on a clean image.
+        # Only blocks the gamut cannot have clipped can answer this question:
+        # where a pixel sits against the edge, the mark is clipped by
+        # construction and its amplitude says nothing about the image. In the
+        # blocks that are gamut-safe, a clean image and a copy-move edit both
+        # measure 1.00 (p0 = p95), while every global transform measures 0.90
+        # or less. See TAU_EVIDENCE.
+        gamut_safe = ((room_hi_v > self.cfg.gamut_safe_margin).all(axis=(1, 3))
+                      & (room_lo_v < -self.cfg.gamut_safe_margin).all(axis=(1, 3))
+                      & ~field_v)
+        attenuated = False
+        if self.cfg.use_attenuation and gamut_safe.sum() >= self.cfg.corroborate_min_blocks * 8:
+            ev = fragile.evidence(flat_c)[gamut_safe]
+            attenuated = bool(float(np.median(ev)) < self.cfg.tau_evidence)
         lad = classify(delta_f, delta_sr, tex, self.cfg, digest_margin=margin,
-                       excluded=excluded)
+                       excluded=excluded, attenuated=attenuated)
         return VerifyResult(delta_f=delta_f, delta_sr=delta_sr, ladder=lad,
                             texture=tex, image_id=image_id, key_ok=True,
                             digest_margin=margin)

@@ -94,6 +94,20 @@ def png_read(data: bytes) -> np.ndarray:
     return np.array(Image.open(io.BytesIO(data)).convert("RGB"))
 
 
+def png_read_with_text(data: bytes) -> tuple[np.ndarray, dict[str, str]]:
+    """Pixels and tEXt chunks from a single decode.
+
+    verify() needs both, and opening the PNG twice was a measurable share of
+    its latency - the decoder is the expensive part, not the metadata.
+    """
+    try:
+        im = Image.open(io.BytesIO(data))
+        text = dict(getattr(im, "text", {}) or {})
+        return np.array(im.convert("RGB")), text
+    except Exception:
+        return png_read(data), {}
+
+
 def png_text(data: bytes) -> dict[str, str]:
     """tEXt chunks of a PNG, empty dict if none. Lossy formats return {}."""
     try:

@@ -62,6 +62,29 @@ USE_ROBUST = True             # falsification switch: False removes Carrier B
                               # scripts/ablate.py, never by a reported run.
 FIELD_EXCUSE = True           # falsification switch: False stops excusing the
                               # out-of-field surround. Used by scripts/ablate.py.
+TAU_EVIDENCE = 0.95           # MEASURED  median tag evidence over gamut-safe
+                              # blocks below which the image was transformed as
+                              # a whole rather than edited in places.
+                              # PH2 n=120 images, blocks where every pixel sits
+                              # > 3 levels inside its own gamut interval:
+                              #   clean        1.00 (p0 = p95 = 1.00)
+                              #   copy-move    1.00 (p0 = p95 = 1.00)
+                              #   sigma=1      0.88 (max 0.90)
+                              #   90% resize   0.53-0.68
+                              # blur + resize  0.50-0.58
+                              # Zero overlap; 0.95 sits midway with 0.05 margin
+                              # on both sides.
+GAMUT_SAFE_MARGIN = 3.0       # MEASURED  levels a pixel must sit inside its own
+                              # gamut interval for its block to count as
+                              # gamut-safe. Below this the mark is clipped by
+                              # the gamut and its amplitude says nothing about
+                              # whether the image was transformed.
+USE_ATTENUATION = True        # falsification switch: False disables the
+                              # global-attenuation abstention (A-021).
+CORROBORATE_MIN_BLOCKS = 8     # CHOSEN  broken blocks needed before the
+                              # substituted/transformed test is trusted.
+                              # Below this the median reference error is noise,
+                              # and the lone-block rule (A-009) decides instead.
 WINDOW_MIN = 32.0             # MEASURED  smallest per-block gamut window the
                               # encoder will attempt. A block's legal luma
                               # window has p1=74 levels over PH2, and Carrier A's
@@ -136,6 +159,10 @@ class Config:
     max_shift: float = MAX_SHIFT
     excuse_slack: float = EXCUSE_SLACK
     window_min: float = WINDOW_MIN
+    corroborate_min_blocks: int = CORROBORATE_MIN_BLOCKS
+    tau_evidence: float = TAU_EVIDENCE
+    gamut_safe_margin: float = GAMUT_SAFE_MARGIN
+    use_attenuation: bool = USE_ATTENUATION
     use_robust: bool = USE_ROBUST
     field_excuse: bool = FIELD_EXCUSE
     amp_min: float = AMP_MIN

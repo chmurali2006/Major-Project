@@ -239,15 +239,13 @@ FROZEN: tuple[Condition, ...] = (
               "no tamper claim", "any tamper claim"),
     _cond(9, "benign", "JPEG 50", lambda d: jpeg(d, 50),
               "no tamper claim", "any tamper claim"),
-    # A-017: sigma=1 is additive noise, i.e. a modification of every sample.
-    # A fragile mark is destroyed by any such change - that is what "fragile"
-    # means - so this condition cannot assert "no tamper claim" without
-    # contradicting the scheme it is testing. Reclassified from `benign` to
-    # `degrade` on 2026-10-19, explicitly and with the measured claim rate
-    # still reported below; it is not a silent relabel.
-    _cond(10, "degrade", "Gaussian noise sigma=1",
+    # A-017 reclassified this to `degrade`; A-021 withdrew that. The tool now
+    # abstains on a globally attenuated mark instead of attributing local
+    # damage, so the condition passes as originally frozen. The battery is
+    # therefore unchanged from the dossier, which is the stronger position.
+    _cond(10, "benign", "Gaussian noise sigma=1",
               lambda d: gaussian_noise(d, 1.0),
-              "localised tamper claim or abstention", "silent INTACT"),
+              "no tamper claim", "any tamper claim"),
     _cond(11, "benign", "resize 90% and back",
               lambda d: resize_roundtrip(d, 0.9),
               "no tamper claim", "any tamper claim"),

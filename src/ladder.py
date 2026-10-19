@@ -71,7 +71,8 @@ def _neighbour_count(mask: np.ndarray) -> np.ndarray:
 
 def classify(delta_f: np.ndarray, delta_sr: np.ndarray, texture: np.ndarray,
              cfg: Config, digest_margin: np.ndarray | None = None,
-             excluded: np.ndarray | None = None) -> LadderResult:
+             excluded: np.ndarray | None = None,
+             attenuated: bool = False) -> LadderResult:
     df = np.asarray(delta_f, dtype=np.float64)
     dsr = np.asarray(delta_sr, dtype=np.float64)
     tex = np.asarray(texture, dtype=np.float64)
@@ -114,13 +115,31 @@ def classify(delta_f: np.ndarray, delta_sr: np.ndarray, texture: np.ndarray,
     area = float(broken.mean()) if broken.size else 0.0
     widespread = bool(area > cfg.tau_area)
 
+    # ---- rung 1a: was the image changed as a whole?
+    #
+    # `attenuated` is supplied by the verifier: it is true when the tag's own
+    # amplitude is uniformly below what a full mark would be, measured only in
+    # blocks where the RGB gamut cannot have clipped the mark (see
+    # TAU_EVIDENCE). A local edit leaves that measurement at 1.00, because a
+    # copy-move pastes already-marked pixels. A global transform - resample,
+    # recompression, additive noise - attenuates it everywhere. So a broken
+    # block in an attenuated image is not evidence of an edit: the image was
+    # transformed, and a fragile mark cannot certify it afterwards.
+    #
+    # This is the fix for condition 11 on ISIC 2018. On a smooth image most
+    # blocks carry almost no detail, so a +-2 level mark survives a 90% resize
+    # round trip and only the few blocks containing an edge break. Few broken
+    # blocks, scattered along edges, look exactly like localised tampering:
+    # measured 27.3% false claims on ISIC-300 against 0.0% on the more textured
+    # PH2. Reproducer: the same transform on pre-blurred PH2 claimed 79-96%.
+
     # NOTE: `not widespread`, never `~widespread`. On a Python bool the tilde
     # yields an int (-1), which silently converts a boolean mask into integer
     # fancy indexing and scatters verdicts over unrelated blocks.
-    tamper = strong & (not widespread)
+    tamper = strong & (not widespread) & (not attenuated)
     verdict[tamper] = TAMPERED
 
-    handling = broken & widespread
+    handling = broken & (widespread | attenuated)
     verdict[handling] = CANNOT_SAY
     reason[handling] = ROUTINE_HANDLING
 
