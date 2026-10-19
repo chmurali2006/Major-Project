@@ -90,11 +90,11 @@ the texture gate off. If you have the official distribution with `_lesion.bmp`
 masks, `prepare_ph2.py` takes that instead and checks the masks properly.
 
 Expected, from the Linux reference run (`runs/2026-10-20-n200-v6/`, commit
-`89f47a2`, code paths clean, 672 s):
+`dd06beb`, code paths clean, 665 s):
 
 ```
 detection 0.9990 | IoU 0.9421 | benign 0.0000 | clean-image claims 0/200
-PSNR 38.27 dB (worst 35.52) | verify 38.60 ms | coverage 0.927
+PSNR 38.27 dB (worst 35.52) | verify 38.98 ms | coverage 0.927
 ```
 
 Exact reproduction is not expected on different hardware: verify latency is the

@@ -3,9 +3,14 @@
 Prepared 2026-10-19, after reading the full context package
 (`project-context/`, branch `dev`) and running a design-risk spike.
 
-Status of this document: **proposal**. It does not override the dossier. Where
-it disagrees with the dossier, the disagreement is recorded in
-`docs/AMENDMENTS.md` with the measurement that forced it.
+Status of this document: **historical design record**. It does not override the
+dossier, and it is not the current state of the work: where it disagrees with
+the dossier, the disagreement is recorded in `docs/AMENDMENTS.md` with the
+measurement that forced it, and the measured state of the system is
+`docs/MID_PROJECT_REVIEW.md` with `docs/BENCHMARKS.md`. The numbers in §3 are
+**mechanism checks on one synthetic phantom**, not results; none of them is
+quoted anywhere as a result, and all of them have since been superseded by
+measurements on PH2.
 
 ---
 

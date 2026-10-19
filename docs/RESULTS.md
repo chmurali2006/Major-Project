@@ -35,7 +35,7 @@ in [`docs/BENCHMARKS.md`](BENCHMARKS.md) §1.
 | never claims on an untouched image | **0 / 200** | 0 | same |
 | stays silent on benign handling | **0.0%** on JPEG 90/75/50, resize **and** σ=1 | ≤ 0.5% | same |
 | does not visibly damage the image | **38.27 dB** mean, worst image **35.52 dB** | ≥ 37.8 dB mean | same |
-| runs fast enough to use | **38.60 ms** verify, 130 ms protect, 512², CPU | ≤ 44 ms | same |
+| runs fast enough to use | **38.98 ms** verify, 130 ms protect, 512², CPU | ≤ 44 ms | same |
 | the binding is what defeats copy-move | ablation A1: detection **1.000 → 0.000** | — | `2026-10-20-ablate` |
 | the global-transform rules are load-bearing | ablation A8: resize claims **0.000 → 1.000** without them | — | same |
 | the mean binding is what catches burned-in text | ablation A7: condition 21 IoU **0.285 → 0.065** | — | same |

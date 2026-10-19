@@ -12,7 +12,7 @@ code departs from it, the departure is recorded with its measurement in
 
 Mid-project review checkpoint, measured on real tissue (PH2, n=200, 22 frozen
 conditions). All five operating-point bars are met on the mean: detection
-99.90%, IoU 0.9421, benign claims 0.00%, PSNR 38.27 dB, verify 38.60 ms, and
+99.90%, IoU 0.9421, benign claims 0.00%, PSNR 38.27 dB, verify 38.98 ms, and
 zero false claims on the 200 untouched images. The known weaknesses — worst-case
 PSNR 35.52 dB, burned-in text as an alarm rather than a localiser — are stated
 with their numbers in

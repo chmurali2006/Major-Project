@@ -49,7 +49,7 @@ to, not a claim to have beaten anyone.
 
 <!-- BEGIN MEASURED TABLES -->
 **Run:** `scripts/bench.py --data /tmp/ph2mirror --limit 200 --receipt runs/2026-10-20-n200-v6/receipt.json`  
-**Commit:** `89f47a2` · **dirty tree:** no · **n:** 200
+**Commit:** `dd06beb` · **dirty tree:** no · **n:** 200
 
 
 | what | bar | measured | |
@@ -58,7 +58,7 @@ to, not a claim to have beaten anyone.
 | localisation IoU, conditions 1-6 | >= 0.832 | **0.9421** | met |
 | false claims, benign conditions | <= 0.5% | **0.00%** | met |
 | PSNR (mean; worst image) | >= 37.8 dB | **38.27 dB; 35.52 dB** | met |
-| verify latency | <= 44 ms | **38.60 ms** | met |
+| verify latency | <= 44 ms | **38.98 ms** | met |
 
 | # | condition | family | claim | detected | det@IoU 0.5 | IoU | block-F1 | coverage | silent (img) | silent (blocks) |
 |---|---|---|---|---|---|---|---|---|---|---|
@@ -85,7 +85,7 @@ to, not a claim to have beaten anyone.
 | 21 | burned-in text 64x24 | structure | 99.5% | 97.0% | 0.5% | 0.286 | 0.437 | 0.922 | 83.0% | 5.9% |
 | 22 | inpainting removal (Telea) | structure | 100.0% | 100.0% | 99.5% | 0.912 | 0.953 | 0.925 | 100.0% | 2.9% |
 
-PSNR 38.27 dB (worst 35.52) · coverage 0.927 · protect 132 ms/img · verify 38.6 ms/img.
+PSNR 38.27 dB (worst 35.52) · coverage 0.927 · protect 131 ms/img · verify 39.0 ms/img.
 <!-- END MEASURED TABLES -->
 
 > **Provenance.** `code_dirty` is `false`: the code paths (`src/`, `scripts/`,
@@ -116,7 +116,7 @@ reviewer should ask what the distribution behind it looks like, so:
   detection: at `FIT_MARGIN = 3` the worst image is 37.65 dB and detection is
   97.60%, exactly the bar with nothing behind it
   (`runs/2026-10-19-n200-v4/`). Both receipts ship, and the trade is in §3.4.
-* **latency** is 38.60 ms against a 44 ms bar on this Linux sandbox. It is
+* **latency** is 38.98 ms against a 44 ms bar on this Linux sandbox. It is
   hardware-relative: an earlier trial on the user's i5-1235U measured ~1.4×
   slower than the sandbox of the day. Reported as measured, not projected.
 

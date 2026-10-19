@@ -6,8 +6,9 @@ honest abstention, and an evaluation battery that is falsifiable by construction
 
 **Date:** 2026-10-20 · **Branch:** `arena/4f1090b0-major-project` (PR #4 → `dev`)
 · **Corpus:** PH2, 200 dermoscopic images, 512 × 512, all 22 conditions
-· **Receipt:** `runs/2026-10-20-n200-v6/receipt.json` — the command, config, git
-commit, environment and per-condition counts are inside it
+· **Receipt:** `runs/2026-10-20-n200-v6/receipt.json` (commit `dd06beb`, code
+paths clean) — the command, config, git commit, environment and per-condition
+counts are inside it
 
 ---
 
@@ -67,7 +68,7 @@ itself to, not a claim to have beaten anyone.
 | false claims, benign conditions | ≤ 0.5% | **0.00%** on all five | met |
 | false claims, untouched image | 0 | **0 / 200** | met |
 | PSNR | ≥ 37.8 dB (mean) | **38.27 dB** mean, **35.52 dB** worst | met on the mean |
-| verify latency | ≤ 44 ms | **38.60 ms** | met |
+| verify latency | ≤ 44 ms | **38.98 ms** | met |
 
 Four numbers belong beside them, because a detector that abstains a lot looks
 excellent on the rows above:

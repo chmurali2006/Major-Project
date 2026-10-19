@@ -3,7 +3,7 @@
   "labelled_as": "measured",
   "dataset": "/tmp/ph2mirror",
   "dataset_is_primary": false,
-  "created_utc": "2026-10-19T23:14:12+00:00",
+  "created_utc": "2026-10-19T23:35:05+00:00",
   "command": "scripts/bench.py --data /tmp/ph2mirror --limit 200 --receipt runs/2026-10-20-n200-v6/receipt.json",
   "config": {
     "delta_f": 8.0,
@@ -42,7 +42,7 @@
   "code_dirty": false,
   "tree_dirty": true,
   "code": {
-    "git_commit": "89f47a2b294ebf77788b31b884d4399cfd9ff88b"
+    "git_commit": "dd06beb144e37492626a9db029957374f6aef5a4"
   },
   "environment": {
     "python": "3.11.2",
@@ -55,8 +55,9 @@
     "psnr_mean": 38.27085830580245,
     "psnr_worst": 35.51819398421597,
     "coverage_mean": 0.926541748046875,
-    "protect_ms": 131.79639010506435,
-    "verify_ms": 38.59832437502064,
+    "clean_claims": 0,
+    "protect_ms": 130.9514291249934,
+    "verify_ms": 38.98475686005895,
     "per_condition": {
       "1": {
         "n": 200,
@@ -8816,7 +8817,7 @@
       "iou": 0.9420845170454547,
       "benign_claim_rate": 0.0,
       "psnr": 38.27085830580245,
-      "verify_ms": 38.59832437502064
+      "verify_ms": 38.98475686005895
     },
     "verdicts": {
       "detection": "met",
@@ -8827,5 +8828,5 @@
     }
   },
   "violations": [],
-  "wall_clock_s": 672.4742468670001
+  "wall_clock_s": 665.2352979309999
 }
