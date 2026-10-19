@@ -161,3 +161,24 @@ def test_resize_on_a_smooth_image_does_not_claim_tampering():
         data = out[0] if isinstance(out, tuple) else out
         claims += int(sysm.verify(data).ladder.tampered.any())
     assert claims == 0, f"{claims}/4 smooth images claimed tampering after a resize"
+
+
+def test_attenuation_rule_does_not_hide_a_real_edit_on_a_smooth_image():
+    """A-021 must abstain on transforms without blinding the detector.
+
+    The attenuation rule keys on the tag's amplitude. A copy-move pastes
+    already-marked pixels, so it cannot lower that measure - but this test
+    exists because a rule that abstains is one bad threshold away from
+    abstaining on everything.
+    """
+    from PIL import Image, ImageFilter
+
+    sysm = System(KEY)
+    hits = 0
+    for seed in (31, 32, 33):
+        rgb, mask = phantom(seed=seed)
+        smooth = np.array(Image.fromarray(rgb).filter(ImageFilter.GaussianBlur(0.9)))
+        p = sysm.protect(smooth, mask, image_id=800 + seed)
+        tampered = paste(p.png, src_block=(6, 6), dst_block=(36, 36), blocks=4)
+        hits += int(sysm.verify(tampered).ladder.tampered.any())
+    assert hits == 3, f"detected {hits}/3 edits on smooth images"
