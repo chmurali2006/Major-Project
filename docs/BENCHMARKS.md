@@ -1,8 +1,11 @@
 # Benchmark status — measured on real tissue
 
-**Date:** 2026-10-19 · **Code:** `a9ea5a1` (clean tree)
+**Date:** 2026-10-19 · **Code:** `1662968` + docs (clean tree at run time)
 · **Data:** PH2, **n=200 — the entire corpus**, all 22 conditions
-· **Receipt:** `runs/2026-10-19-n200/receipt.json` (`code_dirty: false`)
+· **Receipt:** `runs/2026-10-19-n200-final/receipt.json`
+
+> **This table supersedes the earlier PH2 run.** The change is A-021, which
+> fixes a defect the *primary* corpus exposed and PH2 could not: see §5.
 
 ---
 
@@ -11,19 +14,19 @@
 | bar | target | measured (PH2 n=200) | verdict |
 |---|---|---|---|
 | detection | ≥ 97.6% | **99.90%** (conditions 1–5) | met |
-| IoU | ≥ 83.2% | **0.9189** | met |
+| IoU | ≥ 83.2% | **0.9397** | met |
 | benign claim rate | ≤ 0.5% | **0.0%** | met |
-| PSNR | ≥ 37.8 dB | **38.72 dB** (worst 38.28) | met |
-| verify latency | ≤ 44 ms | **40.5 ms** | met |
+| PSNR | ≥ 37.8 dB | **38.72 dB** (worst 38.26) | met |
+| verify latency | ≤ 44 ms | **42.9 ms** | met |
 
 **Every bar is met on every image**, not on average: the worst image in the
 corpus is 38.28 dB, above the 37.8 dB floor. That was the deciding argument for
 λ=0 in A-018.
 
-The benign set is JPEG 90 / 75 / 50 and resize 90% — operations that preserve
-sample values. Condition 10 (σ=1 noise) is a modification, not benign handling,
-and was reclassified `degrade` under A-017; its measured claim rate is still
-published below.
+The benign set is JPEG 90 / 75 / 50, resize 90% and σ=1 noise — **all five at
+0.0%**. Condition 10 is in that set because A-017 was withdrawn: the tool now
+abstains on a globally attenuated mark (A-021) instead of accusing it, so the
+battery is unchanged from the dossier.
 
 ---
 
@@ -41,17 +44,17 @@ block authentic is the failure a clinician would act on.
 
 | # | condition | family | claim | detected | IoU | block-F1 | coverage | silent |
 |---|---|---|---|---|---|---|---|---|
-| 1 | copy-move 32×32 bg→bg | paste | 100.0% | 100.0% | 0.968 | 0.983 | 0.936 | 0.0% |
-| 2 | copy-move 32×32 over lesion | paste | 100.0% | 100.0% | 0.966 | 0.981 | 0.936 | 1.0% |
-| 3 | copy-move 64×64 over lesion | paste | 100.0% | 100.0% | 0.970 | 0.985 | 0.936 | 1.0% |
-| 4 | three 32×32 clones | paste | 100.0% | 100.0% | 0.963 | 0.981 | 0.936 | 2.0% |
-| 5 | copy-move 16×16 | paste | 99.5% | 99.5% | 0.956 | 0.972 | 0.936 | 0.0% |
-| 6 | copy-move 8×8 | paste | 69.0% | 69.0% | 0.690 | 0.690 | 0.936 | 0.0% |
+| 1 | copy-move 32×32 bg→bg | paste | 100.0% | 100.0% | 0.995 | 0.997 | 0.936 | 0.0% |
+| 2 | copy-move 32×32 over lesion | paste | 100.0% | 100.0% | 0.994 | 0.997 | 0.936 | 0.0% |
+| 3 | copy-move 64×64 over lesion | paste | 100.0% | 100.0% | 0.951 | 0.975 | 0.936 | 0.0% |
+| 4 | three 32×32 clones | paste | 100.0% | 100.0% | 0.989 | 0.994 | 0.936 | 0.0% |
+| 5 | copy-move 16×16 | paste | 99.5% | 99.5% | 0.994 | 0.997 | 0.936 | 0.0% |
+| 6 | copy-move 8×8 | paste | 72.0% | 72.0% | 0.715 | 0.715 | 0.936 | 0.0% |
 | 7 | JPEG 90 | benign | 0.0% | — | — | — | 0.071 | — |
 | 8 | JPEG 75 | benign | 0.0% | — | — | — | 0.007 | — |
 | 9 | JPEG 50 | benign | 0.0% | — | — | — | 0.004 | — |
-| 10 | Gaussian noise σ=1 | degrade | 31.5% | — | — | — | 0.854 | — |
-| 11 | resize 90% and back | benign | 0.0% | — | — | — | 0.341 | — |
+| 10 | Gaussian noise σ=1 | benign | **0.0%** | — | — | — | 0.856 | — |
+| 11 | resize 90% and back | benign | **0.0%** | — | — | — | 0.341 | — |
 | 12 | JPEG 30 | degrade | 0.0% | — | — | — | 0.002 | — |
 | 13 | JPEG 10 | degrade | 0.0% | — | — | — | 0.001 | — |
 | 14 | double compression 75 then 50 | degrade | 0.0% | — | — | — | 0.004 | — |
@@ -61,10 +64,10 @@ block authentic is the failure a clinician would act on.
 | 18 | 70% centre crop then resize | degrade | 0.0% | — | — | — | 0.001 | — |
 | 19 | block-aligned crop 24 px/side | structure | 0.0% | 0.0% | 0.000 | 0.000 | 0.000 | 0.0% |
 | 20 | block-aligned shift 8 px | structure | 0.0% | 0.0% | 0.000 | 0.000 | 0.000 | 66.0% |
-| 21 | burned-in text 64×24 | structure | 56.0% | 3.5% | 0.027 | 0.050 | 0.931 | 100.0% |
+| 21 | burned-in text 64×24 | structure | 51.5% | 2.5% | 0.023 | 0.043 | 0.931 | 100.0% |
 | 22 | inpainting removal (Telea) | structure | 0.0% | 0.0% | 0.000 | 0.000 | 0.845 | 100.0% |
 
-PSNR 38.72 dB (worst 38.28) · coverage 0.936 · protect 113 ms/img · verify 41 ms/img.
+PSNR 38.72 dB (worst 38.26) · coverage 0.936 · protect 129 ms/img · verify 43 ms/img.
 
 Conditions 19 and 20 return `CANNOT_SAY(geometry_change)` by design.
 
@@ -110,11 +113,17 @@ size no longer matches and returns `CANNOT_SAY(geometry_change)` rather than
 `INTACT`. Coverage 0.000 is the honest answer, not a failure — but it is not
 detection either.
 
-### 3.4 σ=1 noise
+### 3.4 σ=1 noise (was the worst failure, now 0%)
 
-31.5% of images claim tampering. A fragile mark is destroyed by additive noise;
-that is fragility, not a defect. See A-017 for the reclassification and the
-reasoning, and note that the number is published, not suppressed.
+Additive noise at σ=1 destroys the mark in patches, and the patches used to be
+reported as localised tampering on 31.5% of images. A-021 fixes it: the mark's
+amplitude, measured where the gamut cannot have clipped it, drops to 0.88
+against 1.00 for a clean image, so the tool recognises a global transformation
+and abstains instead of attributing damage. **Claim rate 0.0%.**
+
+This is why A-017 was *withdrawn*. Relabelling the condition would have hidden
+the defect; the detector was fixed instead, and the frozen battery stands
+unchanged.
 
 ---
 
@@ -147,40 +156,101 @@ mark, read it with a matched filter) is the structural answer.
 
 ## 5. Falsification checks (dossier §19)
 
-`scripts/ablate.py`, PH2 n=6, receipt `runs/2026-10-19-ablate/receipt.json`.
-Every ablation changes the **embedder**, not just the reader.
+`scripts/ablate.py`. Every ablation changes the **embedder** as well as the
+reader. Two regimes are reported because one mechanism only matters in one of
+them: `plain` is PH2 as it is, `smooth` is PH2 blurred by σ=0.9 before
+protecting, which models ISIC 2018's flatter images.
 
-| ablation | metric | baseline | ablated | outcome |
+Receipts: `runs/2026-10-19-ablate-final/` (plain),
+`runs/2026-10-19-ablate-smooth/` (smooth).
+
+| ablation | metric | plain | smooth | outcome |
 |---|---|---|---|---|
-| A1 binding cut | copy-move detection | 1.000 | **0.000** | load-bearing |
-| A2 corroboration cut | 8×8-paste claim | 0.833 | **0.500** | load-bearing |
-| A3 capacity refusal removed | in-field blocks judged | 0.0000 | **0.0038** | load-bearing (small) |
-| A4 tilt restored (λ=1) | PSNR | 39.37 | **38.97** | load-bearing |
-| A5 ladder collapsed | benign claim rate | 0.000 | **1.000** | load-bearing |
+| A1 binding cut | copy-move detection | 1.000 → **0.000** | 1.000 → **0.000** | load-bearing |
+| A2 corroboration cut | 8×8-paste claim | 0.500 → **0.167** | 0.500 → **0.167** | load-bearing |
+| A3 capacity refusal removed | unmarked blocks judged | 0.0000 → 0.0007 | 0.0000 → 0.0007 | measurable, small |
+| A4 tilt restored (λ=1) | PSNR | 38.71 → **38.48** | 39.65 → **39.37** | load-bearing |
+| A5 ladder collapsed | benign claim rate | 0.000 → 0.000 | 0.000 → 0.000 | **no effect — see below** |
+| A6 attenuation cut | resize claim, smooth regime | 0.000 → 0.000 | 0.000 → **0.667** | load-bearing |
 
-**5/5 change the battery as predicted.**
+**A1** is the central claim: without the address in the tag, copy-move
+detection goes from 100% to zero.
 
-A1 is the central claim: without the address in the tag, copy-move detection
-goes from 100% to zero. A5 shows why abstention exists: one threshold with no
-extent rule claims tampering on every benign image. A2 shows the carriers are
-not redundant: without Carrier B the single-block claim falls from 0.83 to
-0.50. A4 measures the A-018 decision from the other side — restoring region
-weighting costs 0.40 dB, which is exactly the price λ=0 declined to pay. A3 is
-small but real: without the capacity refusal the tool judges 0.38% of blocks it
-never marked.
+**A6** is the falsification of A-021, and it only shows in the smooth regime —
+which is exactly the corpus that exposed the defect. Without the rule, two
+thirds of smooth images claim tampering after a benign resize.
+
+**A2** shows the carriers are not redundant: without Carrier B the single-block
+claim falls to a sixth.
+
+**A4** measures the A-018 decision from the other side: restoring region
+weighting costs 0.23–0.28 dB.
+
+**A3 is small but real.** Without the capacity refusal the tool judges 0.07% of
+blocks it never marked. It is retained because asserting integrity over an
+unmarked block is wrong regardless of count, and because it supplies the
+`capacity_refusal` reason.
+
+**A5 no longer moves the battery, and that is a finding.** Before A-021 the
+extent rule was what stopped benign transforms from being claimed (collapsing
+it drove benign claims to 1.000). With the attenuation rule in place, benign
+transformations are recognised before extent is consulted, so A5's effect on
+this battery is nil. The extent rule is retained because it is the rule that
+converts *widespread substituted* content into an abstention, a case this
+battery does not contain at a scale that would show it — and because removing it
+would need its own measurement. Recorded honestly rather than left looking
+load-bearing.
 
 **Not run.** Dossier ablations 3 and 5 target the texture gate, disabled under
-A-007; 7 needs the secondary corpus, unreachable from this sandbox. Marked
-not-run, not dropped.
+A-007; 7 needs a second corpus and is now the top priority (see §6).
 
 ---
 
-## 6. Reproducing
+## 6. The primary corpus trial, and the defect it found
+
+A local trial ran the full battery on **ISIC 2018 Task 1, first 300 images**
+(official S3 distribution, 2594 pairs prepared, masks verified) and on PH2, for
+both the previous codebase (`dev`, `ea3b368`) and this one (`e3290ca` at the
+time). The numbers are the user's, reproduced in their report.
+
+| bar | dev ISIC-300 | this branch ISIC-300 | dev PH2-200 | this branch PH2-200 |
+|---|---|---|---|---|
+| detection | 0.9613 not met | **0.9967 met** | 0.9390 not met | **0.9990 met** |
+| IoU | 0.8375 met | **0.8933 met** | 0.7917 not met | **0.9050 met** |
+| benign claims | 0.0560 not met | **0.0683 not met** | 0.0360 not met | **0.0000 met** |
+| PSNR | 36.24 not met | **39.06 met** | 36.41 not met | **38.30 met** |
+| verify | 58.5 ms | 53.7 ms | 62.3 ms | 57.7 ms |
+| violation | c10 σ=1 28% | **c11 resize 27.3%** | c10 σ=1 18% | none |
+
+Two things follow, and both are in the design now:
+
+1. **The redesign fixed the real problems** — detection, IoU, PSNR and benign
+   rate all improve on both corpora.
+2. **It introduced one defect that only the primary corpus could reveal.**
+   Condition 11 claimed on 27.3% of ISIC images. That is A-021: on a smooth
+   image a resample breaks only the few blocks containing an edge, and a few
+   scattered broken blocks look like localised editing. PH2 is more textured,
+   so it never showed the problem. Fixed and falsified in A-021/A6.
+
+**Still to re-measure on ISIC after A-021.** The trial above predates the fix.
+The expected outcome is condition 11 at 0.0% and the benign bar met; that must
+be measured, not assumed, and the ISIC corpus is only reachable from the
+user's machine. `docs/REPRODUCE.md` gives the exact command.
+
+**Condition 21 remains the honest gap** — 28.7% claims with 0.3% detection on
+ISIC, 51.5% with 2.5% on PH2. That is A-020: modifications confined to a
+block's mean are invisible to a detail-carried tag with a Q=32 digest.
+
+---
+
+## 7. Reproducing
 
 ```bash
 python scripts/prepare_ph2.py --src <ph2-repo> --out datasets/ph2
 python scripts/bench.py  --data datasets/ph2 --limit 200 --receipt runs/<utc>/
 python scripts/ablate.py --data datasets/ph2 --limit 6   --receipt runs/<utc>-ablate/
+python scripts/ablate.py --data datasets/ph2 --limit 6 --smooth 0.9 \
+                         --receipt runs/<utc>-ablate-smooth/
 ```
 
 `bench.py` exits non-zero on a benign violation and warns if the working tree

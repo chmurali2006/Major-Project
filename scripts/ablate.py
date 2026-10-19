@@ -37,7 +37,8 @@ from src.container import field_mask, recover_luma      # noqa: E402
 KEY = b"falsification-key"
 
 PASTE = (1, 2, 3, 4, 5)
-BENIGN = (7, 8, 9, 10)     # sample-preserving handling (A-017 withdrawn)
+BENIGN = (7, 8, 9, 10, 11)  # sample-preserving handling; sigma=1 included
+                            # because A-021 makes the tool abstain on it
 
 
 def run_variant(rgb, mask, image_id, overrides, conds):
@@ -131,9 +132,20 @@ def main() -> int:
     ap.add_argument("--data", required=True)
     ap.add_argument("--limit", type=int, default=6)
     ap.add_argument("--receipt", type=str, default=None)
+    ap.add_argument("--smooth", type=float, default=0.0, metavar="SIGMA",
+                    help="blur each image before protecting. Models ISIC-2018's "
+                         "flatter images, where a benign resize breaks only a "
+                         "few edge blocks and the extent rule cannot help.")
     args = ap.parse_args()
 
     images = load_dataset(args.data, args.limit)
+    if args.smooth > 0:
+        from PIL import Image, ImageFilter
+
+
+        images = [(np.array(Image.fromarray(rgb).filter(
+            ImageFilter.GaussianBlur(args.smooth))), mask, name)
+            for rgb, mask, name in images]
     print(f"\n{args.data}  n={len(images)}  conditions {list(CONDS)}")
 
     results = {}

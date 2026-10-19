@@ -22,11 +22,11 @@ tampered block as authentic on the copy-move family.
 
 | what is claimed | measured | receipt |
 |---|---|---|
-| detects copy-move tampering | **99.90%** of images, conditions 1–5 | `runs/2026-10-19-n200` |
-| locates it | **IoU 0.9189**, block-F1 0.981 on the 64×64 paste | same |
-| stays silent on benign handling | **0.0%** claim on JPEG 90/75/50 and resize | same |
-| does not visibly damage the image | **38.72 dB**, worst image **38.28 dB** | same |
-| runs fast enough to use | **40.5 ms** verify, 113 ms protect, 512×512, CPU | same |
+| detects copy-move tampering | **99.90%** of images, conditions 1–5 | `runs/2026-10-19-n200-final` |
+| locates it | **IoU 0.9397**, block-F1 0.997 on the 32×32 paste | same |
+| stays silent on benign handling | **0.0%** on JPEG 90/75/50, resize **and** σ=1 | same |
+| does not visibly damage the image | **38.72 dB**, worst image **38.26 dB** | same |
+| runs fast enough to use | **42.9 ms** verify, 129 ms protect, 512×512, CPU | same |
 | the binding is what defeats copy-move | ablation A1: detection **1.000 → 0.000** | `runs/2026-10-19-ablate` |
 | abstention is load-bearing | ablation A5: benign claims **0.000 → 1.000** without it | same |
 | the two carriers are not redundant | ablation A2: single-block claim **0.833 → 0.500** | same |
@@ -39,6 +39,15 @@ commit, environment and per-condition counts.
 ---
 
 ## 3. What an examiner should be told, before they find it
+
+**3.0 The primary corpus found a defect this branch introduced, and it is now
+closed.** On ISIC 2018 (300 images) condition 11 claimed tampering on 27.3% of
+images while PH2 showed 0.0%: on a smooth image a resample breaks only the few
+blocks containing an edge, and a few scattered broken blocks look exactly like
+localised editing. A-021 fixes it and ablation A6 falsifies the fix. **The ISIC
+re-measurement is still outstanding** — the fix is validated on a local
+reproducer, not yet on ISIC itself, and that distinction is stated everywhere
+the result appears.
 
 **3.1 The pin-hole (open, and the most important item).** The tag lives in the
 Haar detail coefficients and the digest is quantised at 32 levels, so a
@@ -57,11 +66,11 @@ carries no spatial redundancy. The lone-block rule prefers `CANNOT_SAY` to a
 false accusation, because the same rule stops one digest flip under noise from
 accusing a clean scan. `silent` for this condition is 0.0%.
 
-**3.3 σ=1 noise claims 31.5%.** A fragile mark cannot survive additive noise;
-that is what "fragile" means. The condition was originally frozen as *benign*,
-which asserted the opposite. It was reclassified `degrade` under A-017, with
-the number still published. This changes a frozen condition and is documented
-as a change, not presented as a measurement.
+**3.3 σ=1 noise: fixed, and the fix replaced a relabelling.** σ=1 used to claim
+tampering on 31.5% of images, and the first response was to reclassify the
+condition as `degrade` (A-017). That was withdrawn: A-021 now recognises that
+the mark is uniformly attenuated, abstains, and the condition passes as
+originally frozen. **0.0%.** The battery is unchanged from the dossier.
 
 **3.4 Structure conditions abstain.** Crop and shift return
 `CANNOT_SAY(geometry_change)`. Coverage 0.000 is the honest answer, not a
@@ -86,6 +95,7 @@ the design flaw underneath it. Five defects, each now an amendment:
 | A-013 | mark excursion assumed to be 2 levels | every block under-provisioned | measured: 7.1 mean, 11 max |
 | A-015 | signed mark cannot fit where a pixel has zero gamut room (72–85% of blocks in dark-vignette images) | the fit refused a third of the image | saturate the mark at the gamut; read it by matched-filter correlation |
 | A-019 | ground truth taken from the geometric edit region | 8.3% of "tampered" blocks never changed a pixel; we were penalised for being right | ground truth = blocks whose pixels actually differ |
+| A-021 | a benign resize on a smooth image looks like localised editing | **27.3% false claims on ISIC-300** (0% on PH2, 0% on the old code) | abstain when the mark is uniformly attenuated; falsified by ablation A6 (0.000 → 0.667) |
 
 A-015 is the substantive one. Reading the tag as 60 independent bits is
 brittle: saturating a few pixels flips a whole run of bits and a clean block
@@ -102,9 +112,10 @@ A-018 removed the region weighting: at n=40 it bought +0.001 IoU on conditions
 
 ## 5. Decision log a supervisor may want to check
 
-- **σ=1 was relabelled.** Deliberate, documented in A-017, with the measured
-  number still in every table. The argument: a metric that requires a fragile
-  mark to survive additive noise is measuring the wrong property.
+- **σ=1 was relabelled, then the relabelling was withdrawn.** A-017 reclassified
+  it; A-021 fixed the detector instead, so the battery is now unchanged from the
+  dossier. Reversing our own amendment is the outcome to prefer: it means the
+  frozen battery was right and the implementation was wrong.
 - **λ was set to 0 on n=40, not on the n=6 ablation.** The n=6 result had said
   "no effect"; at n=40 the effect existed but was confined to one condition.
   That is why the change waited for confirmation.
@@ -117,6 +128,8 @@ A-018 removed the region weighting: at n=40 it bought +0.001 IoU on conditions
 
 ## 6. What is next, in order
 
+0. **Re-run ISIC-300 and the full 2594.** `docs/REPRODUCE.md` §2. The A-021 fix
+   is validated on a reproducer; it must be confirmed on the primary corpus.
 1. **Close the pin-hole (A-020).** Bind the block mean at a finer quantisation
    and re-measure benign stability. This is the only known way the current
    design can call a changed block authentic.

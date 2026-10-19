@@ -319,10 +319,12 @@ battery is frozen. None is a thesis number yet.
 | A-014 | 2026-10-19 | Verified excuse is a superset of the embed skip | proposed |
 | A-015 | 2026-10-19 | Mark saturated at the gamut; matched-filter read | proposed |
 | A-016 | 2026-10-19 | Field excuse restricted to the border-connected surround | proposed |
-| A-017 | 2026-10-19 | `sigma = 1` noise reclassified out of "benign" | **accepted** |
+| A-017 | 2026-10-19 | `sigma = 1` noise reclassified out of "benign" | **WITHDRAWN by A-021** |
 | A-018 | 2026-10-19 | Region weighting removed (λ=0) | **accepted** |
 | A-019 | 2026-10-19 | Ground truth from the measured pixel diff | **accepted** |
 | A-020 | 2026-10-19 | Mean-only modifications are invisible | **OPEN — principal weakness** |
+| A-021 | 2026-10-19 | Global-attenuation abstention | **accepted** |
+| A-022 | 2026-10-19 | Per-block tag MAC: HMAC-SHA256 → keyed BLAKE2b | **accepted** |
 
 ---
 
@@ -450,7 +452,18 @@ misses are text drawn *on* the white surround, where no mark exists to
 destroy — a capacity limit, not a detector failure, and it is reported as
 `CANNOT_SAY(capacity_refusal)` rather than `INTACT`.
 
-## A-017 — `sigma = 1` noise is not benign for a fragile mark
+## A-017 — WITHDRAWN
+
+**Status:** withdrawn 2026-10-19 by **A-021**. The reclassification existed
+because the tool accused 31.5% of σ=1 images of tampering. It no longer does:
+the global-attenuation rule abstains on them, so condition 10 passes as
+originally frozen, in the `benign` family. The battery is therefore byte-for-
+byte the dossier's, which is a stronger position than changing a frozen
+condition and it is why the change is reversed rather than kept.
+
+The text below is retained as the record of what was believed and why.
+
+## A-017 (withdrawn) — `sigma = 1` noise is not benign for a fragile mark
 
 **Date:** 2026-10-19 · **Affects:** battery condition 10, `docs/BENCHMARKS.md`
 **Status:** ACCEPTED, 2026-10-19, on the project owner's direction ("do what is
@@ -620,3 +633,105 @@ the difference, and its margin needs to be re-measured at the new Q.
 binding of the whole scheme. It needs its own sweep (Q ∈ {8, 16, 32} × benign
 stability × condition 21/22 detection) and a fresh amendment. Writing it down
 now is the honest alternative to shipping a claim it would falsify.
+
+## A-021 — A globally attenuated mark means the image was transformed, not edited
+
+**Date:** 2026-10-19 · **Affects:** `pipeline.verify`, `carriers.FragileCarrier.evidence`,
+`ladder.classify`, `config.TAU_EVIDENCE`, module 4
+**Evidence:** `runs/2026-10-19-n200-final/`, `runs/2026-10-19-ablate-smooth/`
+
+**The defect this fixes was found on the primary corpus, not on PH2.** The
+local trial on ISIC 2018 (first 300 images) reported condition 11 — *resize 90%
+and back* — claiming tampering on **27.3%** of images, against 0.0% on PH2 and
+0.0% on the previous codebase. A benign condition failing on the primary
+corpus is the most serious class of error this tool can make.
+
+**Mechanism.** On a smooth image most 8×8 blocks carry almost no detail, so the
+±2-level mark survives a 90% resize round trip; only the blocks containing an
+edge break. A few broken blocks, scattered along edges, are indistinguishable
+from localised tampering by the extent rule, and PH2 never showed the problem
+because its images are textured enough that the same transform breaks more than
+5% of blocks and the rule abstains. Reproduced locally by blurring PH2 before
+protecting: the same transform then claimed on **79–96%** of images.
+
+**Why the obvious tests failed.** Four statistics were measured and rejected
+before the working one was found:
+
+| candidate | why it failed |
+|---|---|
+| median `delta_sr` over broken blocks | paste p10 0.37 vs resize p90 0.17, but the median clipped real pastes (c5 median 0.28) |
+| evidence fraction over *all* decidable blocks | clean images reach 0.72, because gamut clipping mimics attenuation |
+| mean `|HH1|` | clean p0 1.87 vs resized p90 1.80; overlapping on plain PH2 |
+| `delta_f` magnitude on broken blocks | paste p5 0.77 vs resize p75 0.85; overlapping |
+
+**The test that works.** Measure the tag's own amplitude — the fraction of the
+60 slots carrying a readable residual — **only in blocks where the RGB gamut
+cannot have clipped the mark**: every pixel more than 3 levels inside its own
+legal luma interval. In those blocks the comparison is exact:
+
+| population | evidence (PH2, n=120 images) |
+|---|---|
+| clean | **1.00** (p0 = p95 = 1.00) |
+| copy-move, all sizes | **1.00** (p0 = p95 = 1.00) |
+| Gaussian noise σ=1 | 0.88 (max 0.90) |
+| resize 90% and back | 0.53 – 0.68 |
+| blur 0.9 + resize 90% | 0.50 – 0.58 |
+
+Zero overlap. `TAU_EVIDENCE = 0.95` sits midway with 0.05 margin on each side.
+A copy-move pastes *already-marked* pixels, so it cannot lower this measure; a
+global transform attenuates the mark everywhere, so it cannot avoid lowering
+it. The physical statement is: *where the mark could have been written at full
+strength, it either is or the image was changed as a whole.*
+
+**Below the threshold, no block is accused.** Broken blocks become
+`CANNOT_SAY(routine_handling)`: the tool reports that it can no longer certify
+the image, which is true, instead of attributing the damage to a place, which
+would be false.
+
+**Measured effect (PH2, n=24 images, paired):**
+
+| condition | rule off | rule on |
+|---|---|---|
+| 1–5 (copy-move) | 100% | **100%** |
+| 6 (8×8) | 54.2% | 54.2% |
+| 10 (σ=1) | 25.0% | **0.0%** |
+| 11 (resize) on smooth images | **79.2%** | **0.0%** |
+
+Detection is untouched and both benign failures disappear. Because σ=1 now
+abstains, **A-017 is withdrawn** and condition 10 returns to `benign`.
+
+**Falsification.** Ablation A6 (`use_attenuation=False`) on the smooth regime:
+resize claim rate **0.000 → 0.667**. The rule is what fixes it.
+Receipt: `runs/2026-10-19-ablate-smooth/receipt.json`.
+
+**Limitation, stated.** An image that is both globally transformed *and*
+locally edited cannot be certified at all under this rule — every block
+abstains. That is the honest answer for a fragile mark, but it is a real loss
+of detection on recompressed-then-forged images, and it belongs in the
+limitations section rather than in a footnote.
+
+## A-022 — Per-block tag MAC: HMAC-SHA256 replaced by keyed BLAKE2b
+
+**Date:** 2026-10-19 · **Affects:** `binder.Binder`, `config`, module 4
+**Evidence:** `runs/2026-10-19-n200-final/`
+
+**Why.** Verification rebuilds all 4096 expected tags. With HMAC-SHA256 that
+was 11.2 ms per image — a quarter of the whole verification — because HMAC
+needs two padded compression calls per block. Keyed BLAKE2b (RFC 7693) folds
+the key into the initial state and needs one call: **5.2 ms, 2.2× faster.**
+
+**Security argument.** Both are standard keyed MACs; the tag is truncated to
+60 bits either way, so forgery resistance is 2^-60 in both cases. The change
+touches the cost, not the security claim. The construction is
+`BLAKE2b(address ‖ digest, key=K, digest_size=8)` with the address bound, which
+keeps A-004 (position binding) intact — the binding ablation A1 still gives
+1.000 → 0.000 detection.
+
+**What did not change.** The tag length, the binding, the key, the digest, and
+the failure modes.
+
+**Where the latency stands.** Verify is now **42.9 ms** on the reference
+sandbox (Linux, Python 3.11). The local trial measured 57.7 ms for the previous
+code on an i5-1235U under Windows, i.e. that machine runs ~1.4× slower, and the
+44 ms bar is hardware-relative: PFF-WM does not state the machine behind its
+figure. Both numbers are reported rather than the favourable one.
