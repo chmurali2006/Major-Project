@@ -36,11 +36,12 @@ from .carriers import FragileCarrier, RobustCarrier, block_region
 from .config import Config, DEFAULT
 from .container import (Protected, clip_safe_shift, compose, field_mask, png_bytes,
                         png_read, png_text, recover_luma, split_rct)
-from .ladder import LadderResult, all_cannot_say, classify, texture_of
+from .ladder import GEOMETRY_CHANGE, LadderResult, all_cannot_say, classify, texture_of
 from .transform import Haar2
 
 TEXT_IMAGE_ID = "pff_imageid"
 TEXT_KEY_ID = "pff_keyid"
+TEXT_SIZE = "pff_size"
 
 
 @dataclass(frozen=True)
@@ -88,8 +89,10 @@ class System:
         return hmac.new(self.key, b"pff-keyid" + int(image_id).to_bytes(4, "big"),
                         hashlib.sha256).hexdigest()[:16]
 
-    def _metadata(self, image_id: int) -> dict[str, str]:
-        return {TEXT_IMAGE_ID: str(int(image_id)), TEXT_KEY_ID: self._key_id(image_id)}
+    def _metadata(self, image_id: int, h: int = 512, w: int = 512) -> dict[str, str]:
+        return {TEXT_IMAGE_ID: str(int(image_id)),
+                TEXT_KEY_ID: self._key_id(image_id),
+                TEXT_SIZE: f"{h}x{w}"}
 
     # ------------------------------------------------------------ protect
     def protect(self, rgb: np.ndarray, region_mask: np.ndarray | None,
@@ -160,11 +163,49 @@ class System:
         # ---- 5. container
         prot: Protected = compose(y_marked, rgb)
         refused = refused_fit | refused_gate | prot.refused
-        png = png_bytes(prot.rgb, text=self._metadata(image_id))
+        png = png_bytes(prot.rgb, text=self._metadata(image_id, h, w))
         return ProtectedImage(png=png, rgb=prot.rgb, refused=refused, image_id=image_id)
 
+    # ------------------------------------------------------------ resync
+    def _address_grid(self, dr: int, dc: int, ny: int, nx: int) -> np.ndarray:
+        """Addresses seen through a block offset, or -1 outside the original grid."""
+        full = np.arange(64 * 64).reshape(64, 64)
+        pad = np.full((64 + 16, 64 + 16), -1, dtype=np.int64)
+        pad[8:8 + 64, 8:8 + 64] = full
+        return pad[8 + dr:8 + dr + ny, 8 + dc:8 + dc + nx]
+
+    def _offset_score(self, haar, y, dr, dc, sample=96) -> float:
+        """Fraction of sampled blocks whose bits match at this offset."""
+        ny, nx = haar.ny, haar.nx
+        addr = self._address_grid(dr, dc, ny, nx)
+        valid = addr >= 0
+        if valid.sum() < sample:
+            return -1.0
+        c = haar.forward(y)
+        digests = coarse_digest(c["LL2"], self.cfg.q_digest)
+        got = FragileCarrier(self.cfg.delta_f).read(Haar2.details_flat(c))
+        idx = np.argwhere(valid)
+        rng = np.random.default_rng(0)
+        pick = idx[rng.choice(len(idx), size=min(sample, len(idx)), replace=False)]
+        hits = 0
+        for r, cidx in pick:
+            a = int(addr[r, cidx])
+            b = self._binder.tag(a, int(digests[r, cidx]))
+            hits += int((got[r, cidx] == b).sum())
+        return hits / (len(pick) * 60)
+
+    def _estimate_offset(self, haar, y, image_id: int) -> tuple[int, int, float]:
+        self._binder = Binder(self.key, image_id, self.cfg.bind_address)
+        best, best_score = (0, 0), -1.0
+        for dr in range(-8, 9):
+            for dc in range(-8, 9):
+                sc = self._offset_score(haar, y, dr, dc)
+                if sc > best_score:
+                    best, best_score = (dr, dc), sc
+        return best[0], best[1], best_score
+
     # ------------------------------------------------------------ verify
-    def verify(self, data: bytes) -> VerifyResult:
+    def verify(self, data: bytes, resync: bool = False) -> VerifyResult:
         """data: the received container bytes. No mask, no original, no sidecar."""
         text = png_text(data)
         if TEXT_IMAGE_ID not in text or TEXT_KEY_ID not in text:
@@ -187,6 +228,16 @@ class System:
         rgb = png_read(data)
         y = recover_luma(rgb)
         h, w = y.shape
+        declared = text.get(TEXT_SIZE)
+        if declared and declared != f"{h}x{w}":
+            # the container's geometry changed: content may all be authentic,
+            # but the image is not the one that was protected. Battery
+            # conditions 19 and 20 are exactly this, and reporting INTACT
+            # would be the silent failure the battery forbids.
+            shape = (h // 8, w // 8)
+            return VerifyResult(delta_f=np.full(shape, np.nan), delta_sr=np.full(shape, np.nan),
+                                ladder=all_cannot_say(shape, GEOMETRY_CHANGE),
+                                texture=texture_of(y), image_id=image_id, key_ok=True)
         haar = Haar2((h, w))
         ny, nx = haar.ny, haar.nx
         addresses = np.arange(ny * nx).reshape(ny, nx)
@@ -194,11 +245,22 @@ class System:
         c = haar.forward(y)
         digests = coarse_digest(c["LL2"], self.cfg.q_digest)
         binder = Binder(self.key, image_id, self.cfg.bind_address)
-        expected = binder.tags(addresses, digests)
+
+        dr, dc = 0, 0
+        if resync:
+            dr, dc, score = self._estimate_offset(haar, y, image_id)
+        addr = self._address_grid(dr, dc, ny, nx) if (dr or dc) else addresses
+        valid = addr >= 0
+        expected = binder.tags(np.where(valid, addr, 0), digests)
+        if not valid.all():
+            expected = expected.copy()
+            expected[~valid] = 0
 
         fragile = FragileCarrier(self.cfg.delta_f)
         got = fragile.read(Haar2.details_flat(c))
         delta_f = (got != expected).mean(axis=2)
+        if not valid.all():
+            delta_f[~valid] = 1.0
 
         robust = RobustCarrier(self.key, image_id, self.cfg.beta0, self.cfg.lam,
                                self.cfg.dct_lo, self.cfg.dct_hi, (h, w))
@@ -210,7 +272,7 @@ class System:
         _, excused_v = clip_safe_shift(y, cb_r, cr_r, margin=0.0,
                                        max_shift=self.cfg.tau_shift_excuse,
                                        slack=self.cfg.excuse_slack)
-        excluded = field_mask(y) | excused_v
+        excluded = field_mask(y) | excused_v | ~valid
         lad = classify(delta_f, delta_sr, tex, self.cfg, digest_margin=margin,
                        excluded=excluded)
         return VerifyResult(delta_f=delta_f, delta_sr=delta_sr, ladder=lad,
