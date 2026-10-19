@@ -320,7 +320,7 @@ battery is frozen. None is a thesis number yet.
 | A-015 | 2026-10-19 | Mark saturated at the gamut; matched-filter read | proposed |
 | A-016 | 2026-10-19 | Field excuse restricted to the border-connected surround | proposed |
 | A-017 | 2026-10-19 | `sigma = 1` noise reclassified out of "benign" | **accepted** |
-| A-018 | 2026-10-19 | Region weighting (λ=1) is not load-bearing | **OPEN — recommend λ=0** |
+| A-018 | 2026-10-19 | Region weighting removed (λ=0) | **accepted** |
 
 ---
 
@@ -513,7 +513,7 @@ is measuring the wrong property.
 ## A-018 — Region weighting does not earn its place
 
 **Date:** 2026-10-19 · **Affects:** `config.LAMBDA_REGION`, module 4
-**Status:** OPEN — recommendation is λ=0, pending the n=40 confirmation.
+**Status:** ACCEPTED 2026-10-19 — λ set to 0 after the n=40 confirmation.
 
 **Claim in the dossier.** Marking the lesion region more strongly than its
 surround improves localisation where it matters.
@@ -529,6 +529,28 @@ dropped from the thesis claims rather than defended. The mask is still used —
 for `block_region` in the gate and for evaluation — so the mask-awareness claim
 in its other roles is unaffected.
 
-**Why this is written down rather than fixed immediately.** Changing a
-default after an n=6 ablation would repeat the error this file exists to
-prevent: a parameter chosen on too little data. The n=40 run decides it.
+**The n=40 confirmation changed the picture, and then decided it.**
+Conditions 1–5 are unchanged by λ (0.959/0.978/0.970/0.879/0.975 in both).
+The whole difference is condition 6, the single 8×8 paste:
+
+| | λ=1 | λ=0 |
+|---|---|---|
+| IoU, conditions 1–5 | 0.956 | 0.956 |
+| IoU, condition 6 | **0.700** | 0.650 |
+| PSNR mean | 38.11 dB | **38.76 dB** |
+| PSNR worst image | **37.37 dB** | **38.39 dB** |
+| verify | 40.8 ms | 39.6 ms |
+
+So the tilt buys 0.05 IoU on one condition and nothing anywhere else, pays
+0.65 dB for it, and drags the worst image *below the stated 37.8 dB floor*.
+The deciding argument is not the mean — both clear it — but that λ=1 leaves one
+image in the corpus failing a bar the project states. λ=0 leaves none.
+
+**Note on method.** The n=6 ablation had reported "no effect"; at n=40 the
+effect exists but is confined to one condition. That is precisely why the
+change was held back for confirmation instead of being applied on the spot,
+and it is recorded here rather than quietly corrected.
+
+**Consequence.** The "region preference" contribution is withdrawn from the
+thesis claims. The mask is still used for evaluation and for the (disabled)
+texture gate, so mask *awareness* in the metrics is unaffected.

@@ -33,7 +33,13 @@ DIGEST_CLIP = 3               # CHOSEN +-3 quantisation steps
 
 # ---------------------------------------------------------------- semi-robust carrier
 BETA0 = 8.0                   # CHOSEN  sweep: same detection as 12 at +0.8 dB
-LAMBDA_REGION = 1.0           # LIT form, value CHOSEN by sweep (+0.65 dB,
+LAMBDA_REGION = 0.0           # MEASURED  region-weighted strength (the old 1.0)
+                            # buys +0.05 IoU on the single 8x8-paste case and
+                            # nothing at all on conditions 1-5, while costing
+                            # 0.65 dB mean PSNR and putting the worst image at
+                            # 37.37 dB - below the 37.8 dB floor. At 0.0 every
+                            # image in the corpus clears the floor (worst
+                            # 38.39 dB). A-018.
                               #          same detection; 2.0 costs 2.5 dB)
 DCT_LO = 3                    # CHOSEN  block band u+v in [3,6], 22 coeffs
 DCT_HI = 6                    # CHOSEN  see A-005

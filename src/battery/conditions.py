@@ -42,6 +42,29 @@ def _block_mask(shape: tuple[int, int]) -> np.ndarray:
     return np.zeros((shape[0] // 8, shape[1] // 8), dtype=bool)
 
 
+def changed_blocks(before: bytes, after: bytes) -> np.ndarray:
+    """Ground truth from measurement: the blocks whose pixels actually moved.
+
+    A geometric region is not ground truth. Condition 4 clones three 32x32
+    patches, and on PH2 one of them repeatedly lands white background on white
+    background: 4 of its 48 labelled blocks (8.3%) never change a single pixel.
+    Scoring against the region penalised the verifier for correctly reporting
+    those blocks INTACT, and it made the "never call a tampered block
+    authentic" safety metric read 100% when nothing had been tampered with at
+    all. The mask below is the set of blocks whose pixels differ.
+    """
+    a = png_read(before)
+    b = png_read(after)
+    if a.shape != b.shape:
+        # Geometry changed (crop, shift): every block of the *received* image
+        # is unverifiable content, and the truth mask follows the received
+        # geometry so it lines up with the verdict grid.
+        return np.ones((b.shape[0] // 8, b.shape[1] // 8), dtype=bool)
+    diff = (a != b).any(axis=2)
+    ny, nx = diff.shape[0] // 8, diff.shape[1] // 8
+    return diff.reshape(ny, 8, nx, 8).any(axis=(1, 3))
+
+
 def paste_blocks(data: bytes, src=(8, 8), dst=(40, 40), n=4):
     """Copy n x n blocks from src to dst. Source and target must be disjoint.
 
@@ -178,29 +201,43 @@ def inpaint_removal(data: bytes, method: str = "telea"):
 
 
 # ---------------------------------------------------------------- registry
+def _measured(fn):
+    """Wrap a condition so its ground truth is what the pixels did."""
+    def apply(data: bytes):
+        out, gt = fn(data)
+        if gt is None:
+            return out, None
+        return out, changed_blocks(data, out)
+    return apply
+
+
+def _cond(cid, family, name, fn, expected, failure):
+    return Condition(cid, family, name, _measured(fn), expected, failure)
+
+
 FROZEN: tuple[Condition, ...] = (
-    Condition(1, "paste", "copy-move 32x32 bg->bg",
+    _cond(1, "paste", "copy-move 32x32 bg->bg",
               lambda d: paste_blocks(d, (8, 8), (40, 40), 4),
               "addressed tamper blocks", "silent INTACT"),
-    Condition(2, "paste", "copy-move 32x32 over lesion",
+    _cond(2, "paste", "copy-move 32x32 over lesion",
               lambda d: paste_blocks(d, (8, 8), (38, 38), 4),
               "addressed tamper blocks", "silent INTACT inside lesion"),
-    Condition(3, "paste", "copy-move 64x64 over lesion",
+    _cond(3, "paste", "copy-move 64x64 over lesion",
               lambda d: paste_blocks(d, (4, 4), (36, 36), 8),
               "addressed tamper blocks", "silent INTACT"),
-    Condition(4, "paste", "three 32x32 clones", triple_clone,
+    _cond(4, "paste", "three 32x32 clones", triple_clone,
               "all three wounds addressed", "any wound unaddressed"),
-    Condition(5, "paste", "copy-move 16x16",
+    _cond(5, "paste", "copy-move 16x16",
               lambda d: paste_blocks(d, (8, 8), (40, 40), 2),
               "tamper blocks or abstention", "silent INTACT"),
-    Condition(6, "paste", "copy-move 8x8",
+    _cond(6, "paste", "copy-move 8x8",
               lambda d: paste_blocks(d, (8, 8), (40, 40), 1),
               "tamper blocks or abstention", "silent INTACT"),
-    Condition(7, "benign", "JPEG 90", lambda d: jpeg(d, 90),
+    _cond(7, "benign", "JPEG 90", lambda d: jpeg(d, 90),
               "no tamper claim", "any tamper claim"),
-    Condition(8, "benign", "JPEG 75", lambda d: jpeg(d, 75),
+    _cond(8, "benign", "JPEG 75", lambda d: jpeg(d, 75),
               "no tamper claim", "any tamper claim"),
-    Condition(9, "benign", "JPEG 50", lambda d: jpeg(d, 50),
+    _cond(9, "benign", "JPEG 50", lambda d: jpeg(d, 50),
               "no tamper claim", "any tamper claim"),
     # A-017: sigma=1 is additive noise, i.e. a modification of every sample.
     # A fragile mark is destroyed by any such change - that is what "fragile"
@@ -208,43 +245,43 @@ FROZEN: tuple[Condition, ...] = (
     # contradicting the scheme it is testing. Reclassified from `benign` to
     # `degrade` on 2026-10-19, explicitly and with the measured claim rate
     # still reported below; it is not a silent relabel.
-    Condition(10, "degrade", "Gaussian noise sigma=1",
+    _cond(10, "degrade", "Gaussian noise sigma=1",
               lambda d: gaussian_noise(d, 1.0),
               "localised tamper claim or abstention", "silent INTACT"),
-    Condition(11, "benign", "resize 90% and back",
+    _cond(11, "benign", "resize 90% and back",
               lambda d: resize_roundtrip(d, 0.9),
               "no tamper claim", "any tamper claim"),
-    Condition(12, "degrade", "JPEG 30", lambda d: jpeg(d, 30),
+    _cond(12, "degrade", "JPEG 30", lambda d: jpeg(d, 30),
               "abstention or tamper signal", "silent INTACT"),
-    Condition(13, "degrade", "JPEG 10", lambda d: jpeg(d, 10),
+    _cond(13, "degrade", "JPEG 10", lambda d: jpeg(d, 10),
               "abstention with reason", "silent INTACT"),
-    Condition(14, "degrade", "double compression 75 then 50",
+    _cond(14, "degrade", "double compression 75 then 50",
               lambda d: jpeg_chain(d, [("jpeg", 75), ("jpeg", 50)]),
               "abstention or tamper signal", "silent INTACT"),
-    Condition(15, "degrade", "chain scale/J60/scale/J60",
+    _cond(15, "degrade", "chain scale/J60/scale/J60",
               lambda d: jpeg_chain(d, [("scale", 0.8), ("jpeg", 60),
                                        ("scale", 1.25), ("resize512", None),
                                        ("jpeg", 60)]),
               "abstention, handling or geometry", "silent INTACT"),
-    Condition(16, "degrade", "Gaussian blur sigma=2.0",
+    _cond(16, "degrade", "Gaussian blur sigma=2.0",
               lambda d: gaussian_blur(d, 2.0),
               "abstention with reason", "silent INTACT"),
-    Condition(17, "degrade", "Gaussian noise sigma=8",
+    _cond(17, "degrade", "Gaussian noise sigma=8",
               lambda d: gaussian_noise(d, 8.0, seed=17),
               "abstention with reason", "silent INTACT"),
-    Condition(18, "degrade", "70% centre crop then resize",
+    _cond(18, "degrade", "70% centre crop then resize",
               lambda d: centre_crop_resize(d, 0.7),
               "abstention, geometry", "silent INTACT"),
-    Condition(19, "structure", "block-aligned crop 24px/side",
+    _cond(19, "structure", "block-aligned crop 24px/side",
               lambda d: block_crop(d, 24),
               "addressed blocks along the cut", "INTACT at the cut"),
-    Condition(20, "structure", "block-aligned shift 8px",
+    _cond(20, "structure", "block-aligned shift 8px",
               lambda d: block_shift(d, 8, 8),
               "addressed border strips", "INTACT at the borders"),
-    Condition(21, "structure", "burned-in text 64x24",
+    _cond(21, "structure", "burned-in text 64x24",
               lambda d: burned_text(d, (64, 24)),
               "addressed blocks over the text", "INTACT over the text"),
-    Condition(22, "structure", "inpainting removal (Telea)",
+    _cond(22, "structure", "inpainting removal (Telea)",
               lambda d: inpaint_removal(d, "telea"),
               "addressed blocks at the wound", "INTACT at the wound"),
 )

@@ -31,7 +31,7 @@ sys.path.insert(0, str(ROOT))
 from src.battery.conditions import FROZEN
 from src.config import BETA0, DEFAULT, DELTA_F
 from src.fixtures import phantom
-from src.ladder import CANNOT_SAY, TAMPERED
+from src.ladder import CANNOT_SAY, INTACT, TAMPERED
 from src.metrics import block_f1, detected, iou
 from src.pipeline import System
 
@@ -82,7 +82,7 @@ def git_commit() -> str:
 def run(dataset, sysm, cfg, seed0: int, n_synthetic: int):
     keys = [c.cid for c in FROZEN]
     agg = {cid: {"n": 0, "claim": 0, "iou": [], "f1": [], "cov": [], "det": 0,
-                 "known": 0, "reasons": {}} for cid in keys}
+                 "known": 0, "silent": 0, "reasons": {}} for cid in keys}
     protect_t = verify_t = 0.0
     psnrs, coverage = [], []
 
@@ -116,6 +116,10 @@ def run(dataset, sysm, cfg, seed0: int, n_synthetic: int):
                 a["known"] += 1
                 a["iou"].append(float(iou(pred, gt)))
                 a["det"] += int(detected(pred, gt, cfg.iou_detect))
+                # The safety metric. A miss is only acceptable if it is an
+                # abstention; a tampered block reported INTACT is the failure
+                # mode a clinical reader would act on.
+                a["silent"] += int(((res.ladder.verdict == INTACT) & gt).any())
                 a["f1"].append(block_f1(pred, gt, answered=res.ladder.verdict != CANNOT_SAY).value)
 
     n = len(images)
@@ -133,7 +137,7 @@ def run(dataset, sysm, cfg, seed0: int, n_synthetic: int):
 def summarise(res, label: str) -> dict:
     print(f"\n{label}  n={res['n_images']}")
     print(f"{'#':>2} {'condition':28} {'family':7} {'claim%':>7} {'detect%':>8} "
-          f"{'IoU':>6} {'blkF1':>6} {'cov':>6}")
+          f"{'IoU':>6} {'blkF1':>6} {'cov':>6} {'silent%':>8}")
     rows, violations = [], []
     for cond in FROZEN:
         a = res["per_condition"][cond.cid]
@@ -146,10 +150,12 @@ def summarise(res, label: str) -> dict:
                 "iou": float(np.mean(a["iou"])),
                 "block_f1": float(np.mean(a["f1"])),
                 "n_known": a["known"],
+                "silent_intact": a["silent"] / a["n"],
             })
             print(f"{cond.cid:>2} {cond.name:28} {cond.family:7} {claim:>7.1f} "
                   f"{100*row['detection']:>8.1f} {row['iou']:>6.3f} "
-                  f"{row['block_f1']:>6.3f} {row['coverage']:>6.3f}")
+                  f"{row['block_f1']:>6.3f} {row['coverage']:>6.3f} "
+                  f"{100*row['silent_intact']:>8.1f}")
         else:
             flag = ""
             if cond.family == "benign" and row["claim_rate"] > 0:
@@ -158,7 +164,7 @@ def summarise(res, label: str) -> dict:
                                    "kind": "benign_false_claim",
                                    "rate": row["claim_rate"]})
             print(f"{cond.cid:>2} {cond.name:28} {cond.family:7} {claim:>7.1f} "
-                  f"{'-':>8} {'-':>6} {'-':>6} {row['coverage']:>6.3f}{flag}")
+                  f"{'-':>8} {'-':>6} {'-':>6} {row['coverage']:>6.3f} {'-':>8}{flag}")
         rows.append(row)
     print(f"\nPSNR {res['psnr_mean']:.2f} dB (worst {res['psnr_worst']:.2f})   "
           f"coverage {res['coverage_mean']:.3f}   "
@@ -205,6 +211,8 @@ def main() -> int:
     ap.add_argument("--limit", type=int, default=0)
     ap.add_argument("--key", type=str, default="bench-key")
     ap.add_argument("--receipt", type=str, default=None, help="write a JSON receipt here")
+    ap.add_argument("--set", action="append", default=[], metavar="KEY=VALUE",
+                    help="override a config field, repeatable (e.g. --set lam=0)")
     args = ap.parse_args()
 
     gate = DEFAULT.gate_enabled
@@ -212,7 +220,23 @@ def main() -> int:
         gate = True
     if args.no_gate:
         gate = False
-    cfg = DEFAULT.with_(beta0=args.beta, delta_f=args.delta, gate_enabled=gate)
+    overrides = {"beta0": args.beta, "delta_f": args.delta, "gate_enabled": gate}
+    for item in args.set:
+        key, _, raw = item.partition("=")
+        key, raw = key.strip(), raw.strip()
+        if not hasattr(DEFAULT, key):
+            ap.error(f"unknown config field: {key}")
+        current = getattr(DEFAULT, key)
+        if isinstance(current, bool):
+            value = raw.lower() in ("1", "true", "yes", "on")
+        elif isinstance(current, int) and not isinstance(current, bool):
+            value = int(raw)
+        elif isinstance(current, float):
+            value = float(raw)
+        else:
+            value = raw
+        overrides[key] = value
+    cfg = DEFAULT.with_(**overrides)
     sysm = System(args.key.encode(), cfg)
 
     dataset = load_dataset(args.data, args.limit) if args.data else None
