@@ -51,6 +51,11 @@ AMP_MIN = 2.0                  # MEASURED  smallest per-block pixel excursion
                               # accepted as a mark. Below this the integer
                               # round in compose() can erase the sign, so the
                               # block is refused instead of tagged unreliably.
+USE_ROBUST = True             # falsification switch: False removes Carrier B
+                              # from both the embedder and the verifier. Used by
+                              # scripts/ablate.py, never by a reported run.
+FIELD_EXCUSE = True           # falsification switch: False stops excusing the
+                              # out-of-field surround. Used by scripts/ablate.py.
 WINDOW_MIN = 32.0             # MEASURED  smallest per-block gamut window the
                               # encoder will attempt. A block's legal luma
                               # window has p1=74 levels over PH2, and Carrier A's
@@ -125,6 +130,8 @@ class Config:
     max_shift: float = MAX_SHIFT
     excuse_slack: float = EXCUSE_SLACK
     window_min: float = WINDOW_MIN
+    use_robust: bool = USE_ROBUST
+    field_excuse: bool = FIELD_EXCUSE
     amp_min: float = AMP_MIN
     tau_shift_excuse: float = TAU_SHIFT_EXCUSE
     tau_f: float = TAU_F

@@ -320,6 +320,7 @@ battery is frozen. None is a thesis number yet.
 | A-015 | 2026-10-19 | Mark saturated at the gamut; matched-filter read | proposed |
 | A-016 | 2026-10-19 | Field excuse restricted to the border-connected surround | proposed |
 | A-017 | 2026-10-19 | `sigma = 1` noise reclassified out of "benign" | **accepted** |
+| A-018 | 2026-10-19 | Region weighting (λ=1) is not load-bearing | **OPEN — recommend λ=0** |
 
 ---
 
@@ -508,3 +509,26 @@ table. Rationale a supervisor can check: the condition's family, not the
 detector, was the thing that was wrong. A fragile watermark that survived
 additive noise would not be fragile, and a metric that requires it to survive
 is measuring the wrong property.
+
+## A-018 — Region weighting does not earn its place
+
+**Date:** 2026-10-19 · **Affects:** `config.LAMBDA_REGION`, module 4
+**Status:** OPEN — recommendation is λ=0, pending the n=40 confirmation.
+
+**Claim in the dossier.** Marking the lesion region more strongly than its
+surround improves localisation where it matters.
+
+**Falsification.** `scripts/ablate.py`, PH2 n=6, conditions 1–5: setting
+λ=0 (uniform strength) changes IoU from 0.9556 to 0.9563 — no localisation
+gain — and **raises** PSNR from 38.97 to 39.37 dB. Detection stays at 1.000.
+The region-weighted mark therefore costs 0.40 dB and buys nothing measurable.
+
+**Consequence if it holds at n=40.** `LAMBDA_REGION` goes to 0, the parameter
+leaves the operating-point table, and the "region preference" contribution is
+dropped from the thesis claims rather than defended. The mask is still used —
+for `block_region` in the gate and for evaluation — so the mask-awareness claim
+in its other roles is unaffected.
+
+**Why this is written down rather than fixed immediately.** Changing a
+default after an n=6 ablation would repeat the error this file exists to
+prevent: a parameter chosen on too little data. The n=40 run decides it.

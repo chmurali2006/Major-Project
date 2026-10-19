@@ -172,11 +172,58 @@ it would have cost real detection to hide a real property.
 
 ---
 
-## 6. Reproducing
+## 6. Falsification checks (dossier §19)
+
+`scripts/ablate.py`, PH2 n=6, receipt `runs/2026-10-19-ablate/receipt.json`.
+Each ablation changes the **embedder** as well as the reader — an ablation
+that only changes the reader proves nothing about the mark.
+
+| ablation | metric | baseline | ablated | outcome |
+|---|---|---|---|---|
+| A1 binding cut (`bind_address=False`) | copy-move detection | 1.000 | **0.000** | load-bearing |
+| A2 corroboration cut (`use_robust=False`) | 8×8-paste claim | 0.833 | **0.500** | load-bearing |
+| A3 capacity refusal removed | in-field blocks judged | 0.0000 | **0.0038** | measurable, tiny |
+| A4 tilt flattened (`lam=0`) | IoU, conditions 1–5 | 0.956 | **0.956** | **not load-bearing** |
+| A5 ladder collapsed (`tau_area=1.0`) | benign claim rate | 0.000 | **1.000** | load-bearing |
+
+**A1** is the central claim: with the address removed from the tag, copy-move
+detection goes from 100% to zero. Position binding is what defeats copy-move.
+
+**A5** shows why abstention exists: a single threshold with no extent rule
+claims tampering on every benign image (100% versus 0%).
+
+**A2** shows the two carriers are not redundant: without Carrier B the
+single-block case loses its corroboration and the claim rate falls from 0.83
+to 0.50.
+
+**A3 — finding, not failure.** Removing the out-of-field refusal lets the tool
+judge 0.38% of blocks that carry no mark at all. That is a real honesty leak,
+just a small one; the saturated-mark design (A-015) already tolerates the
+saturation that the refusal was originally there to avoid. The refusal is kept
+because asserting integrity over a block that was never marked is wrong
+regardless of how few such blocks there are, and because it is what supplies
+the `capacity_refusal` reason in the verdict.
+
+**A4 — the tilt does not earn its place.** Setting λ=0 changes IoU by +0.001
+(0.956 → 0.956) and *raises* PSNR by 0.40 dB (38.97 → 39.37). Region-weighted
+strength therefore costs image quality and buys no localisation on PH2. This is
+recorded as **A-018 (open)**: either λ goes to 0, or the dossier's region-
+preference claim must be rewritten. It is not silently changed — the n=40
+confirmation runs first.
+
+**Not run.** Dossier ablations 3 and 5 ("gate opened", "gate flattened") target
+the texture gate, which is disabled under A-007; and 7 ("calibration removed")
+needs the secondary corpus, which is not reachable from this sandbox. Both are
+marked not-run rather than quietly dropped.
+
+---
+
+## 7. Reproducing
 
 ```bash
 python scripts/prepare_ph2.py --src <ph2-dir> --out datasets/ph2
-python scripts/bench.py --data datasets/ph2 --limit 20 --receipt runs/
+python scripts/bench.py  --data datasets/ph2 --limit 40 --receipt runs/<utc>/
+python scripts/ablate.py --data datasets/ph2 --limit 6  --receipt runs/<utc>-ablate/
 ```
 
 `bench.py` exits non-zero on any benign violation, and the receipt records the

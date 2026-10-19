@@ -112,7 +112,10 @@ class System:
             else np.zeros((ny, nx))
         robust = RobustCarrier(self.key, image_id, self.cfg.beta0, self.cfg.lam,
                                self.cfg.dct_lo, self.cfg.dct_hi, (h, w))
-        y_b = haar.from_blocks(robust.write(haar.to_blocks(y0.astype(np.float64)), region))
+        if self.cfg.use_robust:
+            y_b = haar.from_blocks(robust.write(haar.to_blocks(y0.astype(np.float64)), region))
+        else:
+            y_b = y0.astype(np.float64)
         # Carrier B is semi-robust: it is recovered by correlation, not by
         # reading individual values, so saturating it at the gamut edge costs
         # nothing detectable while keeping the plane legal. Without this the
@@ -131,7 +134,7 @@ class System:
         # window is at least `s` wide. That width is invariant to a constant
         # shift of the block, which is what lets the verifier reproduce this
         # decision from the received image alone, with no side channel.
-        field = field_mask(y_plan)
+        field = field_mask(y_plan) if self.cfg.field_excuse else np.zeros((ny, nx), bool)
         room_lo, room_hi = block_gamut(y_plan, cb, cr)
         slack_b = window_slack(y_plan, cb, cr)
         refused_gate = np.zeros((ny, nx), dtype=bool)
@@ -278,7 +281,8 @@ class System:
 
         robust = RobustCarrier(self.key, image_id, self.cfg.beta0, self.cfg.lam,
                                self.cfg.dct_lo, self.cfg.dct_hi, (h, w))
-        delta_sr = robust.read(haar.to_blocks(y))
+        delta_sr = (robust.read(haar.to_blocks(y)) if self.cfg.use_robust
+                    else np.zeros((ny, nx)))
 
         tex = texture_of(y)
         margin = digest_margin(c["LL2"], self.cfg.q_digest)
@@ -292,7 +296,8 @@ class System:
         # encoder's decision. A marked block's window only ever shrinks by its
         # own excursion, which is at most its reserved margin.
         excused_v = window_slack(y, cb_r, cr_r) < self.cfg.window_min
-        excluded = field_mask(y) | excused_v | ~valid
+        field_v = field_mask(y) if self.cfg.field_excuse else np.zeros((ny, nx), bool)
+        excluded = field_v | excused_v | ~valid
         lad = classify(delta_f, delta_sr, tex, self.cfg, digest_margin=margin,
                        excluded=excluded)
         return VerifyResult(delta_f=delta_f, delta_sr=delta_sr, ladder=lad,
