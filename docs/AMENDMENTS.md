@@ -174,3 +174,142 @@ where the spike found the only clean-image failure.
 | A-004 | 2026-10-19 | Carrier B address-keyed | proposed |
 | A-005 | 2026-10-19 | Carrier B per-block DCT | proposed |
 | A-006 | 2026-10-19 | Extra Phase One gate | proposed |
+
+---
+
+## A-007 — Texture gate disabled at the operating point
+
+**Date:** 2026-10-19 · **Affects:** Module 2, §11, falsification check 3
+
+**Dossier says:** background blocks below 3.0 levels of texture are refused and
+recorded as capacity refusals.
+
+**Measured**, synthetic phantoms, n=6, both carriers, same everything else:
+
+| gate | PSNR | detection (paste 1-6) | block IoU | benign false claims |
+|---|---|---|---|---|
+| on | 37.18 dB | 89% | 0.527 | 6/30 |
+| **off** | 37.10 dB | **100%** | **0.986** | **0/30** |
+
+The gate buys **0.08 dB** and costs **11 points of detection and 46 points of
+IoU**. A refused block carries no tag, so it reads as a broken tag at verify
+time; refusing them is what turns a clean-ish block into a false accusation.
+Refusals also cannot be communicated to the verifier without a side channel an
+attacker could edit.
+
+**Amendment.** `GATE_ENABLED = False` is the operating point. The gate code and
+its flag stay: falsification check 3 turns it back on, and the LiTS run may
+need it where clamping makes blocks genuinely unmarkable.
+
+**Caveat.** Dermoscopy phantoms are not ISIC. The texture distribution of real
+skin may make the gate cheaper or more expensive. Re-validate in S2 and record
+the number before the freeze.
+
+---
+
+## A-008 — The tamper decision is spatial extent, not absolute thresholds
+
+**Date:** 2026-10-19 · **Affects:** §14 trip table, Module 8, claim 3
+
+**Dossier says:** four-cell trip table on absolute `delta_f` and `delta_sr`,
+with thresholds grid-searched to a joint false-positive rate of 1e-4.
+
+**Measured**, block-level, three phantoms:
+
+| condition | delta_f mean | delta_f p99 | delta_sr mean | delta_sr p95 |
+|---|---|---|---|---|
+| clean | 0.000 | 0.000 | 0.143 | 0.420 |
+| JPEG 90 | 0.372 | 0.533 | 0.153 | 0.451 |
+| JPEG 75 | 0.463 | 0.617 | 0.243 | 0.526 |
+| JPEG 50 | 0.489 | 0.633 | 0.351 | 0.533 |
+| paste 32x32 | 0.515 | 0.692 | 0.551 | 0.910 |
+
+The distributions **overlap on both axes**. Heavy JPEG and a paste both give
+`delta_f` near 0.5; the reference carries the same host-interference tail
+under benign handling that it does under editing. No pair of absolute
+thresholds separates them, and a search for one would be fitting the fixture.
+
+**Amendment.** The first rung becomes a test of *extent*:
+
+    broken   = delta_f > tau_f
+    strong   = delta_f > tau_strong
+    widespread = mean(broken) > tau_area          (tau_area = 0.05)
+
+    widespread  -> CANNOT SAY, reason routine_handling
+    confined    -> strong blocks are TAMPERED
+
+This is the job the dossier assigns to the two-carrier rule — separate
+"recompressed" from "edited" — carried out by spatial extent. The largest
+battery edit (64x64) touches 1.6% of blocks; a global operation touches
+essentially all of them.
+
+**Consequences, stated as limitations.**
+1. A paste applied *on top of* a globally degraded image lands in the
+   widespread regime and is reported as handling. Compound attacks are outside
+   the frozen battery; this goes in the limitations chapter.
+2. The four cells remain in the code and in the report as the *explanation* of
+   a verdict, but they no longer decide it.
+3. Claim 3 must be re-worded: the contribution is abstention with separated
+   reasons, and the separation is by extent and digest confidence, not by an
+   absolute reference threshold.
+
+---
+
+## A-009 — Digest confidence for isolated blocks
+
+**Date:** 2026-10-19 · **Affects:** Module 3, Module 8
+
+**Problem.** Under Gaussian noise sigma = 1 (battery condition 10, benign), a
+coarse LL2 coefficient occasionally crosses a quantisation boundary. That
+changes the whole 60-bit tag for that block: `delta_f` jumps to ~0.5 at one
+isolated block, indistinguishable from a one-block paste. Measured: one false
+tamper claim in ten images, against a benign bar of 0.5%.
+
+**Amendment.** The verifier computes, per block, the distance from each LL2
+coefficient to the nearest digest quantisation boundary. A lone strong block
+whose digest is marginal **and** whose semi-robust reference is not decisively
+broken is reported CANNOT SAY (evidence_conflict) rather than TAMPERED.
+
+**Measured effect** (n=10): benign false claims 0/50. Condition 6 detection
+80%; the remaining 20% abstain, which the battery explicitly permits for
+condition 6 ("tamper signal or abstention; never silent INTACT or a fabricated
+address").
+
+---
+
+## A-010 — Operating-point parameters, after the sweeps
+
+**Date:** 2026-10-19 · **Affects:** `src/config.py`
+
+| parameter | value | evidence |
+|---|---|---|
+| `BETA0` | 8.0 | same detection as 12 and 16, +0.8 dB over 12 |
+| `LAMBDA_REGION` | 1.0 | same detection as 2.0, +0.65 dB |
+| `Q_DIGEST` | 32 | stability 100% under JPEG 90/75/50 |
+| `TAU_F` | 0.05 | clean `delta_f` is exactly 0 |
+| `TAU_STRONG` | 0.25 | live band between noise flips and replace |
+| `TAU_AREA` | 0.05 | largest battery edit is 1.6% of blocks |
+| `TAU_SR` | 0.25 | paste32 p50 = 0.54 |
+| `TAU_SR_LONE` | 0.45 | single-block paste p75 = 0.53 |
+| `DIGEST_MARGIN_MIN` | 2.0 levels | noise sigma=1 moves LL2 by ~0.25 |
+| fit margin | `delta/2 + 1 + beta0(1+lam)/8` | zero refusals on phantoms |
+
+All values are CHOSEN and must be re-validated on the real corpus before the
+battery is frozen. None is a thesis number yet.
+
+---
+
+## Amendment log
+
+| ID | Date | Subject | Status |
+|---|---|---|---|
+| A-001 | 2026-10-19 | QIM reader corrected | proposed |
+| A-002 | 2026-10-19 | Embed order B→A | proposed |
+| A-003 | 2026-10-19 | Fragility restated at block scale | proposed |
+| A-004 | 2026-10-19 | Carrier B address-keyed | proposed |
+| A-005 | 2026-10-19 | Carrier B per-block DCT | proposed |
+| A-006 | 2026-10-19 | Extra Phase One gate | proposed |
+| A-007 | 2026-10-19 | Texture gate disabled | proposed |
+| A-008 | 2026-10-19 | Tamper decision by spatial extent | proposed |
+| A-009 | 2026-10-19 | Digest confidence for isolated blocks | proposed |
+| A-010 | 2026-10-19 | Operating-point parameters | proposed |
