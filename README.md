@@ -12,9 +12,10 @@ code departs from it, the departure is recorded with its measurement in
 
 Mid-project review checkpoint, measured on real tissue (PH2, n=200, 22 frozen
 conditions). All five operating-point bars are met on the mean: detection
-99.70%, IoU 0.9367, benign claims 0.00%, PSNR 38.27 dB, verify 43.35 ms. The
-known weaknesses — worst-case PSNR 35.52 dB, burned-in text as an alarm rather
-than a localiser — are stated with their numbers in
+99.90%, IoU 0.9421, benign claims 0.00%, PSNR 38.27 dB, verify 38.60 ms, and
+zero false claims on the 200 untouched images. The known weaknesses — worst-case
+PSNR 35.52 dB, burned-in text as an alarm rather than a localiser — are stated
+with their numbers in
 [`docs/MID_PROJECT_REVIEW.md`](docs/MID_PROJECT_REVIEW.md) §5 and
 [`docs/BENCHMARKS.md`](docs/BENCHMARKS.md) §3.
 
@@ -27,7 +28,7 @@ receipt by `scripts/make_tables.py`.
 src/            config, transform, binder, carriers, container, pipeline, ladder, metrics
 src/battery/    the frozen conditions, one function each
 scripts/        dataset preparation, benchmark harness, local runner
-tests/          36 tests, including the six pre-flight checks
+tests/          39 tests, including the six pre-flight checks
 docs/           MID_PROJECT_REVIEW, BENCHMARKS, AMENDMENTS, REPRODUCE, figures/
 project-context/ reference material only — never imported by code
 ```
@@ -37,13 +38,15 @@ project-context/ reference material only — never imported by code
 ```bash
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
-pytest -q                                    # 36 tests, no data needed
+pytest -q                                    # 39 tests, no data needed
 
-# prepare a corpus (needs images and masks on disk)
-python scripts/prepare_isic.py --images <dir> --masks <dir> --out datasets/isic2018
+# prepare a corpus (the public PH2 mirror needs no registration)
+git clone https://github.com/vikaschouhan/PH2-dataset /tmp/ph2src
+python scripts/prepare_ph2_public.py --src /tmp/ph2src --out datasets/ph2
 
 # run the battery, leave a receipt
-./scripts/run_local.sh datasets/isic2018 40
+python scripts/bench.py --data datasets/ph2 --limit 200 \
+                        --receipt runs/<utc>/receipt.json
 ```
 
 `runs/<timestamp>/receipt.json` records the command, configuration, git commit,

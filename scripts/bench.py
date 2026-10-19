@@ -335,6 +335,7 @@ def main() -> int:
                 "psnr_mean": raw["psnr_mean"],
                 "psnr_worst": raw["psnr_worst"],
                 "coverage_mean": raw["coverage_mean"],
+                "clean_claims": raw["clean_claims"],
                 "protect_ms": raw["protect_ms"],
                 "verify_ms": raw["verify_ms"],
                 "per_condition": {str(c.cid): {k: v for k, v in raw["per_condition"][c.cid].items()

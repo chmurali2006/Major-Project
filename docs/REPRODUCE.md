@@ -16,7 +16,8 @@ direct answer to the ISIC result you reported.
 | **c11 resize: 27.3% false claims on ISIC**, 0% on PH2 | **Fixed.** A-021: the tool now measures the tag's amplitude where the gamut cannot have clipped it, and abstains when the whole image was transformed. On a local reproducer, resize claims went 79.2% → 0.0% with no loss of detection. |
 | c10 σ=1: 28.0% claims (ISIC) / 28.5% (PH2) | **Fixed.** Same rule: 25.0% → 0.0%. Condition 10 is therefore back in the `benign` family — A-017 withdrawn, battery unchanged from the dossier. |
 | `opencv-python-headless==5.0.0` does not exist on PyPI | **Fixed**, pinned to `5.0.0.93`. |
-| detection 0.95 with the tamper clearly found | **Fixed.** A-027/A-028/A-029: the verifier now reproduces the embedder's refusals exactly, the "gamut-safe" margin was raised above the mark's measured excursion, and blocks are fitted by a small DC shift before marking. PH2 n=200: detection **0.9970**, IoU **0.9367**, coverage **0.926**. |
+| detection 0.95 with the tamper clearly found | **Fixed.** A-027/A-028/A-029: the verifier now reproduces the embedder's refusals exactly, the "gamut-safe" margin was raised above the mark's measured excursion, and blocks are fitted by a small DC shift before marking. |
+| burned-in text reported as authentic | **Fixed, mostly.** A-030: the tag now names the block's mean, which the detail coefficients cannot see. Changed blocks reported INTACT on that condition fell from 22.5% to **5.9%**, and detection rose from 36.0% to **97.0%**. The residual is blocks the embedder refused, which carry no mark. |
 | verify 53.7–57.7 ms on the i5-1235U | **Improved**: one PNG decode instead of two, one gamut map instead of two, and keyed BLAKE2b instead of HMAC-SHA256 for the 4096 per-block tags (2.2×). Was 40.8 → now 42.9 ms on the Linux reference sandbox; your machine should land near 45–50 ms. That is the one bar that may still miss on your CPU, and it is hardware-relative — please report the number you get. |
 
 ---
@@ -28,7 +29,7 @@ python -m venv .venv
 # Windows: .venv\Scripts\activate
 . .venv/bin/activate
 pip install -r requirements.txt
-python -m pytest -q          # expect 36 passed
+python -m pytest -q          # expect 39 passed
 ```
 
 Python 3.11–3.13. Python 3.14 has no PyWavelets 1.8.0 wheel and will try a
@@ -71,20 +72,29 @@ python scripts/bench.py --data datasets/isic2018 --limit 0 \
 
 ---
 
-## 3. PH2, for the record
+## 3. PH2, for the record — and the fastest way to check this branch
+
+The corpus is the **public mirror**, so no registration is needed:
 
 ```bash
-python scripts/prepare_ph2.py --src <ph2-repo> --out datasets/ph2
+git clone https://github.com/vikaschouhan/PH2-dataset /tmp/ph2src
+python scripts/prepare_ph2_public.py --src /tmp/ph2src --out datasets/ph2
 python scripts/bench.py --data datasets/ph2 --limit 200 \
                         --receipt runs/ph2-200/receipt.json
 ```
 
-Expected, from the Linux reference run (`runs/2026-10-19-n200-v5/`, commit
-`f0d7cc8`, clean tree, 725 s):
+`prepare_ph2_public.py` writes a receipt with a SHA-256 for every source and
+derived file. It also states, in the receipt itself, that the mirror ships no
+expert masks and that the placeholders it writes are unused at `lam = 0` with
+the texture gate off. If you have the official distribution with `_lesion.bmp`
+masks, `prepare_ph2.py` takes that instead and checks the masks properly.
+
+Expected, from the Linux reference run (`runs/2026-10-20-n200-v6/`, commit
+`89f47a2`, code paths clean, 672 s):
 
 ```
-detection 0.9970 | IoU 0.9367 | benign 0.0000 | PSNR 38.27 dB (worst 35.52)
-verify 43.35 ms | coverage 0.926
+detection 0.9990 | IoU 0.9421 | benign 0.0000 | clean-image claims 0/200
+PSNR 38.27 dB (worst 35.52) | verify 38.60 ms | coverage 0.927
 ```
 
 Exact reproduction is not expected on different hardware: verify latency is the
@@ -107,13 +117,17 @@ python scripts/probe_coverage.py --data datasets/ph2 --limit 200 \
 ## 4. The falsification checks
 
 ```bash
-python scripts/ablate.py --data datasets/ph2 --limit 6 --receipt runs/ablate/
-python scripts/ablate.py --data datasets/ph2 --limit 6 --smooth 0.9 \
+python scripts/ablate.py --data datasets/ph2 --limit 12 --receipt runs/ablate/
+python scripts/ablate.py --data datasets/ph2 --limit 12 --smooth 0.9 \
                          --receipt runs/ablate-smooth/
 ```
 
-The second one is the one that falsifies A-021: on smoothed images, removing
-the attenuation rule takes the resize false-claim rate from 0.000 to 0.667.
+Eight switches, each with the claim it would falsify printed next to it. The
+ones that matter most: **A1** takes copy-move detection from 1.000 to 0.000;
+**A7** takes condition 21 from IoU 0.285 to 0.065; **A8** removes both
+global-transform rules and takes the resize false-claim rate from 0.000 to
+1.000. Switches that no longer move the battery are printed as
+"NO EFFECT - finding", with the reason, rather than quietly dropped.
 
 ---
 
@@ -132,13 +146,13 @@ before trusting a number:
 ## 6. What is still open
 
 **A-020, the pin-hole.** A modification that changes only a block's mean —
-burned-in text over a flat region, inpainting over smooth skin — changes
-neither the tag nor the Q=32 digest, so the block can still verify as intact.
-A-023 cut it down (PH2 condition 21: 22.5% of changed blocks called `INTACT`,
-condition 22: 3.8%; both were "at least one per image, always" before it), and
-the finer-digest repair was measured across Q ∈ {4, 8, 16, 32} and falsified.
-Closing it needs the tag to depend on the mean in the embedding domain. Do not
-claim that it is closed.
+burned-in text over a flat region, inpainting over smooth skin — used to be
+invisible to a tag made only of detail coefficients. A-023 (erasure rung) cut
+it, and A-030 closed most of the rest by binding the block mean into the tag
+(PH2 condition 21: 22.5% → **5.9%** of changed blocks called `INTACT`;
+condition 22: 3.8% → 2.9%). What is left is concentrated in blocks the embedder
+refused, which carry no mark at all. Do not describe condition 21 as a precise
+localiser: its block-F1 is 0.437 and its IoU 0.286.
 
 **A5's relevance.** With A-021 in place, collapsing the extent rule no longer
 changes the battery. A-021 subsumes it for these conditions. Worth a decision

@@ -650,9 +650,14 @@ mean change — e.g. writing part of the tag into `LL2` itself, where a
 brightness shift necessarily destroys it. That is a change to the embedding
 domain, not to a threshold, and it needs its own design and measurement.
 
-**Status now:** open, with the cheap hypotheses eliminated and the direction
-narrowed. It is the one place where the tool can report INTACT over pixels that
-changed, and no claim in the write-up should say otherwise.
+**Status now:** CLOSED by A-030. The direction this entry narrowed to is the
+one that worked: the tag now depends on `LL2` through a per-block code, so a
+brightness shift changes the tag instead of merely being invisible to it.
+Measured on the full corpus, changed blocks reported INTACT fell from 22.5% to
+**5.9%** on condition 21 and from 3.8% to 2.9% on condition 22; the remainder
+are blocks the embedder refused, which carry no mark at all. The text below is
+kept as written, because the falsified hypothesis is what A-030 had to work
+around.
 
 **Why it is not fixed today.** It changes the digest, and the digest is the
 binding of the whole scheme. It needs its own sweep (Q ∈ {8, 16, 32} × benign
@@ -1023,3 +1028,94 @@ configuration is one command away rather than an assertion.
 margin and PSNR keeps falling: at margin 6 the mean is 37.51 dB (below the bar)
 and the worst 32.41 dB; at 9, 36.25 / 29.30. Those refuse on quality grounds.
 Margin 4 is the last setting that clears the mean PSNR bar.
+
+## A-030 — The tag now names the block's mean, and A-020 closes
+
+**Date:** 2026-10-20 · **Affects:** `binder.dc_code`, `config.DC_BIND`,
+`config.DC_SIG_DELTA`, `pipeline.protect`, `pipeline.verify`
+**Evidence:** `runs/2026-10-20-n200-v6/` (n=200), `runs/2026-10-20-ablate/`,
+`runs/2026-10-20-ablate-smooth/`; 40-image sweep `/tmp/mirror_dc*.json`
+
+**Symptom.** A-020: on condition 21 (burned-in text) the tool localised only
+36% of images, and **22.5% of the blocks the text actually changed were
+reported INTACT** — the one error a clinical reader would act on. Inpainting
+was 3.8%.
+
+**Why the obvious fix had failed.** A-020 tried the *digest* quantisation
+Q ∈ {4, 8, 16, 32}, which changes how finely the detail coefficients are
+compared. That cannot address a modification that leaves the details alone. Its
+own corrected diagnosis was right: the tag has to depend on the block mean in a
+way a mean change cannot satisfy.
+
+**Fix.** The 2×2 `LL2` subband is the block's mean and its two coarse gradients.
+It is **bit-identical at embed and verify** — the mark writes only to detail
+coefficients, and the integer lifting transform is exact — so it can be signed:
+
+```
+dc  = (round(LL2 / dc_sig_delta) * [1, 2, 3, 5]).sum()  & 15      # one per block
+tag = pad XOR selector[(signature + dc) & 15]                    # per coefficient
+```
+
+Nothing is transmitted and the verifier needs no side information: it re-reads
+`LL2` from the received image, exactly as the embedder did. A block whose mean
+moved now carries a tag the key does not predict. A block whose mean did not
+move is unaffected.
+
+**Why the code can be fine.** `LL2` reproduces the block mean to the level
+(measured ratio 0.95–1.09 on a random plane; an integer shift of `s` moves all
+four coefficients by exactly `s`). With `dc_sig_delta = 4` a one-level shift of
+the mean moves the weighted sum by 2.75 of its 16 steps. Nothing was traded for
+that: the clean image is reproducible, so the sensitivity costs nothing on an
+image the mark survived in. Measured on 60 clean images across every setting
+below: **0 false claims**.
+
+**Sweep, 40 images, identical code otherwise:**
+
+| `dc_sig_delta` | c21 IoU | c22 IoU | c6 detection | clean claims |
+|---|---|---|---|---|
+| off | 0.082 | 0.869 | 97.5% | 0/60 |
+| 2 | 0.303 | 0.914 | 97.5% | 0/60 |
+| **4** | **0.307** | 0.904 | 97.5% | 0/60 |
+| 8 | 0.285 | 0.894 | 97.5% | 0/60 |
+| 16 | 0.288 | 0.882 | 95.0% | 0/60 |
+| 32 | 0.274 | 0.875 | 95.0% | 0/60 |
+| 64 | 0.269 | 0.873 | 97.5% | 0/60 |
+
+4 is taken: best on both conditions that the binding targets, and the
+single-block case is untouched.
+
+**Measured on the whole corpus, n=200:**
+
+| | A-029 (`n200-v5`) | A-030 (`n200-v6`) |
+|---|---|---|
+| detection | 0.9970 | **0.9990** |
+| IoU, conditions 1–6 | 0.9367 | **0.9421** |
+| benign claims | 0.0000 | 0.0000 |
+| clean-image claims | not scored | **0/200** |
+| PSNR mean / worst | 38.27 / 35.52 | 38.27 / 35.52 |
+| c21 detection | 36.0% | **97.0%** |
+| c21 IoU | 0.082 | **0.286** |
+| c21 blocks called INTACT | 22.5% | **5.9%** |
+| c22 IoU | 0.875 | **0.912** |
+| c22 blocks called INTACT | 3.8% | **2.9%** |
+
+**Falsified by ablation A7.** Cutting the binding (`dc_bind: False`) takes
+condition 21 from IoU 0.273 to **0.079** on the same images — the mechanism is
+load-bearing, not decoration.
+
+**What is left, and why.** 5.9% of the changed blocks on condition 21, and
+2.9% on condition 22, are still reported INTACT. Measuring where they are: the
+majority are blocks the embedder **refused** (no mark, no evidence, and the
+verifier abstains there — but a block that shares an 8×8 cell with the text
+edge can be judged from its neighbours). The rest are blocks whose mean moved
+by less than the code's resolution while their details were untouched. The
+honest statement is that A-020's failure mode is reduced by roughly a factor of
+four, not eliminated, and the residual is concentrated where the mark does not
+exist.
+
+**A second effect, recorded rather than celebrated.** Because the mean binding
+makes a global transform break *every* block rather than a few edge blocks, the
+extent rule now catches resamples that the attenuation rule used to have to
+catch alone. Ablations A5 (extent) and A6 (attenuation) are consequently each
+redundant with the other: removing one changes nothing. **A8 removes both**, and
+is the falsification that matters now.
