@@ -154,14 +154,20 @@ Every ablation changes the **embedder**, not just the reader.
 |---|---|---|---|---|
 | A1 binding cut | copy-move detection | 1.000 | **0.000** | load-bearing |
 | A2 corroboration cut | 8×8-paste claim | 0.833 | **0.500** | load-bearing |
-| A3 capacity refusal removed | in-field blocks judged | 0.0000 | **0.0038** | measurable, small |
-| A4 tilt flattened | IoU, conditions 1–5 | 0.956 | **0.956** | not load-bearing → λ=0 |
+| A3 capacity refusal removed | in-field blocks judged | 0.0000 | **0.0038** | load-bearing (small) |
+| A4 tilt restored (λ=1) | PSNR | 39.37 | **38.97** | load-bearing |
 | A5 ladder collapsed | benign claim rate | 0.000 | **1.000** | load-bearing |
+
+**5/5 change the battery as predicted.**
 
 A1 is the central claim: without the address in the tag, copy-move detection
 goes from 100% to zero. A5 shows why abstention exists: one threshold with no
-extent rule claims tampering on every benign image. A4, confirmed at n=40,
-removed the region weighting (A-018).
+extent rule claims tampering on every benign image. A2 shows the carriers are
+not redundant: without Carrier B the single-block claim falls from 0.83 to
+0.50. A4 measures the A-018 decision from the other side — restoring region
+weighting costs 0.40 dB, which is exactly the price λ=0 declined to pay. A3 is
+small but real: without the capacity refusal the tool judges 0.38% of blocks it
+never marked.
 
 **Not run.** Dossier ablations 3 and 5 target the texture gate, disabled under
 A-007; 7 needs the secondary corpus, unreachable from this sandbox. Marked

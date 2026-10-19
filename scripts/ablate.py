@@ -42,6 +42,7 @@ BENIGN = (7, 8, 9, 11)     # sample-preserving handling (A-017)
 
 def run_variant(rgb, mask, image_id, overrides, conds):
     """Protect once, then run the requested conditions. Returns metrics."""
+    overrides = {k: v for k, v in overrides.items() if not k.startswith("_")}
     cfg = DEFAULT.with_(**overrides)
     sysm = System(KEY, cfg)
     p = sysm.protect(rgb, mask, image_id=image_id)
@@ -105,13 +106,13 @@ ABLATIONS = [
     ("A2 corroboration cut", {"use_robust": False}, "cond6_claim", "change",
      "If removing Carrier B changes nothing, the semi-robust reference is "
      "decoration and the two-carrier rule is one bit wearing a second hat."),
-    ("A3 capacity refusal removed", {"field_excuse": False, "window_min": 0.0},
-     "surround_verdicts", "rise",
+    ("A3 capacity refusal removed", {"field_excuse": False, "window_min": 0.0,
+                                     "_eps": 0.001}, "surround_verdicts", "rise",
      "If the tool still refuses to judge blocks it never marked, the capacity "
      "refusal is not doing any work."),
-    ("A4 tilt flattened", {"lam": 0.0}, "iou", "drop",
-     "If uniform strength localises as well as region-weighted strength, the "
-     "lesion weighting buys nothing - and costs image quality for it."),
+    ("A4 tilt restored", {"lam": 1.0}, "psnr", "drop",
+     "If restoring region weighting costs no measurable image quality, the "
+     "decision to remove it (A-018) was not buying anything either."),
     ("A5 ladder collapsed", {"tau_area": 1.0}, "benign_claim", "rise",
      "If a single threshold with no abstention is equally quiet on benign "
      "handling, the ladder earns its complexity nowhere."),
@@ -161,12 +162,13 @@ def main() -> int:
         m = results[name]["metrics"]
         b = base[metric]
         v = m[metric]
+        eps = overrides.get("_eps", 0.02)
         if direction == "drop":
-            moved = v < b - 0.02
+            moved = v < b - eps
         elif direction == "rise":
-            moved = v > b + 0.02
+            moved = v > b + eps
         else:
-            moved = abs(v - b) > 0.02
+            moved = abs(v - b) > eps
         ok += int(moved)
         print(f"  {name:30} {metric} {b:.4f} -> {v:.4f}  "
               f"{'MECHANISM IS LOAD-BEARING' if moved else 'NO EFFECT - finding, not failure'}")

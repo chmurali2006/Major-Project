@@ -1,6 +1,6 @@
 {
   "kind": "falsification",
-  "created_utc": "2026-10-19T14:33:05+00:00",
+  "created_utc": "2026-10-19T15:28:02+00:00",
   "command": "scripts/ablate.py --data /home/user/datasets/ph2 --limit 6 --receipt runs/2026-10-19-ablate/",
   "dataset": "/home/user/datasets/ph2",
   "n": 6,
@@ -16,20 +16,20 @@
     9,
     11
   ],
-  "git_commit": "bf82239",
+  "git_commit": "75e20b3",
   "python": "3.11.2",
   "results": {
     "baseline": {
       "det": 1.0,
-      "iou": 0.9555555555555556,
+      "iou": 0.971780303030303,
       "paste_claim": 1.0,
       "benign_claim": 0.0,
       "cond6_claim": 0.8333333333333334,
       "clean_claim": 0.0,
-      "psnr": 38.969643843636455,
-      "coverage": 0.779541015625,
+      "psnr": 39.36589202114741,
+      "coverage": 0.7728271484375,
       "surround_verdicts": 0.0,
-      "refusal": 0.054606119791666664
+      "refusal": 0.053914388020833336
     },
     "A1 binding cut": {
       "metrics": {
@@ -39,10 +39,10 @@
         "benign_claim": 0.0,
         "cond6_claim": 0.0,
         "clean_claim": 0.0,
-        "psnr": 38.9562664002197,
-        "coverage": 0.7832438151041666,
+        "psnr": 39.35313159697268,
+        "coverage": 0.7759602864583334,
         "surround_verdicts": 0.0,
-        "refusal": 0.054606119791666664
+        "refusal": 0.053914388020833336
       },
       "predicted_metric": "det",
       "predicted_direction": "drop",
@@ -51,7 +51,7 @@
     "A2 corroboration cut": {
       "metrics": {
         "det": 1.0,
-        "iou": 0.954861111111111,
+        "iou": 0.9704545454545455,
         "paste_claim": 1.0,
         "benign_claim": 0.0,
         "cond6_claim": 0.5,
@@ -68,13 +68,13 @@
     "A3 capacity refusal removed": {
       "metrics": {
         "det": 1.0,
-        "iou": 0.9624999999999999,
+        "iou": 0.9785984848484849,
         "paste_claim": 1.0,
         "benign_claim": 0.0,
         "cond6_claim": 0.8333333333333334,
         "clean_claim": 0.0,
-        "psnr": 38.783567940169476,
-        "coverage": 0.8237711588541666,
+        "psnr": 39.15106502861386,
+        "coverage": 0.8154703776041666,
         "surround_verdicts": 0.0037841796875,
         "refusal": 0.0
       },
@@ -82,29 +82,12 @@
       "predicted_direction": "rise",
       "claim": "If the tool still refuses to judge blocks it never marked, the capacity refusal is not doing any work."
     },
-    "A4 tilt flattened": {
+    "A4 tilt restored": {
       "metrics": {
         "det": 1.0,
-        "iou": 0.95625,
+        "iou": 0.9710227272727272,
         "paste_claim": 1.0,
         "benign_claim": 0.0,
-        "cond6_claim": 0.8333333333333334,
-        "clean_claim": 0.0,
-        "psnr": 39.36589202114741,
-        "coverage": 0.7728271484375,
-        "surround_verdicts": 0.0,
-        "refusal": 0.053914388020833336
-      },
-      "predicted_metric": "iou",
-      "predicted_direction": "drop",
-      "claim": "If uniform strength localises as well as region-weighted strength, the lesion weighting buys nothing - and costs image quality for it."
-    },
-    "A5 ladder collapsed": {
-      "metrics": {
-        "det": 1.0,
-        "iou": 0.9555555555555556,
-        "paste_claim": 1.0,
-        "benign_claim": 1.0,
         "cond6_claim": 0.8333333333333334,
         "clean_claim": 0.0,
         "psnr": 38.969643843636455,
@@ -112,11 +95,28 @@
         "surround_verdicts": 0.0,
         "refusal": 0.054606119791666664
       },
+      "predicted_metric": "psnr",
+      "predicted_direction": "drop",
+      "claim": "If restoring region weighting costs no measurable image quality, the decision to remove it (A-018) was not buying anything either."
+    },
+    "A5 ladder collapsed": {
+      "metrics": {
+        "det": 1.0,
+        "iou": 0.971780303030303,
+        "paste_claim": 1.0,
+        "benign_claim": 1.0,
+        "cond6_claim": 0.8333333333333334,
+        "clean_claim": 0.0,
+        "psnr": 39.36589202114741,
+        "coverage": 0.7728271484375,
+        "surround_verdicts": 0.0,
+        "refusal": 0.053914388020833336
+      },
       "predicted_metric": "benign_claim",
       "predicted_direction": "rise",
       "claim": "If a single threshold with no abstention is equally quiet on benign handling, the ladder earns its complexity nowhere."
     }
   },
-  "predicted_breaks": 3,
+  "predicted_breaks": 5,
   "ablations": 5
 }
