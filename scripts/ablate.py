@@ -92,6 +92,8 @@ def summarise(rows, conds):
         agg["cond6_claim"] = float(np.mean([r[6]["claim"] for r in rows]))
     if 11 in conds:
         agg["resize_claim"] = float(np.mean([r[11]["claim"] for r in rows]))
+    if 21 in conds:
+        agg["cond21_iou"] = float(np.mean([r[21]["iou"] for r in rows]))
     agg["clean_claim"] = float(np.mean([r["clean_claim"] for r in rows]))
     agg["psnr"] = float(np.mean([r["psnr"] for r in rows]))
     agg["coverage"] = float(np.mean([r["clean_coverage"] for r in rows]))
@@ -122,9 +124,18 @@ ABLATIONS = [
     ("A5 ladder collapsed", {"tau_area": 1.0}, "benign_claim", "rise",
      "If a single threshold with no abstention is equally quiet on benign "
      "handling, the ladder earns its complexity nowhere."),
+    ("A7 mean binding cut", {"dc_bind": False}, "cond21_iou", "drop",
+     "If burned-in text localises just as well without the block mean in the "
+     "tag, the detail coefficients were enough and A-030 buys nothing."),
+    ("A8 both global rules cut", {"use_attenuation": False, "tau_area": 1.0},
+     "resize_claim", "rise",
+     "A6 and A5 are individually redundant now that the mean binding makes a "
+     "resample break every block rather than a few edge blocks. If removing "
+     "BOTH still produces no false claim, there is no global-transform rule "
+     "left and condition 11 is passing for an unstated reason."),
 ]
 
-CONDS = (1, 2, 3, 4, 5, 6) + BENIGN
+CONDS = (1, 2, 3, 4, 5, 6) + BENIGN + (21, 22)
 
 
 def main() -> int:
@@ -162,7 +173,8 @@ def main() -> int:
                          "predicted_direction": direction, "claim": claim}
 
     hdr = (f"{'variant':30} {'det':>6} {'IoU':>6} {'paste':>6} {'benign':>7} "
-           f"{'c6':>6} {'r11':>6} {'clean':>6} {'inField':>8} {'PSNR':>6} {'cov':>6}")
+           f"{'c6':>6} {'r11':>6} {'c21IoU':>7} {'clean':>6} {'inField':>8} "
+           f"{'PSNR':>6} {'cov':>6}")
     print("\n" + hdr)
     print("-" * len(hdr))
     for key in ["baseline"] + [a[0] for a in ABLATIONS]:
@@ -170,6 +182,7 @@ def main() -> int:
         print(f"{key:30} {m['det']:6.3f} {m['iou']:6.3f} {m['paste_claim']:6.3f} "
               f"{m['benign_claim']:7.3f} {m.get('cond6_claim', float('nan')):6.3f} "
               f"{m.get('resize_claim', float('nan')):6.3f} "
+              f"{m.get('cond21_iou', float('nan')):7.3f} "
               f"{m['clean_claim']:6.3f} {m['surround_verdicts']:8.4f} "
               f"{m['psnr']:6.2f} {m['coverage']:6.3f}")
 

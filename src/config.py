@@ -200,6 +200,29 @@ PROVENANCE = {
 }
 
 
+DC_BIND = True                # MEASURED  bind the block's LL2 subband (its
+                              #           mean and coarse gradients) into the
+                              #           tag. The detail coefficients cannot
+                              #           see a modification that only moves a
+                              #           block's average, which is exactly what
+                              #           burned-in text does; LL2 can, and the
+                              #           mark never touches LL2, so it is bit
+                              #           identical at embed and verify. A-030.
+DC_SIG_DELTA = 4.0            # MEASURED  luma levels per step of the LL2 code.
+                              #           LL2 reproduces the block mean to the
+                              #           level (measured ratio 0.95-1.09 over a
+                              #           random plane, and an integer shift of s
+                              #           moves all four coefficients by exactly
+                              #           s), so the code is exact on any image
+                              #           the mark survives in and can be made
+                              #           fine: a mean shift of one luma level
+                              #           already moves the weighted sum by 2.75
+                              #           of its 16 steps. Measured over 4/8/16/32/64
+                              #           on 40 images: all five fix condition 21
+                              #           (IoU 0.082 -> 0.27-0.31) and 4 leaves the
+                              #           single-block case intact, A-030.
+
+
 @dataclass(frozen=True)
 class Config:
     """An experiment's frozen configuration. All defaults come from above."""
@@ -234,6 +257,8 @@ class Config:
     weak_cluster_min: int = WEAK_CLUSTER_MIN
     iou_detect: float = IOU_DETECT
     bind_address: bool = True          # ablation switch, falsification check 1
+    dc_bind: bool = DC_BIND            # A-030: bind LL2 into the tag
+    dc_sig_delta: float = DC_SIG_DELTA
 
     def with_(self, **kw) -> "Config":
         return replace(self, **kw)

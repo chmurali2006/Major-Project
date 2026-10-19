@@ -1,6 +1,6 @@
 import numpy as np
 
-from src.binder import Binder, signature
+from src.binder import Binder, dc_code, signature
 from src.carriers import FragileCarrier
 from src.config import TAG_BITS
 from src.transform import Haar2, Haar2Int
@@ -87,3 +87,54 @@ def test_ablation_ignores_address():
     sig = np.zeros(60, np.int8)
     assert not np.array_equal(bound.tag(1, sig), bound.tag(2, sig))
     assert np.array_equal(loose.tag(1, sig), loose.tag(2, sig))
+
+
+# ---------------------------------------------------------------- A-030: mean
+
+def test_dc_code_is_exact_under_the_mark():
+    """LL2 is the block's mean and gradients; the mark never touches it.
+
+    This is what makes the mean binding free: the embedder signs the mean, the
+    verifier re-reads the mean, and the mark - which lives in the detail
+    subbands - cannot move it.
+    """
+    plane = _content(7)
+    haar = Haar2Int(plane.shape)
+    c = haar.forward(plane)
+    flat = Haar2.details_flat(c)
+    bits = np.random.default_rng(1).integers(0, 2, flat.shape).astype(np.uint8)
+    marked = FragileCarrier(8.0).write(flat, bits)
+    rebuilt = haar.inverse({**c, **Haar2.details_unflat(c, marked)})
+    assert np.array_equal(haar.forward(rebuilt)["LL2"], c["LL2"])
+    assert np.array_equal(dc_code(haar.forward(rebuilt)["LL2"], 4.0),
+                          dc_code(c["LL2"], 4.0))
+
+
+def test_dc_code_moves_when_a_block_mean_moves():
+    """A repaint that only moves the average is invisible to the details."""
+    plane = _content(8, (8, 8))
+    haar = Haar2Int(plane.shape)
+    before = haar.forward(plane)["LL2"]
+    moved = plane.copy()
+    moved[0:8, 0:8] += 12                          # one block, mean only
+    after = haar.forward(moved)["LL2"]
+    assert np.array_equal(after[0, 1:], before[0, 1:])          # neighbours
+    assert np.array_equal(after[1:], before[1:])
+    assert not np.array_equal(dc_code(after, 4.0)[0, 0],
+                              dc_code(before, 4.0)[0, 0])
+
+
+def test_dc_binding_changes_the_tag():
+    """Same address, same details, different mean -> a different tag."""
+    b = Binder(b"k" * 16, image_id=42)
+    sig = np.random.default_rng(11).integers(-40, 40, (4, 4, 60)).astype(np.int8)
+    addr = np.arange(16).reshape(4, 4)
+    plain = b.tags(addr, sig)
+    dc = np.zeros((4, 4), np.int64)
+    dc[2, 3] = 7
+    bound = b.tags(addr, sig, dc=dc)
+    assert np.array_equal(plain[2, 3], bound[2, 3]) is False
+    assert int((plain[2, 3] != bound[2, 3]).sum()) > 10
+    mask = np.ones((4, 4), bool)
+    mask[2, 3] = False
+    assert np.array_equal(plain[mask], bound[mask])            # others untouched

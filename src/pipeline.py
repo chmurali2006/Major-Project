@@ -31,7 +31,7 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from .binder import Binder, signature
+from .binder import Binder, dc_code, signature
 from .carriers import FragileCarrier, RobustCarrier, block_region
 from .config import Config, DEFAULT
 from .config import BLOCK
@@ -185,7 +185,8 @@ class System:
         # marking, so the tag is a function of the content, not just the
         # address (A-024).
         sig = signature(flat, self.cfg.delta_f, self.cfg.sig_delta)
-        tags = Binder(self.key, image_id, self.cfg.bind_address).tags(addresses, sig)
+        dc_b = dc_code(c["LL2"], self.cfg.dc_sig_delta) if self.cfg.dc_bind else None
+        tags = Binder(self.key, image_id, self.cfg.bind_address).tags(addresses, sig, dc=dc_b)
         fragile = FragileCarrier(self.cfg.delta_f)
         marked_flat = fragile.write(flat, tags)
         marked_flat[skip] = flat[skip]
@@ -310,7 +311,8 @@ class System:
             dr, dc, score = self._estimate_offset(haar, y, image_id)
         addr = self._address_grid(dr, dc, ny, nx) if (dr or dc) else addresses
         valid = addr >= 0
-        expected = binder.tags(np.where(valid, addr, 0), sig)
+        dc_v = dc_code(c["LL2"], self.cfg.dc_sig_delta) if self.cfg.dc_bind else None
+        expected = binder.tags(np.where(valid, addr, 0), sig, dc=dc_v)
         if not valid.all():
             expected = expected.copy()
             expected[~valid] = 0

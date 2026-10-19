@@ -86,6 +86,7 @@ def run(dataset, sysm, cfg, seed0: int, n_synthetic: int):
                  "gt_blocks": 0, "reasons": {}, "unmarked": 0} for cid in keys}
     protect_t = verify_t = 0.0
     psnrs, coverage = [], []
+    clean_claims = 0
 
     images = dataset if dataset is not None else [
         (*phantom(seed=seed0 + i), i) for i in range(n_synthetic)
@@ -102,6 +103,9 @@ def run(dataset, sysm, cfg, seed0: int, n_synthetic: int):
         mse = float(np.mean((p.rgb.astype(float) - rgb.astype(float)) ** 2))
         psnrs.append(99.0 if mse == 0 else 10 * np.log10(255 ** 2 / mse))
         coverage.append(clean.coverage)
+        # The most basic error there is: calling an untouched image tampered.
+        # It is not one of the 22 conditions, so it had no column of its own.
+        clean_claims += int((clean.ladder.verdict == TAMPERED).any())
 
         for cond in FROZEN:
             data, gt = cond(p.png)
@@ -156,6 +160,7 @@ def run(dataset, sysm, cfg, seed0: int, n_synthetic: int):
         "psnr_mean": float(np.mean(psnrs)),
         "psnr_worst": float(np.min(psnrs)),
         "coverage_mean": float(np.mean(coverage)),
+        "clean_claims": clean_claims,
         "protect_ms": 1000 * protect_t / n,
         "verify_ms": 1000 * verify_t / n,
     }
@@ -198,7 +203,8 @@ def summarise(res, label: str) -> dict:
                   f"{'-':>8} {'-':>7} {'-':>6} {'-':>6} {row['coverage']:>6.3f} "
                   f"{'-':>8} {'-':>8}{flag}")
         rows.append(row)
-    print(f"\nPSNR {res['psnr_mean']:.2f} dB (worst {res['psnr_worst']:.2f})   "
+    print(f"\nclean-image claims {res.get('clean_claims', 0)}/{res['n_images']}   "
+          f"PSNR {res['psnr_mean']:.2f} dB (worst {res['psnr_worst']:.2f})   "
           f"coverage {res['coverage_mean']:.3f}   "
           f"protect {res['protect_ms']:.0f} ms/img   verify {res['verify_ms']:.0f} ms/img")
     return {"rows": rows, "violations": violations}

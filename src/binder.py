@@ -79,6 +79,30 @@ def signature(coeff: np.ndarray, delta: float, sig_delta: float,
     return np.clip(np.round(q / sig_delta), -127, 127).astype(np.int8)
 
 
+
+def dc_code(ll: np.ndarray, delta: float) -> np.ndarray:
+    """Coarse code of a block's approximation subband, one integer per block.
+
+    The tag names the *detail* coefficients, and detail coefficients say
+    nothing about a block's average brightness: flattening half a block with a
+    painted text box removes those coefficients from the correlation entirely
+    and the untouched half carries the score (A-023, A-020). The 2x2 LL2
+    subband is the block's mean and its two coarse gradients, and it is bit
+    identical at embed and verify because the mark never touches it. Coding it
+    here rotates each coefficient's selector index by a per-block amount, so a
+    block whose mean moved no longer carries the tag the key says it must.
+
+    The four LL2 coefficients are combined with distinct weights so that a
+    change in any of them - including the two gradients, which is what a
+    half-block repaint produces - moves the code.
+    """
+    q = np.rint(np.asarray(ll, np.float64) / float(delta)).astype(np.int64)
+    if q.ndim == 2:
+        return (q & 15).astype(np.int64)
+    w = np.array([1, 2, 3, 5][:q.shape[-1]])
+    return ((q * w).sum(axis=(-2, -1)) & 15).astype(np.int64)
+
+
 class Binder:
     """Keyed, position-bound tag generator. The key never travels."""
 
@@ -137,7 +161,8 @@ class Binder:
     def tag(self, address: int, sig) -> np.ndarray:
         return self._mix(self._raw(int(address)), sig)
 
-    def tags(self, addresses: np.ndarray, signatures: np.ndarray) -> np.ndarray:
+    def tags(self, addresses: np.ndarray, signatures: np.ndarray,
+             dc: np.ndarray | None = None) -> np.ndarray:
         """All block tags at once.
 
         The per-block cost here is the single largest item in verify, so the
@@ -152,6 +177,9 @@ class Binder:
         raws = np.frombuffer(bytes(buf), dtype=np.uint8).reshape(ny * nx, self._RAW)
         bits = np.unpackbits(raws, axis=1)[:, :TAG_BITS].reshape(ny, nx, TAG_BITS)
         sels = (raws[:, 8].astype(np.int64) << 8) | raws[:, 9].astype(np.int64)
-        index = (np.asarray(signatures, np.int64) & 15).reshape(ny * nx, -1)
+        idx = np.asarray(signatures, np.int64)
+        if dc is not None:
+            idx = idx + np.asarray(dc, np.int64)[..., None]
+        index = (idx & 15).reshape(ny * nx, -1)
         chosen = (sels[:, None] >> index) & 1
         return bits ^ chosen.astype(np.uint8).reshape(ny, nx, TAG_BITS)
