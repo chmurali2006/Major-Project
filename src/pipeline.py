@@ -34,7 +34,8 @@ import numpy as np
 from .binder import Binder, coarse_digest, digest_margin
 from .carriers import FragileCarrier, RobustCarrier, block_region
 from .config import Config, DEFAULT
-from .container import (Protected, clip_safe_shift, compose, field_mask, png_bytes,
+from .container import (Protected, block_gamut, blocks_out_of_range, compose, exact_bounds,
+                        field_mask, out_of_range, png_bytes, window_slack,
                         png_read, png_text, recover_luma, split_rct)
 from .ladder import GEOMETRY_CHANGE, LadderResult, all_cannot_say, classify, texture_of
 from .transform import Haar2
@@ -106,64 +107,76 @@ class System:
 
         y0, cb, cr = split_rct(rgb)
         addresses = np.arange(ny * nx).reshape(ny, nx)
-        field = field_mask(y0)
-        # headroom the mark needs: half the quantisation step, plus the
-        # strongest Carrier B excursion, plus one level for rounding
-        headroom = self.cfg.delta_f / 2 + 1.0 + self.cfg.beta0 * (1.0 + self.cfg.lam) / 8.0
-        # blocks the mark cannot occupy without leaving the RGB gamut
-        _, excused = clip_safe_shift(y0, cb, cr, margin=0.0,
-                                     max_shift=self.cfg.tau_shift_excuse, slack=0.0)
-
         # ---- 1. Carrier B first (A-002)
         region = block_region(region_mask, ny, nx) if region_mask is not None \
             else np.zeros((ny, nx))
         robust = RobustCarrier(self.key, image_id, self.cfg.beta0, self.cfg.lam,
                                self.cfg.dct_lo, self.cfg.dct_hi, (h, w))
         y_b = haar.from_blocks(robust.write(haar.to_blocks(y0.astype(np.float64)), region))
+        # Carrier B is semi-robust: it is recovered by correlation, not by
+        # reading individual values, so saturating it at the gamut edge costs
+        # nothing detectable while keeping the plane legal. Without this the
+        # spread-spectrum add pushes vignette and specular pixels out of range,
+        # the fit then has to refuse their blocks, and a clean image stops being
+        # distinguishable from a tampered one.
+        lo_b, hi_b = exact_bounds(cb, cr)
+        y_b = np.clip(y_b, lo_b, hi_b)
+        # The integer plane a skipped block transmits verbatim. The verifier
+        # sees exactly these values inside an unmarked block, so its `field`
+        # and window decisions match the encoder's bit for bit.
+        y_plan = np.round(y_b)
 
-        # ---- 2. range fitting, so Carrier A can never clip
-        skip = field | excused
-        skip_px = skip.repeat(8, 0).repeat(8, 1)
-        y_b[skip_px] = y0.astype(np.float64)[skip_px]
-        shift, refused_fit = clip_safe_shift(y_b, cb, cr, margin=headroom,
-                                             max_shift=self.cfg.max_shift)
-        refused_fit |= skip
-        shift = np.where(refused_fit, 0.0, shift)
-        y_fit = haar.from_blocks(haar.to_blocks(y_b) + shift[:, :, None, None])
-
-        # ---- 3. digest and tag from the fitted luma
-        c = haar.forward(y_fit)
-        digests = coarse_digest(c["LL2"], self.cfg.q_digest)
-        binder = Binder(self.key, image_id, self.cfg.bind_address)
-        tags = binder.tags(addresses, digests)
-
-        # ---- 4. texture gate (dossier §11)
-        # Background blocks with no texture are refused and recorded. Lesion
-        # blocks always override the threshold, because the diagnostic region
-        # is exactly what must be protected.
+        # ---- 2. Admission: one shift-invariant predicate both sides compute
+        # A block can host a mark with per-pixel spread `s` iff its legal luma
+        # window is at least `s` wide. That width is invariant to a constant
+        # shift of the block, which is what lets the verifier reproduce this
+        # decision from the received image alone, with no side channel.
+        field = field_mask(y_plan)
+        room_lo, room_hi = block_gamut(y_plan, cb, cr)
+        slack_b = window_slack(y_plan, cb, cr)
         refused_gate = np.zeros((ny, nx), dtype=bool)
         if self.cfg.gate_enabled:
-            tex = np.asarray(y_fit, np.float64).reshape(ny, 8, nx, 8).std(axis=(1, 3))
+            tex = np.asarray(y_plan, np.float64).reshape(ny, 8, nx, 8).std(axis=(1, 3))
             refused_gate = (region < 0.5) & (tex < self.cfg.texture_min)
+        # A block holding a pixel with zero room in one direction cannot carry a
+        # signed mark: the gamut would saturate it, and saturating throws away
+        # enough of the 60 bits to look like a tamper. Such blocks are refused
+        # and, because they are refused, transmitted verbatim - so the verifier
+        # recomputes this exact test on exactly these values.
+        skip = field | refused_gate | (slack_b < self.cfg.window_min)
 
-        # ---- 5. Carrier A last, therefore exact
-        fragile = FragileCarrier(self.cfg.delta_f)
+        # ---- 3. Carrier A, saturated at the gamut edge.
+        # Carrier A writes 60 detail coefficients per block; summed through the
+        # inverse Haar that is a per-pixel excursion of up to ~11 levels. Near
+        # specular highlights and the white dermoscopy background there is no
+        # upward room at all, so a signed mark cannot fit there.
+        #
+        # Reverting such a block (what compose() does) leaves it carrying the
+        # unmarked residual pattern while the verifier expects the tag, so a
+        # clean block reads as broken. Shifting the block first cannot fix this
+        # without moving the digest it is tagged against. What works is to let
+        # the gamut saturate the mark: the 60 bits are redundant, the block
+        # keeps the large majority of them, and the block-level disagreement
+        # stays far below TAU_F. Measured over PH2: clean blocks reach 0.217
+        # disagreement at p1, tampered blocks start at 0.383 at p99.
+        c = haar.forward(y_plan)
+        digests = coarse_digest(c["LL2"], self.cfg.q_digest)
+        tags = Binder(self.key, image_id, self.cfg.bind_address).tags(addresses, digests)
         flat = Haar2.details_flat(c)
+        fragile = FragileCarrier(self.cfg.delta_f)
         marked_flat = fragile.write(flat, tags)
-        # A block that was skipped must be skipped by BOTH carriers. Marking it
-        # with A alone would push an already out-of-gamut block past the edge,
-        # force a revert after tagging, and manufacture a false tamper on a
-        # clean image. The verifier excuses these blocks by an independent
-        # rule (field or unmarkable), so nothing is lost.
-        no_mark = refused_gate | skip
-        if no_mark.any():
-            marked_flat[no_mark] = flat[no_mark]
+        marked_flat[skip] = flat[skip]
         y_marked = haar.inverse({**c, **Haar2.details_unflat(c, marked_flat)})
+        saturated = int(((y_marked < lo_b) | (y_marked > hi_b)).sum())
+        y_marked = np.clip(y_marked, lo_b, hi_b)
 
-        # ---- 5. container
+        # ---- 4. container
         prot: Protected = compose(y_marked, rgb)
-        refused = refused_fit | refused_gate | prot.refused
+        refused = skip | refused_gate | prot.refused
         png = png_bytes(prot.rgb, text=self._metadata(image_id, h, w))
+        self.last_reports = {"refused_blocks": int(refused.sum()),
+                             "compose_refused": int(prot.refused.sum()),
+                             "saturated_pixels": saturated}
         return ProtectedImage(png=png, rgb=prot.rgb, refused=refused, image_id=image_id)
 
     # ------------------------------------------------------------ resync
@@ -257,8 +270,9 @@ class System:
             expected[~valid] = 0
 
         fragile = FragileCarrier(self.cfg.delta_f)
-        got = fragile.read(Haar2.details_flat(c))
-        delta_f = (got != expected).mean(axis=2)
+        # 1 - correlation, so delta_f keeps its meaning: 0 = the block carries
+        # its own tag, 1 = it carries no relation to it.
+        delta_f = np.clip(1.0 - fragile.score(Haar2.details_flat(c), expected), 0.0, 1.0)
         if not valid.all():
             delta_f[~valid] = 1.0
 
@@ -269,9 +283,15 @@ class System:
         tex = texture_of(y)
         margin = digest_margin(c["LL2"], self.cfg.q_digest)
         _, cb_r, cr_r = split_rct(rgb)
-        _, excused_v = clip_safe_shift(y, cb_r, cr_r, margin=0.0,
-                                       max_shift=self.cfg.tau_shift_excuse,
-                                       slack=self.cfg.excuse_slack)
+        # Wider margin than the embedder used, so the excused set is a strict
+        # superset of the skipped set. If a block skipped at embed is not
+        # excused here, it reads as fully broken and falsely accuses the image.
+        # The same admission predicate the encoder used, recomputed from the
+        # received image. It is shift invariant, so a block the encoder left
+        # unmarked - and therefore transmitted verbatim - yields exactly the
+        # encoder's decision. A marked block's window only ever shrinks by its
+        # own excursion, which is at most its reserved margin.
+        excused_v = window_slack(y, cb_r, cr_r) < self.cfg.window_min
         excluded = field_mask(y) | excused_v | ~valid
         lad = classify(delta_f, delta_sr, tex, self.cfg, digest_margin=margin,
                        excluded=excluded)

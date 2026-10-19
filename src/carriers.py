@@ -44,6 +44,28 @@ class FragileCarrier:
         q = np.round(coeff / self.delta) * self.delta
         return (coeff - q > 0).astype(np.uint8)
 
+    def score(self, coeff: np.ndarray, bits: np.ndarray) -> np.ndarray:
+        """Per-block normalised correlation between residual and expected tag.
+
+        `read` asks each of the 60 bits independently, which is brittle: a
+        pixel pushed against the RGB gamut saturates its share of the mark and
+        flips a whole run of bits at once, so a clean block can disagree with
+        20% of its own tag. The matched filter asks the weaker and correct
+        question - is the residual *vector* aligned with the keyed sign vector
+        - and is therefore insensitive to how much of the mark survived.
+
+        1.0 means the residual is exactly the expected pattern, 0.0 means no
+        relation. For a block carrying no tag the statistic is centred on zero
+        with standard deviation 1/sqrt(60) = 0.13, so TAU_F is set at 3 of
+        those standard deviations.
+        """
+        q = np.round(coeff / self.delta) * self.delta
+        r = coeff - q
+        s = 2.0 * np.asarray(bits, np.float64) - 1.0
+        num = (r * s).sum(axis=2)
+        den = np.maximum(np.abs(r).sum(axis=2), 1e-9)
+        return num / den
+
     @staticmethod
     def would_clip(marked_plane: np.ndarray) -> np.ndarray:
         """Per-block flag: any pixel outside 0..255 after the inverse transform.
@@ -91,9 +113,21 @@ class RobustCarrier:
         self.Wb = self.W.reshape(ny, nx)
 
     # -- embed -------------------------------------------------------
-    def write(self, blocks: np.ndarray, region: np.ndarray | None = None) -> np.ndarray:
-        """blocks (ny,nx,8,8); region (ny,nx) in {0,1} drives the strength."""
+    def write(self, blocks: np.ndarray, region: np.ndarray | None = None,
+              headroom_scale: np.ndarray | None = None) -> np.ndarray:
+        """blocks (ny,nx,8,8); region (ny,nx) in {0,1} drives the strength.
+
+        headroom_scale in [0,1] throttles the mark where the pixels sit close
+        to the RGB gamut edge. Dermoscopy images are full of such pixels -
+        vignette corners and specular highlights - and an unthrottled
+        spread-spectrum add pushes them out of gamut, which then forces the
+        frag ile carrier's fit to reject the block. Throttling here keeps the
+        block markable and costs only reference strength where there was no
+        room for it anyway.
+        """
         beta = self.beta0 * (1.0 + self.lam * (region if region is not None else 0.0))
+        if headroom_scale is not None:
+            beta = beta * headroom_scale
         C = dctn(blocks, axes=(2, 3), norm="ortho")
         u, v = self.idx[:, 0], self.idx[:, 1]
         C[:, :, u, v] += beta[:, :, None] * self.Wb[:, :, None] * self.P.reshape(self.ny, self.nx, -1)

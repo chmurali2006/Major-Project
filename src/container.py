@@ -49,11 +49,19 @@ def merge_rct(y: np.ndarray, cb: np.ndarray, cr: np.ndarray) -> np.ndarray:
 
 
 def out_of_range(y: np.ndarray, cb: np.ndarray, cr: np.ndarray) -> np.ndarray:
-    """Per-pixel True where the recombination would clip."""
-    y32 = np.asarray(y, np.float64)
-    g = y32 - ((np.asarray(cb, np.float64) + np.asarray(cr, np.float64)) / 4.0)
-    r = np.asarray(cr, np.float64) + g
-    b = np.asarray(cb, np.float64) + g
+    """Per-pixel True where the recombination would clip.
+
+    Uses the *integer* inverse RCT, bit for bit the same arithmetic as
+    merge_rct. An earlier version used (cb+cr)/4 in floating point, which
+    disagrees with (cb+cr)>>2 by up to 0.75 levels; blocks near the gamut edge
+    were then reverted after being tagged, and a clean image accused itself.
+    """
+    y = np.round(np.asarray(y)).astype(np.int32)
+    cb = np.asarray(cb, np.int32)
+    cr = np.asarray(cr, np.int32)
+    g = y - ((cb + cr) >> 2)
+    r = cr + g
+    b = cb + g
     return (r < 0) | (r > 255) | (g < 0) | (g > 255) | (b < 0) | (b > 255)
 
 
@@ -244,28 +252,51 @@ def exact_bounds(cb: np.ndarray, cr: np.ndarray) -> tuple[np.ndarray, np.ndarray
 
 
 def block_gamut(y: np.ndarray, cb: np.ndarray, cr: np.ndarray):
-    """Per-block exact [low, high] luma interval, and the block's own extent."""
+    """Per-block slack toward each gamut edge, in luma levels.
+
+    For every pixel the legal luma interval is [low_i, high_i]. Shifting a block
+    by s keeps it legal iff  max_i(low_i - y_i) <= s <= min_i(high_i - y_i).
+    The bounds must be reduced *after* subtracting each pixel's own luma, not
+    by intersecting gamuts and comparing against the block's darkest and
+    brightest pixels - doing the latter pairs the tightest pixel bound with the
+    most distant pixel and declares a quarter of a normal image impossible.
+    """
     low, high = exact_bounds(cb, cr)
     ny, nx = y.shape[0] // BLOCK, y.shape[1] // BLOCK
-    lo_b = low.reshape(ny, BLOCK, nx, BLOCK).max(axis=(1, 3))
-    hi_b = high.reshape(ny, BLOCK, nx, BLOCK).min(axis=(1, 3))
-    yb = np.asarray(y, np.float64).reshape(ny, BLOCK, nx, BLOCK)
-    return lo_b, hi_b, yb.min(axis=(1, 3)), yb.max(axis=(1, 3))
+    y = np.asarray(y, np.float64)
+    return (low - y).reshape(ny, BLOCK, nx, BLOCK), (high - y).reshape(ny, BLOCK, nx, BLOCK)
+
+
+def window_slack(y: np.ndarray, cb: np.ndarray, cr: np.ndarray) -> np.ndarray:
+    """Per-block width of the legal luma window, invariant to any constant shift.
+
+    For each pixel the legal luma interval is [low_i, high_i]. A block can host
+    a mark whose per-pixel excursion spans `spread` levels if and only if
+    min(high_i - y_i) - max(low_i - y_i) >= spread. Both terms fall by the same
+    amount under a constant shift of the block, so this width is shift
+    invariant - which is what lets the verifier reproduce the encoder's
+    admission decision from the received image alone, with no side channel.
+    """
+    low, high = exact_bounds(cb, cr)
+    ny, nx = y.shape[0] // BLOCK, y.shape[1] // BLOCK
+    y = np.asarray(y, np.float64)
+    hi_room = (high - y).reshape(ny, BLOCK, nx, BLOCK).min(axis=(1, 3))
+    lo_room = (low - y).reshape(ny, BLOCK, nx, BLOCK).max(axis=(1, 3))
+    return hi_room - lo_room
 
 
 def clip_safe_shift(y: np.ndarray, cb: np.ndarray, cr: np.ndarray,
                     margin: float, max_shift: float, slack: float = 0.0):
-    """Smallest-magnitude integer shift that keeps a whole block in gamut.
+    """Smallest-magnitude integer shift that keeps every pixel in gamut.
 
-    Returns (shift, impossible). `impossible` marks blocks where no shift
-    within +-max_shift works; those are excused, never silently clipped.
+    Returns (shift, impossible). `impossible` marks blocks where no shift within
+    +-max_shift works; those are excused, never silently clipped.
     """
-    lo_b, hi_b, y_min, y_max = block_gamut(y, cb, cr)
-    need_lo = np.ceil(lo_b + margin - y_min)
-    need_hi = np.floor(hi_b - margin - y_max)
+    room_lo, room_hi = block_gamut(y, cb, cr)          # per pixel, relative to y
+    need_lo = np.ceil((room_lo + margin).max(axis=(1, 3)))
+    need_hi = np.floor((room_hi - margin).min(axis=(1, 3)))
     impossible = (need_lo > need_hi) | (need_lo > max_shift) | (need_hi < -max_shift)
     shift = np.where(need_lo > 0, need_lo, np.where(need_hi < 0, need_hi, 0.0))
-    # an excused set is only ever widened, never narrowed
     impossible = impossible | (np.abs(shift) > max_shift - slack)
     shift = np.where(impossible, 0.0, shift)
     return shift, impossible

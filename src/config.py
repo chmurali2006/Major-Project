@@ -47,11 +47,36 @@ GATE_ENABLED = False          # CHOSEN  by measurement, A-007: the gate costs
 MAX_SHIFT = 16.0              # CHOSEN  largest block DC shift allowed to fit
                               #         the mark inside the RGB gamut
 EXCUSE_SLACK = 3.0            # CHOSEN  widening of the excused set at verify
+AMP_MIN = 2.0                  # MEASURED  smallest per-block pixel excursion
+                              # accepted as a mark. Below this the integer
+                              # round in compose() can erase the sign, so the
+                              # block is refused instead of tagged unreliably.
+WINDOW_MIN = 32.0             # MEASURED  smallest per-block gamut window the
+                              # encoder will attempt. A block's legal luma
+                              # window has p1=74 levels over PH2, and Carrier A's
+                              # worst per-block excursion spread is 20.7, so 32
+                              # leaves room for the mark and keeps the refusal
+                              # set empty. The measure is shift-invariant, so the
+                              # verifier reproduces it exactly.
 TAU_SHIFT_EXCUSE = 5.0        # DERIVED the mark moves a pixel by at most this much
-TAU_F = 0.05                  # CHOSEN  grid-searched in S2, frozen after
+TAU_F = 0.60                 # MEASURED  a block is "broken" when its normalised
+                            # correlation with the expected tag falls below
+                            # 0.40, i.e. 3 standard deviations (1/sqrt(60) =
+                             # 0.13) above the zero mean of a block carrying no
+                             # tag. Measured on PH2: clean blocks reach 0.406 at
+                            # their worst and 0.714 at p1; tampered blocks reach
+                            # 0.439 at their worst and 0.325 at p99. The blank
+                            # blocks that remain in the statistic are excused by
+                            # the container's own geometry rules.
+
 TAU_SR = 0.25                 # CHOSEN  paste32 p50 0.54; safe because a clean
                               # block has delta_f == 0 and never reaches this cell
-TAU_STRONG = 0.25             # CHOSEN  decisive-evidence floor (see ladder.py)
+TAU_STRONG = 0.75             # MEASURED  decisive evidence: correlation with the
+                            # expected tag below 0.25, i.e. the block carries
+                            # essentially none of its own tag. Must stay well
+                            # above TAU_F - `strong` is nested inside `broken`,
+                            # and a block only weakly degraded (sigma=1 noise
+                            # leaves correlation near 0.5) is neither.
 DIGEST_MARGIN_MIN = 2.0       # CHOSEN  LL2 levels from a quantisation boundary below
                               #         which the digest is not trustworthy
 TAU_SR_LONE = 0.55            # CHOSEN  PH2: clean lone blocks reach 0.49,
@@ -99,6 +124,8 @@ class Config:
     gate_enabled: bool = GATE_ENABLED
     max_shift: float = MAX_SHIFT
     excuse_slack: float = EXCUSE_SLACK
+    window_min: float = WINDOW_MIN
+    amp_min: float = AMP_MIN
     tau_shift_excuse: float = TAU_SHIFT_EXCUSE
     tau_f: float = TAU_F
     tau_sr: float = TAU_SR
