@@ -622,12 +622,37 @@ populations do separate. But it did **not** move the `silent` column, because
 the surviving blocks hold their residuals normally, and it cost detection on
 conditions 21 and 22. It was reverted rather than shipped as decoration.
 
-**Fix to be measured.** Bind the block mean in the digest at a finer
-quantisation than 32. That is a direct trade: the current Q = 32 is 100% stable
-under JPEG 50, and a finer Q will flip digests under benign recompression,
-which shows up as false claims on conditions 7–9. The rule from A-009 — blocks
-whose digest sits near a quantisation boundary abstain — is what has to absorb
-the difference, and its margin needs to be re-measured at the new Q.
+**The proposed fix was measured and does not work.** The obvious repair is to
+bind the block mean more finely, so a uniform brightness shift moves the digest.
+A full sweep was run on PH2 (n=24, conditions 1, 7, 10, 11, 21, 22):
+
+| `q_digest` | c21 claim | c21 detection | c21 silent | benign claims |
+|---|---|---|---|---|
+| 32 (current) | 54.2% | **4.2%** | 100% | 0.0% |
+| 16 | 45.8% | 4.2% | 100% | 0.0% |
+| 8 | 33.3% | **0.0%** | 100% | 0.0% |
+| 4 | 33.3% | **0.0%** | 100% | 0.0% |
+
+Detection does not improve at any value and is *worse* at fine quantisation:
+a finer digest breaks additional blocks elsewhere in the image, the extent
+rule sees widespread damage, and the whole image abstains — losing the few
+blocks that would have been caught. **The quantisation hypothesis is
+falsified**, and the earlier proposal in this amendment ("bind the mean at a
+finer quantisation") is withdrawn.
+
+**Diagnosis, corrected.** The blocks that survive condition 21 are flat
+regions: painting part of a flat block white changes its mean (`LL2`) but
+leaves its detail coefficients near zero, and the ±2 mark written into those
+details is untouched. The tag still matches because the *mark* was never
+damaged, not merely because the digest is coarse. A genuine fix therefore has
+to make the tag depend on the mean in a way that *cannot* be satisfied after a
+mean change — e.g. writing part of the tag into `LL2` itself, where a
+brightness shift necessarily destroys it. That is a change to the embedding
+domain, not to a threshold, and it needs its own design and measurement.
+
+**Status now:** open, with the cheap hypotheses eliminated and the direction
+narrowed. It is the one place where the tool can report INTACT over pixels that
+changed, and no claim in the write-up should say otherwise.
 
 **Why it is not fixed today.** It changes the digest, and the digest is the
 binding of the whole scheme. It needs its own sweep (Q ∈ {8, 16, 32} × benign

@@ -238,8 +238,14 @@ be measured, not assumed, and the ISIC corpus is only reachable from the
 user's machine. `docs/REPRODUCE.md` gives the exact command.
 
 **Condition 21 remains the honest gap** — 28.7% claims with 0.3% detection on
-ISIC, 51.5% with 2.5% on PH2. That is A-020: modifications confined to a
-block's mean are invisible to a detail-carried tag with a Q=32 digest.
+ISIC, 51.5% with 2.5% on PH2. That is A-020. The obvious repair (a finer digest)
+was measured across Q ∈ {4, 8, 16, 32} and **does not work**: detection stays at
+0–4.2% and falls to zero at fine quantisation, because extra blocks break
+elsewhere and the extent rule abstains for the whole image. The surviving
+blocks are flat regions where a partial repaint changes the mean but leaves the
+detail-carried mark intact. Closing it needs the tag to depend on the mean in
+the embedding domain, not a threshold change — see A-020, which records the
+falsified hypothesis so it is not proposed again.
 
 ---
 
