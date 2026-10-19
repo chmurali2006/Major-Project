@@ -319,6 +319,7 @@ battery is frozen. None is a thesis number yet.
 | A-014 | 2026-10-19 | Verified excuse is a superset of the embed skip | proposed |
 | A-015 | 2026-10-19 | Mark saturated at the gamut; matched-filter read | proposed |
 | A-016 | 2026-10-19 | Field excuse restricted to the border-connected surround | proposed |
+| A-017 | 2026-10-19 | `sigma = 1` noise reclassified out of "benign" | **OPEN — needs ratification** |
 
 ---
 
@@ -391,10 +392,11 @@ asserted against in `tests/`.
 **Date:** 2026-10-19 · **Affects:** `pipeline.protect`, `carriers.FragileCarrier`,
 `ladder.classify`, `config.TAU_F`, `config.TAU_STRONG`, module 4
 
-**Problem.** Dermoscopy has large saturated regions: 54% of pixels in a
-dark-vignette PH2 image sit within one level of the gamut edge, and 72–85% of
-blocks in those images contain a pixel with *zero* room in one direction
-(FIXME: numbers below). A signed mark cannot fit there at all.
+**Problem.** Dermoscopy has large saturated regions: 54% of pixels in the
+dark-vignette PH2 image IMD392 sit within one level of the gamut edge, and on
+that image 85% of blocks contain a pixel with *zero* room in one direction
+(72%, 80% on IMD393/394; 8% median over a ten-image sample). A signed mark
+cannot fit there at all.
 
 **Decision.** Do not revert such a block and do not try to shift it — both
 change the digest the block is tagged against, which reintroduces A-014. Let
@@ -444,3 +446,60 @@ painted patch in the interior does not.
 misses are text drawn *on* the white surround, where no mark exists to
 destroy — a capacity limit, not a detector failure, and it is reported as
 `CANNOT_SAY(capacity_refusal)` rather than `INTACT`.
+
+## A-017 — `sigma = 1` noise is not benign for a fragile mark
+
+**Date:** 2026-10-19 · **Affects:** battery condition 10, `docs/BENCHMARKS.md`
+**Status:** OPEN — this changes a frozen condition and needs the project
+owner's decision.
+
+**Observation.** On PH2 (n=20) condition 10 — additive Gaussian noise,
+`sigma = 1` — is claimed as tampering on 40% of images. It is the only bar the
+system currently fails. Every other benign condition is silent: JPEG 90, 75
+and 50 and resize 90% all claim on 0% of images.
+
+**Why it happens.** A fragile mark is destroyed by any change to the sample
+values; that is its definition, not a defect. `sigma = 1` perturbs every
+detail coefficient by about 0.29 levels against a mark amplitude of 2, which
+is enough to erase the mark in patches. On this corpus it breaks 20–30 blocks
+in the images it affects — 0.5–0.7% of the image, below the 5% extent rule, so
+the ladder reads it as *localised* damage, which is what a tamper looks like.
+
+**Why the battery's label is questionable.** The frozen battery places
+condition 10 in the `benign` family. For a *fragile* scheme that label asserts
+the mark should survive additive noise, which contradicts fragility. For a
+*semi-fragile* scheme the assertion would be reasonable; this design is
+fragile by Carrier A and semi-robust by Carrier B, and the ladder already has
+a `CANNOT_SAY(routine_handling)` verdict for global degradation — but
+localised breakage is by construction reported as tampering.
+
+**Measured, for the decision:**
+
+| condition | claim rate | coverage |
+|---|---|---|
+| JPEG 90 / 75 / 50 | 0% / 0% / 0% | 0.067 / 0.007 / 0.004 |
+| resize 90% and back | 0% | 0.318 |
+| noise `sigma = 1` | 40% | 0.852 |
+| noise `sigma = 8` | 0% | 0.004 |
+
+Note the shape: JPEG and `sigma = 8` destroy the mark *everywhere*, the extent
+rule catches that and abstains. `sigma = 1` destroys it in patches, so the
+tool localises them. The tool is behaving consistently; the condition's
+family is what is in question.
+
+**Options.**
+
+1. **Reclassify condition 10 as `degrade`** (recommended). Rationale: a
+   modification is not benign handling for a fragile mark. Benign then
+   contains only operations that preserve sample values, and benign claim rate
+   is 0%. The cost is that the battery changes after it was frozen, which must
+   be recorded as such — not presented as a measurement.
+2. **Keep the label and report the 40% as a known, documented failure.** The
+   headline "benign FPR < 0.5%" then cannot be claimed.
+3. **Add a scattered-breakage rule** (many small disconnected broken regions →
+   abstain). Measured and rejected: `sigma = 1` breakage is 95% neighbour-
+   connected and 77 blocks wide, indistinguishable from a 64×64 paste by
+   spatial structure. Implementing it would cost real detection.
+
+**Recommendation: option 1**, with the relabelling recorded here and in
+`docs/BENCHMARKS.md`, and the `sigma = 1` numbers still reported.
