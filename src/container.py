@@ -178,26 +178,41 @@ def luma_bounds(cb: np.ndarray, cr: np.ndarray) -> tuple[np.ndarray, np.ndarray]
 
 
 def fit_block_luma(y: np.ndarray, cb: np.ndarray, cr: np.ndarray,
-                   margin: float = 6.0, max_shift: float = 12.0):
+                   margin: float = 5.0, max_shift: float = 16.0):
     """Shift whole blocks by an integer DC offset so the mark cannot clip.
 
-    A constant offset inside an 8x8 block changes only LL, never the detail
-    coefficients that carry the tag, so a shifted block stays embeddable.
-    The shift is applied *before* the digest is computed, so the tag and the
-    digest agree. Blocks that cannot be fitted within max_shift are refused.
+    A constant offset inside an 8x8 block changes only the approximation
+    subbands, never the detail coefficients that carry the tag, so a shifted
+    block stays embeddable and its signature is untouched.
+
+    The offset is the one that leaves every pixel `margin` levels of room in
+    *both* directions. With per-pixel headroom dlo_i = y_i - low_i (room to
+    darken) and dhi_i = high_i - y_i (room to brighten), a shift s gives
+    dlo_i + s and dhi_i - s, so
+
+        s >= margin - min(dlo)        and        s <= min(dhi) - margin
+
+    and any s in that interval works. An earlier version intersected the
+    per-pixel lower bounds first and compared the block's darkest pixel with
+    its tightest pixel - the mistake block_gamut's docstring warns about -
+    which asked for shifts of up to 200 levels on blocks that mixed a black
+    background pixel with a saturated red one, and cost 10 dB of PSNR.
+
+    Blocks with no feasible shift are refused and transmitted verbatim.
     """
-    lo, hi = luma_bounds(cb, cr)
+    room_lo, room_hi = block_gamut(y, cb, cr)
     ny, nx = y.shape[0] // BLOCK, y.shape[1] // BLOCK
-    lo_b = lo.reshape(ny, BLOCK, nx, BLOCK).max(axis=(1, 3))
-    hi_b = hi.reshape(ny, BLOCK, nx, BLOCK).min(axis=(1, 3))
-    yb = y.reshape(ny, BLOCK, nx, BLOCK)
-    need_lo = np.ceil(lo_b + margin - yb.min(axis=(1, 3)))
-    need_hi = np.floor(hi_b - margin - yb.max(axis=(1, 3)))
-    shift = np.where(need_lo > 0, need_lo, np.where(need_hi < 0, need_hi, 0.0))
-    refused = (np.abs(shift) > max_shift) | (hi_b - lo_b < 2 * margin)
-    shift = np.where(refused, 0.0, shift)
+    lo_room = room_lo.max(axis=(1, 3))          # = -min(dlo)
+    hi_room = room_hi.min(axis=(1, 3))          # =  min(dhi)
+    lower = margin + lo_room                    # s must be at least this
+    upper = hi_room - margin                    # and at most this
+    feasible = ((lower <= upper)
+                & (lower <= max_shift) & (upper >= -max_shift))
+    shift = np.clip(0.0, lower, upper)
+    shift = np.where(feasible, np.round(shift), 0.0)
+    yb = np.asarray(y, np.float64).reshape(ny, BLOCK, nx, BLOCK)
     out = (yb + shift[:, None, :, None]).reshape(y.shape)
-    return out, refused
+    return out, ~feasible
 
 
 def field_mask(y: np.ndarray, hi: int = 250, lo: int = 5,

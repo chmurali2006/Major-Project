@@ -10,7 +10,7 @@ import pytest
 from src.config import DEFAULT
 from src.container import png_bytes, png_read, png_text
 from src.fixtures import phantom
-from src.ladder import CANNOT_SAY, INTACT, KEY_MISMATCH, TAMPERED
+from src.ladder import CANNOT_SAY, CAPACITY_REFUSAL, INTACT, KEY_MISMATCH, TAMPERED
 from src.pipeline import System
 
 KEY = b"preflight-key"
@@ -41,15 +41,25 @@ def protected():
 def test_check1_clean_image_is_exactly_intact(protected):
     sysm, p = protected
     res = sysm.verify(p.png)
-    assert p.refusal_rate == 0.0, "phantom should need no capacity refusals"
-    # delta_f is a normalised correlation deficit, not an exact bit count. A
-    # block whose pixels touch the RGB gamut loses part of its mark to
-    # saturation and scores a small non-zero deficit. The guarantee a fragile
-    # watermark can actually make is that no block reaches the detection
-    # threshold, so that is what is asserted.
-    assert np.nanmax(res.delta_f) < DEFAULT.tau_f, f"clean delta_f max {np.nanmax(res.delta_f)}"
+    # The phantom is synthetic and carries a saturated patch. Since A-027 the
+    # embedder refuses a block whose marked luma would leave the gamut instead
+    # of clamping it, so exactly the blocks that touch that patch are refused
+    # and transmitted verbatim. The guarantee a clean image must make is that
+    # it never accuses itself, which the next two assertions state; coverage
+    # records the refusal instead of hiding it.
+    assert p.refusal_rate < 0.005, f"phantom refusals {p.refusal_rate}"
+    assert res.coverage >= 0.99, f"coverage {res.coverage}"
+    # The guarantee a fragile watermark must make is not "no block disagrees"
+    # - a block that carries no mark at all reads as a total mismatch, and
+    # refusing such a block is exactly what the embedder does where the gamut
+    # leaves no room. The guarantee is that no block it can actually read is
+    # accused, and that every block it cannot read is *labelled* unreadable
+    # rather than counted as evidence.
     assert not res.ladder.tampered.any()
-    # Coverage is abstention, not failure. A handful of blocks sit against the
+    unreadable = res.ladder.reason == CAPACITY_REFUSAL
+    accused = (res.delta_f >= DEFAULT.tau_f) & ~unreadable
+    assert not accused.any(), f"clean block accused: {int(accused.sum())}"
+    # Coverage is abstention, not failure: a handful of blocks sit against the
     # RGB gamut on every image and are refused at embed, so the honest bar is
     # "almost everything is decided", not "everything".
     assert res.coverage >= 0.99, f"coverage {res.coverage}"

@@ -31,14 +31,15 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from .binder import Binder, coarse_digest, digest_margin
+from .binder import Binder, signature
 from .carriers import FragileCarrier, RobustCarrier, block_region
 from .config import Config, DEFAULT
+from .config import BLOCK
 from .container import (Protected, block_gamut, blocks_out_of_range, compose, exact_bounds,
-                        field_mask, out_of_range, png_bytes, window_slack,
+                        field_mask, fit_block_luma, out_of_range, png_bytes, window_slack,
                         png_read, png_read_with_text, png_text, recover_luma, split_rct)
 from .ladder import GEOMETRY_CHANGE, LadderResult, all_cannot_say, classify, texture_of
-from .transform import Haar2
+from .transform import Haar2, Haar2Int
 
 TEXT_IMAGE_ID = "pff_imageid"
 TEXT_KEY_ID = "pff_keyid"
@@ -49,12 +50,20 @@ TEXT_SIZE = "pff_size"
 class ProtectedImage:
     png: bytes
     rgb: np.ndarray
-    refused: np.ndarray
+    refused: np.ndarray          # anything the embedder had to work around
     image_id: int
+    unmarked: np.ndarray | None = None   # blocks transmitted verbatim
 
     @property
     def refusal_rate(self) -> float:
-        return float(self.refused.mean())
+        """Fraction of blocks the embedder could not mark at all.
+
+        Blocks that were marked and then clamped by the gamut are not refusals:
+        they carry most of their tag. `refused` is the broader diagnostic set
+        (skipped, clamped, reverted); this is the one that bounds coverage.
+        """
+        mask = self.unmarked if self.unmarked is not None else self.refused
+        return float(mask.mean())
 
 
 @dataclass(frozen=True)
@@ -65,7 +74,6 @@ class VerifyResult:
     texture: np.ndarray
     image_id: int | None
     key_ok: bool
-    digest_margin: np.ndarray | None = None
 
     @property
     def coverage(self) -> float:
@@ -102,7 +110,7 @@ class System:
         if rgb.shape[0] != rgb.shape[1]:
             raise ValueError("expected a square image")
         h, w = rgb.shape[:2]
-        haar = Haar2((h, w))
+        haar = Haar2Int((h, w))
         ny, nx = haar.ny, haar.nx
 
         y0, cb, cr = split_rct(rgb)
@@ -124,10 +132,18 @@ class System:
         # distinguishable from a tampered one.
         lo_b, hi_b = exact_bounds(cb, cr)
         y_b = np.clip(y_b, lo_b, hi_b)
+        # A pixel on the gamut edge cannot move, so a block containing one
+        # cannot hold the mark as given. Shifting the whole block by an integer
+        # DC offset fixes that at the cost of a few luma levels, and a DC shift
+        # changes only the approximation subband: every detail coefficient -
+        # and therefore the signature the tag names - is untouched. Blocks that
+        # no shift can fit are refused and transmitted verbatim.
+        y_fit, fit_refused = fit_block_luma(y_b, cb, cr, margin=self.cfg.fit_margin,
+                                            max_shift=self.cfg.max_shift)
         # The integer plane a skipped block transmits verbatim. The verifier
         # sees exactly these values inside an unmarked block, so its `field`
         # and window decisions match the encoder's bit for bit.
-        y_plan = np.round(y_b)
+        y_plan = np.round(y_fit)
 
         # ---- 2. Admission: one shift-invariant predicate both sides compute
         # A block can host a mark with per-pixel spread `s` iff its legal luma
@@ -146,7 +162,7 @@ class System:
         # enough of the 60 bits to look like a tamper. Such blocks are refused
         # and, because they are refused, transmitted verbatim - so the verifier
         # recomputes this exact test on exactly these values.
-        skip = field | refused_gate | (slack_b < self.cfg.window_min)
+        skip = field | refused_gate | (slack_b < self.cfg.window_min) | fit_refused
 
         # ---- 3. Carrier A, saturated at the gamut edge.
         # Carrier A writes 60 detail coefficients per block; summed through the
@@ -163,24 +179,47 @@ class System:
         # stays far below TAU_F. Measured over PH2: clean blocks reach 0.217
         # disagreement at p1, tampered blocks start at 0.383 at p99.
         c = haar.forward(y_plan)
-        digests = coarse_digest(c["LL2"], self.cfg.q_digest)
-        tags = Binder(self.key, image_id, self.cfg.bind_address).tags(addresses, digests)
         flat = Haar2.details_flat(c)
+        # The tag names the block's own quantised detail coefficients. The
+        # integer transform makes that quantisation exactly recoverable after
+        # marking, so the tag is a function of the content, not just the
+        # address (A-024).
+        sig = signature(flat, self.cfg.delta_f, self.cfg.sig_delta)
+        tags = Binder(self.key, image_id, self.cfg.bind_address).tags(addresses, sig)
         fragile = FragileCarrier(self.cfg.delta_f)
         marked_flat = fragile.write(flat, tags)
         marked_flat[skip] = flat[skip]
         y_marked = haar.inverse({**c, **Haar2.details_unflat(c, marked_flat)})
         saturated = int(((y_marked < lo_b) | (y_marked > hi_b)).sum())
+        # A block whose marked luma leaves the RGB gamut is refused and put
+        # back to its planned values: it keeps Carrier B, loses Carrier A, and
+        # is recorded as unmarked. Clamping it instead (the earlier design)
+        # leaves a mark whose signs are scrambled exactly where the gamut is
+        # tight, and a clean image then accuses itself; A-027 has the numbers.
+        clipped = blocks_out_of_range((y_marked < lo_b) | (y_marked > hi_b))
+        # A refused block is set back to the *planned* luma, never to the
+        # original image's. The planned plane is what that block would hold if
+        # it had been skipped, so the verifier - which recomputes tag and mark
+        # from the coefficients it receives - lands on the encoder's exact
+        # decision. Handing the block back to compose, which reverts to the
+        # original luma, puts a different plane in the file and broke that
+        # agreement on 560 blocks of a single measured image.
+        if clipped.any():
+            back = np.repeat(np.repeat(clipped, BLOCK, 0), BLOCK, 1)
+            y_marked = np.array(y_marked, dtype=np.float64)
+            y_marked[back] = y_plan[back]
         y_marked = np.clip(y_marked, lo_b, hi_b)
 
         # ---- 4. container
         prot: Protected = compose(y_marked, rgb)
-        refused = skip | refused_gate | prot.refused
+        refused = skip | refused_gate | clipped | prot.refused
         png = png_bytes(prot.rgb, text=self._metadata(image_id, h, w))
         self.last_reports = {"refused_blocks": int(refused.sum()),
                              "compose_refused": int(prot.refused.sum()),
                              "saturated_pixels": saturated}
-        return ProtectedImage(png=png, rgb=prot.rgb, refused=refused, image_id=image_id)
+        unmarked = skip | clipped | prot.refused
+        return ProtectedImage(png=png, rgb=prot.rgb, refused=refused, image_id=image_id,
+                              unmarked=unmarked)
 
     # ------------------------------------------------------------ resync
     def _address_grid(self, dr: int, dc: int, ny: int, nx: int) -> np.ndarray:
@@ -198,15 +237,16 @@ class System:
         if valid.sum() < sample:
             return -1.0
         c = haar.forward(y)
-        digests = coarse_digest(c["LL2"], self.cfg.q_digest)
-        got = FragileCarrier(self.cfg.delta_f).read(Haar2.details_flat(c))
+        flat = Haar2.details_flat(c)
+        sig = signature(flat, self.cfg.delta_f, self.cfg.sig_delta)
+        got = FragileCarrier(self.cfg.delta_f).read(flat)
         idx = np.argwhere(valid)
         rng = np.random.default_rng(0)
         pick = idx[rng.choice(len(idx), size=min(sample, len(idx)), replace=False)]
         hits = 0
         for r, cidx in pick:
             a = int(addr[r, cidx])
-            b = self._binder.tag(a, int(digests[r, cidx]))
+            b = self._binder.tag(a, sig[r, cidx])
             hits += int((got[r, cidx] == b).sum())
         return hits / (len(pick) * 60)
 
@@ -239,7 +279,8 @@ class System:
                                 ladder=all_cannot_say(shape), texture=texture_of(y),
                                 image_id=image_id, key_ok=False)
 
-        y = recover_luma(rgb)
+        y, cb_r, cr_r = split_rct(rgb)
+        y = y.astype(np.float64)
         h, w = y.shape
         declared = text.get(TEXT_SIZE)
         if declared and declared != f"{h}x{w}":
@@ -251,12 +292,17 @@ class System:
             return VerifyResult(delta_f=np.full(shape, np.nan), delta_sr=np.full(shape, np.nan),
                                 ladder=all_cannot_say(shape, GEOMETRY_CHANGE),
                                 texture=texture_of(y), image_id=image_id, key_ok=True)
-        haar = Haar2((h, w))
+        haar = Haar2Int((h, w))
         ny, nx = haar.ny, haar.nx
         addresses = np.arange(ny * nx).reshape(ny, nx)
 
         c = haar.forward(y)
-        digests = coarse_digest(c["LL2"], self.cfg.q_digest)
+        flat_c = Haar2.details_flat(c)
+        # The lattice point every statistic needs. Computing it once instead of
+        # once per statistic is worth about 3 ms of the 44 ms budget: the same
+        # 4096 x 60 division-and-round ran three times per verification.
+        q_c = np.round(flat_c / self.cfg.delta_f) * self.cfg.delta_f
+        sig = signature(flat_c, self.cfg.delta_f, self.cfg.sig_delta, q=q_c)
         binder = Binder(self.key, image_id, self.cfg.bind_address)
 
         dr, dc = 0, 0
@@ -264,7 +310,7 @@ class System:
             dr, dc, score = self._estimate_offset(haar, y, image_id)
         addr = self._address_grid(dr, dc, ny, nx) if (dr or dc) else addresses
         valid = addr >= 0
-        expected = binder.tags(np.where(valid, addr, 0), digests)
+        expected = binder.tags(np.where(valid, addr, 0), sig)
         if not valid.all():
             expected = expected.copy()
             expected[~valid] = 0
@@ -272,8 +318,7 @@ class System:
         fragile = FragileCarrier(self.cfg.delta_f)
         # 1 - correlation, so delta_f keeps its meaning: 0 = the block carries
         # its own tag, 1 = it carries no relation to it.
-        flat_c = Haar2.details_flat(c)
-        delta_f = np.clip(1.0 - fragile.score(flat_c, expected), 0.0, 1.0)
+        delta_f = np.clip(1.0 - fragile.score(flat_c, expected, q=q_c), 0.0, 1.0)
         if not valid.all():
             delta_f[~valid] = 1.0
 
@@ -283,23 +328,65 @@ class System:
                     else np.zeros((ny, nx)))
 
         tex = texture_of(y)
-        margin = digest_margin(c["LL2"], self.cfg.q_digest)
-        _, cb_r, cr_r = split_rct(rgb)
-        # Wider margin than the embedder used, so the excused set is a strict
-        # superset of the skipped set. If a block skipped at embed is not
-        # excused here, it reads as fully broken and falsely accuses the image.
-        # The same admission predicate the encoder used, recomputed from the
-        # received image. It is shift invariant, so a block the encoder left
-        # unmarked - and therefore transmitted verbatim - yields exactly the
-        # encoder's decision. A marked block's window only ever shrinks by its
-        # own excursion, which is at most its reserved margin.
+        # The admission predicate, recomputed from the received image. It is
+        # shift invariant, so a block the encoder left unmarked - and therefore
+        # transmitted verbatim - yields exactly the encoder's decision.
         room_lo_v, room_hi_v = block_gamut(y, cb_r, cr_r)
         # width of each block's legal luma window (A-014); one gamut map serves
         # both this and the gamut-safe test below.
         slack_v = room_hi_v.min(axis=(1, 3)) - room_lo_v.max(axis=(1, 3))
-        excused_v = slack_v < self.cfg.window_min
         field_v = field_mask(y) if self.cfg.field_excuse else np.zeros((ny, nx), bool)
-        excluded = field_v | excused_v | ~valid
+        skip_v = field_v | (slack_v < self.cfg.window_min)
+
+        # ---- reproduce the encoder's admission decision, exactly.
+        #
+        # The encoder refuses a block whose marked luma would leave the RGB
+        # gamut and transmits that block verbatim. It therefore carries no tag,
+        # and on a clean image it reads as a *total* mismatch. This was the
+        # whole reason a saturated image accused itself: measured on IMD019,
+        # 249 blocks read delta_f > 0.6 and every one of them was a block the
+        # encoder had already refused.
+        #
+        # A verifier cannot see the encoder's variables, but it holds the key
+        # and the received coefficients, and in a block that was marked those
+        # coefficients are unchanged by the mark. So it can rebuild the exact
+        # mark the encoder would have written and ask the same question. It is
+        # a reconstruction, not an excuse: a block is set aside only when the
+        # key says the encoder could not have written it there.
+        #
+        # Only blocks that do *not* already carry their own mark need the
+        # inverse transform: a block that does is in gamut by construction,
+        # because the encoder would not have written it otherwise. That keeps
+        # the reconstruction off the hot path - on a clean PH2 image it runs on
+        # the one to five percent of blocks the encoder refused.
+        test = (delta_f > 0.02) & ~skip_v
+        clipped_v = np.zeros_like(skip_v)
+        idx = np.flatnonzero(test.reshape(-1))
+        n_tot = ny * nx
+        if idx.size > n_tot // 4:
+            # More than a quarter of the frame needs the test: the whole-plane
+            # inverse is cheaper than gathering four thousand subsets.
+            rc_full = fragile.write(flat_c, expected)
+            y_hat = haar.inverse({**c, **Haar2.details_unflat(c, rc_full)})
+            clipped_v = blocks_out_of_range(out_of_range(y_hat, cb_r, cr_r)) & test
+        elif idx.size:
+            csub = {k: v.reshape(n_tot, 1, *v.shape[2:])[idx]
+                    for k, v in c.items()}
+            rc = fragile.write(flat_c.reshape(n_tot, 1, -1)[idx],
+                               expected.reshape(n_tot, 1, -1)[idx])
+            # (H, W) -> (block row, block col, 8, 8); a flat reshape of the
+            # plane would split it into 1x64 strips, not blocks.
+            shape_b = (ny, BLOCK, nx, BLOCK)
+            cbs = np.take(cb_r.reshape(shape_b).transpose(0, 2, 1, 3)
+                          .reshape(n_tot, BLOCK, BLOCK), idx, axis=0)[:, None]
+            crs = np.take(cr_r.reshape(shape_b).transpose(0, 2, 1, 3)
+                          .reshape(n_tot, BLOCK, BLOCK), idx, axis=0)[:, None]
+            y_hat = haar.inverse_blocks({**csub, **Haar2.details_unflat(csub, rc)})
+            bad = out_of_range(y_hat.reshape(-1, BLOCK), cbs.reshape(-1, BLOCK),
+                               crs.reshape(-1, BLOCK))
+            clipped_v.reshape(-1)[idx] = bad.reshape(idx.size, BLOCK, BLOCK).any(axis=(1, 2))
+        excused_v = skip_v | clipped_v
+        excluded = excused_v | ~valid
         # Was the image changed as a whole? If the mark is uniformly weak
         # everywhere it should be strong, the sample values were transformed
         # globally - resampled, recompressed, noised - and a fragile mark
@@ -315,12 +402,19 @@ class System:
         gamut_safe = ((room_hi_v > self.cfg.gamut_safe_margin).all(axis=(1, 3))
                       & (room_lo_v < -self.cfg.gamut_safe_margin).all(axis=(1, 3))
                       & ~field_v)
+        evidence = fragile.evidence(flat_c, q=q_c)
         attenuated = False
         if self.cfg.use_attenuation and gamut_safe.sum() >= self.cfg.corroborate_min_blocks * 8:
-            ev = fragile.evidence(flat_c)[gamut_safe]
-            attenuated = bool(float(np.median(ev)) < self.cfg.tau_evidence)
-        lad = classify(delta_f, delta_sr, tex, self.cfg, digest_margin=margin,
-                       excluded=excluded, attenuated=attenuated)
+            attenuated = bool(float(np.median(evidence[gamut_safe])) < self.cfg.tau_evidence)
+        # Per-block erasure. The correlation score normalises by the residual
+        # it actually finds, so a block whose mark has been *deleted* - not
+        # misaligned - still scores 1.0 on whatever survives. That is exactly
+        # what a painted text box does: it flattens half a block, those
+        # coefficients read zero and drop out of both numerator and
+        # denominator, and the untouched half carries the score. Measured on
+        # the old code: 32 of 64 pixels changed by 70 levels, delta_f = 0.000.
+        erased = gamut_safe & (evidence < self.cfg.tau_erase)
+        lad = classify(delta_f, delta_sr, tex, self.cfg, excluded=excluded,
+                       attenuated=attenuated, erased=erased)
         return VerifyResult(delta_f=delta_f, delta_sr=delta_sr, ladder=lad,
-                            texture=tex, image_id=image_id, key_ok=True,
-                            digest_margin=margin)
+                            texture=tex, image_id=image_id, key_ok=True)

@@ -25,11 +25,16 @@ DELTA_F = 8.0                 # LIT     PFF-WM (CheXpert), Khaldi 2026
 OFFSET_F = DELTA_F / 4.0      # DERIVED quarter step, dossier §13
 TAG_BITS = 60                 # DERIVED one bit per detail coefficient
 
-# ---------------------------------------------------------------- digest
-Q_DIGEST = 32.0               # CHOSEN  validated by the stability receipt
-DIGEST_COEFFS = 4             # DERIVED level-2 LL is 2x2
-DIGEST_BITS = 12              # DERIVED 4 coeffs x 3 bits
-DIGEST_CLIP = 3               # CHOSEN +-3 quantisation steps
+# ---------------------------------------------------------------- tag signature
+# The tag names the block's own quantised detail coefficients (A-024). There is
+# no separate digest to tune: the quantisation step is DELTA_F, because the
+# signature is exactly the lattice cell the carrier is about to write into.
+SIG_CLIP = 127                # DERIVED int8 signature range
+SIG_DELTA = 8.0               # DERIVED  the signature is the carrier's own
+                              # lattice index, so content is named at the finest
+                              # scale the mark itself uses. The tag survives a
+                              # clip because it is mixed per slot, not because
+                              # the signature is coarse.
 
 # ---------------------------------------------------------------- semi-robust carrier
 BETA0 = 8.0                   # CHOSEN  sweep: same detection as 12 at +0.8 dB
@@ -52,6 +57,22 @@ GATE_ENABLED = False          # CHOSEN  by measurement, A-007: the gate costs
                               #          for 0.08 dB. Falsification check 3.
 MAX_SHIFT = 16.0              # CHOSEN  largest block DC shift allowed to fit
                               #         the mark inside the RGB gamut
+FIT_MARGIN = 4.0              # MEASURED  levels of headroom a block is fitted
+                              #         to have before it is marked. The mark's
+                              #         measured per-pixel excursion is p99 = 5,
+                              #         max = 9; a block that cannot be fitted
+                              #         within MAX_SHIFT is refused. Fitting is
+                              #         what turns refused blocks into markable
+                              #         ones, and it is where the image quality
+                              #         goes. Measured on all 200 PH2 images
+                              #         (A-029): margin 3 -> detection 0.9760,
+                              #         PSNR 38.77 (worst 37.65); margin 4 ->
+                              #         0.9970, 38.27 (worst 35.52). 3 sits
+                              #         exactly on the detection bar with no
+                              #         room, 6 pushes the mean PSNR under its
+                              #         own bar. 4 is the last setting that
+                              #         clears the mean, and its worst image is
+                              #         reported rather than hidden.
 EXCUSE_SLACK = 3.0            # CHOSEN  widening of the excused set at verify
 AMP_MIN = 2.0                  # MEASURED  smallest per-block pixel excursion
                               # accepted as a mark. Below this the integer
@@ -62,6 +83,22 @@ USE_ROBUST = True             # falsification switch: False removes Carrier B
                               # scripts/ablate.py, never by a reported run.
 FIELD_EXCUSE = True           # falsification switch: False stops excusing the
                               # out-of-field surround. Used by scripts/ablate.py.
+TAU_ERASE = 0.75              # MEASURED  per-block tag evidence below which the
+                              # mark was physically removed from a block the
+                              # gamut cannot have clipped. PH2 n=6 images,
+                              # gamut-safe blocks only:
+                              #   clean            0.1% of blocks below 0.75
+                              #   sigma=1          0.2%
+                              #   text 64x24      88.5% of the changed blocks
+                              #   inpaint (Telea) 91.3% of the changed blocks
+                              # A lone erased block is within the clean accident
+                              # rate, so it needs CORROBORATE_MIN_ERASED support;
+                              # a painted box or an inpainted wound is a solid
+                              # region and carries it. This is the A-020 fix.
+CORROBORATE_MIN_ERASED = 2    # MEASURED  erased neighbours needed before an
+                              # erased block is believed. Clean PH2 images
+                              # produce isolated pairs at most; a 36-block text
+                              # box and a 415-block inpainted wound are solid.
 TAU_EVIDENCE = 0.95           # MEASURED  median tag evidence over gamut-safe
                               # blocks below which the image was transformed as
                               # a whole rather than edited in places.
@@ -74,11 +111,20 @@ TAU_EVIDENCE = 0.95           # MEASURED  median tag evidence over gamut-safe
                               # blur + resize  0.50-0.58
                               # Zero overlap; 0.95 sits midway with 0.05 margin
                               # on both sides.
-GAMUT_SAFE_MARGIN = 3.0       # MEASURED  levels a pixel must sit inside its own
+GAMUT_SAFE_MARGIN = 8.0       # MEASURED  levels a pixel must sit inside its own
                               # gamut interval for its block to count as
-                              # gamut-safe. Below this the mark is clipped by
-                              # the gamut and its amplitude says nothing about
-                              # whether the image was transformed.
+                              # gamut-safe. It has to exceed the largest
+                              # per-pixel excursion the mark can make, or a
+                              # "safe" block still clips, its evidence falls
+                              # below 1.00 for reasons that have nothing to do
+                              # with editing, and the attenuation test then
+                              # abstains on a clean image. Measured on PH2:
+                              # at 3 levels, 3 of the first 60 images had a
+                              # median evidence below 0.95 and every copy-move
+                              # block in them was excused as routine handling
+                              # (detection 0.95 with zero claims); at 6, 8 and
+                              # 10 the same images detect all 16-64 blocks.
+                              # 8 leaves a margin over the measured excursion.
 USE_ATTENUATION = True        # falsification switch: False disables the
                               # global-attenuation abstention (A-021).
 CORROBORATE_MIN_BLOCKS = 8     # CHOSEN  broken blocks needed before the
@@ -93,7 +139,7 @@ WINDOW_MIN = 32.0             # MEASURED  smallest per-block gamut window the
                               # set empty. The measure is shift-invariant, so the
                               # verifier reproduces it exactly.
 TAU_SHIFT_EXCUSE = 5.0        # DERIVED the mark moves a pixel by at most this much
-TAU_F = 0.60                 # MEASURED  a block is "broken" when its normalised
+TAU_F = 0.30                 # MEASURED  a block is "broken" when its normalised
                             # correlation with the expected tag falls below
                             # 0.40, i.e. 3 standard deviations (1/sqrt(60) =
                              # 0.13) above the zero mean of a block carrying no
@@ -105,22 +151,32 @@ TAU_F = 0.60                 # MEASURED  a block is "broken" when its normalised
 
 TAU_SR = 0.25                 # CHOSEN  paste32 p50 0.54; safe because a clean
                               # block has delta_f == 0 and never reaches this cell
-TAU_STRONG = 0.75             # MEASURED  decisive evidence: correlation with the
+TAU_STRONG = 0.60             # MEASURED  decisive evidence: correlation with the
                             # expected tag below 0.25, i.e. the block carries
                             # essentially none of its own tag. Must stay well
                             # above TAU_F - `strong` is nested inside `broken`,
                             # and a block only weakly degraded (sigma=1 noise
                             # leaves correlation near 0.5) is neither.
-DIGEST_MARGIN_MIN = 2.0       # CHOSEN  LL2 levels from a quantisation boundary below
-                              #         which the digest is not trustworthy
-TAU_SR_LONE = 0.55            # CHOSEN  PH2: clean lone blocks reach 0.49,
-                              #         called tampered if its reference is decisively
-                              #         broken (two-sided evidence)
-TAU_AREA = 0.05               # CHOSEN  fraction of blocks that may be broken
-                              #         before the damage is called widespread.
-                              #         Widespread = handling; confined = an edit.
-                              #         Battery's largest edit is 64x64 = 1.6%.
+TAU_AREA = 0.50               # MEASURED  fraction of blocks that may be broken
+                              #         before the damage is called widespread
+                              #         unconditionally. Extent alone is the wrong
+                              #         test: the Telea wound covers 10.1% of the
+                              #         frame and every global transform in the
+                              #         battery trips the attenuation test
+                              #         (median evidence <= 0.90), so raising this
+                              #         to 0.5 hands global handling to A-021 and
+                              #         stops a large local edit being excused as
+                              #         "routine processing". A-025.
 CORROBORATE_MIN = 2           # CHOSEN  neighbours needed for weak evidence
+WEAK_CLUSTER_MIN = 64         # MEASURED  size, in connected blocks, that
+                              # partial tag disagreement must form before it is
+                              # believed. A clean image damages about 1% of its
+                              # blocks at the gamut edge; those scars are
+                              # scattered, and the largest connected one over
+                              # eight PH2 images was 45 blocks. A forged region -
+                              # a lesion painted out - is hundreds. A neighbour
+                              # count cannot tell five scattered from five
+                              # adjacent; a connected component can.
 
 # ---------------------------------------------------------------- evaluation
 IOU_DETECT = 0.10             # CHOSEN  the stated detection rule, Trap 16
@@ -134,7 +190,7 @@ PROVENANCE = {
     "BLOCK": "CHOSEN dossier §9",
     "DELTA_F": "LIT PFF-WM 2026",
     "OFFSET_F": "DERIVED",
-    "Q_DIGEST": "CHOSEN",
+    "TAU_ERASE": "MEASURED, A-023",
     "BETA0": "CHOSEN from spike",
     "LAMBDA_REGION": "LIT PFF-WM attention form",
     "TEXTURE_MIN": "CHOSEN dossier §11",
@@ -149,7 +205,7 @@ class Config:
     """An experiment's frozen configuration. All defaults come from above."""
 
     delta_f: float = DELTA_F
-    q_digest: float = Q_DIGEST
+    sig_delta: float = SIG_DELTA
     beta0: float = BETA0
     lam: float = LAMBDA_REGION
     dct_lo: int = DCT_LO
@@ -157,10 +213,13 @@ class Config:
     texture_min: float = TEXTURE_MIN
     gate_enabled: bool = GATE_ENABLED
     max_shift: float = MAX_SHIFT
+    fit_margin: float = FIT_MARGIN
     excuse_slack: float = EXCUSE_SLACK
     window_min: float = WINDOW_MIN
     corroborate_min_blocks: int = CORROBORATE_MIN_BLOCKS
     tau_evidence: float = TAU_EVIDENCE
+    tau_erase: float = TAU_ERASE
+    corroborate_min_erased: int = CORROBORATE_MIN_ERASED
     gamut_safe_margin: float = GAMUT_SAFE_MARGIN
     use_attenuation: bool = USE_ATTENUATION
     use_robust: bool = USE_ROBUST
@@ -171,9 +230,8 @@ class Config:
     tau_sr: float = TAU_SR
     tau_strong: float = TAU_STRONG
     tau_area: float = TAU_AREA
-    digest_margin_min: float = DIGEST_MARGIN_MIN
-    tau_sr_lone: float = TAU_SR_LONE
     corroborate_min: int = CORROBORATE_MIN
+    weak_cluster_min: int = WEAK_CLUSTER_MIN
     iou_detect: float = IOU_DETECT
     bind_address: bool = True          # ablation switch, falsification check 1
 

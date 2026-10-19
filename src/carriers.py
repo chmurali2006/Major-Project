@@ -31,20 +31,48 @@ from .config import N_BLOCKS
 # ---------------------------------------------------------------- Carrier A
 
 
+#: Synthesis energy of a unit impulse in each subband of the *integer* transform,
+#: measured by inverse-transforming a single coefficient (scripts/verify_gain.py).
+#: The lifting form is not orthonormal, so a level-2 coefficient moves eight
+#: times the pixel energy a level-1 one does. Writing the same amplitude into
+#: every slot therefore put most of the distortion in 12 of the 60 slots and
+#: cost 0.8 dB of PSNR. The amplitude below is round(delta/4 / sqrt(energy)),
+#: floored at one level: the smallest integer that still lands clear of the
+#: lattice point at the centre of its cell.
+SUB_ENERGY = (("LH1", 2.0), ("HL1", 2.0), ("HH1", 1.0),
+              ("LH2", 8.0), ("HL2", 8.0), ("HH2", 4.0))
+
+
+def slot_amplitude(delta: float, floor: int = 1) -> np.ndarray:
+    """Per-slot mark amplitude, in integer coefficient levels, order = SUBORDER."""
+    from .transform import SUBORDER
+    energy = dict(SUB_ENERGY)
+    out = []
+    for name, _width in SUBORDER:
+        amp = max(floor, int(round((delta / 4.0) / np.sqrt(energy[name]))))
+        out.append(np.full(_width * _width, amp, dtype=np.float64))
+    return np.concatenate(out)
+
+
 class FragileCarrier:
-    def __init__(self, delta: float):
+    def __init__(self, delta: float, amp: np.ndarray | None = None):
         self.delta = float(delta)
+        self.amp = slot_amplitude(self.delta) if amp is None else np.asarray(amp, np.float64)
+        if self.amp.shape != (60,):
+            raise ValueError("amp must have one entry per detail slot")
+        #: smallest residual that counts as "readable" - half the weakest slot
+        self.amp_min = float(self.amp.min())
 
     def write(self, coeff: np.ndarray, bits: np.ndarray) -> np.ndarray:
         """coeff, bits: (ny, nx, 60). Returns marked coefficients."""
         q = np.round(coeff / self.delta) * self.delta
-        return q + (2.0 * bits.astype(np.float64) - 1.0) * (self.delta / 4.0)
+        return q + (2.0 * bits.astype(np.float64) - 1.0) * self.amp
 
-    def read(self, coeff: np.ndarray) -> np.ndarray:
-        q = np.round(coeff / self.delta) * self.delta
+    def read(self, coeff: np.ndarray, q: np.ndarray | None = None) -> np.ndarray:
+        q = np.round(coeff / self.delta) * self.delta if q is None else q
         return (coeff - q > 0).astype(np.uint8)
 
-    def evidence(self, coeff: np.ndarray) -> np.ndarray:
+    def evidence(self, coeff: np.ndarray, q: np.ndarray | None = None) -> np.ndarray:
         """Fraction of the 60 tag slots holding a residual big enough to read.
 
         A marked block whose pixels never touch the gamut holds a full mark in
@@ -56,10 +84,11 @@ class FragileCarrier:
         The populations do not overlap, which is what makes this the test for
         'the image was changed as a whole'.
         """
-        q = np.round(coeff / self.delta) * self.delta
-        return (np.abs(coeff - q) > 1.0).mean(axis=2)
+        q = np.round(coeff / self.delta) * self.delta if q is None else q
+        return (np.abs(coeff - q) > 0.5 * self.amp_min).mean(axis=2)
 
-    def score(self, coeff: np.ndarray, bits: np.ndarray) -> np.ndarray:
+    def score(self, coeff: np.ndarray, bits: np.ndarray,
+              q: np.ndarray | None = None) -> np.ndarray:
         """Per-block normalised correlation between residual and expected tag.
 
         `read` asks each of the 60 bits independently, which is brittle: a
@@ -74,7 +103,7 @@ class FragileCarrier:
         with standard deviation 1/sqrt(60) = 0.13, so TAU_F is set at 3 of
         those standard deviations.
         """
-        q = np.round(coeff / self.delta) * self.delta
+        q = np.round(coeff / self.delta) * self.delta if q is None else q
         r = coeff - q
         s = 2.0 * np.asarray(bits, np.float64) - 1.0
         num = (r * s).sum(axis=2)
