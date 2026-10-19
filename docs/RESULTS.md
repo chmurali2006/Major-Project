@@ -1,145 +1,146 @@
 # A Fragile Watermarking for Medical Image Tamper Detection — where the work stands
 
 **Date:** 2026-10-19 · **Branch:** `arena/4f1090b0-major-project` (PR #4 → `dev`)
-· **Evidence:** every number below has a JSON receipt in `runs/`
+· **Headline receipt:** `runs/2026-10-19-n200-v5/receipt.json`
+· **Mid-project review document:** [`docs/MID_PROJECT_REVIEW.md`](MID_PROJECT_REVIEW.md)
 
 ---
 
 ## 1. One paragraph
 
-A classical, zero-training, keyed fragile watermark for dermoscopic images.
-The image is protected without any model: a 60-bit keyed tag per 8×8 block is
+A classical, zero-training, keyed fragile watermark for dermoscopic images. The
+image is protected without any model: a 60-bit keyed tag per 8×8 block is
 written into the Haar detail coefficients, a second semi-robust carrier carries
 an address-keyed reference for corroboration, and the verifier returns one of
 **INTACT / TAMPERED / CANNOT_SAY** per block with a stated reason. On the whole
-PH2 corpus (200 real dermoscopic images, 22 conditions, 200 × 22 × 4096 blocks)
-it meets every one of the five operating-point bars, and it never reports a
-tampered block as authentic on the copy-move family.
+PH2 corpus (200 real dermoscopic images, 22 frozen conditions, 200 × 22 × 4096
+block verdicts) it meets all five operating-point bars, never reports a
+tampered block as authentic on any copy-move condition, and abstains rather than
+guess where the gamut leaves no room for a mark.
 
 ---
 
 ## 2. The claim, and the evidence for it
 
-| what is claimed | measured | receipt |
-|---|---|---|
-| detects copy-move tampering | **99.90%** of images, conditions 1–5 | `runs/2026-10-19-n200-final` |
-| locates it | **IoU 0.9397**, block-F1 0.997 on the 32×32 paste | same |
-| stays silent on benign handling | **0.0%** on JPEG 90/75/50, resize **and** σ=1 | same |
-| does not visibly damage the image | **38.72 dB**, worst image **38.26 dB** | same |
-| runs fast enough to use | **42.9 ms** verify, 129 ms protect, 512×512, CPU | same |
-| the binding is what defeats copy-move | ablation A1: detection **1.000 → 0.000** | `runs/2026-10-19-ablate` |
-| abstention is load-bearing | ablation A5: benign claims **0.000 → 1.000** without it | same |
-| the two carriers are not redundant | ablation A2: single-block claim **0.833 → 0.500** | same |
+Every number below is generated from `runs/2026-10-19-n200-v5/receipt.json` by
+`scripts/make_tables.py` or printed by `scripts/bench.py`; the full tables are
+in [`docs/BENCHMARKS.md`](BENCHMARKS.md) §1.
 
-The battery is 22 conditions in five families: six copy-move edits, four benign
-transforms, seven degradation chains, four structural changes, and inpainting.
-It is run by one command and writes a receipt with the command, config, git
-commit, environment and per-condition counts.
+| what is claimed | measured | bar | receipt |
+|---|---|---|---|
+| detects copy-move tampering | **99.70%** of images, conditions 1–5 | ≥ 97.6% | `n200-v5` |
+| locates it | **IoU 0.9367**, block-F1 0.953 on the 32×32 paste | ≥ 0.832 | same |
+| never calls a copy-move block authentic | **0.0%** silent, conditions 1–6 | — | same |
+| stays silent on benign handling | **0.0%** on JPEG 90/75/50, resize **and** σ=1 | ≤ 0.5% | same |
+| does not visibly damage the image | **38.27 dB** mean, worst image **35.52 dB** | ≥ 37.8 dB mean | same |
+| runs fast enough to use | **43.35 ms** verify, 143 ms protect, 512², CPU | ≤ 44 ms | same |
+| the binding is what defeats copy-move | ablation A1: detection **1.000 → 0.000** | — | `n200-ablate-final` |
+| abstention is load-bearing | ablation A5: on the *smooth* regime, without the attenuation rule, resize claims **0.000 → 0.667** | — | `n200-ablate-smooth` |
+| the two carriers are not redundant | ablation A2: single-block claim **0.833 → 0.500** | — | `n200-ablate-final` |
+
+The battery is 22 conditions in five families: six copy-move edits, five benign
+transforms, seven degradation chains, four structural changes. It is frozen, it
+is run by one command, and it writes a receipt containing the command, the
+configuration, the commit, the environment and the per-condition counts. A run
+with a dirty working tree is flagged in its own receipt.
 
 ---
 
 ## 3. What an examiner should be told, before they find it
 
-**3.0 The primary corpus found a defect this branch introduced, and it is now
-closed.** On ISIC 2018 (300 images) condition 11 claimed tampering on 27.3% of
-images while PH2 showed 0.0%: on a smooth image a resample breaks only the few
-blocks containing an edge, and a few scattered broken blocks look exactly like
-localised editing. A-021 fixes it and ablation A6 falsifies the fix. **The ISIC
-re-measurement is still outstanding** — the fix is validated on a local
-reproducer, not yet on ISIC itself, and that distinction is stated everywhere
-the result appears.
+**3.0 Two rates are reported for every detection claim, and they differ.**
+Detection is scored at IoU ≥ 0.10 (the rule fixed before the results). At the
+strict IoU ≥ 0.5 reading, conditions 1–5 score 93.5–99.0% instead of
+99.0–100%. The gap is boundary blocks on a 64×64 grid: a 32×32 paste is four
+blocks, and one block of error moves IoU by 0.2. Both numbers are in the table
+because quoting only the lenient one would misrepresent the localisation.
 
-**3.1 The pin-hole (open, and the most important item).** The tag lives in the
-Haar detail coefficients and the digest is quantised at 32 levels, so a
-modification that changes a block's *average* brightness while leaving its
-internal structure alone is invisible. Conditions 21 (burned-in text) and 22
-(inpainting) do exactly that: the `silent` column reads 100%, meaning on every
-image at least one changed block was reported authentic. Measured on a specific
-block: luma moved 192–226 → 192–250 and the block still matched its tag.
+**3.1 The pin-hole is smaller and still the principal open weakness.** The tag
+lives in the Haar *detail* coefficients, so a modification that only moves a
+block's mean can leave the mark intact. A-023 closed most of it with the erasure
+rung: changed blocks reported INTACT fell from 100% of images to **22.5% of
+changed blocks** on burned-in text and **3.8%** on inpainting. Condition 21 is
+still an alarm, not a localiser — claims on 94.5% of images, block-F1 0.148.
+The obvious repair (finer digest quantisation) was measured across
+Q ∈ {4, 8, 16, 32} and **falsified**; it is recorded as A-020 so it is not
+proposed again.
 
-This is not a tuning problem. The fix is a finer DC binding, which trades
-against the benign stability the current digest buys. It is the next piece of
-work, and it is written up as A-020 rather than hidden.
+**3.2 Worst-case image quality is 35.52 dB, below the 37.8 dB mean bar.** This is
+the price of block fitting (A-029): the alternative configuration, margin 3, has
+a 37.65 dB worst image but detection of exactly 97.60% — the bar with nothing
+behind it. Both receipts ship; §3.5 of `BENCHMARKS.md` has the table.
 
-**3.2 Single-block edits are 69%, and every miss abstains.** A one-block edit
+**3.3 Single-block edits are 93.5%, and every miss abstains.** A one-block edit
 carries no spatial redundancy. The lone-block rule prefers `CANNOT_SAY` to a
 false accusation, because the same rule stops one digest flip under noise from
-accusing a clean scan. `silent` for this condition is 0.0%.
+accusing a clean scan. Silent rate 0.0%.
 
-**3.3 σ=1 noise: fixed, and the fix replaced a relabelling.** σ=1 used to claim
-tampering on 31.5% of images, and the first response was to reclassify the
-condition as `degrade` (A-017). That was withdrawn: A-021 now recognises that
-the mark is uniformly attenuated, abstains, and the condition passes as
-originally frozen. **0.0%.** The battery is unchanged from the dossier.
+**3.4 σ=1 noise is silent because it abstains, not because it passes.** Claim
+rate 0.0% at coverage 0.580. The attenuation rule (A-021) recognises a globally
+transformed mark. A-017, which would have relabelled the condition, was
+withdrawn — the battery is unchanged from the dossier.
 
-**3.4 Structure conditions abstain.** Crop and shift return
-`CANNOT_SAY(geometry_change)`. Coverage 0.000 is the honest answer, not a
+**3.5 Structure conditions abstain.** Crop and shift return
+`CANNOT_SAY(geometry_change)`; coverage 0.000 is the honest answer, not a
 detection result.
 
-**3.5 PH2 is not the dossier's primary corpus.** ISIC 2018 is unreachable from
-this sandbox (network allowlist). PH2 is a real, peer-reviewed dermoscopy
-corpus with expert masks, but it is one corpus and the numbers are labelled as
-PH2 everywhere. No number here is a thesis result yet.
+**3.6 PH2 is not the dossier's primary corpus.** ISIC 2018 is unreachable from
+this sandbox. The ISIC trial the user ran found a defect PH2 could not reveal
+(A-021), which is now fixed and falsified, but the ISIC re-measurement after the
+fix is **outstanding** and is stated everywhere the number appears. No number
+here is a thesis result yet.
 
 ---
 
-## 4. What changed today, and why it matters
+## 4. What this checkpoint changed
 
-The session started from a measurement that failed on real tissue and ended at
-the design flaw underneath it. Five defects, each now an amendment:
+Four defects were found by measurement and closed; each has an amendment entry
+with the numbers. The full narrative is in
+[`MID_PROJECT_REVIEW.md`](MID_PROJECT_REVIEW.md) §4.
 
-| # | defect | consequence | fix |
-|---|---|---|---|
-| A-011 | gamut slack from the union of pixel intervals | 43% of normal blocks called unmarkable | measure per pixel, after subtracting each pixel's own luma |
-| A-012 | float `(cb+cr)/4` against an integer `>> 2` | blocks reverted *after* tagging → clean images accused themselves | bit-exact integer range check |
-| A-013 | mark excursion assumed to be 2 levels | every block under-provisioned | measured: 7.1 mean, 11 max |
-| A-015 | signed mark cannot fit where a pixel has zero gamut room (72–85% of blocks in dark-vignette images) | the fit refused a third of the image | saturate the mark at the gamut; read it by matched-filter correlation |
-| A-019 | ground truth taken from the geometric edit region | 8.3% of "tampered" blocks never changed a pixel; we were penalised for being right | ground truth = blocks whose pixels actually differ |
-| A-021 | a benign resize on a smooth image looks like localised editing | **27.3% false claims on ISIC-300** (0% on PH2, 0% on the old code) | abstain when the mark is uniformly attenuated; falsified by ablation A6 (0.000 → 0.667) |
+| # | defect | symptom | fix | measured effect |
+|---|---|---|---|---|
+| A-027 | verifier could not see the embedder's refusals | a **clean** saturated image claimed 741 blocks; 26 of 200 images failed | verifier rebuilds the encoder's exact decision | agreement 163 787/163 840 = 0.99968, never misses |
+| A-028 | "gamut-safe" (3 levels) below the mark's excursion (max 9) | the attenuation rule excused whole images | margin 3 → **8** | 4 failing images → all detect |
+| A-029 | refusal cost 13% of the frame | detection capped at 0.95 | block fitting, margin **4** | 0.9760 → **0.9970**, IoU .9033 → .9367 |
+| A-023 | the score normalised away a *deleted* mark | text/inpainting invisible | erasure rung | inpainting 0% → 100% |
 
-A-015 is the substantive one. Reading the tag as 60 independent bits is
-brittle: saturating a few pixels flips a whole run of bits and a clean block
-looks broken. Reading the *correlation* of the residual vector with the keyed
-sign vector is insensitive to how much of the mark survived — clean blocks
-reach 0.406 at worst, tampered blocks start at 0.439, and the threshold sits
-between them at the 3σ point of the null distribution.
-
-A-018 removed the region weighting: at n=40 it bought +0.001 IoU on conditions
-1–5 and 0.05 on the single-block case, while putting the worst image at
-37.37 dB — below the 37.8 dB floor. With λ=0 every image clears the floor.
+Each was found by a run that failed, and the failing receipts are kept.
 
 ---
 
 ## 5. Decision log a supervisor may want to check
 
 - **σ=1 was relabelled, then the relabelling was withdrawn.** A-017 reclassified
-  it; A-021 fixed the detector instead, so the battery is now unchanged from the
-  dossier. Reversing our own amendment is the outcome to prefer: it means the
-  frozen battery was right and the implementation was wrong.
-- **λ was set to 0 on n=40, not on the n=6 ablation.** The n=6 result had said
-  "no effect"; at n=40 the effect existed but was confined to one condition.
-  That is why the change waited for confirmation.
+  it; A-021 fixed the detector instead, so the battery is unchanged from the
+  dossier. Reversing our own amendment is the outcome to prefer: the frozen
+  battery was right and the implementation was wrong.
+- **A-028 first chose margin 3 on 60 images, and n=200 showed it was a bar-hug.**
+  A-029 raises it to 4 and records the cost. Choosing on a small sample is the
+  mistake; catching it on the full corpus and writing it down is the process.
+- **λ was set to 0 on n=40, not on the n=6 ablation.** The n=6 result said "no
+  effect"; at n=40 the effect existed but was confined to one condition.
+- **A5 no longer moves the battery.** Before A-021 the extent rule was what
+  stopped benign transforms from being claimed; with the attenuation rule in
+  front of it, A5's effect is nil on this battery. It is retained as a backstop
+  and reported as not load-bearing rather than quietly dropped.
 - **An evidence floor was built, measured, and reverted.** It did not move the
   silent column and cost detection elsewhere. It is not in the code.
-- **Two ablations are marked not-run**, not quietly dropped: they target the
-  disabled texture gate and a corpus that is not reachable.
 
 ---
 
 ## 6. What is next, in order
 
-0. **Re-run ISIC-300 and the full 2594.** `docs/REPRODUCE.md` §2. The A-021 fix
-   is validated on a reproducer; it must be confirmed on the primary corpus.
-1. **Close the pin-hole (A-020).** Bind the block mean at a finer quantisation
-   and re-measure benign stability. This is the only known way the current
-   design can call a changed block authentic.
+0. **Re-run ISIC-300 and the full 2594** with the A-021 fix and the current
+   configuration. `docs/REPRODUCE.md` §2. This is the one claim that is still
+   validated on a reproducer rather than on the primary corpus.
+1. **Close the pin-hole (A-020).** Bind the block mean in the embedding domain
+   at a finer quantisation than 32 and re-measure benign stability. This is the
+   only known way the design can call a changed block authentic.
 2. **Ablation 7** — calibration transfer to a second corpus — needs the second
-   corpus; LiTS (MSD Task03) is the recommended one and is reachable from a
-   normal machine, not from this sandbox.
-3. **ISIC 2018** when the user's machine can reach it. Every claim must be
-   reproduced there before the thesis states it.
-4. **A figure and a demo.** The numbers are now stable enough to draw the
-   localisation examples from; a live laptop demo is in the build plan.
+   corpus; LiTS (MSD Task03) is recommended and is reachable from a normal
+   machine, not from this sandbox.
+3. **A live demo** on the user's laptop, from the same commands as §5 below.
 
 ---
 
@@ -147,9 +148,12 @@ A-018 removed the region weighting: at n=40 it bought +0.001 IoU on conditions
 
 | file | what it is |
 |---|---|
-| `docs/BENCHMARKS.md` | the measured tables, the receipts, and the limitations |
-| `docs/AMENDMENTS.md` | every design change with its reason and its evidence |
-| `runs/2026-10-19-n200/receipt.json` | the headline run, reproducible from the command it records |
+| `docs/MID_PROJECT_REVIEW.md` | the checkpoint document: design, bars, flaws, defences, and the questions a panel should ask |
+| `docs/BENCHMARKS.md` | the measured tables (generated), the falsification record, and the limitations |
+| `docs/AMENDMENTS.md` | every design change with its reason and its evidence — 30 entries |
+| `runs/2026-10-19-n200-v5/receipt.json` | the headline run, reproducible from the command it records |
+| `docs/figures/battery.png` | the 22 conditions at a glance, generated from that receipt |
 | `scripts/bench.py` | the battery harness; exits non-zero on a benign violation |
+| `scripts/make_tables.py` | regenerates the tables in `BENCHMARKS.md` from a receipt |
 | `scripts/ablate.py` | the falsification harness |
 | `README.md` | layout, quickstart, and the metadata-stripping limitation |

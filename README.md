@@ -10,9 +10,16 @@ code departs from it, the departure is recorded with its measurement in
 
 ## Status
 
-Phase One complete and measured on real tissue. Three of six operating-point
-bars met; the remainder have named engineering fixes, not threshold tweaks.
-See `docs/BENCHMARKS.md`.
+Mid-project review checkpoint, measured on real tissue (PH2, n=200, 22 frozen
+conditions). All five operating-point bars are met on the mean: detection
+99.70%, IoU 0.9367, benign claims 0.00%, PSNR 38.27 dB, verify 43.35 ms. The
+known weaknesses — worst-case PSNR 35.52 dB, burned-in text as an alarm rather
+than a localiser — are stated with their numbers in
+[`docs/MID_PROJECT_REVIEW.md`](docs/MID_PROJECT_REVIEW.md) §5 and
+[`docs/BENCHMARKS.md`](docs/BENCHMARKS.md) §3.
+
+Start with the review document; the measured tables are generated from the
+receipt by `scripts/make_tables.py`.
 
 ## Layout
 
@@ -20,8 +27,8 @@ See `docs/BENCHMARKS.md`.
 src/            config, transform, binder, carriers, container, pipeline, ladder, metrics
 src/battery/    the frozen conditions, one function each
 scripts/        dataset preparation, benchmark harness, local runner
-tests/          34 tests, including the six pre-flight checks
-docs/           BUILD_PLAN, AMENDMENTS, BENCHMARKS
+tests/          36 tests, including the six pre-flight checks
+docs/           MID_PROJECT_REVIEW, BENCHMARKS, AMENDMENTS, REPRODUCE, figures/
 project-context/ reference material only — never imported by code
 ```
 
@@ -30,7 +37,7 @@ project-context/ reference material only — never imported by code
 ```bash
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
-pytest -q                                    # 34 tests, no data needed
+pytest -q                                    # 36 tests, no data needed
 
 # prepare a corpus (needs images and masks on disk)
 python scripts/prepare_isic.py --images <dir> --masks <dir> --out datasets/isic2018
