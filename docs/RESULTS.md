@@ -17,7 +17,8 @@ PH2 corpus (200 real dermoscopic images, 22 frozen conditions, 200 × 22 × 4096
 block verdicts) it meets all five operating-point bars, never reports a
 tampered block as authentic on any copy-move condition, makes no claim on any
 untouched image, and abstains rather than guess where the gamut leaves no room
-for a mark.
+for a mark. The tag it verifies names the block's address, its detail content
+and its mean, so a copy-move, a repaint and a brightness shift each break it.
 
 ---
 
@@ -43,8 +44,8 @@ in [`docs/BENCHMARKS.md`](BENCHMARKS.md) §1.
 The battery is 22 conditions in five families: six copy-move edits, five benign
 transforms, seven degradation chains, four structural changes. It is frozen, it
 is run by one command, and it writes a receipt containing the command, the
-configuration, the commit, the environment and the per-condition counts. A run
-with a dirty working tree is flagged in its own receipt.
+configuration, the commit, the environment and the per-condition counts, and
+records whether the **code paths** were clean when it ran.
 
 ---
 
@@ -159,7 +160,7 @@ Each was found by a run that failed, and the failing receipts are kept.
 |---|---|
 | `docs/MID_PROJECT_REVIEW.md` | the checkpoint document: design, bars, flaws, defences, and the questions a panel should ask |
 | `docs/BENCHMARKS.md` | the measured tables (generated), the falsification record, and the limitations |
-| `docs/AMENDMENTS.md` | every design change with its reason and its evidence — 30 entries |
+| `docs/AMENDMENTS.md` | every design change with its reason and its evidence — 31 entries |
 | `runs/2026-10-20-n200-v6/receipt.json` | the headline run, reproducible from the command it records |
 | `docs/figures/battery.png` | the 22 conditions at a glance, generated from that receipt |
 | `scripts/bench.py` | the battery harness; exits non-zero on a benign violation |
