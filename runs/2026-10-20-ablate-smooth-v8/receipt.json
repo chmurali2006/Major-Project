@@ -1,6 +1,6 @@
 {
   "kind": "falsification",
-  "created_utc": "2026-10-20T11:34:03+00:00",
+  "created_utc": "2026-10-20T12:13:14+00:00",
   "command": "scripts/ablate.py --data /tmp/ph2mirror --limit 12 --smooth 0.9 --receipt runs/2026-10-20-ablate-smooth-v8/receipt.json",
   "dataset": "/tmp/ph2mirror",
   "n": 12,
@@ -19,7 +19,7 @@
     21,
     22
   ],
-  "git_commit": "e0b3b7c",
+  "git_commit": "cdfb3aa",
   "python": "3.11.2",
   "results": {
     "baseline": {

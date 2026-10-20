@@ -1,7 +1,7 @@
 # A Fragile Watermarking for Medical Image Tamper Detection
 
-Position-bound, zero-training, keyed dual watermarking for medical images, with
-designed abstention. Primary corpus: ISIC 2018 Task 1. Secondary: LiTS.
+Position-bound, zero-training, keyed fragile watermarking for medical images,
+with designed abstention. Primary corpus: ISIC 2018 Task 1. Secondary: LiTS.
 Validation: PH2.
 
 The design authority is the context package in `project-context/`. Where this
@@ -12,10 +12,12 @@ code departs from it, the departure is recorded with its measurement in
 
 Mid-project review checkpoint, measured on real tissue (PH2, n=200, 22 frozen
 conditions). All five operating-point bars are met on the mean: detection
-99.90%, IoU 0.9421, benign claims 0.00%, PSNR 38.27 dB, verify 38.98 ms, and
-zero false claims on the 200 untouched images. The known weaknesses — worst-case
-PSNR 35.52 dB, burned-in text as an alarm rather than a localiser — are stated
-with their numbers in
+99.40%, IoU 0.9336, benign claims 0.00%, PSNR 38.68 dB, verify 40.19 ms, and
+zero false claims on the 200 untouched images. Measured outside the battery, on
+a swept envelope of re-encodes and noise, it makes **no false claim in 3 800
+readings** and keeps 89% of the frame certified at JPEG Q99. The known
+weaknesses — worst-case PSNR 36.00 dB, burned-in text as an alarm rather than a
+localiser, a latency tail above the 44 ms bar — are stated with their numbers in
 [`docs/MID_PROJECT_REVIEW.md`](docs/MID_PROJECT_REVIEW.md) §5 and
 [`docs/BENCHMARKS.md`](docs/BENCHMARKS.md) §3.
 
@@ -28,7 +30,7 @@ receipt by `scripts/make_tables.py`.
 src/            config, transform, binder, carriers, container, pipeline, ladder, metrics
 src/battery/    the frozen conditions, one function each
 scripts/        dataset preparation, benchmark harness, local runner
-tests/          39 tests, including the six pre-flight checks
+tests/          40 tests, including the six pre-flight checks
 docs/           MID_PROJECT_REVIEW, BENCHMARKS, AMENDMENTS, REPRODUCE, figures/
 project-context/ reference material only — never imported by code
 ```

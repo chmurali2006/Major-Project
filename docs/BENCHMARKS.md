@@ -248,8 +248,8 @@ shows what is left:
 
 | condition | changed blocks called INTACT | before A-030 | before A-023 |
 |---|---|---|---|
-| 21 burned-in text | **5.9%** | 22.5% | "at least one per image, always" |
-| 22 inpainting | **2.9%** | 3.8% | "at least one per image, always" |
+| 21 burned-in text | **8.7%** | 22.5% | "at least one per image, always" |
+| 22 inpainting | **4.6%** | 3.8% | "at least one per image, always" |
 
 Two residuals remain and both are named. Blocks the embedder **refused** carry
 no mark at all — they are excused, and a text edge that lands on one is a
@@ -257,15 +257,17 @@ structural miss, not a wrong verdict. And a block whose mean moved by less than
 the code's resolution while its details were untouched is still INTACT.
 
 Condition 21 is also still an **alarm, not a precise localiser**: it raises a
-claim on 99.5% of images and detects 97.0% at the stated rule, but block-F1 is
-0.437 and IoU 0.286, and at IoU ≥ 0.5 it detects 0.5% of images. The claim is
+claim on 100% of images and detects 97.5% at the stated rule, but block-F1 is
+0.435 and IoU 0.284, and at IoU ≥ 0.5 it detects 0.5% of images. The claim is
 wider than the text. Reporting the detection figure alone would misrepresent
-this, which is why the fourth column exists.
+this, which is why the fourth column exists. (The silent-block rates rose when
+Carrier B was removed — A-032 — because the marked image has less spread
+spectrum in it; this is the cost side of that amendment, not a new defect.)
 
 ### 3.2 Single-block edits: 95.0%, and every miss abstains
 
-An 8×8 paste (condition 6) is detected on 95.0% of images with IoU 0.950 and a
-silent rate of 0.0% — the ten misses are abstentions, not false
+An 8×8 paste (condition 6) is detected on 92.5% of images with IoU 0.925 and a
+silent rate of 0.0% — the fifteen misses are abstentions, not false
 authentications. The lone-block rule (A-009) prefers `CANNOT_SAY` to a false
 accusation because the same rule stops one digest flip under noise from
 accusing a clean scan.
@@ -301,7 +303,7 @@ not how far.)
 
 Additive noise at σ=1 used to be reported as localised tampering on 31.5% of
 images. A-021 recognizes a globally attenuated mark and abstains: claim rate
-**0.0%** at coverage **0.506**. This is why A-017 was *withdrawn* — relabelling
+**0.0%** at coverage **0.772**. This is why A-017 was *withdrawn* — relabelling
 the condition would have hidden the defect; the detector was fixed instead and
 the frozen battery stands unchanged.
 
@@ -336,51 +338,45 @@ because one mechanism only matters in one of them: `plain` is PH2 as it is,
 `smooth` is PH2 blurred by σ=0.9 before protecting, which models ISIC 2018's
 flatter images.
 
-Receipts: `runs/2026-10-20-ablate/` (plain, n=12),
-`runs/2026-10-20-ablate-smooth/` (smooth, n=12).
+Receipts: `runs/2026-10-20-ablate-n40/` (plain, n=40) and
+`runs/2026-10-20-ablate-smooth-v8/` (smooth, n=12). The plain run was n=12
+until A-033: at twelve images A3 was undersampled and read a false null, and
+the fixed metric needs the wider sample to fire.
 
-| ablation | metric | plain | smooth | outcome |
-|---|---|---|---|---|
-| A1 binding cut | copy-move detection | 1.000 → **0.000** | 1.000 → **0.000** | load-bearing |
-| A2 corroboration cut | 8×8-paste claim | 1.000 → 1.000 | 1.000 → 1.000 | no effect — see below |
-| A3 capacity refusal removed | unmarked blocks judged | 0.0000 → 0.0000 | 0.0000 → 0.0000 | no effect — see below |
-| A4 tilt restored (λ=1) | PSNR | 38.54 → **38.16** | 40.01 → **39.50** | load-bearing |
-| A5 ladder collapsed | benign claim rate | 0.000 → 0.000 | 0.000 → 0.000 | redundant (with A6) |
-| A6 attenuation cut | benign claim rate | 0.000 → **0.200** | 0.000 → **0.200** | moves, but not on resize |
-| A7 mean binding cut | condition 21 IoU | 0.285 → **0.065** | 0.275 → **0.023** | load-bearing |
-| A8 both global rules cut | resize claim rate | 0.000 → **1.000** | 0.000 → **1.000** | load-bearing |
+| ablation | metric | plain n=40 | outcome |
+|---|---|---|---|
+| A1 binding cut | copy-move detection | 1.000 → **0.000** | load-bearing |
+| A2 Carrier B restored | Q100 certified area | 0.921 → **0.894** | prediction held — costs coverage |
+| A3 capacity refusal removed | clean-image claim rate | 0.000 → **0.325** | load-bearing |
+| A4 tilt restored (λ=1) | PSNR | 38.65 → 38.65 | no effect — A-018 stands |
+| A5 ladder collapsed | benign claim rate | 0.000 → 0.000 | redundant with A6 |
+| A6 attenuation cut | resize claim rate | 0.000 → 0.000 | redundant with A5 |
+| A7 mean binding cut | condition 21 IoU | 0.297 → **0.075** | load-bearing |
+| A8 both global rules cut | resize claim rate | 0.000 → **0.875** | load-bearing |
+| A9 scatter rule cut | Q100 claim rate | 0.000 → **1.000** | load-bearing |
 
 **A1** is the central claim: without the address in the tag, copy-move
-detection goes from 100% to zero.
+detection goes from 100% to zero. **A7** is the falsification of A-030: without
+the block mean in the tag, condition-21 localisation falls back to where it
+was. **A9** is the falsification of A-031: without the scatter rule, a Q100
+re-encode is claimed on every image again. **A3** is the falsification of a
+"no effect" verdict that was itself a bug (A-033).
 
-**A7** is the falsification of A-030: without the block mean in the tag,
-condition 21 localisation falls back to where it was.
+**Three checks do not move the battery, and that is a finding.** Each is
+reported as measured, not explained away:
 
-**Four checks no longer move the battery, and that is a finding.** The mean
-binding (A-030) and block fitting (A-029) changed what the other mechanisms are
-for. Each case is reported as measured, not explained away:
-
-* **A2** (Carrier B removed): single-block claims stay at 1.000 because the
-  mean binding now catches an 8×8 paste on its own. Carrier B's contribution
-  has shrunk to corroboration. It is retained because the two-carrier rule is
-  what the lone-block decision rests on, and that decision is measured by the
-  per-block silent rate (0.0% everywhere), which was already at the floor.
-  Stated plainly: on this battery, Carrier B is no longer load-bearing.
-* **A3** (capacity refusal removed): the metric is the fraction of never-marked
-  surround blocks that receive a verdict. It is 0.0000 both ways, because after
-  A-029 a block that cannot be fitted is *also* unmarkable by clipping, so the
-  exemption happens downstream of the flag being removed. Note what A3 does
-  move: condition 21 IoU rises from 0.285 to 0.583 and overall IoU falls from
-  0.995 to 0.936. Refusing to judge what was never marked costs localisation on
-  text; it is kept because a verdict over an unmarked block is not evidence,
-  and that is a design commitment, not a metric.
-* **A5 / A6** (extent rule, attenuation rule): each is now redundant with the
+* **A4** (region weighting restored, λ = 1): PSNR is identical to four
+  decimals. The λ = 0 decision (A-018) buys nothing measurable on this corpus,
+  which is exactly what that amendment claimed when it removed the term.
+* **A5 / A6** (extent rule, attenuation rule): each is redundant with the
   other. With the mean binding in place a global resample breaks *every* block
   rather than a few edge blocks, so the extent rule catches it even with the
-  attenuation rule off. A6 still moves the benign claim rate (0.000 → 0.200 on
-  two of twelve images) but no longer moves condition 11. **A8 removes both**:
-  resize claims go **0.000 → 1.000** in both regimes. The pair is load-bearing;
-  neither member is, alone.
+  attenuation rule off. **A8 removes both**, and resize claims go **0.000 →
+  0.875**. The pair is load-bearing; neither member is, alone. Reported as one
+  rule with two guards, not two rules.
+* **On the smooth regime** A9 does not fire either: a blurred image has little
+  high-frequency content, so a Q100 re-encode does not break the fragile tag in
+  the first place. The A-031 failure is a property of textured frames.
 
 **Not run.** Dossier ablations 3 and 5 target the texture gate, disabled under
 A-007; 7 needs a second corpus (see §6).

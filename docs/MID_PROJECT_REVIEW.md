@@ -99,11 +99,11 @@ the point — where a bar is not met, coverage says why.*
 
 ## 4. What this checkpoint changed
 
-Seven defects were found by measurement in this branch and closed. Each has an
+Eight defects were found by measurement in this branch and closed. Each has an
 amendment entry with the numbers, and each was found by a run that *failed* —
-which is the point of keeping failing receipts. The last two (§4.6, §4.7) were
-found after the checkpoint below was written, by measuring outside the frozen
-battery; they are the reason this document has a second pass.
+which is the point of keeping failing receipts. The last three (§4.6–§4.8) were
+found after the checkpoint was written, by measuring outside the frozen battery;
+they are the reason this document has a second pass.
 
 ### 4.1 A saturated image accused itself (A-027)
 
@@ -230,7 +230,17 @@ detection 99.90% → 99.40%, IoU 0.9421 → 0.9336, while PSNR improves to 38.68
 and Q99 coverage rises from 0.72 to 0.89. A mechanism that cannot vote is not a
 second opinion; it is a veto on answering.
 
-### 4.8 What the textbook scheme does, for comparison
+### 4.8 The ablation that lied about its own result (A-033)
+
+A3 had read "no effect" at every checkpoint. It was arithmetic: the metric was
+`verdict.max() == 1`, and verdict codes run `INTACT=0, TAMPERED=1,
+CANNOT_SAY=2`, so a single abstaining block made the maximum 2 and the metric
+read zero. Coverage is 0.92 by design, so it read zero on almost every frame.
+Corrected, switching the capacity refusal off claims **32.5%** of clean images.
+The mechanism was load-bearing all along; the instrument that was supposed to
+prove it could not return the value it needed to.
+
+### 4.9 What the textbook scheme does, for comparison
 
 `scripts/baseline_lsb.py` implements the obvious alternative — a keyed 8×8 block
 hash written into the pixel LSBs — on the same corpus and the same battery. It
@@ -324,9 +334,11 @@ python scripts/make_figures.py --receipt runs/<your-run>/receipt.json \
 `scripts/ablate.py` runs the nine falsification switches (A1–A9), including the
 ones that must destroy performance: with the address binding off, detection goes
 **1.000 → 0.000**; with both global-transform rules off, benign resize claims go
-**0.000 → 0.917**; with the mean binding off, condition 21 IoU goes **0.301 →
-0.067**; with the scatter rule off, a Q100 re-encode is claimed on **100%** of
-images instead of none. `scripts/ablate_envelope.py` repeats the four switches
+**0.000 → 0.875**; with the mean binding off, condition 21 IoU goes **0.297 →
+0.075**; with the scatter rule off, a Q100 re-encode is claimed on **100%** of
+images instead of none; with the capacity refusal off, **32.5%** of clean images
+are claimed. Six of nine switches move the battery as predicted; the three that
+do not are reported as findings, not hidden. `scripts/ablate_envelope.py` repeats the four switches
 the battery cannot see, under handling, and `scripts/baseline_lsb.py` measures
 the textbook alternative on the same corpus.
 

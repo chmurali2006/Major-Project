@@ -1264,3 +1264,43 @@ inert.
 battery could not see its effect and the summary line could. The lesson is the
 same as A-031 and is now part of the method: every ablation is asked twice,
 once on the battery and once on the envelope.
+
+## A-033 — The ablation's own metric could not report a false claim
+
+**Date:** 2026-10-20 · **Affects:** `scripts/ablate.py` (`clean_claim`)
+**Evidence:** `runs/2026-10-20-ablate-n40/receipt.json`,
+`runs/2026-10-20-ablate-envelope-v8/receipt.json`
+
+**The bug.** A3 asks whether refusing to judge blocks the embedder never
+marked is what keeps a clean image clean. The metric was
+
+```python
+int(clean.ladder.verdict.max() == 1)
+```
+
+Verdict codes are `INTACT = 0`, `TAMPERED = 1`, `CANNOT_SAY = 2`. A single
+abstaining block anywhere in the frame makes the maximum 2, so the metric read
+**0 for every image that was not perfectly answered** — which is nearly all of
+them, since coverage is 0.92 by design. The correct test is
+`(verdict == TAMPERED).any()`.
+
+**What it hid.** A3 has read "NO EFFECT - finding, not failure" at every
+checkpoint since the ablation existed, and the entry in `BENCHMARKS.md` argued
+the mechanism was kept for design reasons rather than measured ones. It is in
+fact load-bearing: with the capacity refusal switched off, **14 of 40** clean
+images are claimed (ablate_envelope, n=40). One line of arithmetic suppressed
+the evidence for the mechanism, and the prose then rationalised the null.
+
+**How it was caught.** Not by the battery. By running the ablations a second
+time under the envelope, where the same variant produced 14/40 and the printed
+number could not be explained by the code that produced it. The same pass
+re-specified A3's *battery* metric twice (first `surround_verdicts`, which is
+structurally unaffected by the flag; then `clean_claim`, which was broken).
+
+**Lesson, and it is the third of its kind in this pass.** A-031 was found
+because a measurement existed outside the battery; A-032 because an ablation was
+run twice; A-033 because two runs of the same ablation disagreed. In all three
+cases the failing instrument was *ours*, and the battery was reporting
+success. The method statement is now: every mechanism is ablated on the battery
+**and** on the envelope, and a null result has to be explained by the code path
+before it is believed.

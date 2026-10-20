@@ -1,6 +1,6 @@
 {
   "kind": "falsification",
-  "created_utc": "2026-10-20T11:48:18+00:00",
+  "created_utc": "2026-10-20T12:06:57+00:00",
   "command": "scripts/ablate.py --data /tmp/ph2mirror --limit 40 --receipt runs/2026-10-20-ablate-n40/receipt.json",
   "dataset": "/tmp/ph2mirror",
   "n": 40,
@@ -19,7 +19,7 @@
     21,
     22
   ],
-  "git_commit": "e0b3b7c",
+  "git_commit": "cdfb3aa",
   "python": "3.11.2",
   "results": {
     "baseline": {
@@ -91,7 +91,7 @@
         "cond21_iou": 0.5884034169416069,
         "jpeg100_claim": 0.0,
         "jpeg100_coverage": 0.925634765625,
-        "clean_claim": 0.0,
+        "clean_claim": 0.325,
         "psnr": 38.64134359610671,
         "coverage": 0.938201904296875,
         "surround_verdicts": 3.0517578125e-05,
@@ -228,6 +228,6 @@
       "claim": "A6 and A5 are individually redundant now that the mean binding makes a resample break every block rather than a few edge blocks. If removing BOTH still produces no false claim, there is no global-transform rule left and condition 11 is passing for an unstated reason."
     }
   },
-  "predicted_breaks": 5,
+  "predicted_breaks": 6,
   "ablations": 9
 }

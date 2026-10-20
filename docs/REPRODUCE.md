@@ -18,7 +18,8 @@ direct answer to the ISIC result you reported.
 | `opencv-python-headless==5.0.0` does not exist on PyPI | **Fixed**, pinned to `5.0.0.93`. |
 | detection 0.95 with the tamper clearly found | **Fixed.** A-027/A-028/A-029: the verifier now reproduces the embedder's refusals exactly, the "gamut-safe" margin was raised above the mark's measured excursion, and blocks are fitted by a small DC shift before marking. |
 | burned-in text reported as authentic | **Fixed, mostly.** A-030: the tag now names the block's mean, which the detail coefficients cannot see. Changed blocks reported INTACT on that condition fell from 22.5% to **5.9%**, and detection rose from 36.0% to **97.0%**. The residual is blocks the embedder refused, which carry no mark. |
-| verify 53.7–57.7 ms on the i5-1235U | **Improved**: one PNG decode instead of two, one gamut map instead of two, and keyed BLAKE2b instead of HMAC-SHA256 for the 4096 per-block tags (2.2×). Was 40.8 → now 42.9 ms on the Linux reference sandbox; your machine should land near 45–50 ms. That is the one bar that may still miss on your CPU, and it is hardware-relative — please report the number you get. |
+| verify 53.7–57.7 ms on the i5-1235U | **Improved**: one PNG decode instead of two, one gamut map instead of two, and keyed BLAKE2b instead of HMAC-SHA256 for the 4096 per-block tags (2.2×), plus Carrier B removed from the default path (A-032). Now **40.2 ms mean / 39 ms median / 47 ms p95** on the Linux reference sandbox; your machine should land near 50 ms. That is the one bar likely to miss on your CPU, and it is hardware-relative — please report the number you get, including the p95 the harness now prints. |
+| a Q100 re-encode claimed as tampering | **Fixed.** A-031: damage spread over ≥12 isolated islands is a codec, not surgery, and the tool abstains instead of accusing. 196/200 untouched images claimed → **0/200**. |
 
 ---
 
@@ -29,7 +30,7 @@ python -m venv .venv
 # Windows: .venv\Scripts\activate
 . .venv/bin/activate
 pip install -r requirements.txt
-python -m pytest -q          # expect 39 passed
+python -m pytest -q          # expect 40 passed
 ```
 
 Python 3.11–3.13. Python 3.14 has no PyWavelets 1.8.0 wheel and will try a
@@ -72,6 +73,35 @@ python scripts/bench.py --data datasets/isic2018 --limit 0 \
 
 ---
 
+## 2b. The three measurements that are not the battery
+
+The battery is one instrument. Three more answer questions the battery cannot,
+and each is one command:
+
+```bash
+# how much ordinary handling the mark survives, and whether it ever lies there
+python scripts/measure_envelope.py --data datasets/ph2 --limit 200 \
+        --receipt runs/<run>-envelope/receipt.json
+
+# the textbook alternative (keyed LSB block hash) on the same corpus
+python scripts/baseline_lsb.py --data datasets/ph2 --limit 60 \
+        --receipt runs/<run>-lsb/receipt.json
+
+# ablations repeated under handling, where the battery is blind
+python scripts/ablate_envelope.py --data datasets/ph2 --limit 40 \
+        --receipt runs/<run>-ablate-envelope/receipt.json
+
+# bootstrap intervals over images, and rule-of-three bounds for zero counts
+python scripts/uncertainty.py --receipt runs/<run>/receipt.json
+```
+
+The envelope is the instrument that found A-031 and A-032; if you run one extra
+thing on your machine, run it on ISIC. Expect **zero false claims** at every
+quality and noise level, and a certified area that falls with the quality. A
+non-zero false claim anywhere in that table is a defect — send the receipt.
+
+---
+
 ## 3. PH2, for the record — and the fastest way to check this branch
 
 The corpus is the **public mirror**, so no registration is needed:
@@ -89,12 +119,12 @@ expert masks and that the placeholders it writes are unused at `lam = 0` with
 the texture gate off. If you have the official distribution with `_lesion.bmp`
 masks, `prepare_ph2.py` takes that instead and checks the masks properly.
 
-Expected, from the Linux reference run (`runs/2026-10-20-n200-v6/`, commit
-`dd06beb`, code paths clean, 665 s):
+Expected, from the Linux reference run (`runs/2026-10-20-n200-v8/`, 782 s):
 
 ```
-detection 0.9990 | IoU 0.9421 | benign 0.0000 | clean-image claims 0/200
-PSNR 38.27 dB (worst 35.52) | verify 38.98 ms | coverage 0.927
+detection 0.9940 | IoU 0.9336 | benign 0.0000 | clean-image claims 0/200
+PSNR 38.68 dB (worst 36.00) | verify 40.19 ms mean (median 39, p95 47)
+coverage 0.924
 ```
 
 Exact reproduction is not expected on different hardware: verify latency is the
@@ -117,17 +147,26 @@ python scripts/probe_coverage.py --data datasets/ph2 --limit 200 \
 ## 4. The falsification checks
 
 ```bash
-python scripts/ablate.py --data datasets/ph2 --limit 12 --receipt runs/ablate/
+python scripts/ablate.py --data datasets/ph2 --limit 40 --receipt runs/ablate/
 python scripts/ablate.py --data datasets/ph2 --limit 12 --smooth 0.9 \
                          --receipt runs/ablate-smooth/
+python scripts/ablate_envelope.py --data datasets/ph2 --limit 40 \
+                         --receipt runs/ablate-envelope/
 ```
 
-Eight switches, each with the claim it would falsify printed next to it. The
+Nine switches, each with the claim it would falsify printed next to it. The
 ones that matter most: **A1** takes copy-move detection from 1.000 to 0.000;
-**A7** takes condition 21 from IoU 0.285 to 0.065; **A8** removes both
+**A7** takes condition 21 from IoU 0.296 to 0.075; **A8** removes both
 global-transform rules and takes the resize false-claim rate from 0.000 to
-1.000. Switches that no longer move the battery are printed as
-"NO EFFECT - finding", with the reason, rather than quietly dropped.
+0.875; **A9** removes the scatter rule and a Q100 re-encode is claimed on 100%
+of images again. **A3** matters on clean images and needs n=40 to show it:
+twelve images undersample it, and its metric was itself broken until A-033.
+Switches that no longer move the battery are printed as "NO EFFECT - finding",
+with the reason, rather than quietly dropped.
+
+`ablate_envelope.py` repeats four of them under handling instead of under the
+battery, which is where A-032 came from: restoring Carrier B takes the Q99
+certified area from 0.90 to 0.72 and prevents no false claim.
 
 ---
 

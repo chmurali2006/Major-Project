@@ -39,9 +39,9 @@ in [`docs/BENCHMARKS.md`](BENCHMARKS.md) §1.
 | stays silent under *any* re-encode or noise | **0 claims in 3 800 readings**, Q100→Q50, σ=0→8 | — | `envelope-v8` |
 | does not visibly damage the image | **38.68 dB** mean, worst image **36.00 dB** | ≥ 37.8 dB mean | `n200-v8` |
 | runs fast enough to use | **40.19 ms** verify mean (median 39, p95 47) | ≤ 44 ms | same |
-| the binding is what defeats copy-move | ablation A1: detection **1.000 → 0.000** | — | `ablate-v8` |
-| the global-transform rules are load-bearing | A8: resize claims **0.000 → 0.917** without them | — | same |
-| the mean binding catches burned-in text | A7: condition-21 IoU **0.301 → 0.067** | — | same |
+| the binding is what defeats copy-move | ablation A1: detection **1.000 → 0.000** | — | `ablate-n40` |
+| the global-transform rules are load-bearing | A8: resize claims **0.000 → 0.875** without them | — | same |
+| the mean binding catches burned-in text | A7: condition-21 IoU **0.297 → 0.075** | — | same |
 | the scatter rule separates codec from surgery | A9: Q100 claims **0.000 → 1.000** without it | — | same |
 
 Three comparisons a reader needs and would otherwise have to ask for:
@@ -146,7 +146,7 @@ here is a thesis result yet.
 
 ## 4. What this checkpoint changed
 
-Seven defects were found by measurement and closed; each has an amendment entry
+Eight defects were found by measurement and closed; each has an amendment entry
 with the numbers. The full narrative is in
 [`MID_PROJECT_REVIEW.md`](MID_PROJECT_REVIEW.md) §4.
 
@@ -154,15 +154,18 @@ with the numbers. The full narrative is in
 |---|---|---|---|---|
 | A-031 | a Q100 re-encode was read as surgery | **196 of 200** untouched images claimed | scattered damage is a codec: ≥12 islands → abstain | 196/200 → **0/200**, coverage .91 at Q100 |
 | A-032 | a carrier that could only veto | 18–27 pts of coverage lost, no claim prevented | removed from the default configuration | Q99 coverage **.72 → .89**, PSNR +0.41 dB |
+| A-033 | an ablation metric that could not report a false claim | A3 read "no effect" for eleven checkpoints | `max()==1` → `(verdict==1).any()` | clean claims **0.000 → 0.325** with the refusal off |
 | A-027 | verifier could not see the embedder's refusals | a **clean** saturated image claimed 741 blocks | verifier rebuilds the encoder's exact decision | agreement 163 787/163 840 = 0.99968 |
 | A-028 | "gamut-safe" (3 levels) below the mark's excursion (max 9) | the attenuation rule excused whole images | margin 3 → **8** | 4 failing images → all detect |
 | A-029 | refusal cost 13% of the frame | detection capped at 0.95 | block fitting, margin **4** | 0.9760 → **0.9970**, IoU .9033 → .9367 |
 | A-023 | the score normalised away a *deleted* mark | text/inpainting invisible | erasure rung | inpainting 0% → 100% |
 | A-030 | the tag named details only, which cannot see a mean shift | 22.5% of text-changed blocks INTACT | mean (`LL2`) folded into the tag | 22.5% → **5.9%**, c21 IoU .082 → **.286** |
 
-Two of these (A-031, A-032) were found in the second review pass, by measuring
-*outside* the frozen battery. That is the strongest argument for the battery
-being one instrument among several rather than the whole method.
+Three of these (A-031, A-032, A-033) were found in the second review pass, by
+measuring *outside* the frozen battery — and the third was found by running the
+same ablation twice and disbelieving the disagreement. That is the strongest
+argument for the battery being one instrument among several rather than the
+whole method.
 
 ---
 
