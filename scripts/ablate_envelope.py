@@ -41,7 +41,7 @@ SIGMAS = (1.0, 2.0)
 
 VARIANTS = [
     ("baseline", {}),
-    ("A2 no Carrier B", {"use_robust": False}),
+    ("A2 Carrier B restored", {"use_robust": True}),
     ("A3 no capacity refusal", {"field_excuse": False, "window_min": 0.0}),
     ("A5 no ladder", {"tau_area": 1.0}),
     ("A6 no attenuation", {"use_attenuation": False}),

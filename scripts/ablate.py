@@ -139,9 +139,13 @@ ABLATIONS = [
      "semi-robust reference is inert and there is no reason for it to be in "
      "the design at all - it already costs 0.38 dB of PSNR."),
     ("A3 capacity refusal removed", {"field_excuse": False, "window_min": 0.0,
-                                     "_eps": 0.001}, "surround_verdicts", "rise",
-     "If the tool still refuses to judge blocks it never marked, the capacity "
-     "refusal is not doing any work."),
+                                     "_eps": 0.001}, "clean_claim", "rise",
+     "If refusing to judge blocks it never marked is what keeps a clean image "
+     "clean, switching the refusal off must produce a claim on an untouched "
+     "image. The first version of this ablation measured verdicts on the "
+     "unmarked surround instead and read 0.000 -> 0.000 while 14 of 40 clean "
+     "images were in fact being claimed - the metric was wrong, not the "
+     "mechanism."),
     ("A4 tilt restored", {"lam": 1.0}, "psnr", "drop",
      "If restoring region weighting costs no measurable image quality, the "
      "decision to remove it (A-018) was not buying anything either."),
@@ -234,8 +238,15 @@ def main() -> int:
         else:
             moved = abs(v - b) > eps
         ok += int(moved)
-        print(f"  {name:30} {metric} {b:.4f} -> {v:.4f}  "
-              f"{'MECHANISM IS LOAD-BEARING' if moved else 'NO EFFECT - finding, not failure'}")
+        if name.startswith("A2"):
+            # A2 restores a mechanism instead of removing one, so the same
+            # sentence would read backwards: here a *drop* is the prediction.
+            label = ("PREDICTION HELD - the mechanism costs coverage" if moved
+                     else "NO EFFECT - the mechanism is inert")
+        else:
+            label = ("MECHANISM IS LOAD-BEARING" if moved
+                     else "NO EFFECT - finding, not failure")
+        print(f"  {name:30} {metric} {b:.4f} -> {v:.4f}  {label}")
         if not moved:
             print(f"      {claim}")
             print("      => the mechanism does not earn its place; drop it or "

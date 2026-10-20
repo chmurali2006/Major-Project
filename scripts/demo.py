@@ -96,7 +96,7 @@ def main() -> int:
     print("1. the untouched protected file")
     c = describe("verify", res_clean)
     panels.append((np.array(Image.open(io.BytesIO(p.png)).convert("RGB")),
-                   res_clean, "1. untouched: all intact"))
+                   res_clean, "1. untouched"))
 
     forged_inpaint, gt_i = BY_ID[22](p.png)
     res_i = sysm.verify(forged_inpaint)
@@ -104,7 +104,7 @@ def main() -> int:
     c = describe("verify", res_i)
     print(f"  {int(gt_i.sum())} blocks actually changed")
     panels.append((np.array(Image.open(io.BytesIO(forged_inpaint)).convert("RGB")),
-                   res_i, f"2. inpainted: {c['TAMPERED']} found"))
+                   res_i, "2. lesion inpainted"))
 
     forged_clone, gt_c = BY_ID[1](p.png)
     res_c = sysm.verify(forged_clone)
@@ -112,13 +112,13 @@ def main() -> int:
     c = describe("verify", res_c)
     print(f"  {int(gt_c.sum())} blocks actually changed")
     panels.append((np.array(Image.open(io.BytesIO(forged_clone)).convert("RGB")),
-                   res_c, f"3. cloned: {c['TAMPERED']} found"))
+                   res_c, "3. 32x32 clone"))
 
     res_j = sysm.verify(jpeg(p.png, 90))
     print("\n4. the file was recompressed (JPEG 90) — the honest abstention")
     c = describe("verify", res_j)
     panels.append((np.array(Image.open(io.BytesIO(jpeg(p.png, 90))).convert("RGB")),
-                   res_j, "4. recompressed: cannot say"))
+                   res_j, "4. recompressed (JPEG 90)"))
 
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
@@ -141,15 +141,23 @@ def _figure(panels, original, out: Path) -> None:
         tam = np.repeat(np.repeat(v == TAMPERED, b, 0), b, 1)
         abst = np.repeat(np.repeat(v == CANNOT_SAY, b, 0), b, 1)
 
+        # Counts, not adjectives. "all intact" was an editorial claim that the
+        # first version of this figure made while 35 blocks were in fact
+        # cannot-say; the numbers come from the verdict map itself.
+        n_intact = int((v == INTACT).sum())
+        n_tam = int((v == TAMPERED).sum())
+        n_cs = int((v == CANNOT_SAY).sum())
         axes[0, col].imshow(img)
         axes[0, col].set_title(title, fontsize=10)
         axes[0, col].set_xticks([]); axes[0, col].set_yticks([])
 
         over = img.copy()
         over[tam] = (0.45 * over[tam] + 0.55 * np.array([210, 30, 30])).astype(np.uint8)
-        over[abst] = (0.80 * over[abst] + 0.20 * np.array([150, 150, 150])).astype(np.uint8)
+        over[abst] = (0.62 * over[abst] + 0.38 * np.array([140, 140, 140])).astype(np.uint8)
         axes[1, col].imshow(over)
-        axes[1, col].set_title(f"coverage {res.coverage:.3f}", fontsize=9)
+        axes[1, col].set_title(
+            f"{n_tam} tampered  {n_cs} cannot say\n"
+            f"{n_intact} intact   coverage {res.coverage:.3f}", fontsize=8.5)
         axes[1, col].set_xticks([]); axes[1, col].set_yticks([])
     handles = [Patch(facecolor="#d21e1e", label="tampered"),
                Patch(facecolor="#969696", label="cannot say"),

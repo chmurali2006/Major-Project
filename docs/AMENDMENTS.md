@@ -1244,10 +1244,15 @@ no vote that helps. It is kept behind `use_robust`, and `scripts/ablate.py`
 restores it as A2, reframed as a prediction: restoring it must reduce
 `jpeg100_coverage`, or it is inert twice over.
 
-**Consequences.** Default PSNR 38.27 → ~38.6 dB, clean coverage ~0.927 → ~0.95,
-and the Q99 certified area 0.72 → 0.90. The headline detection and IoU move by
-less than a point (measured in the v8 receipt, reported as measured, not as
-hoped).
+**Consequences, measured on the v8 receipt (n=200):** PSNR **38.27 → 38.68 dB**
+(worst image 35.52 → 36.00), Q99 certified area 0.72 → 0.90, σ=1 area
+0.51 → 0.78. It is not free: detection over conditions 1–5 falls **0.9990 →
+0.9940**, IoU **0.9421 → 0.9336**, and the single-block condition (6) falls
+95.0% → 92.5%. The default also loses Carrier B's spread-spectrum contribution
+from the marked image, so the evidence itself changes, not only the rule; the
+drop is the net of both effects and is reported as the net. Every bar still
+clears by a wide margin, and the tool answers on a fifth more of the frame
+under the handling a phone camera actually applies.
 
 **What this costs the story.** The contribution list loses "two independent
 carriers". The claim becomes the one the evidence supports: one keyed fragile
