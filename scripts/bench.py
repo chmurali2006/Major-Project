@@ -273,7 +273,7 @@ def main() -> int:
     ap.add_argument("--data", type=str, default=None, help="dir with images/ and masks/")
     ap.add_argument("--limit", type=int, default=0)
     ap.add_argument("--offset", type=int, default=0,
-                    help="skip this many images (held-out split, A-031)")
+                    help="skip this many images (held-out split; unused so far)")
     ap.add_argument("--key", type=str, default="bench-key")
     ap.add_argument("--receipt", type=str, default=None, help="write a JSON receipt here")
     ap.add_argument("--set", action="append", default=[], metavar="KEY=VALUE",
