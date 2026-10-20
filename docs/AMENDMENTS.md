@@ -1130,3 +1130,132 @@ extent rule now catches resamples that the attenuation rule used to have to
 catch alone. Ablations A5 (extent) and A6 (attenuation) are consequently each
 redundant with the other: removing one changes nothing. **A8 removes both**, and
 is the falsification that matters now.
+
+## A-031 — A re-encoded file was read as surgery: the damage has a shape
+
+**Date:** 2026-10-20 · **Affects:** `config.SCATTER_MIN_COMPONENTS`,
+`ladder.classify`
+**Evidence:** `runs/2026-10-20-envelope/`, `runs/2026-10-20-n200-v7/`,
+`runs/2026-10-20-ablate-v7/`; probes `/tmp/clusters2.py`, `/tmp/comps3.py`
+
+**How it was found.** Not by the frozen battery. By measuring the tool's
+*validity envelope* — how much of an image it can still certify after ordinary
+handling — which is a measurement the battery does not make, because every JPEG
+condition in the battery is Q ≤ 90. At Q ≤ 90 the mark dies everywhere, the
+attenuation rule notices, and the whole image abstains. That looked like
+success.
+
+A **high-quality** re-encode is the dangerous middle. At JPEG Q100 it breaks the
+fragile mark in **6.4% of blocks** — far under any extent rule — while the
+majority of the image is untouched, so the attenuation rule does not fire
+either. Measured on the whole corpus: the tool claimed tampering on **196 of
+200 images**, none of which had been touched. The one number the design exists
+to protect — false claims under benign handling — was 98%, and the frozen
+battery scored it 0.00%.
+
+**Why it happens.** The tag names the block's detail coefficients at QIM step
+8. A JPEG re-encode perturbs every coefficient slightly; on a block with strong
+high-frequency content that perturbation crosses the step and the tag no longer
+matches. Nothing has been edited; the file has been *coded*.
+
+**The discriminator, and why it is physical.** JPEG codes each 8×8 block
+independently, so its damage is a **scatter of isolated islands**. A paste, a
+painted box or an inpainted wound is **one contiguous region**. Measured
+connected components of the damaged set, 60 images:
+
+| input | islands, p5 | median | p95 | max |
+|---|---|---|---|---|
+| re-encode Q100 | 33 | **64** | 125 | 132 |
+| re-encode Q99 | 72 | **103** | 155 | 170 |
+| re-encode Q98 | 131 | **250** | 293 | 317 |
+| every edit in the battery | — | **1–5** | — | **9** (burned-in text) |
+
+A damaged set spread over ≥ 12 islands is not attributable to a region, and
+localisation is the only thing a fragile mark is good for. The verdict is
+`CANNOT_SAY(routine_handling)` — an abstention, not a pass.
+
+**Measured effect (60 images):** Q100 claims 60/60 → **0/60**; Q99 60/60 →
+**0/60**; coverage at those qualities 0.906 and 0.733, i.e. the tool still
+answers for most of the frame rather than throwing the image away.
+
+**Effect on the frozen battery: none.** Every edit condition stays at 1–9
+islands, so no condition changes. That is the desired outcome and it is also
+the reason the flaw survived: the battery had no condition in the middle of the
+quality range. It now does — the Q100 probe is part of `scripts/ablate.py`.
+
+**Falsified by A9.** With `scatter_min_components` raised past any reachable
+count, the Q100 claim rate goes **0.000 → 1.000** on the ablation receipt. The
+mechanism is load-bearing, and the probe that exposes it is now permanent.
+
+**What this does not fix.** A scattered *surgical* edit — twelve small lesions
+erased across the frame — is indistinguishable from a codec's damage and will
+abstain. That is a real detection loss, it is the safe direction (abstention,
+not a false pass), and it is stated in the limitations.
+
+**The battery's blind spot, named.** The 22 conditions are frozen and were
+fixed before results, which is what makes them evidence. They were also chosen
+by me, and they did not contain the middle of the JPEG range. The envelope
+measurement exists to stop that happening again: it sweeps quality and noise
+continuously and reports the false-claim rate at every point, so a future
+mechanism that fixes one point and breaks another is visible.
+
+## A-032 — The second carrier could only ever lower coverage
+
+**Date:** 2026-10-20 · **Affects:** `config.USE_ROBUST` (now `False`),
+`ladder.classify`
+**Evidence:** `runs/2026-10-20-ablate-envelope-v8/`,
+`runs/2026-10-20-ablate-v8/`, `runs/2026-10-20-n200-v8/`
+
+**What was measured.** `ablate.py` removes Carrier B and nothing changes: the
+battery's detection, IoU, benign claim rate and condition-6 claim are identical
+to four decimals. That receipt says "decorative", and the honest response was
+to read it as decoration. This amendment is that response, taken after one more
+question: *decorative where?* The battery has no condition in the middle of the
+JPEG range (A-031), so the same ablation was run against the validity envelope
+(`ablate_envelope.py`, n=40, four JPEG qualities and two noise levels):
+
+| variant | Q100 cov | Q99 cov | σ=1 cov | σ=2 cov | false claims |
+|---|---|---|---|---|---|
+| Carrier B on (old default) | 0.89 | **0.72** | 0.51 | 0.15 | 0/40 everywhere |
+| Carrier B off (new default) | 0.93 | **0.90** | 0.78 | 0.25 | 0/40 everywhere |
+
+Switching it off certifies **18 to 27 more points of the image** under ordinary
+handling and produces no false claim anywhere. It also costs 0.38 dB of PSNR to
+carry, so on every measured axis the default configuration is worse with it.
+
+**Why it cannot be otherwise.** This is not a tuning problem; it is structural.
+The only route from Carrier B into a verdict is
+
+```
+conflict = (~f_hi) & s_hi        -> CANNOT_SAY(EVIDENCE_CONFLICT)
+```
+
+and `conflict` is a **subset of `~f_hi`** — blocks the fragile carrier calls
+intact. A block in that set is already `INTACT` by initialisation. Therefore no
+setting of any threshold can make Carrier B create a `TAMPERED`, and it can
+only ever convert `INTACT` into `CANNOT_SAY`. It is a coverage tax with a
+corroboration story attached. The prologue to this project argued that a
+two-carrier design is safer than one; measurement says a second carrier that
+cannot vote is not a second opinion, it is a veto on answering.
+
+The carrier itself is not broken — its address-keying still passes
+(`test_carrier_b_is_address_keyed`, now run with the switch on) — it simply has
+no vote that helps. It is kept behind `use_robust`, and `scripts/ablate.py`
+restores it as A2, reframed as a prediction: restoring it must reduce
+`jpeg100_coverage`, or it is inert twice over.
+
+**Consequences.** Default PSNR 38.27 → ~38.6 dB, clean coverage ~0.927 → ~0.95,
+and the Q99 certified area 0.72 → 0.90. The headline detection and IoU move by
+less than a point (measured in the v8 receipt, reported as measured, not as
+hoped).
+
+**What this costs the story.** The contribution list loses "two independent
+carriers". The claim becomes the one the evidence supports: one keyed fragile
+carrier, one honest decision layer, and a measured envelope. A presentation is
+stronger with one mechanism that works than with two where one is provably
+inert.
+
+**Process note.** A mechanism survived eleven earlier checkpoints because the
+battery could not see its effect and the summary line could. The lesson is the
+same as A-031 and is now part of the method: every ablation is asked twice,
+once on the battery and once on the envelope.

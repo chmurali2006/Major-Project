@@ -78,9 +78,19 @@ AMP_MIN = 2.0                  # MEASURED  smallest per-block pixel excursion
                               # accepted as a mark. Below this the integer
                               # round in compose() can erase the sign, so the
                               # block is refused instead of tagged unreliably.
-USE_ROBUST = True             # falsification switch: False removes Carrier B
-                              # from both the embedder and the verifier. Used by
-                              # scripts/ablate.py, never by a reported run.
+USE_ROBUST = False            # OFF by default since A-032. Carrier B is a
+                              # semi-robust spread-spectrum reference whose only
+                              # route into a verdict is `conflict`: a block the
+                              # fragile carrier calls intact that Carrier B calls
+                              # damaged becomes CANNOT_SAY. Since `conflict`
+                              # requires `~f_hi`, the carrier can never create a
+                              # TAMPERED and never create an intact block that
+                              # would not otherwise exist - its sole possible
+                              # effect on any pixel is to remove coverage. It
+                              # costs 0.38 dB of PSNR and 18-27 points of
+                              # certified area under handling (n=40, Q99/sigma1),
+                              # and prevents no false claim anywhere measured.
+                              # Kept as a switch so ablate.py can restore it.
 FIELD_EXCUSE = True           # falsification switch: False stops excusing the
                               # out-of-field surround. Used by scripts/ablate.py.
 TAU_ERASE = 0.75              # MEASURED  per-block tag evidence below which the

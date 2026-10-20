@@ -184,7 +184,11 @@ def classify(delta_f: np.ndarray, delta_sr: np.ndarray, texture: np.ndarray,
     verdict[weak_local] = CANNOT_SAY
     reason[weak_local] = EVIDENCE_CONFLICT
 
-    conflict = ~f_hi & s_hi
+    # A-032: only reachable while Carrier B is enabled. It is off by default
+    # because this rule can only ever convert an intact block into an
+    # abstention - `conflict` is a subset of `~f_hi`, so no pixel can become
+    # TAMPERED, and the block is already INTACT unless a later rule changes it.
+    conflict = (~f_hi) & s_hi if cfg.use_robust else zeros
     verdict[conflict] = CANNOT_SAY
     reason[conflict] = EVIDENCE_CONFLICT
 

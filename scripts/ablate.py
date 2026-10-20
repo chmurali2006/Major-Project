@@ -133,9 +133,11 @@ ABLATIONS = [
     ("A1 binding cut", {"bind_address": False}, "det", "drop",
      "If copy-move detection survives without the address in the tag, position "
      "binding is not what defeats copy-move and contribution one is false."),
-    ("A2 corroboration cut", {"use_robust": False}, "cond6_claim", "change",
-     "If removing Carrier B changes nothing, the semi-robust reference is "
-     "decoration and the two-carrier rule is one bit wearing a second hat."),
+    ("A2 Carrier B restored", {"use_robust": True}, "jpeg100_coverage", "drop",
+     "Carrier B is off by default (A-032). If switching it back on does not "
+     "reduce the area the tool can certify after a Q100 re-encode, the "
+     "semi-robust reference is inert and there is no reason for it to be in "
+     "the design at all - it already costs 0.38 dB of PSNR."),
     ("A3 capacity refusal removed", {"field_excuse": False, "window_min": 0.0,
                                      "_eps": 0.001}, "surround_verdicts", "rise",
      "If the tool still refuses to judge blocks it never marked, the capacity "

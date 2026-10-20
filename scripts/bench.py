@@ -98,6 +98,7 @@ def run(dataset, sysm, cfg, seed0: int, n_synthetic: int):
                  "det50": 0, "known": 0, "silent": 0, "silent_blocks": 0,
                  "gt_blocks": 0, "reasons": {}, "unmarked": 0} for cid in keys}
     protect_t = verify_t = 0.0
+    protect_ms, verify_ms = [], []
     psnrs, coverage = [], []
     clean_claims = 0
 
@@ -108,10 +109,12 @@ def run(dataset, sysm, cfg, seed0: int, n_synthetic: int):
         t0 = time.perf_counter()
         p = sysm.protect(rgb, mask, image_id=1000 + i)
         protect_t += time.perf_counter() - t0
+        protect_ms.append(1000 * (time.perf_counter() - t0))
 
         t0 = time.perf_counter()
         clean = sysm.verify(p.png)
         verify_t += time.perf_counter() - t0
+        verify_ms.append(1000 * (time.perf_counter() - t0))
 
         mse = float(np.mean((p.rgb.astype(float) - rgb.astype(float)) ** 2))
         psnrs.append(99.0 if mse == 0 else 10 * np.log10(255 ** 2 / mse))
@@ -176,6 +179,13 @@ def run(dataset, sysm, cfg, seed0: int, n_synthetic: int):
         "clean_claims": clean_claims,
         "protect_ms": 1000 * protect_t / n,
         "verify_ms": 1000 * verify_t / n,
+        # The mean alone hides the distribution, and 44 ms is a bar the mean
+        # clears by one per cent. Report what a user would experience and what
+        # the worst case costs, so the margin is visible instead of assumed.
+        "verify_ms_p50": float(np.median(verify_ms)),
+        "verify_ms_p95": float(np.percentile(verify_ms, 95)),
+        "verify_ms_max": float(np.max(verify_ms)),
+        "protect_ms_p95": float(np.percentile(protect_ms, 95)),
     }
 
 
@@ -216,6 +226,8 @@ def summarise(res, label: str) -> dict:
                   f"{'-':>8} {'-':>7} {'-':>6} {'-':>6} {row['coverage']:>6.3f} "
                   f"{'-':>8} {'-':>8}{flag}")
         rows.append(row)
+    print(f"\nverify median {res['verify_ms_p50']:.0f} ms  p95 {res['verify_ms_p95']:.0f} ms  "
+          f"max {res['verify_ms_max']:.0f} ms")
     print(f"\nclean-image claims {res.get('clean_claims', 0)}/{res['n_images']}   "
           f"PSNR {res['psnr_mean']:.2f} dB (worst {res['psnr_worst']:.2f})   "
           f"coverage {res['coverage_mean']:.3f}   "
@@ -352,6 +364,10 @@ def main() -> int:
                 "clean_claims": raw["clean_claims"],
                 "protect_ms": raw["protect_ms"],
                 "verify_ms": raw["verify_ms"],
+                "verify_ms_p50": raw["verify_ms_p50"],
+                "verify_ms_p95": raw["verify_ms_p95"],
+                "verify_ms_max": raw["verify_ms_max"],
+                "protect_ms_p95": raw["protect_ms_p95"],
                 "per_condition": {str(c.cid): {k: v for k, v in raw["per_condition"][c.cid].items()
                                                if k != "reasons"} for c in FROZEN},
             },

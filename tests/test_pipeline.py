@@ -129,9 +129,14 @@ def test_ablation_binding_removed_goes_blind():
 
 
 def test_carrier_b_is_address_keyed():
-    """A-004: a moved block must lose its semi-robust reference too."""
+    """A-004: a moved block must lose its semi-robust reference too.
+
+    Carrier B is off in the default configuration since A-032, so the property
+    is pinned on a system that turns it back on - the switch is what
+    scripts/ablate.py restores, and it has to keep working.
+    """
     rgb, mask = phantom(seed=14)
-    sysm = System(KEY)
+    sysm = System(KEY, DEFAULT.with_(use_robust=True))
     p = sysm.protect(rgb, mask, image_id=21)
     clean = sysm.verify(p.png)
     moved = sysm.verify(paste(p.png, (8, 8), (40, 40), blocks=4))
@@ -142,6 +147,24 @@ def test_carrier_b_is_address_keyed():
     b = moved.delta_sr[40:44, 40:44].mean()
     assert a < 0.35
     assert b - a > 0.15, f"clean {a:.3f} moved {b:.3f}"
+
+
+def test_carrier_b_can_only_remove_coverage():
+    """A-032: the second carrier must not be able to manufacture a claim.
+
+    The rule is structural - `conflict` is a subset of `~f_hi`, so a block it
+    touches was already INTACT - but structure drifts when code is edited, so
+    the property is measured on a real tamper rather than trusted.
+    """
+    rgb, mask = phantom(seed=15)
+    off = System(KEY)
+    on = System(KEY, DEFAULT.with_(use_robust=True))
+    p = off.protect(rgb, mask, image_id=22)
+    tampered = paste(p.png, (8, 8), (40, 40), blocks=4)
+    a = off.verify(tampered).ladder
+    b = on.verify(tampered).ladder
+    assert not (b.verdict == TAMPERED & (a.verdict != TAMPERED)).any()
+    assert (b.verdict == CANNOT_SAY).sum() >= (a.verdict == CANNOT_SAY).sum()
 
 
 # ---------------------------------------------------------------- A-021
