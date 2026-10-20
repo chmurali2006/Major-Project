@@ -184,7 +184,7 @@ the integer lifting transform is exact, so it can be signed. It is now folded
 into each coefficient's selector index. Nothing travels with the image and the
 verifier needs no side information: it re-reads `LL2` from the received image.
 
-| | before A-030 | after |
+| | before A-030 | after (v6, before A-032) |
 |---|---|---|
 | c21 detection (stated rule) | 36.0% | **97.0%** |
 | c21 IoU | 0.082 | **0.286** |
@@ -196,7 +196,9 @@ verifier needs no side information: it re-reads `LL2` from the received image.
 | false claims, untouched image | — | **0 / 200** |
 
 Ablation A7 cuts the binding and takes condition 21 from IoU 0.273 to **0.079**
-on the same images; A-030 is load-bearing.
+on the same images; A-030 is load-bearing. The v8 column differs slightly
+(c21 IoU 0.284, silent 8.7%) because A-032 later removed Carrier B from the
+marked image; the A-030 comparison above is stated on the run that measured it.
 
 ### 4.6 A JPEG re-encode was read as surgery (A-031)
 
