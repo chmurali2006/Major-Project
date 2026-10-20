@@ -170,10 +170,10 @@ def main() -> int:
             f"**Commit:** `{receipt['code']['git_commit'][:7]}` · **dirty tree:** "
             f"{'yes' if receipt.get('code_dirty') else 'no'} · "
             f"**n:** {res['n_images']}\n")
-    body = "\n".join([BEGIN, head, "", bars_table(receipt), "",
-                      condition_table(receipt), END])
+    body = "\n".join([head, "", bars_table(receipt), "",
+                      condition_table(receipt)])
     if args.print:
-        print(body)
+        print(BEGIN + "\n\n" + body + "\n\n" + END)
         return 0
 
     path = Path(args.write)

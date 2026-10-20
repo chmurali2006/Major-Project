@@ -49,7 +49,6 @@ to, not a claim to have beaten anyone.
 
 <!-- BEGIN MEASURED TABLES -->
 
-<!-- BEGIN MEASURED TABLES -->
 **Run:** `scripts/bench.py --data /tmp/ph2mirror --limit 200 --receipt runs/2026-10-20-n200-v8/receipt.json`  
 **Commit:** `369e441` · **dirty tree:** no · **n:** 200
 
@@ -88,15 +87,18 @@ to, not a claim to have beaten anyone.
 | 22 | inpainting removal (Telea) | structure | 100.0% | 100.0% | 99.5% | 0.911 | 0.952 | 0.924 | 100.0% | 4.6% |
 
 PSNR 38.68 dB (worst 36.00) · coverage 0.924 · protect 149 ms/img · verify 40.2 ms/img.
+
+<!-- END MEASURED TABLES -->
+
 <!-- END MEASURED TABLES -->
 
 <!-- END MEASURED TABLES -->
 
-> **Provenance.** `code_dirty` is `false`: the code paths (`src/`, `scripts/`,
-> `tests/`) were clean at run time. `tree_dirty` is `true` — documents were
-> being edited while the twelve-minute run was in flight, and the harness now
-> distinguishes the two rather than treating prose as code. The receipt is
-> checked in exactly as it was written.
+> **Provenance.** `code_dirty` is `false` and `tree_dirty` is `false`: the run
+> started from commit `369e441` with nothing modified, and the receipt is
+> checked in exactly as it was written. The harness distinguishes the two
+> fields because documents edited during a long run are not a provenance
+> problem, while uncommitted code is.
 
 **On the "met" column.** The bar is a minimum on the *mean over images*; a
 reviewer should ask what the distribution behind it looks like, so:
