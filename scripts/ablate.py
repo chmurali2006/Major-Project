@@ -77,7 +77,11 @@ def run_variant(rgb, mask, image_id, overrides, conds):
     true_field = field_mask(recover_luma(p.rgb))
     decided_field = (clean.ladder.verdict != 2) & true_field
 
-    out = {"clean_claim": int(clean.ladder.verdict.max() == 1),
+    # `max() == 1` was wrong: verdict codes are INTACT=0, TAMPERED=1,
+    # CANNOT_SAY=2, so a single abstaining block anywhere in the frame made the
+    # maximum 2 and the metric read 0 even when the image was being claimed.
+    # A3 read "no effect" for eleven checkpoints because of this line.
+    out = {"clean_claim": int((clean.ladder.verdict == 1).any()),
            "clean_coverage": clean.coverage,
            "surround_verdicts": float(decided_field.mean()),
            "psnr": psnr,

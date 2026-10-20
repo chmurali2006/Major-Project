@@ -6,9 +6,11 @@ honest abstention, and an evaluation battery that is falsifiable by construction
 
 **Date:** 2026-10-20 · **Branch:** `arena/4f1090b0-major-project` (PR #4 → `dev`)
 · **Corpus:** PH2, 200 dermoscopic images, 512 × 512, all 22 conditions
-· **Receipt:** `runs/2026-10-20-n200-v6/receipt.json` (commit `dd06beb`, code
-paths clean) — the command, config, git commit, environment and per-condition
-counts are inside it
+· **Receipt:** `runs/2026-10-20-n200-v8/receipt.json` — the command, config,
+git commit, environment and per-condition counts are inside it
+· **Second review pass:** A-031 (a codec read as surgery) and A-032 (a carrier
+that could only veto) were found by measuring outside the battery, and both
+changed the default configuration
 
 ---
 
@@ -17,10 +19,10 @@ counts are inside it
 An image is protected with no model and no training data. For each 8 × 8 block,
 a 60-bit tag is derived from a key, the block's address, the block's own detail
 content **and its mean**, and written into the block's Haar detail
-coefficients. A second, semi-robust carrier writes an address-keyed reference in
-the mid-frequency block-DCT band. The verifier needs only the image: it
-recomputes every tag, compares, and returns one of three verdicts **per block**,
-each with a reason.
+coefficients. The verifier needs only the image: it recomputes every tag,
+compares, and returns one of three verdicts **per block**, each with a reason.
+(A second, semi-robust carrier existed until this pass; measurement showed it
+could only ever remove coverage, so it is off by default — A-032.)
 
 | verdict | meaning | what the clinician does |
 |---|---|---|
@@ -63,24 +65,30 @@ itself to, not a claim to have beaten anyone.
 
 | what | bar | measured (PH2, n=200) | |
 |---|---|---|---|
-| detection, conditions 1–5 | ≥ 97.6% | **99.90%** | met |
-| localisation IoU, conditions 1–6 | ≥ 0.832 | **0.9421** | met |
-| false claims, benign conditions | ≤ 0.5% | **0.00%** on all five | met |
-| false claims, untouched image | 0 | **0 / 200** | met |
-| PSNR | ≥ 37.8 dB (mean) | **38.27 dB** mean, **35.52 dB** worst | met on the mean |
-| verify latency | ≤ 44 ms | **38.98 ms** | met |
+| detection, conditions 1–5 | ≥ 97.6% | **99.40%** (95% CI 98.8–99.9) | met |
+| localisation IoU, conditions 1–6 | ≥ 0.832 | **0.9336** (CI 0.9223–0.9440) | met |
+| false claims, benign conditions | ≤ 0.5% | **0/1000** (≤ 0.30% at 95%) | met |
+| false claims, untouched image | 0 | **0 / 200** (≤ 1.50% at 95%) | met |
+| PSNR | ≥ 37.8 dB (mean) | **38.68 dB** mean, **36.00 dB** worst | met on the mean |
+| verify latency | ≤ 44 ms | **40.19 ms** mean (median 39, p95 47) | met on the mean |
+| false claims under any re-encode or noise | — | **0 in 3 800 readings** | not in the battery |
 
 Four numbers belong beside them, because a detector that abstains a lot looks
 excellent on the rows above:
 
 * **coverage** — the fraction of blocks on which the tool commits to any
-  verdict: **0.927** on the paste family; **0.000** on JPEG 90, where it
-  declines the whole image rather than call a recompressed scan authentic.
-* **detection at the strict IoU ≥ 0.5 reading** — **94.0–100%** on conditions
-  1–5, against 99.5–100% at the stated IoU ≥ 0.10. The difference is boundary
+  verdict: **0.924** on the paste family; **0.000** on JPEG 90, where it
+  declines the whole image rather than call a recompressed scan authentic. The
+  full curve, quality by quality, is `BENCHMARKS.md` §1b.
+* **detection at the strict IoU ≥ 0.5 reading** — **93.0–99.5%** on conditions
+  1–5, against 99.0–100% at the stated IoU ≥ 0.10. The difference is boundary
   blocks on a 64×64 grid, and both are printed by every run.
 * **silent failures** — changed blocks called `INTACT`: **0.0%** on conditions
-  1–6, **5.9%** on burned-in text, **2.9%** on inpainting.
+  1–6, **8.7%** on burned-in text, **4.6%** on inpainting.
+* **the envelope** — how much of the frame is still certified after ordinary
+  handling, and whether the tool lies there. It never does: 0 false claims in
+  3 800 readings from JPEG Q100 to Q50 and σ=0 to 8, which is the measurement
+  that found A-031.
 
 ![The 22 conditions at a glance](figures/battery.png)
 
@@ -91,9 +99,11 @@ the point — where a bar is not met, coverage says why.*
 
 ## 4. What this checkpoint changed
 
-Five defects were found by measurement in this branch and closed. Each has an
+Seven defects were found by measurement in this branch and closed. Each has an
 amendment entry with the numbers, and each was found by a run that *failed* —
-which is the point of keeping failing receipts.
+which is the point of keeping failing receipts. The last two (§4.6, §4.7) were
+found after the checkpoint below was written, by measuring outside the frozen
+battery; they are the reason this document has a second pass.
 
 ### 4.1 A saturated image accused itself (A-027)
 
@@ -188,6 +198,49 @@ verifier needs no side information: it re-reads `LL2` from the received image.
 Ablation A7 cuts the binding and takes condition 21 from IoU 0.273 to **0.079**
 on the same images; A-030 is load-bearing.
 
+### 4.6 A JPEG re-encode was read as surgery (A-031)
+
+Every JPEG condition in the frozen battery is Q ≤ 90. At Q ≤ 90 the mark dies
+everywhere, the attenuation rule notices, and the image abstains — which looked
+like success and hid the opposite case. At **Q100** a re-encode breaks the
+fragile mark in 6.4% of blocks: too few for the extent rule, too many to ignore.
+Measured on all 200 images, the tool claimed tampering on **196 untouched
+files**. Benign handling is the one number the design exists to protect, and the
+battery scored it 0.00%.
+
+The discriminator is shape, not size: JPEG codes each block independently, so
+its damage is a scatter of isolated islands (median 64–250 of them), while every
+edit in the battery is one contiguous region of 1–9 blocks. Damaged area spread
+over ≥ 12 islands cannot be attributed to a region, and localisation is the only
+thing a fragile mark is good for, so the verdict is
+`CANNOT_SAY(routine_handling)`. Claims on a Q100 re-encode: **196/200 → 0/200**,
+with 91% of the frame still certified.
+
+### 4.7 The second carrier could only veto (A-032)
+
+Carrier B was justified in the original design as an independent opinion. Its
+only route into a verdict is a rule that fires on blocks the fragile carrier
+already calls intact, so no threshold could ever let it create a `TAMPERED` — it
+could only convert `INTACT` into `CANNOT_SAY`. Measured against the envelope it
+was worse than inert: restoring it costs 18–27 points of certified area at Q99
+and σ=1, prevents no false claim anywhere, and costs 0.38 dB of PSNR to embed.
+
+It is now off by default. The cost is stated in the receipt rather than hidden:
+detection 99.90% → 99.40%, IoU 0.9421 → 0.9336, while PSNR improves to 38.68 dB
+and Q99 coverage rises from 0.72 to 0.89. A mechanism that cannot vote is not a
+second opinion; it is a veto on answering.
+
+### 4.8 What the textbook scheme does, for comparison
+
+`scripts/baseline_lsb.py` implements the obvious alternative — a keyed 8×8 block
+hash written into the pixel LSBs — on the same corpus and the same battery. It
+detects perfectly (IoU 1.000), is 17 dB kinder to the image, and claims tampering
+on **100% of benign handling**, because a codec changes pixels and it has no
+vocabulary for "changed but not edited". That comparison is the contribution
+stated precisely: not a sharper localiser, but a detector that can tell damage
+from editing and says so when it cannot.
+
+
 ---
 
 ## 5. What it still cannot do
@@ -197,15 +250,15 @@ Stated here rather than discovered in the viva.
 **5.1 No mark, no evidence.** The tag is a signed perturbation of the detail
 coefficients. A pixel already sitting on the RGB gamut bound cannot take it.
 Blocks are fitted by a DC shift so this is rarer than it was, but on frames with
-large saturated or specular regions blocks still refuse: **coverage 0.927
-corpus mean**, falling to 0.000 on a recompressed image. A tamper placed
+large saturated or specular regions blocks still refuse: **coverage 0.924
+corpus mean**, falling to 0.000 at JPEG Q90. A tamper placed
 entirely inside a refused region is a miss, not a false claim — and it is the
 main residual source of the 5.9% silent blocks on condition 21. The tool cannot
 certify what it could not mark.
 
-**5.2 Burned-in text is an alarm, not a precise localiser.** 99.5% of images
-with text raise a claim and 97.0% pass the stated detection rule, but block-F1
-is 0.437, IoU is 0.286, and at IoU ≥ 0.5 only 0.5% of images pass. The claim is
+**5.2 Burned-in text is an alarm, not a precise localiser.** Every image with
+text raises a claim (100%) and 97.5% pass the stated detection rule, but block-F1
+is 0.435, IoU is 0.284, and at IoU ≥ 0.5 only 0.5% of images pass. The claim is
 wider than the text. A-030 improved this by a factor of 3.5 in IoU; it did not
 make it precise, and no figure here should be quoted without the pair.
 
@@ -229,8 +282,23 @@ claim rate 0.792 → 0.000, with ablation A6 falsifying the fix), not yet on ISI
 ISIC at all. This is a limitation of the evidence, not of the fixes, and it is
 stated everywhere the numbers appear.
 
-**5.6 Worst-case image quality is 35.52 dB**, below the 37.8 dB mean bar. §4.3
+**5.6 Worst-case image quality is 36.00 dB**, below the 37.8 dB mean bar. §4.3
 has the trade and the alternative receipt.
+
+**5.6b The latency bar is met on the mean, not on the tail.** 40.19 ms mean,
+median 39, p95 47, max 52 on this sandbox, and two runs of identical code
+measured 38.98 and 43.57 ms — the margin is inside the machine's own noise. It
+is quoted as a distribution for that reason.
+
+**5.6c A scattered surgical edit will abstain.** The scatter rule that fixed
+A-031 cannot distinguish twelve erased lesions spread across the frame from a
+codec's damage. That is a real loss of detection, it errs toward abstention
+rather than a false pass, and it is named here rather than left to be found.
+
+**5.6d Every constant was chosen on these 200 images.** The battery was frozen
+before results and the failing receipts are kept, but there is no held-out
+split yet: `bench.py --offset` exists for one, and the honest test is the corpus
+the choices never saw.
 
 **5.7 The corpus is the public PH2 mirror**, not the official BMP
 distribution, and it has no expert masks. §0 of `BENCHMARKS.md` states what
@@ -253,19 +321,40 @@ python scripts/make_figures.py --receipt runs/<your-run>/receipt.json \
 ```
 
 `bench.py` prints the five bars and exits non-zero on a benign violation.
-`scripts/ablate.py` runs the eight falsification switches (A1–A8), including
-the ones that must destroy performance: with the address binding off, detection
-goes **1.000 → 0.000**; with both global-transform rules off, benign resize
-claims go **0.000 → 1.000**; with the mean binding off, condition 21 IoU goes
-**0.285 → 0.065**.
+`scripts/ablate.py` runs the nine falsification switches (A1–A9), including the
+ones that must destroy performance: with the address binding off, detection goes
+**1.000 → 0.000**; with both global-transform rules off, benign resize claims go
+**0.000 → 0.917**; with the mean binding off, condition 21 IoU goes **0.301 →
+0.067**; with the scatter rule off, a Q100 re-encode is claimed on **100%** of
+images instead of none. `scripts/ablate_envelope.py` repeats the four switches
+the battery cannot see, under handling, and `scripts/baseline_lsb.py` measures
+the textbook alternative on the same corpus.
 
 ---
 
 ## 7. Questions the panel should ask, and the answers
 
-**"Your detection is 99.9% — is that not just because you abstain?"** Coverage
-is 0.927 and is printed beside every detection number. Where the tool cannot
-read the mark it says so, and the reason code says why.
+**"Your detection is 99.4% — is that not just because you abstain?"** Coverage
+is 0.924 and is printed beside every detection number; the 95% interval over
+images is [98.8, 99.9] on detection and [0.917, 0.932] on coverage. Where the
+tool cannot read the mark it says so, and the reason code says why.
+
+**"What happens if someone just re-saves the file at quality 100?"** Nothing is
+claimed, and 91% of the frame is still certified. That was the A-031 failure:
+before the scatter rule, this exact case produced a tamper claim on 196 of 200
+untouched images. It is now part of the falsification harness (A9), and the
+envelope sweeps twelve qualities and seven noise levels on every image.
+
+**"Why did you delete a component between checkpoints?"** Because it could not
+vote. Carrier B's only route into a verdict fired on blocks the fragile carrier
+already called intact, so it could only ever remove coverage — measured at 18–27
+points under handling, with no claim prevented. The removal costs 0.5 points of
+detection and is reported with that cost attached.
+
+**"Aren't you tuning on the same 200 images you report?"** Yes for the
+constants, no for the battery: it was frozen before the results and every
+failure is kept. The gap is stated in §5.6d, and the held-out test is the ISIC
+corpus, which is the next item in the plan.
 
 **"Then why does coverage drop to 0.000 on JPEG 90?"** Because after
 recompression the mark is uniformly attenuated, and certifying any block would

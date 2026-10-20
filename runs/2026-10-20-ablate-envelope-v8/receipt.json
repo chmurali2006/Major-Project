@@ -1,6 +1,6 @@
 {
  "kind": "ablate_envelope",
- "created_utc": "2026-10-20T11:16:24+00:00",
+ "created_utc": "2026-10-20T11:38:46+00:00",
  "command": "scripts/ablate_envelope.py --data /tmp/ph2mirror --limit 40 --receipt runs/2026-10-20-ablate-envelope-v8/receipt.json",
  "dataset": "/tmp/ph2mirror",
  "n": 40,
@@ -15,7 +15,7 @@
   2.0
  ],
  "code": {
-  "git_commit": "369e441de1dc5f7a10e1a748797c3d7d66cbc123"
+  "git_commit": "e0b3b7c709f6ea01da80d6acd6eeafae121181c0"
  },
  "environment": {
   "python": "3.11.2",
@@ -52,34 +52,34 @@
     "coverage": 0.247137451171875
    }
   },
-  "A2 no Carrier B": {
+  "A2 Carrier B restored": {
    "png": {
     "false_claims": 0,
-    "coverage": 0.93306884765625
+    "coverage": 0.93480224609375
    },
    "j100": {
     "false_claims": 0,
-    "coverage": 0.920831298828125
+    "coverage": 0.8941650390625
    },
    "j99": {
     "false_claims": 0,
-    "coverage": 0.902398681640625
+    "coverage": 0.72030029296875
    },
    "j98": {
     "false_claims": 0,
-    "coverage": 0.6896728515625
+    "coverage": 0.430157470703125
    },
    "j95": {
     "false_claims": 0,
-    "coverage": 0.016595458984375
+    "coverage": 0.009771728515625
    },
    "n1.0": {
     "false_claims": 0,
-    "coverage": 0.778558349609375
+    "coverage": 0.51475830078125
    },
    "n2.0": {
     "false_claims": 0,
-    "coverage": 0.247137451171875
+    "coverage": 0.151416015625
    }
   },
   "A3 no capacity refusal": {

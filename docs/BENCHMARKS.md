@@ -48,31 +48,33 @@ forbidden — the corpora differ — so these are levels this project holds itse
 to, not a claim to have beaten anyone.
 
 <!-- BEGIN MEASURED TABLES -->
-**Run:** `scripts/bench.py --data /tmp/ph2mirror --limit 200 --receipt runs/2026-10-20-n200-v6/receipt.json`  
-**Commit:** `dd06beb` · **dirty tree:** no · **n:** 200
+
+<!-- BEGIN MEASURED TABLES -->
+**Run:** `scripts/bench.py --data /tmp/ph2mirror --limit 200 --receipt runs/2026-10-20-n200-v8/receipt.json`  
+**Commit:** `369e441` · **dirty tree:** no · **n:** 200
 
 
 | what | bar | measured | |
 |---|---|---|---|
-| detection, conditions 1-5 | >= 97.6% | **99.90%** | met |
-| localisation IoU, conditions 1-6 | >= 0.832 | **0.9421** | met |
+| detection, conditions 1-5 | >= 97.6% | **99.40%** | met |
+| localisation IoU, conditions 1-6 | >= 0.832 | **0.9336** | met |
 | false claims, benign conditions | <= 0.5% | **0.00%** | met |
-| PSNR (mean; worst image) | >= 37.8 dB | **38.27 dB; 35.52 dB** | met |
-| verify latency | <= 44 ms | **38.98 ms** | met |
+| PSNR (mean; worst image) | >= 37.8 dB | **38.68 dB; 36.00 dB** | met |
+| verify latency | <= 44 ms | **40.19 ms** | met |
 
 | # | condition | family | claim | detected | det@IoU 0.5 | IoU | block-F1 | coverage | silent (img) | silent (blocks) |
 |---|---|---|---|---|---|---|---|---|---|---|
-| 1 | copy-move 32x32 bg->bg | paste | 100.0% | 100.0% | 94.5% | 0.936 | 0.955 | 0.927 | 0.0% | 0.0% |
-| 2 | copy-move 32x32 over lesion | paste | 100.0% | 100.0% | 94.0% | 0.935 | 0.954 | 0.927 | 0.0% | 0.0% |
-| 3 | copy-move 64x64 over lesion | paste | 100.0% | 100.0% | 100.0% | 0.961 | 0.977 | 0.927 | 0.0% | 0.0% |
-| 4 | three 32x32 clones | paste | 100.0% | 100.0% | 98.0% | 0.934 | 0.959 | 0.927 | 0.0% | 0.0% |
-| 5 | copy-move 16x16 | paste | 99.5% | 99.5% | 96.0% | 0.938 | 0.954 | 0.927 | 0.0% | 0.0% |
-| 6 | copy-move 8x8 | paste | 95.0% | 95.0% | 95.0% | 0.950 | 0.950 | 0.927 | 0.0% | 0.0% |
+| 1 | copy-move 32x32 bg->bg | paste | 100.0% | 99.0% | 93.0% | 0.929 | 0.949 | 0.924 | 0.0% | 0.0% |
+| 2 | copy-move 32x32 over lesion | paste | 100.0% | 100.0% | 93.0% | 0.931 | 0.950 | 0.924 | 0.0% | 0.0% |
+| 3 | copy-move 64x64 over lesion | paste | 100.0% | 100.0% | 99.5% | 0.958 | 0.975 | 0.925 | 0.0% | 0.0% |
+| 4 | three 32x32 clones | paste | 100.0% | 100.0% | 97.5% | 0.933 | 0.959 | 0.924 | 0.0% | 0.0% |
+| 5 | copy-move 16x16 | paste | 98.0% | 98.0% | 95.5% | 0.925 | 0.942 | 0.924 | 0.0% | 0.0% |
+| 6 | copy-move 8x8 | paste | 92.5% | 92.5% | 92.5% | 0.925 | 0.925 | 0.924 | 0.0% | 0.0% |
 | 7 | JPEG 90 | benign | 0.0% | — | — | — | — | 0.000 | — | — |
 | 8 | JPEG 75 | benign | 0.0% | — | — | — | — | 0.000 | — | — |
 | 9 | JPEG 50 | benign | 0.0% | — | — | — | — | 0.000 | — | — |
-| 10 | Gaussian noise sigma=1 | benign | 0.0% | — | — | — | — | 0.506 | — | — |
-| 11 | resize 90% and back | benign | 0.0% | — | — | — | — | 0.006 | — | — |
+| 10 | Gaussian noise sigma=1 | benign | 0.0% | — | — | — | — | 0.772 | — | — |
+| 11 | resize 90% and back | benign | 0.0% | — | — | — | — | 0.033 | — | — |
 | 12 | JPEG 30 | degrade | 0.0% | — | — | — | — | 0.000 | — | — |
 | 13 | JPEG 10 | degrade | 0.0% | — | — | — | — | 0.000 | — | — |
 | 14 | double compression 75 then 50 | degrade | 0.0% | — | — | — | — | 0.000 | — | — |
@@ -81,11 +83,13 @@ to, not a claim to have beaten anyone.
 | 17 | Gaussian noise sigma=8 | degrade | 0.0% | — | — | — | — | 0.000 | — | — |
 | 18 | 70% centre crop then resize | degrade | 0.0% | — | — | — | — | 0.000 | — | — |
 | 19 | block-aligned crop 24px/side | structure | 0.0% | 0.0% | 0.0% | 0.000 | 0.000 | 0.000 | 0.0% | 0.0% |
-| 20 | block-aligned shift 8px | structure | 2.5% | 2.5% | 0.0% | 0.011 | 0.015 | 0.011 | 0.0% | 0.0% |
-| 21 | burned-in text 64x24 | structure | 99.5% | 97.0% | 0.5% | 0.286 | 0.437 | 0.922 | 83.0% | 5.9% |
-| 22 | inpainting removal (Telea) | structure | 100.0% | 100.0% | 99.5% | 0.912 | 0.953 | 0.925 | 100.0% | 2.9% |
+| 20 | block-aligned shift 8px | structure | 0.0% | 0.0% | 0.0% | 0.000 | 0.000 | 0.000 | 0.0% | 0.0% |
+| 21 | burned-in text 64x24 | structure | 100.0% | 97.5% | 0.5% | 0.284 | 0.435 | 0.920 | 93.0% | 8.7% |
+| 22 | inpainting removal (Telea) | structure | 100.0% | 100.0% | 99.5% | 0.911 | 0.952 | 0.924 | 100.0% | 4.6% |
 
-PSNR 38.27 dB (worst 35.52) · coverage 0.927 · protect 131 ms/img · verify 39.0 ms/img.
+PSNR 38.68 dB (worst 36.00) · coverage 0.924 · protect 149 ms/img · verify 40.2 ms/img.
+<!-- END MEASURED TABLES -->
+
 <!-- END MEASURED TABLES -->
 
 > **Provenance.** `code_dirty` is `false`: the code paths (`src/`, `scripts/`,
@@ -97,8 +101,9 @@ PSNR 38.27 dB (worst 35.52) · coverage 0.927 · protect 131 ms/img · verify 39
 **On the "met" column.** The bar is a minimum on the *mean over images*; a
 reviewer should ask what the distribution behind it looks like, so:
 
-* **detection** is 99.90% on conditions 1–5 and never below 99.5% on any of
-  them. At the *strict* IoU ≥ 0.5 reading it is 94.0–100%: the claim lands in
+* **detection** is 99.40% on conditions 1–5 and never below 98.0% on any of
+  them (the 95% interval over images is 98.8–99.9). At the *strict* IoU ≥ 0.5
+  reading it is 93.0–99.5%: the claim lands in
   the right region, and on a 32×32 edit inside a 64×64 grid the boundary blocks
   are where the difference lives. Both numbers are printed because the lenient
   one alone would be a misleading headline.
@@ -111,14 +116,67 @@ reviewer should ask what the distribution behind it looks like, so:
 * **the untouched protected image is claimed tampered on 0 of 200 images.**
   This is not one of the 22 conditions, and it had no column of its own until
   now; it is the most basic error the tool could make.
-* **PSNR is 38.27 dB mean and 35.52 dB on the worst image.** The mean clears the
+* **PSNR is 38.68 dB mean and 36.00 dB on the worst image.** The mean clears the
   bar; the worst image does not. A per-image guarantee has to be bought with
   detection: at `FIT_MARGIN = 3` the worst image is 37.65 dB and detection is
   97.60%, exactly the bar with nothing behind it
   (`runs/2026-10-19-n200-v4/`). Both receipts ship, and the trade is in §3.4.
-* **latency** is 38.98 ms against a 44 ms bar on this Linux sandbox. It is
-  hardware-relative: an earlier trial on the user's i5-1235U measured ~1.4×
-  slower than the sandbox of the day. Reported as measured, not projected.
+* **latency** is 40.19 ms mean against a 44 ms bar on this Linux sandbox, with
+  median 39 ms, p95 47 ms and max 52 ms. The bar is met on the mean, not on the
+  tail, and two runs of identical code measured 38.98 and 43.57 ms — the margin
+  is inside the machine's own noise, which is why the distribution is printed
+  rather than the mean alone. It is hardware-relative: an earlier trial on the
+  user's i5-1235U measured ~1.4× slower than the sandbox of the day.
+
+---
+
+## 1b. The validity envelope — how much handling it survives
+
+The battery reports that no benign condition produces a false claim. On its own
+that is a weak statement: a tool that abstains on everything also never lies.
+This table measures the thing the claim column hides — **how much of the image
+can still be certified** after a given amount of ordinary handling, and whether
+the tool ever lies there. Swept on every one of the 200 protected images; no
+tampering, so every claim in this table would be a false claim.
+
+<!-- BEGIN ENVELOPE TABLE -->
+
+| JPEG quality | certified area | 10th pct | images half certified | images with any verdict | false claims |
+|---|---|---|---|---|---|
+| Q100 | **0.913** | 0.751 | 193/200 | 200/200 | **0** |
+| Q99 | **0.895** | 0.720 | 193/200 | 200/200 | **0** |
+| Q98 | **0.690** | 0.522 | 182/200 | 200/200 | **0** |
+| Q97 | **0.247** | 0.195 | 0/200 | 200/200 | **0** |
+| Q96 | **0.068** | 0.052 | 0/200 | 200/200 | **0** |
+| Q95 | **0.018** | 0.014 | 0/200 | 200/200 | **0** |
+| Q92 | **0.001** | 0.000 | 0/200 | 195/200 | **0** |
+| Q90 | **0.000** | 0.000 | 0/200 | 154/200 | **0** |
+| Q85 | **0.000** | 0.000 | 0/200 | 69/200 | **0** |
+| Q80 | **0.000** | 0.000 | 0/200 | 57/200 | **0** |
+| Q70 | **0.000** | 0.000 | 0/200 | 55/200 | **0** |
+| Q50 | **0.000** | 0.000 | 0/200 | 52/200 | **0** |
+
+| noise sigma | certified area | 10th pct | images half certified | images with any verdict | false claims |
+|---|---|---|---|---|---|
+| 0.0 | **0.925** | 0.766 | 194/200 | 200/200 | **0** |
+| 0.5 | **0.880** | 0.721 | 193/200 | 200/200 | **0** |
+| 1.0 | **0.773** | 0.596 | 184/200 | 200/200 | **0** |
+| 1.5 | **0.542** | 0.395 | 165/200 | 200/200 | **0** |
+| 2.0 | **0.247** | 0.166 | 0/200 | 200/200 | **0** |
+| 4.0 | **0.001** | 0.000 | 0/200 | 192/200 | **0** |
+| 8.0 | **0.000** | 0.000 | 0/200 | 2/200 | **0** |
+
+Lossless PNG round trip: certified area **0.925**, 194/200 images at least half certified, **0 false claims**.
+
+<!-- END ENVELOPE TABLE -->
+
+Three things to read out of it. **It never lies**: zero false claims at every
+quality and every noise level, 200 images each, 3800 readings. **It degrades as
+a curve, not a cliff**: full certification up to Q99, two thirds of the frame
+at Q98, a quarter at Q97, nothing at Q92. **The abstention is not silence**: at
+Q90 the tool still returns a verdict somewhere on 154 of 200 images — those are
+`CANNOT_SAY` blocks with a named reason, which is the product, not the absence
+of one.
 
 ---
 
@@ -143,6 +201,38 @@ Two columns need a sentence each:
   An abstention is a safe miss; this is not. `silent (img)` is the laxer
   version ("at least one such block, somewhere on the image") and is kept
   because it is what the earlier tables used.
+
+---
+
+## 2b. The obvious alternative, measured on the same corpus
+
+Every review asks why not simply hash the LSBs. `scripts/baseline_lsb.py`
+implements the textbook scheme — Wong-style keyed block hash written into the
+low bit of each pixel, same 8×8 grid, same battery, n=60 images — so the
+question is settled by measurement rather than by argument.
+
+<!-- BEGIN BASELINE TABLE -->
+
+| | textbook 8x8 block-hash LSB | this work |
+|---|---|---|
+| detection, conditions 1-5 | 100.00% | 99.40% |
+| localisation IoU, conditions 1-6 | 1.0000 | 0.9336 |
+| false claims, benign handling | **100.00%** | **0.00%** |
+| false claims, untouched image | 0/60 | 0/200 |
+| PSNR | 55.91 dB | 38.68 dB |
+| JPEG Q100: images claimed | **100%** | **0%** |
+| JPEG Q95: images claimed | **100%** | **0%** |
+| sigma=1 noise: images claimed | **100%** | **0%** |
+
+<!-- END BASELINE TABLE -->
+
+Read honestly, the textbook scheme **wins two rows**: it localises perfectly
+(its hash is exact, so every changed block is flagged) and it is 17 dB kinder to
+the image. It also **claims tampering on 100% of benign handling** — every JPEG,
+every noise realisation, every resize — because a codec changes pixels and it
+has no vocabulary for "changed but not edited". That is the entire
+contribution: not a sharper localiser, but a detector that can tell the
+difference between damage and editing, and says so when it cannot.
 
 ---
 
@@ -294,6 +384,42 @@ for. Each case is reported as measured, not explained away:
 
 **Not run.** Dossier ablations 3 and 5 target the texture gate, disabled under
 A-007; 7 needs a second corpus (see §6).
+
+---
+
+### 5b. Ablations measured under handling, not under the battery
+
+Four mechanisms change nothing the battery can see, which reads as "decoration".
+The battery only contains conditions this project chose, and A-031 was found
+outside it, so the same ablations are run against the envelope
+(`scripts/ablate_envelope.py`, n=40). Either answer is a finding: a mechanism
+that matters here is one the battery could not see, and a mechanism that
+matters nowhere should be deleted rather than defended.
+
+<!-- BEGIN HANDLING ABLATION TABLE -->
+
+| variant | clean | Q100 | Q99 | Q98 | Q95 | sigma 1 | sigma 2 |
+|---|---|---|---|---|---|---|---|
+| baseline | 0/40 · 0.93 | 0/40 · 0.92 | 0/40 · 0.90 | 0/40 · 0.69 | 0/40 · 0.02 | 0/40 · 0.78 | 0/40 · 0.25 |
+| A2 Carrier B restored | 0/40 · 0.93 | 0/40 · 0.89 | 0/40 · 0.72 | 0/40 · 0.43 | 0/40 · 0.01 | 0/40 · 0.51 | 0/40 · 0.15 |
+| A3 no capacity refusal | 14/40 · 0.94 | 0/40 · 0.93 | 0/40 · 0.91 | 0/40 · 0.69 | 0/40 · 0.02 | 0/40 · 0.78 | 0/40 · 0.25 |
+| A5 no ladder | 0/40 · 0.93 | 0/40 · 0.92 | 0/40 · 0.90 | 0/40 · 0.69 | 0/40 · 0.02 | 0/40 · 0.78 | 0/40 · 0.25 |
+| A6 no attenuation | 0/40 · 0.93 | 0/40 · 0.92 | 0/40 · 0.90 | 0/40 · 0.69 | 0/40 · 0.02 | 0/40 · 0.78 | 0/40 · 0.25 |
+| A8 neither global rule | 0/40 · 0.93 | 0/40 · 0.92 | 0/40 · 0.90 | 0/40 · 0.69 | 32/40 · 0.73 | 0/40 · 0.78 | 30/40 · 0.75 |
+
+*Cells are false claims / images · certified area. A clean column of 0 means the variant does not lie; the certified area says what the rule costs.*
+
+<!-- END HANDLING ABLATION TABLE -->
+
+What this bought: **A-032**. Carrier B was not decoration — it was a coverage
+tax. Restoring it costs 18–27 points of certified area and prevents no false
+claim anywhere, and it can be shown structurally that it *cannot* prevent one:
+its only route into a verdict is `conflict = ~f_hi & s_hi`, a subset of the
+blocks the fragile carrier already calls intact. It is now off by default.
+**A3** was the opposite case: the ablation's chosen metric (verdicts on blocks
+that carry no mark) read 0.000 → 0.000, while the real effect was 14 of 40
+clean images being claimed. The metric was wrong, not the mechanism; it is now
+`clean_claim`, and it fires.
 
 ---
 

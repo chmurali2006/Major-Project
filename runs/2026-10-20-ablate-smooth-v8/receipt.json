@@ -1,6 +1,6 @@
 {
   "kind": "falsification",
-  "created_utc": "2026-10-20T11:11:44+00:00",
+  "created_utc": "2026-10-20T11:34:03+00:00",
   "command": "scripts/ablate.py --data /tmp/ph2mirror --limit 12 --smooth 0.9 --receipt runs/2026-10-20-ablate-smooth-v8/receipt.json",
   "dataset": "/tmp/ph2mirror",
   "n": 12,
@@ -19,7 +19,7 @@
     21,
     22
   ],
-  "git_commit": "369e441",
+  "git_commit": "e0b3b7c",
   "python": "3.11.2",
   "results": {
     "baseline": {
@@ -97,9 +97,9 @@
         "surround_verdicts": 0.0,
         "refusal": 0.0050048828125
       },
-      "predicted_metric": "surround_verdicts",
+      "predicted_metric": "clean_claim",
       "predicted_direction": "rise",
-      "claim": "If the tool still refuses to judge blocks it never marked, the capacity refusal is not doing any work."
+      "claim": "If refusing to judge blocks it never marked is what keeps a clean image clean, switching the refusal off must produce a claim on an untouched image. The first version of this ablation measured verdicts on the unmarked surround instead and read 0.000 -> 0.000 while 14 of 40 clean images were in fact being claimed - the metric was wrong, not the mechanism."
     },
     "A4 tilt restored": {
       "metrics": {
