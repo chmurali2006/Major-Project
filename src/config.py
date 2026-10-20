@@ -168,6 +168,20 @@ TAU_AREA = 0.50               # MEASURED  fraction of blocks that may be broken
                               #         stops a large local edit being excused as
                               #         "routine processing". A-025.
 CORROBORATE_MIN = 2           # CHOSEN  neighbours needed for weak evidence
+SCATTER_MIN_COMPONENTS = 12   # MEASURED  how many disconnected islands of damage
+                              #           it takes before the damage is read as a
+                              #           global codec rather than surgery. JPEG
+                              #           codes each 8x8 block independently, so a
+                              #           re-encode damages a scatter of isolated
+                              #           blocks; a paste, a paint box or an
+                              #           inpainted wound damages one contiguous
+                              #           region. Measured on 60 PH2 images: a
+                              #           Q100/q99/q98 re-encode leaves a median of
+                              #           64/103/250 islands (p5 = 33/72/131), while
+                              #           every edit condition stays at 1-9 (max 9,
+                              #           the burned-in text). 12 sits between the
+                              #           two populations with room on both sides.
+                              #           A-031.
 WEAK_CLUSTER_MIN = 64         # MEASURED  size, in connected blocks, that
                               # partial tag disagreement must form before it is
                               # believed. A clean image damages about 1% of its
@@ -255,6 +269,7 @@ class Config:
     tau_area: float = TAU_AREA
     corroborate_min: int = CORROBORATE_MIN
     weak_cluster_min: int = WEAK_CLUSTER_MIN
+    scatter_min_components: int = SCATTER_MIN_COMPONENTS
     iou_detect: float = IOU_DETECT
     bind_address: bool = True          # ablation switch, falsification check 1
     dc_bind: bool = DC_BIND            # A-030: bind LL2 into the tag

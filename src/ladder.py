@@ -127,6 +127,29 @@ def classify(delta_f: np.ndarray, delta_sr: np.ndarray, texture: np.ndarray,
     area = float(broken.mean()) if broken.size else 0.0
     widespread = bool(area > cfg.tau_area)
 
+    # ---- how *shaped* is the damage?
+    #
+    # Area is not enough. A JPEG re-encode at high quality breaks the fragile
+    # mark in a few per cent of blocks - measured 6.4% at Q100 - which is well
+    # under any extent rule, and the tool used to report those blocks as
+    # localised tampering on 196 of 200 images. That is the whole failure the
+    # design exists to avoid, and the battery did not contain it: every JPEG
+    # condition in the battery is Q <= 90, where the mark is destroyed
+    # everywhere and the attenuation rule abstains.
+    #
+    # The discriminator is spatial. JPEG codes each 8x8 block independently, so
+    # its damage is a scatter of isolated blocks; a paste, a painted box or an
+    # inpainted wound is one contiguous region. Measured islands on 60 images:
+    # re-encode at Q100/q99/q98 leaves a median of 64/103/250 (p5 = 33/72/131),
+    # while every edit in the battery stays between 1 and 9. Many islands is
+    # therefore evidence of a block-independent codec, not of surgery, and the
+    # honest answer is abstention - scattered damage cannot be attributed to a
+    # region, which is the only thing a fragile mark is good for.
+    scattered = False
+    if broken.any() and not widespread:
+        labels_b, n_b = ndimage.label(broken, structure=np.ones((3, 3), dtype=int))
+        scattered = bool(n_b >= cfg.scatter_min_components)
+
     # ---- rung 2: weak evidence, corroborated by its neighbours
     #
     # The tag is bound to content per slot, which is what lets it survive the
@@ -149,10 +172,10 @@ def classify(delta_f: np.ndarray, delta_sr: np.ndarray, texture: np.ndarray,
     # NOTE: `not widespread`, never `~widespread`. On a Python bool the tilde
     # yields an int (-1), which silently converts a boolean mask into integer
     # fancy indexing and scatters verdicts over unrelated blocks.
-    tamper = decisive & (not widespread) & (not attenuated)
+    tamper = decisive & (not widespread) & (not attenuated) & (not scattered)
     verdict[tamper] = TAMPERED
 
-    handling = broken & (widespread | attenuated)
+    handling = broken & (widespread | attenuated | scattered)
     verdict[handling] = CANNOT_SAY
     reason[handling] = ROUTINE_HANDLING
 

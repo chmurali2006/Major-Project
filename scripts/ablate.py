@@ -15,6 +15,7 @@ that would mean the mechanism is decoration.
 from __future__ import annotations
 
 import argparse
+import io
 import json
 import platform
 import subprocess
@@ -32,9 +33,27 @@ from bench import detected, iou, load_dataset          # noqa: E402
 from src.battery.conditions import FROZEN              # noqa: E402
 from src.config import DEFAULT                         # noqa: E402
 from src.pipeline import System                        # noqa: E402
-from src.container import field_mask, recover_luma      # noqa: E402
+from src.container import field_mask, png_bytes, png_text, recover_luma  # noqa: E402
 
 KEY = b"falsification-key"
+
+
+def jpeg(data: bytes, quality: int) -> bytes:
+    """Re-encode at a fixed quality and read back into the same container.
+
+    This is not one of the frozen 22. It is here because the battery's JPEG
+    conditions are all Q <= 90, where the mark dies everywhere and the
+    attenuation rule abstains; a high-quality re-encode breaks only a few per
+    cent of blocks and used to be reported as tampering on 196 of 200 images.
+    A mechanism that fixes that has to be falsifiable, so the probe lives in
+    the falsification harness rather than in a one-off script (A-031).
+    """
+    from PIL import Image
+    rgb = np.array(Image.open(io.BytesIO(data)).convert("RGB"))
+    buf = io.BytesIO()
+    Image.fromarray(rgb).save(buf, "JPEG", quality=quality, subsampling=0)
+    back = np.array(Image.open(io.BytesIO(buf.getvalue())).convert("RGB"))
+    return png_bytes(back, text=png_text(data))
 
 PASTE = (1, 2, 3, 4, 5)
 BENIGN = (7, 8, 9, 10, 11)  # sample-preserving handling; sigma=1 included
@@ -63,6 +82,10 @@ def run_variant(rgb, mask, image_id, overrides, conds):
            "surround_verdicts": float(decided_field.mean()),
            "psnr": psnr,
            "refusal": p.refusal_rate}
+
+    reencoded = sysm.verify(jpeg(p.png, 100))
+    out["jpeg100_claim"] = int((reencoded.ladder.verdict == 1).any())
+    out["jpeg100_coverage"] = reencoded.coverage
 
     for cond in FROZEN:
         if cond.cid not in conds:
@@ -94,6 +117,8 @@ def summarise(rows, conds):
         agg["resize_claim"] = float(np.mean([r[11]["claim"] for r in rows]))
     if 21 in conds:
         agg["cond21_iou"] = float(np.mean([r[21]["iou"] for r in rows]))
+    agg["jpeg100_claim"] = float(np.mean([r["jpeg100_claim"] for r in rows]))
+    agg["jpeg100_coverage"] = float(np.mean([r["jpeg100_coverage"] for r in rows]))
     agg["clean_claim"] = float(np.mean([r["clean_claim"] for r in rows]))
     agg["psnr"] = float(np.mean([r["psnr"] for r in rows]))
     agg["coverage"] = float(np.mean([r["clean_coverage"] for r in rows]))
@@ -127,6 +152,11 @@ ABLATIONS = [
     ("A7 mean binding cut", {"dc_bind": False}, "cond21_iou", "drop",
      "If burned-in text localises just as well without the block mean in the "
      "tag, the detail coefficients were enough and A-030 buys nothing."),
+    ("A9 scatter rule cut", {"scatter_min_components": 10 ** 9}, "jpeg100_claim",
+     "rise",
+     "If a Q100 re-encode is still not claimed without the scatter rule, the "
+     "rule is not what separates a codec's damage from surgery and A-031 is "
+     "decoration."),
     ("A8 both global rules cut", {"use_attenuation": False, "tau_area": 1.0},
      "resize_claim", "rise",
      "A6 and A5 are individually redundant now that the mean binding makes a "
@@ -173,8 +203,8 @@ def main() -> int:
                          "predicted_direction": direction, "claim": claim}
 
     hdr = (f"{'variant':30} {'det':>6} {'IoU':>6} {'paste':>6} {'benign':>7} "
-           f"{'c6':>6} {'r11':>6} {'c21IoU':>7} {'clean':>6} {'inField':>8} "
-           f"{'PSNR':>6} {'cov':>6}")
+           f"{'c6':>6} {'r11':>6} {'c21IoU':>7} {'j100':>6} {'clean':>6} "
+           f"{'inField':>8} {'PSNR':>6} {'cov':>6}")
     print("\n" + hdr)
     print("-" * len(hdr))
     for key in ["baseline"] + [a[0] for a in ABLATIONS]:
@@ -183,6 +213,7 @@ def main() -> int:
               f"{m['benign_claim']:7.3f} {m.get('cond6_claim', float('nan')):6.3f} "
               f"{m.get('resize_claim', float('nan')):6.3f} "
               f"{m.get('cond21_iou', float('nan')):7.3f} "
+              f"{m.get('jpeg100_claim', float('nan')):6.2f} "
               f"{m['clean_claim']:6.3f} {m['surround_verdicts']:8.4f} "
               f"{m['psnr']:6.2f} {m['coverage']:6.3f}")
 

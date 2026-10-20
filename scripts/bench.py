@@ -48,12 +48,19 @@ BARS = {
 }
 
 
-def load_dataset(path: str, limit: int = 0):
+def load_dataset(path: str, limit: int = 0, offset: int = 0):
+    """Images in sorted order, after skipping `offset`.
+
+    `offset` exists so a held-out split can be run without copying files: the
+    parameter sweeps behind A-028/A-029/A-030 used the first 60 images, and
+    `--offset 60` is the 140 images that no choice was ever made on.
+    """
     root = Path(path)
     img_dir, mask_dir = root / "images", root / "masks"
     if not img_dir.is_dir() or not mask_dir.is_dir():
         raise SystemExit(f"{path} needs images/ and masks/")
     out = []
+    seen = 0
     for img_path in sorted(img_dir.iterdir()):
         if img_path.suffix.lower() not in (".jpg", ".jpeg", ".png"):
             continue
@@ -64,6 +71,10 @@ def load_dataset(path: str, limit: int = 0):
         mask = np.array(Image.open(mask_path).convert("L")) > 127
         if rgb.shape[:2] != (512, 512):
             continue
+        if seen < offset:
+            seen += 1
+            continue
+        seen += 1
         out.append((rgb, mask, img_path.stem))
         if limit and len(out) >= limit:
             break
@@ -249,6 +260,8 @@ def main() -> int:
     ap.add_argument("--no-gate", action="store_true")
     ap.add_argument("--data", type=str, default=None, help="dir with images/ and masks/")
     ap.add_argument("--limit", type=int, default=0)
+    ap.add_argument("--offset", type=int, default=0,
+                    help="skip this many images (held-out split, A-031)")
     ap.add_argument("--key", type=str, default="bench-key")
     ap.add_argument("--receipt", type=str, default=None, help="write a JSON receipt here")
     ap.add_argument("--set", action="append", default=[], metavar="KEY=VALUE",
@@ -279,7 +292,8 @@ def main() -> int:
     cfg = DEFAULT.with_(**overrides)
     sysm = System(args.key.encode(), cfg)
 
-    dataset = load_dataset(args.data, args.limit) if args.data else None
+    dataset = (load_dataset(args.data, args.limit, args.offset)
+               if args.data else None)
     label = f"{args.data}" if args.data else "SYNTHETIC PHANTOMS — fixtures, not results"
 
     t_start = time.perf_counter()
