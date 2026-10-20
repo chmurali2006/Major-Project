@@ -23,6 +23,7 @@ import io
 from dataclasses import dataclass
 
 import numpy as np
+from scipy import ndimage
 from PIL import Image
 
 from .config import BLOCK, PNG_COMPRESS_LEVEL
@@ -49,11 +50,19 @@ def merge_rct(y: np.ndarray, cb: np.ndarray, cr: np.ndarray) -> np.ndarray:
 
 
 def out_of_range(y: np.ndarray, cb: np.ndarray, cr: np.ndarray) -> np.ndarray:
-    """Per-pixel True where the recombination would clip."""
-    y32 = np.asarray(y, np.float64)
-    g = y32 - ((np.asarray(cb, np.float64) + np.asarray(cr, np.float64)) / 4.0)
-    r = np.asarray(cr, np.float64) + g
-    b = np.asarray(cb, np.float64) + g
+    """Per-pixel True where the recombination would clip.
+
+    Uses the *integer* inverse RCT, bit for bit the same arithmetic as
+    merge_rct. An earlier version used (cb+cr)/4 in floating point, which
+    disagrees with (cb+cr)>>2 by up to 0.75 levels; blocks near the gamut edge
+    were then reverted after being tagged, and a clean image accused itself.
+    """
+    y = np.round(np.asarray(y)).astype(np.int32)
+    cb = np.asarray(cb, np.int32)
+    cr = np.asarray(cr, np.int32)
+    g = y - ((cb + cr) >> 2)
+    r = cr + g
+    b = cb + g
     return (r < 0) | (r > 255) | (g < 0) | (g > 255) | (b < 0) | (b > 255)
 
 
@@ -83,6 +92,20 @@ def png_bytes(rgb: np.ndarray, text: dict[str, str] | None = None) -> bytes:
 
 def png_read(data: bytes) -> np.ndarray:
     return np.array(Image.open(io.BytesIO(data)).convert("RGB"))
+
+
+def png_read_with_text(data: bytes) -> tuple[np.ndarray, dict[str, str]]:
+    """Pixels and tEXt chunks from a single decode.
+
+    verify() needs both, and opening the PNG twice was a measurable share of
+    its latency - the decoder is the expensive part, not the metadata.
+    """
+    try:
+        im = Image.open(io.BytesIO(data))
+        text = dict(getattr(im, "text", {}) or {})
+        return np.array(im.convert("RGB")), text
+    except Exception:
+        return png_read(data), {}
 
 
 def png_text(data: bytes) -> dict[str, str]:
@@ -155,26 +178,41 @@ def luma_bounds(cb: np.ndarray, cr: np.ndarray) -> tuple[np.ndarray, np.ndarray]
 
 
 def fit_block_luma(y: np.ndarray, cb: np.ndarray, cr: np.ndarray,
-                   margin: float = 6.0, max_shift: float = 12.0):
+                   margin: float = 5.0, max_shift: float = 16.0):
     """Shift whole blocks by an integer DC offset so the mark cannot clip.
 
-    A constant offset inside an 8x8 block changes only LL, never the detail
-    coefficients that carry the tag, so a shifted block stays embeddable.
-    The shift is applied *before* the digest is computed, so the tag and the
-    digest agree. Blocks that cannot be fitted within max_shift are refused.
+    A constant offset inside an 8x8 block changes only the approximation
+    subbands, never the detail coefficients that carry the tag, so a shifted
+    block stays embeddable and its signature is untouched.
+
+    The offset is the one that leaves every pixel `margin` levels of room in
+    *both* directions. With per-pixel headroom dlo_i = y_i - low_i (room to
+    darken) and dhi_i = high_i - y_i (room to brighten), a shift s gives
+    dlo_i + s and dhi_i - s, so
+
+        s >= margin - min(dlo)        and        s <= min(dhi) - margin
+
+    and any s in that interval works. An earlier version intersected the
+    per-pixel lower bounds first and compared the block's darkest pixel with
+    its tightest pixel - the mistake block_gamut's docstring warns about -
+    which asked for shifts of up to 200 levels on blocks that mixed a black
+    background pixel with a saturated red one, and cost 10 dB of PSNR.
+
+    Blocks with no feasible shift are refused and transmitted verbatim.
     """
-    lo, hi = luma_bounds(cb, cr)
+    room_lo, room_hi = block_gamut(y, cb, cr)
     ny, nx = y.shape[0] // BLOCK, y.shape[1] // BLOCK
-    lo_b = lo.reshape(ny, BLOCK, nx, BLOCK).max(axis=(1, 3))
-    hi_b = hi.reshape(ny, BLOCK, nx, BLOCK).min(axis=(1, 3))
-    yb = y.reshape(ny, BLOCK, nx, BLOCK)
-    need_lo = np.ceil(lo_b + margin - yb.min(axis=(1, 3)))
-    need_hi = np.floor(hi_b - margin - yb.max(axis=(1, 3)))
-    shift = np.where(need_lo > 0, need_lo, np.where(need_hi < 0, need_hi, 0.0))
-    refused = (np.abs(shift) > max_shift) | (hi_b - lo_b < 2 * margin)
-    shift = np.where(refused, 0.0, shift)
+    lo_room = room_lo.max(axis=(1, 3))          # = -min(dlo)
+    hi_room = room_hi.min(axis=(1, 3))          # =  min(dhi)
+    lower = margin + lo_room                    # s must be at least this
+    upper = hi_room - margin                    # and at most this
+    feasible = ((lower <= upper)
+                & (lower <= max_shift) & (upper >= -max_shift))
+    shift = np.clip(0.0, lower, upper)
+    shift = np.where(feasible, np.round(shift), 0.0)
+    yb = np.asarray(y, np.float64).reshape(ny, BLOCK, nx, BLOCK)
     out = (yb + shift[:, None, :, None]).reshape(y.shape)
-    return out, refused
+    return out, ~feasible
 
 
 def field_mask(y: np.ndarray, hi: int = 250, lo: int = 5,
@@ -189,13 +227,26 @@ def field_mask(y: np.ndarray, hi: int = 250, lo: int = 5,
     The predicate is a fraction of saturated pixels, not a margin in levels, so
     it survives the two-level change a mark makes and survives JPEG, which
     leaves a flat 255 region a flat 255 region.
+
+    Only the component of that surround *connected to the image border* is
+    excused. A saturated patch in the middle of the image is not background -
+    it is what an attacker paints to hide an edit behind an abstention, and
+    the battery's burned-in-text condition does exactly that. Restricting the
+    excuse to the border-connected surround closes that hole without touching
+    a legitimate capture, whose surround always reaches the border.
     """
     y = np.asarray(y)
     ny, nx = y.shape[0] // BLOCK, y.shape[1] // BLOCK
     b = y.reshape(ny, BLOCK, nx, BLOCK)
     white = (b >= hi).mean(axis=(1, 3))
     black = (b <= lo).mean(axis=(1, 3))
-    return (white > frac) | (black > frac)
+    saturated = (white > frac) | (black > frac)
+    if not saturated.any():
+        return saturated
+    labels, _ = ndimage.label(saturated)
+    border = np.concatenate([labels[0], labels[-1], labels[:, 0], labels[:, -1]])
+    keep = np.unique(border[border > 0])
+    return np.isin(labels, keep)
 
 
 def unmarkable(y: np.ndarray, cb: np.ndarray, cr: np.ndarray,
@@ -244,28 +295,51 @@ def exact_bounds(cb: np.ndarray, cr: np.ndarray) -> tuple[np.ndarray, np.ndarray
 
 
 def block_gamut(y: np.ndarray, cb: np.ndarray, cr: np.ndarray):
-    """Per-block exact [low, high] luma interval, and the block's own extent."""
+    """Per-block slack toward each gamut edge, in luma levels.
+
+    For every pixel the legal luma interval is [low_i, high_i]. Shifting a block
+    by s keeps it legal iff  max_i(low_i - y_i) <= s <= min_i(high_i - y_i).
+    The bounds must be reduced *after* subtracting each pixel's own luma, not
+    by intersecting gamuts and comparing against the block's darkest and
+    brightest pixels - doing the latter pairs the tightest pixel bound with the
+    most distant pixel and declares a quarter of a normal image impossible.
+    """
     low, high = exact_bounds(cb, cr)
     ny, nx = y.shape[0] // BLOCK, y.shape[1] // BLOCK
-    lo_b = low.reshape(ny, BLOCK, nx, BLOCK).max(axis=(1, 3))
-    hi_b = high.reshape(ny, BLOCK, nx, BLOCK).min(axis=(1, 3))
-    yb = np.asarray(y, np.float64).reshape(ny, BLOCK, nx, BLOCK)
-    return lo_b, hi_b, yb.min(axis=(1, 3)), yb.max(axis=(1, 3))
+    y = np.asarray(y, np.float64)
+    return (low - y).reshape(ny, BLOCK, nx, BLOCK), (high - y).reshape(ny, BLOCK, nx, BLOCK)
+
+
+def window_slack(y: np.ndarray, cb: np.ndarray, cr: np.ndarray) -> np.ndarray:
+    """Per-block width of the legal luma window, invariant to any constant shift.
+
+    For each pixel the legal luma interval is [low_i, high_i]. A block can host
+    a mark whose per-pixel excursion spans `spread` levels if and only if
+    min(high_i - y_i) - max(low_i - y_i) >= spread. Both terms fall by the same
+    amount under a constant shift of the block, so this width is shift
+    invariant - which is what lets the verifier reproduce the encoder's
+    admission decision from the received image alone, with no side channel.
+    """
+    low, high = exact_bounds(cb, cr)
+    ny, nx = y.shape[0] // BLOCK, y.shape[1] // BLOCK
+    y = np.asarray(y, np.float64)
+    hi_room = (high - y).reshape(ny, BLOCK, nx, BLOCK).min(axis=(1, 3))
+    lo_room = (low - y).reshape(ny, BLOCK, nx, BLOCK).max(axis=(1, 3))
+    return hi_room - lo_room
 
 
 def clip_safe_shift(y: np.ndarray, cb: np.ndarray, cr: np.ndarray,
                     margin: float, max_shift: float, slack: float = 0.0):
-    """Smallest-magnitude integer shift that keeps a whole block in gamut.
+    """Smallest-magnitude integer shift that keeps every pixel in gamut.
 
-    Returns (shift, impossible). `impossible` marks blocks where no shift
-    within +-max_shift works; those are excused, never silently clipped.
+    Returns (shift, impossible). `impossible` marks blocks where no shift within
+    +-max_shift works; those are excused, never silently clipped.
     """
-    lo_b, hi_b, y_min, y_max = block_gamut(y, cb, cr)
-    need_lo = np.ceil(lo_b + margin - y_min)
-    need_hi = np.floor(hi_b - margin - y_max)
+    room_lo, room_hi = block_gamut(y, cb, cr)          # per pixel, relative to y
+    need_lo = np.ceil((room_lo + margin).max(axis=(1, 3)))
+    need_hi = np.floor((room_hi - margin).min(axis=(1, 3)))
     impossible = (need_lo > need_hi) | (need_lo > max_shift) | (need_hi < -max_shift)
     shift = np.where(need_lo > 0, need_lo, np.where(need_hi < 0, need_hi, 0.0))
-    # an excused set is only ever widened, never narrowed
     impossible = impossible | (np.abs(shift) > max_shift - slack)
     shift = np.where(impossible, 0.0, shift)
     return shift, impossible

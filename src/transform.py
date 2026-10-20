@@ -40,6 +40,33 @@ def _idwt1(lo: np.ndarray, hi: np.ndarray, axis: int) -> np.ndarray:
     return np.moveaxis(a, -1, axis)
 
 
+def _lift(a: np.ndarray, axis: int) -> tuple[np.ndarray, np.ndarray]:
+    """One reversible lifting step on integer pairs (the S-transform).
+
+        d = hi - lo            exact difference
+        s = lo + (d >> 1)      floor midpoint
+
+    Inverse: lo = s - (d >> 1), hi = lo + d. Both directions are integer
+    arithmetic with no division that rounds differently on the two sides, so
+    the map is a bijection on Z^n.
+    """
+    a = np.moveaxis(np.asarray(a, np.int64), axis, -1)
+    lo, hi = a[..., ::2], a[..., 1::2]
+    d = hi - lo
+    s = lo + (d >> 1)
+    return np.moveaxis(s, -1, axis), np.moveaxis(d, -1, axis)
+
+
+def _unlift(s: np.ndarray, d: np.ndarray, axis: int) -> np.ndarray:
+    s = np.moveaxis(np.asarray(s, np.int64), axis, -1)
+    d = np.moveaxis(np.asarray(d, np.int64), axis, -1)
+    lo = s - (d >> 1)
+    out = np.empty(lo.shape[:-1] + (lo.shape[-1] * 2,), dtype=np.int64)
+    out[..., ::2] = lo
+    out[..., 1::2] = lo + d
+    return np.moveaxis(out, -1, axis)
+
+
 class Haar2:
     """Two-level Haar over non-overlapping 8x8 blocks of a 2-D plane."""
 
@@ -67,14 +94,24 @@ class Haar2:
         lo2, hi2 = _dwt1(ll1, 3)
         ll2, lh2 = _dwt1(lo2, 2)
         hl2, hh2 = _dwt1(hi2, 2)
-        return {"LL2": ll2, "LH1": lh1, "HL1": hl1, "HH1": hh1,
+        return {"LL1": ll1, "LL2": ll2, "LH1": lh1, "HL1": hl1, "HH1": hh1,
                 "LH2": lh2, "HL2": hl2, "HH2": hh2}
 
-    def inverse(self, c: dict[str, np.ndarray]) -> np.ndarray:
+    def inverse_blocks(self, c: dict[str, np.ndarray]) -> np.ndarray:
+        """Inverse transform on block-shaped arrays of any leading shape.
+
+        Split out from `inverse` so the verifier can invert an arbitrary
+        *subset* of blocks without paying for the whole frame; the arithmetic
+        is identical and block-local, so a subset result is bit-identical to
+        the same block's row of the full inverse.
+        """
         ll1 = _idwt1(_idwt1(c["LL2"], c["LH2"], 2), _idwt1(c["HL2"], c["HH2"], 2), 3)
         lo_c = _idwt1(ll1, c["LH1"], 2)
         hi_c = _idwt1(c["HL1"], c["HH1"], 2)
-        return self.from_blocks(_idwt1(lo_c, hi_c, 3))
+        return _idwt1(lo_c, hi_c, 3)
+
+    def inverse(self, c: dict[str, np.ndarray]) -> np.ndarray:
+        return self.from_blocks(self.inverse_blocks(c))
 
     # ---- flat detail vectors ----
     @staticmethod
@@ -100,3 +137,43 @@ class Haar2:
 
     def ll2_of(self, x: np.ndarray) -> np.ndarray:
         return self.forward(x)["LL2"]
+
+
+class Haar2Int(Haar2):
+    """The transform the pipeline actually uses: every step exact on integers.
+
+    The float Haar above is orthonormal and correctly reconstructs a *float*
+    plane, but the protected image is uint8. Rounding the marked plane back to
+    integers perturbs LL1/LL2 by up to two luma levels, and because the tag
+    depends on the coarse digest, that perturbation made a content-bound tag
+    impossible: 6.7% of blocks changed digest across a clean round trip, which
+    is more than the whole-image extent budget.
+
+    The lifting form removes the rounding entirely. Modifying a detail
+    coefficient changes pixels by an integer amount, and forward-transforming
+    the result returns exactly the coefficients that were written. The
+    approximation subbands LL1 and LL2 are therefore bit-identical at embed
+    and verify on any image that was not attacked, which is what lets the tag
+    name the block's own content (A-024).
+    """
+
+    def forward(self, x: np.ndarray) -> dict[str, np.ndarray]:
+        b = self.to_blocks(x).astype(np.int64)
+        lo_c, hi_c = _lift(b, 3)          # along width
+        ll1, lh1 = _lift(lo_c, 2)         # along height
+        hl1, hh1 = _lift(hi_c, 2)
+        lo2, hi2 = _lift(ll1, 3)
+        ll2, lh2 = _lift(lo2, 2)
+        hl2, hh2 = _lift(hi2, 2)
+        return {"LL1": ll1, "LL2": ll2, "LH1": lh1, "HL1": hl1, "HH1": hh1,
+                "LH2": lh2, "HL2": hl2, "HH2": hh2}
+
+    def inverse_blocks(self, c: dict[str, np.ndarray]) -> np.ndarray:
+        ll1 = _unlift(_unlift(c["LL2"], c["LH2"], 2),
+                      _unlift(c["HL2"], c["HH2"], 2), 3)
+        lo_c = _unlift(ll1, c["LH1"], 2)
+        hi_c = _unlift(c["HL1"], c["HH1"], 2)
+        return _unlift(lo_c, hi_c, 3)
+
+    def inverse(self, c: dict[str, np.ndarray]) -> np.ndarray:
+        return self.from_blocks(self.inverse_blocks(c))

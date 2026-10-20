@@ -10,7 +10,7 @@ import pytest
 from src.config import DEFAULT
 from src.container import png_bytes, png_read, png_text
 from src.fixtures import phantom
-from src.ladder import CANNOT_SAY, INTACT, KEY_MISMATCH, TAMPERED
+from src.ladder import CANNOT_SAY, CAPACITY_REFUSAL, INTACT, KEY_MISMATCH, TAMPERED
 from src.pipeline import System
 
 KEY = b"preflight-key"
@@ -41,10 +41,28 @@ def protected():
 def test_check1_clean_image_is_exactly_intact(protected):
     sysm, p = protected
     res = sysm.verify(p.png)
-    assert p.refusal_rate == 0.0, "phantom should need no capacity refusals"
-    assert np.nanmax(res.delta_f) == 0.0, f"clean delta_f max {np.nanmax(res.delta_f)}"
+    # The phantom is synthetic and carries a saturated patch. Since A-027 the
+    # embedder refuses a block whose marked luma would leave the gamut instead
+    # of clamping it, so exactly the blocks that touch that patch are refused
+    # and transmitted verbatim. The guarantee a clean image must make is that
+    # it never accuses itself, which the next two assertions state; coverage
+    # records the refusal instead of hiding it.
+    assert p.refusal_rate < 0.005, f"phantom refusals {p.refusal_rate}"
+    assert res.coverage >= 0.99, f"coverage {res.coverage}"
+    # The guarantee a fragile watermark must make is not "no block disagrees"
+    # - a block that carries no mark at all reads as a total mismatch, and
+    # refusing such a block is exactly what the embedder does where the gamut
+    # leaves no room. The guarantee is that no block it can actually read is
+    # accused, and that every block it cannot read is *labelled* unreadable
+    # rather than counted as evidence.
     assert not res.ladder.tampered.any()
-    assert res.coverage == 1.0
+    unreadable = res.ladder.reason == CAPACITY_REFUSAL
+    accused = (res.delta_f >= DEFAULT.tau_f) & ~unreadable
+    assert not accused.any(), f"clean block accused: {int(accused.sum())}"
+    # Coverage is abstention, not failure: a handful of blocks sit against the
+    # RGB gamut on every image and are refused at embed, so the honest bar is
+    # "almost everything is decided", not "everything".
+    assert res.coverage >= 0.99, f"coverage {res.coverage}"
 
 
 def test_check2_png_roundtrip_identical(protected):
@@ -111,11 +129,89 @@ def test_ablation_binding_removed_goes_blind():
 
 
 def test_carrier_b_is_address_keyed():
-    """A-004: a moved block must lose its semi-robust reference too."""
+    """A-004: a moved block must lose its semi-robust reference too.
+
+    Carrier B is off in the default configuration since A-032, so the property
+    is pinned on a system that turns it back on - the switch is what
+    scripts/ablate.py restores, and it has to keep working.
+    """
     rgb, mask = phantom(seed=14)
-    sysm = System(KEY)
+    sysm = System(KEY, DEFAULT.with_(use_robust=True))
     p = sysm.protect(rgb, mask, image_id=21)
     clean = sysm.verify(p.png)
     moved = sysm.verify(paste(p.png, (8, 8), (40, 40), blocks=4))
-    assert clean.delta_sr[40:44, 40:44].mean() < 0.25
-    assert moved.delta_sr[40:44, 40:44].mean() > 0.25
+    # Assert the contrast, not a constant: the absolute level of Carrier B's
+    # error depends on the mark Carrier A writes, while what A-004 claims is
+    # that moving content costs the block its semi-robust reference.
+    a = clean.delta_sr[40:44, 40:44].mean()
+    b = moved.delta_sr[40:44, 40:44].mean()
+    assert a < 0.35
+    assert b - a > 0.15, f"clean {a:.3f} moved {b:.3f}"
+
+
+def test_carrier_b_can_only_remove_coverage():
+    """A-032: the second carrier must not be able to manufacture a claim.
+
+    The rule is structural - `conflict` is a subset of `~f_hi`, so a block it
+    touches was already INTACT - but structure drifts when code is edited, so
+    the property is measured on a real tamper rather than trusted.
+    """
+    rgb, mask = phantom(seed=15)
+    off = System(KEY)
+    on = System(KEY, DEFAULT.with_(use_robust=True))
+    p = off.protect(rgb, mask, image_id=22)
+    tampered = paste(p.png, (8, 8), (40, 40), blocks=4)
+    a = off.verify(tampered).ladder
+    b = on.verify(tampered).ladder
+    assert not (b.verdict == TAMPERED & (a.verdict != TAMPERED)).any()
+    assert (b.verdict == CANNOT_SAY).sum() >= (a.verdict == CANNOT_SAY).sum()
+
+
+# ---------------------------------------------------------------- A-021
+def test_resize_on_a_smooth_image_does_not_claim_tampering():
+    """The ISIC condition-11 failure, pinned as a regression.
+
+    On a smooth image most blocks carry almost no detail, so a +-2 level mark
+    survives a 90% resize round trip and only the blocks containing an edge
+    break. Few broken blocks, scattered along edges, look exactly like
+    localised tampering: measured 79-96% false claims on pre-blurred phantoms
+    and 27.3% on ISIC-300, against 0.0% on PH2. The global-attenuation rule
+    (A-021) must abstain on all of them.
+    """
+    import io
+
+    from PIL import Image, ImageFilter
+
+    from src.battery.conditions import resize_roundtrip
+
+    sysm = System(KEY)
+    claims = 0
+    for seed in (21, 22, 23, 24):
+        rgb, mask = phantom(seed=seed)
+        smooth = np.array(Image.fromarray(rgb).filter(ImageFilter.GaussianBlur(0.9)))
+        p = sysm.protect(smooth, mask, image_id=700 + seed)
+        out = resize_roundtrip(p.png, 0.90)
+        data = out[0] if isinstance(out, tuple) else out
+        claims += int(sysm.verify(data).ladder.tampered.any())
+    assert claims == 0, f"{claims}/4 smooth images claimed tampering after a resize"
+
+
+def test_attenuation_rule_does_not_hide_a_real_edit_on_a_smooth_image():
+    """A-021 must abstain on transforms without blinding the detector.
+
+    The attenuation rule keys on the tag's amplitude. A copy-move pastes
+    already-marked pixels, so it cannot lower that measure - but this test
+    exists because a rule that abstains is one bad threshold away from
+    abstaining on everything.
+    """
+    from PIL import Image, ImageFilter
+
+    sysm = System(KEY)
+    hits = 0
+    for seed in (31, 32, 33):
+        rgb, mask = phantom(seed=seed)
+        smooth = np.array(Image.fromarray(rgb).filter(ImageFilter.GaussianBlur(0.9)))
+        p = sysm.protect(smooth, mask, image_id=800 + seed)
+        tampered = paste(p.png, src_block=(6, 6), dst_block=(36, 36), blocks=4)
+        hits += int(sysm.verify(tampered).ladder.tampered.any())
+    assert hits == 3, f"detected {hits}/3 edits on smooth images"

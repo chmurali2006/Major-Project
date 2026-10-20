@@ -31,18 +31,84 @@ from .config import N_BLOCKS
 # ---------------------------------------------------------------- Carrier A
 
 
+#: Synthesis energy of a unit impulse in each subband of the *integer* transform,
+#: measured by inverse-transforming a single coefficient (scripts/verify_gain.py).
+#: The lifting form is not orthonormal, so a level-2 coefficient moves eight
+#: times the pixel energy a level-1 one does. Writing the same amplitude into
+#: every slot therefore put most of the distortion in 12 of the 60 slots and
+#: cost 0.8 dB of PSNR. The amplitude below is round(delta/4 / sqrt(energy)),
+#: floored at one level: the smallest integer that still lands clear of the
+#: lattice point at the centre of its cell.
+SUB_ENERGY = (("LH1", 2.0), ("HL1", 2.0), ("HH1", 1.0),
+              ("LH2", 8.0), ("HL2", 8.0), ("HH2", 4.0))
+
+
+def slot_amplitude(delta: float, floor: int = 1) -> np.ndarray:
+    """Per-slot mark amplitude, in integer coefficient levels, order = SUBORDER."""
+    from .transform import SUBORDER
+    energy = dict(SUB_ENERGY)
+    out = []
+    for name, _width in SUBORDER:
+        amp = max(floor, int(round((delta / 4.0) / np.sqrt(energy[name]))))
+        out.append(np.full(_width * _width, amp, dtype=np.float64))
+    return np.concatenate(out)
+
+
 class FragileCarrier:
-    def __init__(self, delta: float):
+    def __init__(self, delta: float, amp: np.ndarray | None = None):
         self.delta = float(delta)
+        self.amp = slot_amplitude(self.delta) if amp is None else np.asarray(amp, np.float64)
+        if self.amp.shape != (60,):
+            raise ValueError("amp must have one entry per detail slot")
+        #: smallest residual that counts as "readable" - half the weakest slot
+        self.amp_min = float(self.amp.min())
 
     def write(self, coeff: np.ndarray, bits: np.ndarray) -> np.ndarray:
         """coeff, bits: (ny, nx, 60). Returns marked coefficients."""
         q = np.round(coeff / self.delta) * self.delta
-        return q + (2.0 * bits.astype(np.float64) - 1.0) * (self.delta / 4.0)
+        return q + (2.0 * bits.astype(np.float64) - 1.0) * self.amp
 
-    def read(self, coeff: np.ndarray) -> np.ndarray:
-        q = np.round(coeff / self.delta) * self.delta
+    def read(self, coeff: np.ndarray, q: np.ndarray | None = None) -> np.ndarray:
+        q = np.round(coeff / self.delta) * self.delta if q is None else q
         return (coeff - q > 0).astype(np.uint8)
+
+    def evidence(self, coeff: np.ndarray, q: np.ndarray | None = None) -> np.ndarray:
+        """Fraction of the 60 tag slots holding a residual big enough to read.
+
+        A marked block whose pixels never touch the gamut holds a full mark in
+        every slot, so this is 1.0. A block that has been through a global
+        transform - resampling, added noise, recompression - holds a shrunken
+        one. Measured over blocks that are decidable (not excused for gamut
+        reasons), PH2 gives 1.00 for clean images and for every copy-move edit,
+        against 0.55-0.61 for a 90% resize round trip and 0.88 for sigma=1.
+        The populations do not overlap, which is what makes this the test for
+        'the image was changed as a whole'.
+        """
+        q = np.round(coeff / self.delta) * self.delta if q is None else q
+        return (np.abs(coeff - q) > 0.5 * self.amp_min).mean(axis=2)
+
+    def score(self, coeff: np.ndarray, bits: np.ndarray,
+              q: np.ndarray | None = None) -> np.ndarray:
+        """Per-block normalised correlation between residual and expected tag.
+
+        `read` asks each of the 60 bits independently, which is brittle: a
+        pixel pushed against the RGB gamut saturates its share of the mark and
+        flips a whole run of bits at once, so a clean block can disagree with
+        20% of its own tag. The matched filter asks the weaker and correct
+        question - is the residual *vector* aligned with the keyed sign vector
+        - and is therefore insensitive to how much of the mark survived.
+
+        1.0 means the residual is exactly the expected pattern, 0.0 means no
+        relation. For a block carrying no tag the statistic is centred on zero
+        with standard deviation 1/sqrt(60) = 0.13, so TAU_F is set at 3 of
+        those standard deviations.
+        """
+        q = np.round(coeff / self.delta) * self.delta if q is None else q
+        r = coeff - q
+        s = 2.0 * np.asarray(bits, np.float64) - 1.0
+        num = (r * s).sum(axis=2)
+        den = np.maximum(np.abs(r).sum(axis=2), 1e-9)
+        return num / den
 
     @staticmethod
     def would_clip(marked_plane: np.ndarray) -> np.ndarray:
@@ -91,9 +157,21 @@ class RobustCarrier:
         self.Wb = self.W.reshape(ny, nx)
 
     # -- embed -------------------------------------------------------
-    def write(self, blocks: np.ndarray, region: np.ndarray | None = None) -> np.ndarray:
-        """blocks (ny,nx,8,8); region (ny,nx) in {0,1} drives the strength."""
+    def write(self, blocks: np.ndarray, region: np.ndarray | None = None,
+              headroom_scale: np.ndarray | None = None) -> np.ndarray:
+        """blocks (ny,nx,8,8); region (ny,nx) in {0,1} drives the strength.
+
+        headroom_scale in [0,1] throttles the mark where the pixels sit close
+        to the RGB gamut edge. Dermoscopy images are full of such pixels -
+        vignette corners and specular highlights - and an unthrottled
+        spread-spectrum add pushes them out of gamut, which then forces the
+        frag ile carrier's fit to reject the block. Throttling here keeps the
+        block markable and costs only reference strength where there was no
+        room for it anyway.
+        """
         beta = self.beta0 * (1.0 + self.lam * (region if region is not None else 0.0))
+        if headroom_scale is not None:
+            beta = beta * headroom_scale
         C = dctn(blocks, axes=(2, 3), norm="ortho")
         u, v = self.idx[:, 0], self.idx[:, 1]
         C[:, :, u, v] += beta[:, :, None] * self.Wb[:, :, None] * self.P.reshape(self.ny, self.nx, -1)

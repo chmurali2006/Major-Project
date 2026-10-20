@@ -31,12 +31,14 @@ sys.path.insert(0, str(ROOT))
 from src.battery.conditions import FROZEN
 from src.config import BETA0, DEFAULT, DELTA_F
 from src.fixtures import phantom
-from src.ladder import CANNOT_SAY, TAMPERED
+from src.ladder import CANNOT_SAY, INTACT, TAMPERED
 from src.metrics import block_f1, detected, iou
 from src.pipeline import System
 
 # The paper's operating point, for context only. Cross-paper comparison is
 # forbidden (Trap 21); these are the levels we hold ourselves to.
+CODE_PATHS = ("src", "scripts", "tests", "pytest.ini", "requirements.txt")
+
 BARS = {
     "detection": ("min", 0.976),
     "iou": ("min", 0.832),
@@ -46,12 +48,19 @@ BARS = {
 }
 
 
-def load_dataset(path: str, limit: int = 0):
+def load_dataset(path: str, limit: int = 0, offset: int = 0):
+    """Images in sorted order, after skipping `offset`.
+
+    `offset` exists so a held-out split can be run without copying files: the
+    parameter sweeps behind A-028/A-029/A-030 used the first 60 images, and
+    `--offset 60` is the 140 images that no choice was ever made on.
+    """
     root = Path(path)
     img_dir, mask_dir = root / "images", root / "masks"
     if not img_dir.is_dir() or not mask_dir.is_dir():
         raise SystemExit(f"{path} needs images/ and masks/")
     out = []
+    seen = 0
     for img_path in sorted(img_dir.iterdir()):
         if img_path.suffix.lower() not in (".jpg", ".jpeg", ".png"):
             continue
@@ -62,6 +71,10 @@ def load_dataset(path: str, limit: int = 0):
         mask = np.array(Image.open(mask_path).convert("L")) > 127
         if rgb.shape[:2] != (512, 512):
             continue
+        if seen < offset:
+            seen += 1
+            continue
+        seen += 1
         out.append((rgb, mask, img_path.stem))
         if limit and len(out) >= limit:
             break
@@ -82,9 +95,12 @@ def git_commit() -> str:
 def run(dataset, sysm, cfg, seed0: int, n_synthetic: int):
     keys = [c.cid for c in FROZEN]
     agg = {cid: {"n": 0, "claim": 0, "iou": [], "f1": [], "cov": [], "det": 0,
-                 "known": 0, "reasons": {}} for cid in keys}
+                 "det50": 0, "known": 0, "silent": 0, "silent_blocks": 0,
+                 "gt_blocks": 0, "reasons": {}, "unmarked": 0} for cid in keys}
     protect_t = verify_t = 0.0
+    protect_ms, verify_ms = [], []
     psnrs, coverage = [], []
+    clean_claims = 0
 
     images = dataset if dataset is not None else [
         (*phantom(seed=seed0 + i), i) for i in range(n_synthetic)
@@ -93,17 +109,35 @@ def run(dataset, sysm, cfg, seed0: int, n_synthetic: int):
         t0 = time.perf_counter()
         p = sysm.protect(rgb, mask, image_id=1000 + i)
         protect_t += time.perf_counter() - t0
+        protect_ms.append(1000 * (time.perf_counter() - t0))
 
         t0 = time.perf_counter()
-        sysm.verify(p.png)
+        clean = sysm.verify(p.png)
         verify_t += time.perf_counter() - t0
+        verify_ms.append(1000 * (time.perf_counter() - t0))
 
         mse = float(np.mean((p.rgb.astype(float) - rgb.astype(float)) ** 2))
         psnrs.append(99.0 if mse == 0 else 10 * np.log10(255 ** 2 / mse))
-        coverage.append(sysm.verify(p.png).coverage)
+        coverage.append(clean.coverage)
+        # The most basic error there is: calling an untouched image tampered.
+        # It is not one of the 22 conditions, so it had no column of its own.
+        clean_claims += int((clean.ladder.verdict == TAMPERED).any())
 
         for cond in FROZEN:
             data, gt = cond(p.png)
+            if gt is not None and p.unmarked is not None and gt.shape == p.unmarked.shape:
+                # Ground truth is every block the condition changed. Blocks
+                # the embedder refused are *counted*, not removed: A-026
+                # masked them out on the theory that a refused block carries
+                # no tag, and re-measurement showed that theory is wrong for
+                # the paste family. A copy-move whose target block was refused
+                # still writes a *foreign* mark into it - the block it copied
+                # from - so the verifier can and does localise it, and masking
+                # the block threw that correct detection away. Dropping an
+                # image because the damage landed in refused territory would
+                # also hide a real capability limit behind a bookkeeping rule.
+                # The refusal count is reported per condition instead.
+                agg[cond.cid]["unmarked"] += int((gt & p.unmarked).sum())
             res = sysm.verify(data)
             pred = res.ladder.verdict == TAMPERED
             a = agg[cond.cid]
@@ -116,6 +150,23 @@ def run(dataset, sysm, cfg, seed0: int, n_synthetic: int):
                 a["known"] += 1
                 a["iou"].append(float(iou(pred, gt)))
                 a["det"] += int(detected(pred, gt, cfg.iou_detect))
+                # The same rule at IoU 0.5, reported beside it. The stated
+                # rule is the lenient one (a claim that lands in the right
+                # region), so the strict one has to be visible: a detector
+                # that fires somewhere random would pass the lenient rule on
+                # a large lesion and fail this one.
+                a["det50"] += int(detected(pred, gt, 0.5))
+                # The safety metric. A miss is only acceptable if it is an
+                # abstention; a tampered block reported INTACT is the failure
+                # mode a clinical reader would act on.
+                a["silent"] += int(((res.ladder.verdict == INTACT) & gt).any())
+                # And the same thing per block. "At least one changed block
+                # was called intact" is a strict upper bound that a single
+                # anti-aliased edge block can trip; the block rate is what a
+                # reader experiences. Both are in the receipt.
+                if gt.shape == res.ladder.verdict.shape:
+                    a["silent_blocks"] += int((gt & (res.ladder.verdict == INTACT)).sum())
+                    a["gt_blocks"] += int(gt.sum())
                 a["f1"].append(block_f1(pred, gt, answered=res.ladder.verdict != CANNOT_SAY).value)
 
     n = len(images)
@@ -125,15 +176,23 @@ def run(dataset, sysm, cfg, seed0: int, n_synthetic: int):
         "psnr_mean": float(np.mean(psnrs)),
         "psnr_worst": float(np.min(psnrs)),
         "coverage_mean": float(np.mean(coverage)),
+        "clean_claims": clean_claims,
         "protect_ms": 1000 * protect_t / n,
         "verify_ms": 1000 * verify_t / n,
+        # The mean alone hides the distribution, and 44 ms is a bar the mean
+        # clears by one per cent. Report what a user would experience and what
+        # the worst case costs, so the margin is visible instead of assumed.
+        "verify_ms_p50": float(np.median(verify_ms)),
+        "verify_ms_p95": float(np.percentile(verify_ms, 95)),
+        "verify_ms_max": float(np.max(verify_ms)),
+        "protect_ms_p95": float(np.percentile(protect_ms, 95)),
     }
 
 
 def summarise(res, label: str) -> dict:
     print(f"\n{label}  n={res['n_images']}")
     print(f"{'#':>2} {'condition':28} {'family':7} {'claim%':>7} {'detect%':>8} "
-          f"{'IoU':>6} {'blkF1':>6} {'cov':>6}")
+          f"{'d@.5%':>7} {'IoU':>6} {'blkF1':>6} {'cov':>6} {'silImg%':>8} {'silBlk%':>8}")
     rows, violations = [], []
     for cond in FROZEN:
         a = res["per_condition"][cond.cid]
@@ -146,10 +205,16 @@ def summarise(res, label: str) -> dict:
                 "iou": float(np.mean(a["iou"])),
                 "block_f1": float(np.mean(a["f1"])),
                 "n_known": a["known"],
+                "silent_intact": a["silent"] / a["n"],
+                "detection_at_0.5": a["det50"] / a["known"],
+                "silent_block_rate": (a["silent_blocks"] / a["gt_blocks"]
+                                      if a["gt_blocks"] else 0.0),
             })
             print(f"{cond.cid:>2} {cond.name:28} {cond.family:7} {claim:>7.1f} "
-                  f"{100*row['detection']:>8.1f} {row['iou']:>6.3f} "
-                  f"{row['block_f1']:>6.3f} {row['coverage']:>6.3f}")
+                  f"{100*row['detection']:>8.1f} {100*row['detection_at_0.5']:>7.1f} "
+                  f"{row['iou']:>6.3f} {row['block_f1']:>6.3f} {row['coverage']:>6.3f} "
+                  f"{100*row['silent_intact']:>8.1f} "
+                  f"{100*row['silent_block_rate']:>8.1f}")
         else:
             flag = ""
             if cond.family == "benign" and row["claim_rate"] > 0:
@@ -158,9 +223,13 @@ def summarise(res, label: str) -> dict:
                                    "kind": "benign_false_claim",
                                    "rate": row["claim_rate"]})
             print(f"{cond.cid:>2} {cond.name:28} {cond.family:7} {claim:>7.1f} "
-                  f"{'-':>8} {'-':>6} {'-':>6} {row['coverage']:>6.3f}{flag}")
+                  f"{'-':>8} {'-':>7} {'-':>6} {'-':>6} {row['coverage']:>6.3f} "
+                  f"{'-':>8} {'-':>8}{flag}")
         rows.append(row)
-    print(f"\nPSNR {res['psnr_mean']:.2f} dB (worst {res['psnr_worst']:.2f})   "
+    print(f"\nverify median {res['verify_ms_p50']:.0f} ms  p95 {res['verify_ms_p95']:.0f} ms  "
+          f"max {res['verify_ms_max']:.0f} ms")
+    print(f"\nclean-image claims {res.get('clean_claims', 0)}/{res['n_images']}   "
+          f"PSNR {res['psnr_mean']:.2f} dB (worst {res['psnr_worst']:.2f})   "
           f"coverage {res['coverage_mean']:.3f}   "
           f"protect {res['protect_ms']:.0f} ms/img   verify {res['verify_ms']:.0f} ms/img")
     return {"rows": rows, "violations": violations}
@@ -203,8 +272,12 @@ def main() -> int:
     ap.add_argument("--no-gate", action="store_true")
     ap.add_argument("--data", type=str, default=None, help="dir with images/ and masks/")
     ap.add_argument("--limit", type=int, default=0)
+    ap.add_argument("--offset", type=int, default=0,
+                    help="skip this many images (held-out split; unused so far)")
     ap.add_argument("--key", type=str, default="bench-key")
     ap.add_argument("--receipt", type=str, default=None, help="write a JSON receipt here")
+    ap.add_argument("--set", action="append", default=[], metavar="KEY=VALUE",
+                    help="override a config field, repeatable (e.g. --set lam=0)")
     args = ap.parse_args()
 
     gate = DEFAULT.gate_enabled
@@ -212,10 +285,27 @@ def main() -> int:
         gate = True
     if args.no_gate:
         gate = False
-    cfg = DEFAULT.with_(beta0=args.beta, delta_f=args.delta, gate_enabled=gate)
+    overrides = {"beta0": args.beta, "delta_f": args.delta, "gate_enabled": gate}
+    for item in args.set:
+        key, _, raw = item.partition("=")
+        key, raw = key.strip(), raw.strip()
+        if not hasattr(DEFAULT, key):
+            ap.error(f"unknown config field: {key}")
+        current = getattr(DEFAULT, key)
+        if isinstance(current, bool):
+            value = raw.lower() in ("1", "true", "yes", "on")
+        elif isinstance(current, int) and not isinstance(current, bool):
+            value = int(raw)
+        elif isinstance(current, float):
+            value = float(raw)
+        else:
+            value = raw
+        overrides[key] = value
+    cfg = DEFAULT.with_(**overrides)
     sysm = System(args.key.encode(), cfg)
 
-    dataset = load_dataset(args.data, args.limit) if args.data else None
+    dataset = (load_dataset(args.data, args.limit, args.offset)
+               if args.data else None)
     label = f"{args.data}" if args.data else "SYNTHETIC PHANTOMS — fixtures, not results"
 
     t_start = time.perf_counter()
@@ -227,7 +317,27 @@ def main() -> int:
     print(f"\ntotal wall clock {elapsed:.1f} s")
 
     if args.receipt:
+        try:
+            # Only the code that actually ran counts. Editing a document while
+            # a twelve-minute run is in flight does not make the receipt lie
+            # about which code produced the numbers, and demanding a clean tree
+            # for prose would push people to stop the run or doctor the
+            # receipt. The code paths are what the receipt is about.
+            dirty = subprocess.run(["git", "status", "--porcelain", "--", *CODE_PATHS],
+                                   cwd=ROOT, capture_output=True, text=True).stdout.strip()
+            tree = subprocess.run(["git", "status", "--porcelain"], cwd=ROOT,
+                                  capture_output=True, text=True).stdout.strip()
+        except Exception:
+            dirty = tree = ""
+        if tree and not dirty:
+            print("note: documents changed during the run; code paths were clean.")
+        if dirty:
+            print("WARNING: code paths are dirty; the receipt records the "
+                  "commit but the run used uncommitted code.")
         out = Path(args.receipt)
+        if str(args.receipt).endswith("/"):
+            out = out / "receipt.json"
+        out.parent.mkdir(parents=True, exist_ok=True)
         out.parent.mkdir(parents=True, exist_ok=True)
         receipt = {
             "kind": "benchmark",
@@ -237,6 +347,8 @@ def main() -> int:
             "created_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
             "command": " ".join(sys.argv),
             "config": cfg.__dict__,
+            "code_dirty": bool(dirty),
+            "tree_dirty": bool(tree),
             "code": {"git_commit": git_commit()},
             "environment": {
                 "python": platform.python_version(),
@@ -249,8 +361,13 @@ def main() -> int:
                 "psnr_mean": raw["psnr_mean"],
                 "psnr_worst": raw["psnr_worst"],
                 "coverage_mean": raw["coverage_mean"],
+                "clean_claims": raw["clean_claims"],
                 "protect_ms": raw["protect_ms"],
                 "verify_ms": raw["verify_ms"],
+                "verify_ms_p50": raw["verify_ms_p50"],
+                "verify_ms_p95": raw["verify_ms_p95"],
+                "verify_ms_max": raw["verify_ms_max"],
+                "protect_ms_p95": raw["protect_ms_p95"],
                 "per_condition": {str(c.cid): {k: v for k, v in raw["per_condition"][c.cid].items()
                                                if k != "reasons"} for c in FROZEN},
             },

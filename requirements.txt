@@ -4,4 +4,9 @@ scipy==1.17.1
 Pillow==13.0.0
 PyWavelets==1.8.0
 scikit-image==0.26.0
+opencv-python-headless==5.0.0.93
 pytest==9.0.2
+
+# Python 3.11 and 3.13 are what this was measured on. Python 3.14 has no
+# PyWavelets 1.8.0 wheel and pip falls back to a source build that fails;
+# use 3.11-3.13 until PyWavelets publishes one.

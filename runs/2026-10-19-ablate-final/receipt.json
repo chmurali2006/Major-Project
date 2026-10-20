@@ -1,0 +1,147 @@
+{
+  "kind": "falsification",
+  "created_utc": "2026-10-19T18:01:32+00:00",
+  "command": "scripts/ablate.py --data /tmp/ph2full --limit 6 --receipt runs/2026-10-19-ablate-final/",
+  "dataset": "/tmp/ph2full",
+  "n": 6,
+  "conditions": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11
+  ],
+  "git_commit": "be9eeef",
+  "python": "3.11.2",
+  "results": {
+    "baseline": {
+      "det": 1.0,
+      "iou": 0.9479166666666666,
+      "paste_claim": 1.0,
+      "benign_claim": 0.0,
+      "cond6_claim": 0.5,
+      "resize_claim": 0.0,
+      "clean_claim": 0.0,
+      "psnr": 38.7103888641571,
+      "coverage": 0.9514973958333334,
+      "surround_verdicts": 0.0,
+      "refusal": 0.0091552734375
+    },
+    "A1 binding cut": {
+      "metrics": {
+        "det": 0.0,
+        "iou": 0.0,
+        "paste_claim": 0.0,
+        "benign_claim": 0.0,
+        "cond6_claim": 0.0,
+        "resize_claim": 0.0,
+        "clean_claim": 0.0,
+        "psnr": 38.70811096422751,
+        "coverage": 0.9521077473958334,
+        "surround_verdicts": 0.0,
+        "refusal": 0.0091552734375
+      },
+      "predicted_metric": "det",
+      "predicted_direction": "drop",
+      "claim": "If copy-move detection survives without the address in the tag, position binding is not what defeats copy-move and contribution one is false."
+    },
+    "A2 corroboration cut": {
+      "metrics": {
+        "det": 1.0,
+        "iou": 0.9466382575757576,
+        "paste_claim": 1.0,
+        "benign_claim": 0.0,
+        "cond6_claim": 0.16666666666666666,
+        "resize_claim": 0.0,
+        "clean_claim": 0.0,
+        "psnr": 39.18783388475337,
+        "coverage": 0.9906005859375,
+        "surround_verdicts": 0.0,
+        "refusal": 0.008951822916666666
+      },
+      "predicted_metric": "cond6_claim",
+      "predicted_direction": "change",
+      "claim": "If removing Carrier B changes nothing, the semi-robust reference is decoration and the two-carrier rule is one bit wearing a second hat."
+    },
+    "A3 capacity refusal removed": {
+      "metrics": {
+        "det": 1.0,
+        "iou": 0.9509469696969698,
+        "paste_claim": 1.0,
+        "benign_claim": 0.0,
+        "cond6_claim": 0.5,
+        "resize_claim": 0.0,
+        "clean_claim": 0.0,
+        "psnr": 38.67881526511968,
+        "coverage": 0.959228515625,
+        "surround_verdicts": 0.0006510416666666666,
+        "refusal": 0.0
+      },
+      "predicted_metric": "surround_verdicts",
+      "predicted_direction": "rise",
+      "claim": "If the tool still refuses to judge blocks it never marked, the capacity refusal is not doing any work."
+    },
+    "A4 tilt restored": {
+      "metrics": {
+        "det": 1.0,
+        "iou": 0.9479166666666666,
+        "paste_claim": 1.0,
+        "benign_claim": 0.0,
+        "cond6_claim": 0.5,
+        "resize_claim": 0.0,
+        "clean_claim": 0.0,
+        "psnr": 38.481976718108356,
+        "coverage": 0.9515380859375,
+        "surround_verdicts": 0.0,
+        "refusal": 0.0091552734375
+      },
+      "predicted_metric": "psnr",
+      "predicted_direction": "drop",
+      "claim": "If restoring region weighting costs no measurable image quality, the decision to remove it (A-018) was not buying anything either."
+    },
+    "A6 global attenuation cut": {
+      "metrics": {
+        "det": 1.0,
+        "iou": 0.9479166666666666,
+        "paste_claim": 1.0,
+        "benign_claim": 0.06666666666666667,
+        "cond6_claim": 0.5,
+        "resize_claim": 0.0,
+        "clean_claim": 0.0,
+        "psnr": 38.7103888641571,
+        "coverage": 0.9514973958333334,
+        "surround_verdicts": 0.0,
+        "refusal": 0.0091552734375
+      },
+      "predicted_metric": "resize_claim",
+      "predicted_direction": "rise",
+      "claim": "If a 90% resize of a smooth image still does not produce a false claim without the attenuation rule, the rule is not what fixes condition 11."
+    },
+    "A5 ladder collapsed": {
+      "metrics": {
+        "det": 1.0,
+        "iou": 0.9479166666666666,
+        "paste_claim": 1.0,
+        "benign_claim": 0.0,
+        "cond6_claim": 0.5,
+        "resize_claim": 0.0,
+        "clean_claim": 0.0,
+        "psnr": 38.7103888641571,
+        "coverage": 0.9514973958333334,
+        "surround_verdicts": 0.0,
+        "refusal": 0.0091552734375
+      },
+      "predicted_metric": "benign_claim",
+      "predicted_direction": "rise",
+      "claim": "If a single threshold with no abstention is equally quiet on benign handling, the ladder earns its complexity nowhere."
+    }
+  },
+  "predicted_breaks": 3,
+  "ablations": 6
+}

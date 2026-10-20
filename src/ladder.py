@@ -19,6 +19,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 import numpy as np
+from scipy import ndimage
 from scipy.ndimage import median_filter
 
 from .config import Config
@@ -70,8 +71,10 @@ def _neighbour_count(mask: np.ndarray) -> np.ndarray:
 
 
 def classify(delta_f: np.ndarray, delta_sr: np.ndarray, texture: np.ndarray,
-             cfg: Config, digest_margin: np.ndarray | None = None,
-             excluded: np.ndarray | None = None) -> LadderResult:
+             cfg: Config,
+             excluded: np.ndarray | None = None,
+             attenuated: bool = False,
+             erased: np.ndarray | None = None) -> LadderResult:
     df = np.asarray(delta_f, dtype=np.float64)
     dsr = np.asarray(delta_sr, dtype=np.float64)
     tex = np.asarray(texture, dtype=np.float64)
@@ -83,53 +86,109 @@ def classify(delta_f: np.ndarray, delta_sr: np.ndarray, texture: np.ndarray,
 
     verdict = np.full(df.shape, INTACT, dtype=np.int8)
     reason = np.full(df.shape, NONE_, dtype=np.int8)
+    zeros = np.zeros(df.shape, bool)
 
-    # ---- rung 1: how widespread is the damage?
-    #
-    # The fragile carrier is decisive: a clean block has delta_f == 0 and a
-    # replaced block has delta_f ~ 0.5. What it cannot say by itself is why.
-    # The answer is spatial:
-    #
-    #   widespread  the mark is broken on a large share of the image
-    #               -> routine handling. JPEG 90 breaks ~100% of blocks.
-    #   confined    almost every block is intact and a few are broken
-    #               -> those blocks were edited. The largest battery edit
-    #                  (64x64) touches 1.6% of blocks.
-    #
-    # This is the job the dossier gives the two-carrier rule - separate
-    # "recompressed" from "edited" - carried out by extent instead of by an
-    # absolute reference threshold, because measurement showed the absolute
-    # thresholds overlap (JPEG 90 delta_f ~ 0.37; paste ~ 0.50).
-    broken = f_hi                          # any mismatch at all
-    strong = df > cfg.tau_strong           # decisive: content or digest moved
+    broken = f_hi                      # any mismatch at all
+    decisive = df > cfg.tau_strong     # the block lost its tag
 
     # Blocks outside the imaging field carry no mark and no evidence. They are
     # removed from the area count, or a white surround would be read as a
     # globally degraded image and every clean PH2 scan would abstain.
-    if excluded is not None:
-        excluded = np.asarray(excluded, bool)
-        broken = broken & ~excluded
-        strong = strong & ~excluded
+    excluded = zeros if excluded is None else np.asarray(excluded, bool)
+    broken = broken & ~excluded
+    decisive = decisive & ~excluded
 
+    # ---- erasure: the mark is not misaligned, it is gone.
+    #
+    # The correlation score is normalised by the residual it finds, so a block
+    # whose mark was deleted still scores 1.0 on the part that survived. The
+    # per-block evidence is the complement: what fraction of the sixty slots
+    # still hold a readable residual. On a gamut-safe block the answer must be
+    # all of them, so anything less is physical removal. A lone erased block
+    # sits inside the clean accident rate (0.1% of blocks at this threshold),
+    # so it needs neighbours; a painted box (36 blocks) or an inpainted wound
+    # (415) supplies them.
+    erased_ok = zeros
+    if erased is not None:
+        erased = np.asarray(erased, bool) & ~excluded
+        support_e = _neighbour_count(decisive | erased)
+        erased_ok = erased & (support_e >= cfg.corroborate_min_erased)
+        broken = broken | erased_ok
+        decisive = decisive | erased_ok
+
+    # ---- how widespread is the damage?
+    #
+    # Extent alone used to decide this, at 5% of the frame. That is the wrong
+    # test: the Telea wound covers 10.1% and was excused as routine handling,
+    # while every global transform in the battery already announces itself
+    # through `attenuated` (median tag evidence <= 0.95 over gamut-safe
+    # blocks). The extent rule is kept only as a backstop for damage that
+    # covers more than half the frame, where no local attribution is possible.
     area = float(broken.mean()) if broken.size else 0.0
     widespread = bool(area > cfg.tau_area)
+
+    # ---- how *shaped* is the damage?
+    #
+    # Area is not enough. A JPEG re-encode at high quality breaks the fragile
+    # mark in a few per cent of blocks - measured 6.4% at Q100 - which is well
+    # under any extent rule, and the tool used to report those blocks as
+    # localised tampering on 196 of 200 images. That is the whole failure the
+    # design exists to avoid, and the battery did not contain it: every JPEG
+    # condition in the battery is Q <= 90, where the mark is destroyed
+    # everywhere and the attenuation rule abstains.
+    #
+    # The discriminator is spatial. JPEG codes each 8x8 block independently, so
+    # its damage is a scatter of isolated blocks; a paste, a painted box or an
+    # inpainted wound is one contiguous region. Measured islands on 60 images:
+    # re-encode at Q100/q99/q98 leaves a median of 64/103/250 (p5 = 33/72/131),
+    # while every edit in the battery stays between 1 and 9. Many islands is
+    # therefore evidence of a block-independent codec, not of surgery, and the
+    # honest answer is abstention - scattered damage cannot be attributed to a
+    # region, which is the only thing a fragile mark is good for.
+    scattered = False
+    if broken.any() and not widespread:
+        labels_b, n_b = ndimage.label(broken, structure=np.ones((3, 3), dtype=int))
+        scattered = bool(n_b >= cfg.scatter_min_components)
+
+    # ---- rung 2: weak evidence, corroborated by its neighbours
+    #
+    # The tag is bound to content per slot, which is what lets it survive the
+    # gamut clamps a clean image inflicts. The price is that a content change
+    # flips only the slots it touches, so a forged region reads as *partial*
+    # disagreement rather than total loss. Partial disagreement is worth
+    # acting on when it is a region: a lesion removal covers hundreds of
+    # adjacent blocks, while the one percent of blocks a clean image damages
+    # at the gamut edge are scattered singletons and abstain.
+    weak = broken & ~decisive
+    weak_ok = zeros
+    if weak.any():
+        labels, n = ndimage.label(weak, structure=np.ones((3, 3), dtype=int))
+        sizes = np.bincount(labels.ravel(), minlength=n + 1)
+        big = sizes >= cfg.weak_cluster_min
+        big[0] = False
+        weak_ok = weak & big[labels] if n else zeros
+        decisive = decisive | weak_ok
 
     # NOTE: `not widespread`, never `~widespread`. On a Python bool the tilde
     # yields an int (-1), which silently converts a boolean mask into integer
     # fancy indexing and scatters verdicts over unrelated blocks.
-    tamper = strong & (not widespread)
+    tamper = decisive & (not widespread) & (not attenuated) & (not scattered)
     verdict[tamper] = TAMPERED
 
-    handling = broken & widespread
+    handling = broken & (widespread | attenuated | scattered)
     verdict[handling] = CANNOT_SAY
     reason[handling] = ROUTINE_HANDLING
 
     # weak breakage confined to a few blocks: not decisive either way
-    weak_local = broken & (not widespread) & ~strong
+    weak_local = broken & (not widespread) & ~decisive
     verdict[weak_local] = CANNOT_SAY
     reason[weak_local] = EVIDENCE_CONFLICT
 
-    conflict = ~f_hi & s_hi
+    # A-032: only reachable while Carrier B is enabled. It is off by default
+    # because this rule can only ever convert an intact block into an
+    # abstention - `conflict` is a subset of `~f_hi`, so no pixel can become
+    # TAMPERED, and the block is already INTACT unless a later rule changes it.
+    conflict = (~f_hi) & s_hi if cfg.use_robust else zeros
     verdict[conflict] = CANNOT_SAY
     reason[conflict] = EVIDENCE_CONFLICT
 
@@ -138,36 +197,16 @@ def classify(delta_f: np.ndarray, delta_sr: np.ndarray, texture: np.ndarray,
     # forgery its probability is 2^-60. When the fragile carrier is exact and
     # the semi-robust reference complains, the reference is the one that is
     # wrong - host interference with a unit-norm sequence, not evidence.
-    decisive_clean = conflict & (df == 0.0)
+    # `& ~erased_ok` is load-bearing. A half-erased block scores a perfect
+    # correlation on the half of its mark that survived, so df == 0 exactly -
+    # and this rule used to hand it back as INTACT after the erasure test had
+    # already called it TAMPERED.
+    decisive_clean = conflict & (df == 0.0) & ~erased_ok
     verdict[decisive_clean] = INTACT
     reason[decisive_clean] = NONE_
 
-    # ---- rung 1b: digest confidence
-    #
-    # A single strong block with no strong neighbour is either a one-block
-    # edit (battery condition 6) or one block whose coarse digest flipped
-    # under mild noise. The bit error is ~0.5 in both cases. What separates
-    # them is whether the digest *could* have flipped: a flip requires a
-    # coefficient within a level or two of a quantisation boundary.
-    if digest_margin is not None:
-        support_all = _neighbour_count(tamper)
-        lone = tamper & (support_all == 0)
-        marginal = (lone
-                    & (np.asarray(digest_margin) < cfg.digest_margin_min)
-                    & (dsr < cfg.tau_sr_lone))
-        verdict[marginal] = CANNOT_SAY
-        reason[marginal] = EVIDENCE_CONFLICT
-
-    # ---- rung 2: weak evidence needs support from its neighbours
-    weak = tamper & (df < cfg.tau_strong)
-    if weak.any():
-        support = _neighbour_count(tamper)
-        isolated = weak & (support < cfg.corroborate_min)
-        verdict[isolated] = CANNOT_SAY
-        reason[isolated] = ROUTINE_HANDLING
-
     # ---- outside the imaging field: no mark, no evidence
-    if excluded is not None and excluded.any():
+    if excluded.any():
         verdict[excluded] = CANNOT_SAY
         reason[excluded] = CAPACITY_REFUSAL
 
