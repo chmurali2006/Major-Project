@@ -4,10 +4,13 @@
 Classical, zero-training, keyed fragile watermarking with tamper localisation,
 honest abstention, and an evaluation battery that is falsifiable by construction.
 
-**Date:** 2026-10-20 · **Branch:** `arena/4f1090b0-major-project` (PR #4 → `dev`)
-· **Corpus:** PH2, 200 dermoscopic images, 512 × 512, all 22 conditions
-· **Receipt:** `runs/2026-10-20-n200-v8/receipt.json` — the command, config,
-git commit, environment and per-condition counts are inside it
+**Date:** 2026-10-21 · **Branch:** `arena/4f1090b0-major-project` (PR #4 → `dev`,
+merged as `28e4e6e`)
+· **Corpus:** PH2, 200 dermoscopic images, 512 × 512, all 22 conditions — plus
+the primary corpus **ISIC 2018 Task 1, full n=2594**, measured 2026-10-21
+· **Receipts:** PH2 `runs/2026-10-20-n200-v8/receipt.json`; ISIC
+`runs/isic-full-v8/receipt.json` — the command, config, git commit,
+environment and per-condition counts are inside them
 · **Second review pass:** A-031 (a codec read as surgery) and A-032 (a carrier
 that could only veto) were found by measuring outside the battery, and both
 changed the default configuration
@@ -250,7 +253,38 @@ detects perfectly (IoU 1.000), is 17 dB kinder to the image, and claims tamperin
 on **100% of benign handling**, because a codec changes pixels and it has no
 vocabulary for "changed but not edited". That comparison is the contribution
 stated precisely: not a sharper localiser, but a detector that can tell damage
-from editing and says so when it cannot.
+from editing and says so when it cannot. On the primary corpus the textbook
+scheme behaves identically: 100% of benign handling claimed on ISIC images,
+including 60/60 at Q100 and 60/60 at σ=1 (`runs/isic300-lsb/receipt.json`).
+
+### 4.10 The primary corpus, measured in full (ISIC 2018 Task 1, n=2594)
+
+The A-021 rule and the A-030 mean binding had been validated on a local
+reproducer; the previous revision of this document said the ISIC
+re-measurement was outstanding. It is now measured: the full 2594-image
+corpus, the frozen 22-condition battery, the current configuration, receipt
+`runs/isic-full-v8/receipt.json`, all four data bars met with an **empty
+violations list**:
+
+| bar | PH2, n=200 | ISIC, n=2594 | bar met |
+|---|---|---|---|
+| detection, conditions 1–5 | 99.40% | **99.99%** | ≥ 97.6% |
+| localisation IoU, conditions 1–6 | 0.9336 | **0.9936** | ≥ 0.832 |
+| false claims, benign conditions | 0.0% | **0.0%** | ≤ 0.5% |
+| clean images claimed | 0 / 200 | **0 / 2594** | 0 |
+| PSNR (mean; worst image) | 38.68; 36.00 dB | **40.47; 35.75 dB** | ≥ 37.8 dB |
+| verify latency | 40.19 ms | 58.6 ms | ≤ 44 ms — not met on that laptop |
+
+Both predictions the primary-corpus defect (A-021) motivated are confirmed on
+the corpus itself, not assumed: condition 11 (resize) claims **0.0%**, and
+condition 21 detection is **99.0%** with block-F1 0.423 — the same lift the
+mean binding gave on PH2. The envelope sweep on ISIC found the one thing PH2
+could not show: **2 of 300 untouched images (0.67%) claim at JPEG Q100**,
+everything else exactly zero (Q99→Q50, σ=0→8, lossless PNG). The A9 ablation
+ties it to the scatter rule — cut it and Q100 claims 100% — so the mechanism
+is right and the calibration is marginally off at exactly one operating point.
+It is stated here, in `BENCHMARKS.md` §6, and in `RESULTS.md` §3.12, rather
+than tuned away.
 
 
 ---
@@ -287,12 +321,17 @@ fragile mark, and it is a real loss of detection on recompressed-and-forged
 images (A-021). The measurable version of this is the benign coverage column:
 0.000 after JPEG 90.
 
-**5.5 The ISIC re-measurement is outstanding.** The A-021 attenuation rule was
-validated on a local reproducer of the ISIC failure (smooth images, resize
-claim rate 0.792 → 0.000, with ablation A6 falsifying the fix), not yet on ISIC
-2018 itself: this sandbox cannot reach the archive. A-030 has never been run on
-ISIC at all. This is a limitation of the evidence, not of the fixes, and it is
-stated everywhere the numbers appear.
+**5.5 The ISIC re-measurement has been done; what remains is one calibration
+question.** §4.10 reports the result: on the full 2594-image corpus the A-021
+rule holds (condition 11 claims 0.0%) and A-030 lifts condition-21 detection
+to 99.0%. The residual moved rather than disappeared: the envelope sweep on
+ISIC claims **2 of 300 untouched images at JPEG Q100** (0.67%), where PH2
+showed zero. The ablation ties the residual to the scatter rule's calibration
+on ISIC texture — a single operating point, stated as a limitation rather
+than tuned away. Verify latency (58.6 ms) is also above the 44 ms bar on the
+machine that ran it; the code tree is identical to the one that measured
+40.19 ms here, so this is a property of the laptop, not of the code, until the
+same tree is timed on the same machine.
 
 **5.6 Worst-case image quality is 36.00 dB**, below the 37.8 dB mean bar. §4.3
 has the trade and the alternative receipt.

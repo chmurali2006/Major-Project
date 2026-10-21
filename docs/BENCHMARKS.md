@@ -1,7 +1,11 @@
 # Benchmark status — measured on real tissue
 
-**Date:** 2026-10-20 · **Data:** PH2, **n=200 — the entire corpus**, all 22 conditions
-· **Receipt:** `runs/2026-10-20-n200-v6/receipt.json` (commit `89f47a2`, code paths clean)
+**Date:** 2026-10-20 (PH2) · 2026-10-21 (ISIC 2018 Task 1 — the primary corpus)
+· **PH2:** n=200, the entire corpus, all 22 conditions —
+`runs/2026-10-20-n200-v8/receipt.json` (commit `369e441`, code paths clean)
+· **ISIC-300:** `runs/isic300-v8/receipt.json` · **ISIC-full, n=2594:**
+`runs/isic-full-v8/receipt.json` (commits `3072c41` / `28e4e6e` — identical
+trees, code paths clean) · **Primary-corpus results: §6**
 · **Figures:** `docs/figures/battery.png`, `docs/figures/localisation.png`
 
 > **The tables in §2 are generated, not typed.** `scripts/make_tables.py` writes
@@ -87,10 +91,6 @@ to, not a claim to have beaten anyone.
 | 22 | inpainting removal (Telea) | structure | 100.0% | 100.0% | 99.5% | 0.911 | 0.952 | 0.924 | 100.0% | 4.6% |
 
 PSNR 38.68 dB (worst 36.00) · coverage 0.924 · protect 149 ms/img · verify 40.2 ms/img.
-
-<!-- END MEASURED TABLES -->
-
-<!-- END MEASURED TABLES -->
 
 <!-- END MEASURED TABLES -->
 
@@ -421,43 +421,196 @@ clean images being claimed. The metric was wrong, not the mechanism; it is now
 
 ---
 
-## 6. The primary corpus trial, and the defect it found
+## 6. The primary corpus: ISIC 2018 Task 1, measured
 
-A local trial ran the full battery on **ISIC 2018 Task 1, first 300 images**
-(official distribution, 2594 pairs prepared, masks verified) and on PH2, for
-both the previous codebase (`dev`) and this branch (`e3290ca` at the time). The
-numbers are the user's, reproduced in their report.
+The local trial that found A-021 was run before the fix. §6 of the previous
+revision of this document said the post-fix re-measurement "must be measured,
+not assumed". It has now been measured, on the machine that can reach the
+official archive — the **full corpus, all 2594 image/mask pairs**, plus the
+prescribed 300-image package with its side instruments. The tables in §6.1–§6.4
+are generated from the receipts by `scripts/make_tables.py` (same functions as
+the PH2 tables above), not typed.
 
-| bar | dev ISIC-300 | branch ISIC-300 |
+### 6.1 ISIC, full corpus, n=2594 — all four data bars met, zero violations
+
+<!-- BEGIN ISIC MEASURED TABLES -->
+
+**Run:** `scripts\bench.py --data datasets\isic2018 --receipt runs\isic-full-v8/receipt.json`  
+**Commit:** `28e4e6e` · **dirty tree:** no · **n:** 2594
+
+| what | bar | measured | |
+|---|---|---|---|
+| detection, conditions 1-5 | >= 97.6% | **99.99%** | met |
+| localisation IoU, conditions 1-6 | >= 0.832 | **0.9936** | met |
+| false claims, benign conditions | <= 0.5% | **0.00%** | met |
+| PSNR (mean; worst image) | >= 37.8 dB | **40.47 dB; 35.75 dB** | met |
+| verify latency | <= 44 ms | **58.60 ms** | NOT MET |
+
+| # | condition | family | claim | detected | det@IoU 0.5 | IoU | block-F1 | coverage | silent (img) | silent (blocks) |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | copy-move 32x32 bg->bg | paste | 100.0% | 100.0% | 99.9% | 0.994 | 0.997 | 0.987 | 0.0% | 0.0% |
+| 2 | copy-move 32x32 over lesion | paste | 100.0% | 99.8% | 99.7% | 0.994 | 0.996 | 0.987 | 0.0% | 0.0% |
+| 3 | copy-move 64x64 over lesion | paste | 100.0% | 100.0% | 100.0% | 0.994 | 0.997 | 0.987 | 0.2% | 0.0% |
+| 4 | three 32x32 clones | paste | 100.0% | 99.9% | 99.9% | 0.990 | 0.995 | 0.987 | 0.1% | 0.0% |
+| 5 | copy-move 16x16 | paste | 100.0% | 99.8% | 99.8% | 0.995 | 0.996 | 0.987 | 0.0% | 0.0% |
+| 6 | copy-move 8x8 | paste | 99.5% | 99.5% | 99.5% | 0.995 | 0.995 | 0.987 | 0.0% | 0.0% |
+| 7 | JPEG 90 | benign | 0.0% | — | — | — | — | 0.001 | — | — |
+| 8 | JPEG 75 | benign | 0.0% | — | — | — | — | 0.000 | — | — |
+| 9 | JPEG 50 | benign | 0.0% | — | — | — | — | 0.000 | — | — |
+| 10 | Gaussian noise sigma=1 | benign | 0.0% | — | — | — | — | 0.867 | — | — |
+| 11 | resize 90% and back | benign | 0.0% | — | — | — | — | 0.127 | — | — |
+| 12 | JPEG 30 | degrade | 0.0% | — | — | — | — | 0.000 | — | — |
+| 13 | JPEG 10 | degrade | 0.0% | — | — | — | — | 0.000 | — | — |
+| 14 | double compression 75 then 50 | degrade | 0.0% | — | — | — | — | 0.000 | — | — |
+| 15 | chain scale/J60/scale/J60 | degrade | 0.0% | — | — | — | — | 0.000 | — | — |
+| 16 | Gaussian blur sigma=2.0 | degrade | 0.0% | — | — | — | — | 0.000 | — | — |
+| 17 | Gaussian noise sigma=8 | degrade | 0.0% | — | — | — | — | 0.000 | — | — |
+| 18 | 70% centre crop then resize | degrade | 0.0% | — | — | — | — | 0.000 | — | — |
+| 19 | block-aligned crop 24px/side | structure | 0.0% | 0.0% | 0.0% | 0.000 | 0.000 | 0.000 | 0.0% | 0.0% |
+| 20 | block-aligned shift 8px | structure | 0.0% | 0.0% | 0.0% | 0.000 | 0.000 | 0.000 | 0.3% | 0.0% |
+| 21 | burned-in text 64x24 | structure | 99.9% | 99.0% | 0.0% | 0.272 | 0.423 | 0.983 | 98.9% | 16.8% |
+| 22 | inpainting removal (Telea) | structure | 99.6% | 99.6% | 99.4% | 0.907 | 0.949 | 0.985 | 100.0% | 6.4% |
+
+PSNR 40.47 dB (worst 35.75) · coverage 0.987 · protect 160 ms/img · verify 58.6 ms/img.
+
+<!-- END ISIC MEASURED TABLES -->
+
+The two predictions §6 of the previous revision made are confirmed on the
+primary corpus, not assumed:
+
+1. **A-021 held: condition 11 (resize 90% and back) claims 0.0%**, and the
+   benign bar is met with zero claims on all five benign conditions — at
+   n=2594, not just on a reproducer.
+2. **A-030 held: condition 21 detection rose to 99.0%** with block-F1 0.423 on
+   ISIC (the PH2 figure was 0.435), and every copy-move condition is
+   99.5–100% claim / 99.5–100% detect.
+
+Clean images claimed: **0 of 2594**. Violations list in the receipt: **empty**.
+
+The receipt records commit `28e4e6e` — the GitHub merge node of PR #4 into
+`dev`; `git diff 3072c41 28e4e6e` is **empty**, so this run measured the same
+code tree as every other v8 receipt in this document.
+
+### 6.2 ISIC, the prescribed 300-image package (n=300)
+
+**Run:** `scripts\bench.py --data datasets/isic2018 --limit 300 --receipt runs/isic300-v8/receipt.json`  
+**Commit:** `3072c41` · **dirty tree:** no · **n:** 300
+
+| what | bar | measured | |
+|---|---|---|---|
+| detection, conditions 1-5 | >= 97.6% | **100.00%** | met |
+| localisation IoU, conditions 1-6 | >= 0.832 | **0.9853** | met |
+| false claims, benign conditions | <= 0.5% | **0.00%** | met |
+| PSNR (mean; worst image) | >= 37.8 dB | **39.53 dB; 35.75 dB** | met |
+| verify latency | <= 44 ms | **78.47 ms** | NOT MET |
+
+The full 22-condition table for n=300 matches §6.1 within sampling noise
+(weakest paste condition 6 at 98.3% claim on n=300 vs 99.5% on n=2594). The
+bootstrap intervals over images (n=300, 4000 resamples, `scripts/uncertainty.py`):
+detection 1–5 **[100.0, 100.0]**, pooled IoU **[0.9816, 0.9885]**, coverage
+**[0.9658, 0.9714]**; benign false claims 0/1500, rule-of-three upper bound
+**0.20%**; clean claims 0/300, upper bound 1.00%.
+
+### 6.3 The envelope on ISIC — one residual, at Q100 only
+
+`scripts/measure_envelope.py --data datasets/isic2018 --limit 300` —
+receipt `runs/isic300-envelope-v8/receipt.json` (commit `3072c41`):
+
+| JPEG quality | certified area | 10th pct | images half certified | images with any verdict | false claims |
+|---|---|---|---|---|---|
+| Q100 | **0.959** | 0.892 | 300/300 | 300/300 | **2** |
+| Q99 | **0.948** | 0.879 | 300/300 | 300/300 | **0** |
+| Q98 | **0.811** | 0.718 | 298/300 | 300/300 | **0** |
+| Q97 | **0.314** | 0.259 | 0/300 | 300/300 | **0** |
+| Q96 | **0.101** | 0.071 | 0/300 | 300/300 | **0** |
+| Q95 | **0.031** | 0.018 | 0/300 | 300/300 | **0** |
+| Q92 | **0.003** | 0.001 | 0/300 | 300/300 | **0** |
+| Q90 | **0.001** | 0.000 | 0/300 | 266/300 | **0** |
+| Q85 | **0.001** | 0.000 | 0/300 | 161/300 | **0** |
+| Q80 | **0.001** | 0.000 | 0/300 | 139/300 | **0** |
+| Q70 | **0.002** | 0.000 | 0/300 | 149/300 | **0** |
+| Q50 | **0.000** | 0.000 | 0/300 | 122/300 | **0** |
+
+| noise sigma | certified area | 10th pct | images half certified | images with any verdict | false claims |
+|---|---|---|---|---|---|
+| 0.0 | **0.969** | 0.906 | 300/300 | 300/300 | **0** |
+| 0.5 | **0.932** | 0.870 | 300/300 | 300/300 | **0** |
+| 1.0 | **0.843** | 0.768 | 299/300 | 300/300 | **0** |
+| 1.5 | **0.639** | 0.540 | 284/300 | 300/300 | **0** |
+| 2.0 | **0.314** | 0.236 | 0/300 | 300/300 | **0** |
+| 4.0 | **0.002** | 0.000 | 0/300 | 296/300 | **0** |
+| 8.0 | **0.000** | 0.000 | 0/300 | 6/300 | **0** |
+
+Lossless PNG round trip: certified area **0.969**, 300/300 images at least half
+certified, **0 false claims**.
+
+**The finding, stated the way the PH2 Q100 finding was stated (§3.1):** at
+JPEG Q100, **2 of 300 untouched ISIC images (0.67%) are claimed**. Every other
+quality (Q99–Q50), every noise sigma (0–8) and the lossless round trip are
+exactly zero. The two failures are marginal — median Δf at Q100 is 0.000 and
+300/300 images remain half-certified — i.e. thin margin crossings under a
+near-lossless re-encode, not a structural breakdown. The ablation (§6.5) ties
+it to the scatter rule (A-031): cutting that rule makes Q100 claim 100%, so
+the residual is a calibration question on the primary corpus, and it is
+reported rather than tuned away.
+
+### 6.4 The textbook scheme on ISIC (n=60)
+
+| | textbook 8x8 block-hash LSB | this work |
 |---|---|---|
-| detection | 0.9613 not met | **0.9967 met** |
-| IoU | 0.8375 met | **0.8933 met** |
-| benign claims | 0.0560 not met | **0.0683 not met** |
-| PSNR | 36.24 not met | **39.06 met** |
-| verify | 58.5 ms | 53.7 ms |
-| violation | c10 σ=1 28% | **c11 resize 27.3%** |
+| detection, conditions 1-5 | 100.00% | 100.00% |
+| localisation IoU, conditions 1-6 | 1.0000 | 0.9853 |
+| false claims, benign handling | **100.00%** | **0.00%** |
+| false claims, untouched image | 0/60 | 0/300 |
+| PSNR | 55.91 dB | 39.53 dB |
+| JPEG Q100: images claimed | **100%** | **0%** (battery; envelope: 2/300) |
+| JPEG Q95: images claimed | **100%** | **0%** |
+| sigma=1 noise: images claimed | **100%** | **0%** |
 
-Two things follow, and both are in the design now:
+The comparison transfers from PH2 to the primary corpus unchanged: the LSB
+scheme is 16 dB kinder to the image and claims tampering on **every** benign
+handling, including 60/60 at Q100 and 60/60 at σ=1. It has no vocabulary for
+"changed but not edited".
 
-1. **The redesign fixed the real problems** — detection, IoU, PSNR and the
-   benign rate all improve.
-2. **It introduced one defect that only the primary corpus could reveal.**
-   Condition 11 claimed on 27.3% of ISIC images. That is A-021: on a smooth
-   image a resample breaks only the few blocks containing an edge, and a few
-   scattered broken blocks look like localised editing. PH2 is more textured,
-   so it never showed the problem. Fixed and falsified in A-021/A6.
+### 6.5 Falsification on ISIC (n=12)
 
-**Still to re-measure on ISIC after A-021 and A-030.** The trial above predates
-both fixes. The expected outcome is condition 11 at 0.0% and the benign bar met,
-plus the condition-21 improvement A-030 measured on PH2. That must be measured,
-not assumed, and the corpus is only reachable from the user's machine.
-`docs/REPRODUCE.md` gives the exact command.
+`scripts/ablate.py --data datasets/isic2018 --limit 12` — receipt
+`runs/isic300-ablate-v8/receipt.json` (commit `3072c41`). The four mechanisms
+the PH2 ablations identified as load-bearing are load-bearing on ISIC too:
+
+| variant | measured effect on ISIC | verdict |
+|---|---|---|
+| A1 binding cut | detection **1.000 → 0.000** | load-bearing |
+| A7 mean binding cut | condition-21 IoU **0.238 → 0.025** | load-bearing |
+| A9 scatter rule cut | Q100 claims **0.000 → 1.000** | load-bearing |
+| A8 both global rules cut | resize claims **0.000 → 0.833** | load-bearing |
+| A2 Carrier B restored | no effect (inert, A-032) | as on PH2 |
+| A3 capacity refusal removed | no effect on clean claims | as on PH2 |
+| A4 tilt restored | no effect on PSNR | as on PH2 |
+| A5 ladder collapsed | no effect on benign claims | as on PH2 |
+| A6 global attenuation cut | no effect on resize claims | as on PH2 |
+
+4/9 ablations changed the battery as predicted; the five no-effect results are
+the same five the PH2 ablation found inert. A6's null here is expected and is
+not a re-validation: with A-021's rule in front of it, the attenuation rule
+has nothing left to fix on condition 11 — A8 shows the pair is what holds the
+line.
+
+### 6.6 Latency on this machine
+
+ISIC runs at 58.6 ms verify mean (full corpus, quiet machine) and 78.5 ms
+(300-image run, sharing 10 cores with the full battery). Both are **above the
+44 ms bar**. The PH2 figure (40.19 ms) was measured on a different machine;
+the code tree is identical (`git diff` empty). Latency is a property of the
+machine until the same code is timed on the same machine, and no constant was
+changed to make this laptop hit 44 ms.
 
 ---
 
 ## 7. Reproducing
 
 ```bash
+# PH2 (mirror)
 python scripts/prepare_ph2_public.py --src <mirror> --out datasets/ph2
 python scripts/bench.py  --data datasets/ph2 --limit 200 --receipt runs/<utc>/receipt.json
 python scripts/make_tables.py --receipt runs/<utc>/receipt.json --write docs/BENCHMARKS.md
@@ -466,6 +619,20 @@ python scripts/make_figures.py --receipt runs/<utc>/receipt.json \
 python scripts/ablate.py --data datasets/ph2 --limit 12 --receipt runs/<utc>-ablate/
 python scripts/ablate.py --data datasets/ph2 --limit 12 --smooth 0.9 \
                          --receipt runs/<utc>-ablate-smooth/
+
+# ISIC 2018 Task 1 (official archives, full corpus n=2594)
+python scripts/prepare_isic.py --images <Task1-2 input folder> \
+                               --masks  <GroundTruth folder> --out datasets/isic2018
+python scripts/bench.py   --data datasets/isic2018 --receipt runs/isic-full-v8/receipt.json
+python scripts/bench.py   --data datasets/isic2018 --limit 300 \
+                          --receipt runs/isic300-v8/receipt.json
+python scripts/measure_envelope.py --data datasets/isic2018 --limit 300 \
+                          --receipt runs/isic300-envelope-v8/receipt.json
+python scripts/baseline_lsb.py --data datasets/isic2018 --limit 60 \
+                          --receipt runs/isic300-lsb/receipt.json
+python scripts/uncertainty.py --receipt runs/isic300-v8/receipt.json
+python scripts/ablate.py  --data datasets/isic2018 --limit 12 \
+                          --receipt runs/isic300-ablate-v8/receipt.json
 ```
 
 `bench.py` exits non-zero on a benign violation and records whether the code

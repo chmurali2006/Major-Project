@@ -1,7 +1,10 @@
 # A Fragile Watermarking for Medical Image Tamper Detection — where the work stands
 
-**Date:** 2026-10-20 · **Branch:** `arena/4f1090b0-major-project` (PR #4 → `dev`)
-· **Headline receipt:** `runs/2026-10-20-n200-v8/receipt.json`
+**Date:** 2026-10-21 · **Branch:** `dev` (PR #4 merged; `28e4e6e` ≡ `3072c41`,
+empty diff)
+· **Headline receipts:** PH2 `runs/2026-10-20-n200-v8/receipt.json` ·
+ISIC-full `runs/isic-full-v8/receipt.json` (n=2594) ·
+ISIC-300 `runs/isic300-v8/receipt.json`
 · **Mid-project review document:** [`docs/MID_PROJECT_REVIEW.md`](MID_PROJECT_REVIEW.md)
 
 ---
@@ -20,6 +23,13 @@ makes no claim on any untouched image, and abstains rather than guess where the
 gamut leaves no room for a mark. Measured outside the battery, on a swept
 envelope of re-encodes and noise, it never makes a false claim at any of 3 800
 readings, and keeps 91% of the frame certified at Q100 and 89% at Q99.
+On the **primary corpus** — ISIC 2018 Task 1, the full 2594 images, the same
+22 conditions — it clears the same four data bars (detection **99.99%**, IoU
+**0.9936**, benign claims **0.0%**, PSNR **40.47 dB**, clean claims **0/2594**),
+with the A-021 and A-030 predictions confirmed on the corpus that found the
+defects. The ISIC envelope sweep found the one residual PH2 could not show:
+**2 of 300 images (0.67%) claim at JPEG Q100**; every other quality, every
+noise sigma, and the lossless round trip are exactly zero.
 
 ---
 
@@ -43,6 +53,18 @@ in [`docs/BENCHMARKS.md`](BENCHMARKS.md) §1.
 | the global-transform rules are load-bearing | A8: resize claims **0.000 → 0.875** without them | — | same |
 | the mean binding catches burned-in text | A7: condition-21 IoU **0.297 → 0.075** | — | same |
 | the scatter rule separates codec from surgery | A9: Q100 claims **0.000 → 1.000** without it | — | same |
+
+And the same claims on the **primary corpus**, ISIC 2018 Task 1, full n=2594
+(`runs/isic-full-v8/receipt.json`; generated tables in [`docs/BENCHMARKS.md`](BENCHMARKS.md) §6):
+
+| what is claimed | measured (ISIC, n=2594) | bar | receipt |
+|---|---|---|---|
+| detects copy-move tampering | **99.99%** of images, conditions 1–5 | ≥ 97.6% | `isic-full-v8` |
+| locates it | **IoU 0.9936** | ≥ 0.832 | same |
+| never claims on an untouched image | **0 / 2594** | 0 | same |
+| stays silent on benign handling | **0.0%** on JPEG 90/75/50, σ=1 **and** resize | ≤ 0.5% | same |
+| does not visibly damage the image | **40.47 dB** mean, worst **35.75 dB** | ≥ 37.8 dB | same |
+| stays silent under re-encode and noise | 0 claims at every envelope point except **2/300 at Q100** | — | `isic300-envelope-v8` |
 
 Three comparisons a reader needs and would otherwise have to ask for:
 
@@ -136,11 +158,30 @@ distribution, and it ships no expert masks. `BENCHMARKS.md` §0 says what that
 does and does not change; `scripts/prepare_ph2_public.py` writes a per-file
 SHA-256 receipt so the corpus is reconstructible.
 
-**3.11 PH2 is not the dossier's primary corpus.** ISIC 2018 is unreachable from
-this sandbox. The ISIC trial the user ran found a defect PH2 could not reveal
-(A-021), which is now fixed and falsified, but the ISIC re-measurement after the
-fix is **outstanding** and is stated everywhere the number appears. No number
-here is a thesis result yet.
+**3.11 PH2 is not the dossier's primary corpus — the ISIC re-measurement is now
+done.** The earlier revision of this document said ISIC 2018 was unreachable
+from the sandbox and the post-fix re-measurement was outstanding. It has since
+been measured on the machine that reaches the archive: **all 2594 images**,
+full battery, current configuration. Detection **99.99%**, IoU **0.9936**,
+benign claims **0.0%**, clean claims **0/2594**, PSNR **40.47 dB** — the A-021
+prediction (condition 11 at 0.0%) and the A-030 prediction (condition-21
+detection 99.0%, block-F1 0.423) both hold on the primary corpus. Two caveats
+travel with these numbers: the envelope sweep on ISIC found **2/300 false
+claims at JPEG Q100** (§3.12), and verify latency on the laptop that ran it is
+58.6 ms — above the 44 ms bar, consistent with that machine being slower than
+this sandbox's, the code tree being identical. `BENCHMARKS.md` §6 has the
+generated tables; `runs/isic-full-v8/receipt.json` has the counts.
+
+**3.12 The primary corpus found something PH2 could not: a Q100 residual.**
+The envelope sweep on ISIC (`runs/isic300-envelope-v8/receipt.json`, n=300)
+claims on **2 of 300 untouched images (0.67%) under a JPEG Q100 re-encode**.
+Every other quality (Q99→Q50), every noise sigma (0→8), and the lossless PNG
+round trip are exactly zero. Both failures are marginal — median Δf at Q100 is
+0.000 and 300/300 images stay half-certified. The ISIC ablation ties it to the
+scatter rule: A9 (rule cut) makes Q100 claim 100%, so the mechanism is right
+and the calibration is slightly off for ISIC texture at exactly one operating
+point. It is reported here rather than tuned away, and it is the reason the
+claim is "zero false claims at 19 of 20 envelope points", not "at every point".
 
 ---
 
@@ -195,12 +236,15 @@ whole method.
 
 ## 6. What is next, in order
 
-0. **Re-run ISIC-300 and the full 2594** with the current configuration
-   (A-021, A-029, A-030, A-031, A-032). `docs/REPRODUCE.md` §2. This is the one
-   claim still validated on a reproducer rather than on the primary corpus.
-1. **Push condition 21 past recall.** IoU 0.284 and 5.9% of changed blocks
-   judged from refused neighbours. Needs a rule that reasons about *why* a
-   block has no evidence, not a threshold change.
+0. ~~Re-run ISIC-300 and the full 2594~~ **Done 2026-10-21.** All four data
+   bars met at n=2594 with zero violations; the A-021 and A-030 predictions
+   confirmed on the primary corpus. Two follow-ups came out of it: the Q100
+   envelope residual on ISIC (§3.12 — recalibrate the scatter rule for ISIC
+   texture, or state the operating point as the limitation), and latency on
+   that laptop (58.6 ms; no constant was changed).
+1. **Push condition 21 past recall.** IoU 0.284 (PH2) / 0.272 (ISIC) and 5.9%
+   of changed blocks judged from refused neighbours. Needs a rule that reasons
+   about *why* a block has no evidence, not a threshold change.
 2. **A held-out split.** `bench.py --offset` exists for it; every constant was
    chosen on these 200 images, and the honest test is the corpus the choices
    never saw (ISIC).
