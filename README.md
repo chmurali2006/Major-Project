@@ -31,3 +31,6 @@ claim. See each output's source fingerprint and scope before using its numbers.
 Use a fresh `isic2019-rgb-auth-v2` study. Old checkpoints are incompatible.
 Protected images require lossless storage. Public benchmark keys are not
 production secrets; learned predictions cannot override failed authentication.
+
+Historical `src/pipeline.py` and `scripts/bench.py` retain the earlier classical
+implementation through `legacy_carriers`/`legacy_metrics`; they are not v2 runners.

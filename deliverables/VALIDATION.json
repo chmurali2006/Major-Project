@@ -38,12 +38,21 @@
     "rgb-auth-v2-wiring.log"
   ],
   "historical_measurement_source_sha256": "1ee6a8a57bb07cc3670f3d944f76f9288ebfe4a792b97dc210243c6120b0e8de",
-  "current_source_sha256": "55ece55ef76a465863bd73d74f570242e599e9edbfa8eaf1a19b2442c10d1349",
+  "current_source_sha256": "1c2724442842fc601d3b0a219783413d1ddeedf4febd109c62f8526dcebbd45a",
   "documentation_cleanup": {
     "markdown_files": 6,
     "regression_tests_passed": 170,
     "notebook_cells_compile": 7,
     "fresh_counterexample_and_cpu_crash_probe_source": "55ece55ef76a465863bd73d74f570242e599e9edbfa8eaf1a19b2442c10d1349",
     "scope": "Documentation references and packaging consolidated; full ISIC/GPU checks were not rerun. Earlier image/fidelity measurements retain their original source fingerprints."
+  },
+  "merge_validation": {
+    "base": "dev",
+    "cpu_tests_passed": 211,
+    "notebook_cells_compile": 7,
+    "extracted_source_wiring": "passed: main/attention, resume, corruption recovery, data/source rejection and export",
+    "fresh_rgb_counterexamples_and_cpu_crash_probe": "passed",
+    "legacy_compatibility": "Retained dev classical carriers/metrics under distinct legacy module names; legacy tests pass.",
+    "scope": "CPU checks only; historical image/ablation measurements retain original source fingerprints."
   }
 }

@@ -174,3 +174,14 @@ def test_documentation_stays_small_and_local_links_resolve():
         for target in re.findall(r'\[[^\]]+\]\(([^)]+)\)',path.read_text()):
             if '://' not in target and not target.startswith('#'):
                 assert (path.parent/target.split('#')[0]).exists(), (name,target)
+
+
+
+def test_portable_source_contains_retained_nested_classical_modules(tmp_path):
+    import zipfile
+    from package_project import build
+    archive=build(tmp_path/'source.zip')
+    with zipfile.ZipFile(archive) as z:
+        assert 'src/battery/conditions.py' in z.namelist()
+        assert 'src/legacy_carriers.py' in z.namelist()
+        assert 'src/legacy_metrics.py' in z.namelist()
