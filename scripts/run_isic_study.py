@@ -27,6 +27,7 @@ from src.persistence import source_digest, atomic_write, atomic_json, seal_artif
 from src.isic_meta import Metadata
 from src.names import model_name
 from src.ablations import ABLATIONS, configure
+from src.prediction_diagnostics import map_diagnostics, collapse_summary
 from src.authentic_training import pretrain_authentic
 META = Metadata(None)
 
@@ -333,13 +334,16 @@ def main():
         # Margin to the frozen count boundary; NOT a posterior probability.
         confidence = lambda blocks: np.array([abs((b > tau).sum() - (k + .5)) /
                                   (abs((b > tau).sum() - (k + .5)) + 64) for b in blocks])
+        vd = map_diagnostics(val, vb, vp, tau)
+        td = map_diagnostics(test, tb, tp, tau)
         vc, tc = confidence(vb), confidence(tb)
         vy = np.array([pc == s.cls for pc,s in zip(vpc,val)])
         ty = np.array([pc == s.cls for pc,s in zip(tpc,test)])
         rule = fit_selective_rule(vc, vy)
         accept = rule.accept(tc)
         atomic_write(args.out / f'{cid}_validation.npz', lambda f: np.savez(f, image_id=manifest['val'],
-                 confidence=vc, correct=vy))
+                 confidence=vc, correct=vy, tampered=[s.cls for s in val],
+                 prediction=vpc, tau=tau, k=k, **vd))
         if args.heldout:
             idx = [i for i,s in enumerate(test) if s.family == args.heldout]
             r['heldout'] = {'family': args.heldout, 'n': len(idx),
@@ -354,6 +358,7 @@ def main():
                   'image_classifier': 'binary auxiliary head; verdict uses validation-fitted block count',
                   'trainable_parameters': sum(p.numel() for module in ('refine','saliency','ae') for p in model[module].parameters() if p.requires_grad),
                   'total_parameters': sum(p.numel() for module in ('refine','saliency','ae') for p in model[module].parameters()),
+                  'prediction_diagnostics': {'validation': collapse_summary(vd), 'test': collapse_summary(td)},
                   'tau': tau, 'k': k, 'seconds': time.time()-t0,
                   'aurc': risk_coverage(tc,ty)['aurc'],
                   'selective': {'feasible_on_validation': rule.feasible,
@@ -365,7 +370,7 @@ def main():
                       'test_coverage': float(accept.mean()),
                       'test_risk': float((~ty[accept]).mean()) if accept.any() else None}})
         atomic_write(args.out / f'{cid}_verdicts.npz', lambda f: np.savez(f, image_id=manifest['test'], **pairing, **integrity_packet,
-                 confidence=tc, correct=ty, prediction=tpc, selective_accept=accept,
+                 confidence=tc, correct=ty, prediction=tpc, selective_accept=accept, tau=tau, k=k, **td,
                  selective_verdict=np.where(accept, np.where(np.array(tpc)==1,'TAMPERED','INTACT'),'CANNOT_SAY'),
                  iou=[R.M.iou(p>tau,s.gt_pixel) for p,s in zip(tp,test)],
                  tampered=[s.cls for s in test]))

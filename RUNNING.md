@@ -3,6 +3,21 @@
 Read [PROTOCOL_V2.md](PROTOCOL_V2.md) before a measured study. Start with a wiring
 check; CPU checks do not establish GPU readiness or scientific performance.
 
+The notebook now defaults to `STAGE = 'diagnostic'`: seven images from the fixed
+TRAIN partition, 20 localisation epochs per model, no validation/test evaluation.
+Download `learning-diagnostic-v2-results.zip`. Both the unchanged shared decision
+rule and a separately labelled pixel-only TRAIN operating point are reported;
+neither is a generalisation result. Do not restore the old wiring-check output
+into this diagnostic. Strict CUDA operations must succeed without suppressed warnings.
+
+Local plumbing check (synthetic only):
+```sh
+python scripts/diagnose_learning.py --synthetic --out /tmp/keyswm-diagnostic --epochs 20 --device cpu
+```
+For ISIC training-only diagnostics outside the notebook, replace `--synthetic` with
+`--data <image-root> --metadata <ground-truth.csv>` and use `--device cuda`.
+Use a new output directory. Cached pixels are temporary, not exported.
+
 ## Local setup
 
 Use Python 3.11 and a virtual environment:

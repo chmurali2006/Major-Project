@@ -536,6 +536,7 @@ def train(model, train_s: list[Sample], val_s: list[Sample], *,
         to_train(model)
         order = np.random.default_rng(ep).permutation(len(train_s))
         run = 0.0
+        loss_parts = {}
         for b in range(0, len(order), batch):
             chunk = [train_s[i] for i in order[b:b + batch]]
             opt.zero_grad()
@@ -544,12 +545,14 @@ def train(model, train_s: list[Sample], val_s: list[Sample], *,
                 t = to_tensor(s)
                 out = forward_all(model, t)
                 cls_t = t["cls"]  # real INTACT/TAMPERED labels; no fabricated abstain target
-                loss, _ = models.total_loss(out, t["gt_block"], t["gt_pixel"], cls_t,
+                loss, parts = models.total_loss(out, t["gt_block"], t["gt_pixel"], cls_t,
                                             w_pixel=1.0 if model["use_pixel"] else 0.0,
                                             w_consistency=.5 if model["use_pixel"] else 0.0,
                                             pos_weight=pos_weight,
                                             pos_weight_pixel=pos_weight_pixel)
                 total = total + loss
+                for name, value in parts.items():
+                    loss_parts[name] = loss_parts.get(name, 0.) + value
             if not torch.isfinite(total):
                 raise FloatingPointError('nonfinite localisation/classification training loss')
             (total / len(chunk)).backward()
@@ -559,7 +562,8 @@ def train(model, train_s: list[Sample], val_s: list[Sample], *,
         tau_v, v = tune_learned_tau(model, val_s)
         log(f"    epoch {ep + 1:3d}  loss {run / max(1, len(order) // batch):.4f}"
             f"  val IoU {v['iou_mean']:.4f}  val blk-acc {v['block_acc']:.4f}"
-            f"  @tau {tau_v:.2f}  elapsed {(time.monotonic()-epoch_started)/60:.2f} min")
+            f"  @tau {tau_v:.2f}  elapsed {(time.monotonic()-epoch_started)/60:.2f} min"
+            + '  losses ' + ' '.join(f'{name}={value/len(order):.4f}' for name,value in loss_parts.items()))
         if v["iou_tampered_mean"] > best:
             best, best_state = v["iou_tampered_mean"], {
                 k: {n: x.detach().clone() for n, x in sd.items()}

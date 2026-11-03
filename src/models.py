@@ -236,8 +236,10 @@ class StageAttention(nn.Module):
         self.spatial = nn.Conv2d(2, 1, 7, padding=3, bias=False)
 
     def forward(self, x):
+        # Indexed global max preserves adaptive-max-pool tie gradients while
+        # avoiding its nondeterministic CUDA backward implementation.
         gate = torch.sigmoid(self.channel(F.adaptive_avg_pool2d(x, 1)) +
-                             self.channel(F.adaptive_max_pool2d(x, 1)))
+                             self.channel(x.flatten(2).max(dim=2, keepdim=True).values.unsqueeze(-1)))
         x = x * gate
         summary = torch.cat([x.mean(1, keepdim=True), x.amax(1, keepdim=True)], 1)
         return x * torch.sigmoid(self.spatial(summary))

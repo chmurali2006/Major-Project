@@ -92,7 +92,8 @@ def test_compare_hashes_current_packets(tmp_path):
 
 
 @pytest.mark.parametrize('study_rc,summary_fail,export_fail',[(1,True,False),(1,True,True),(0,True,False),(0,False,True)])
-def test_finalization_attempts_export_and_preserves_primary_failure(study_rc,summary_fail,export_fail):
+@pytest.mark.parametrize('diagnostic', [False, True])
+def test_finalization_attempts_export_and_preserves_primary_failure(study_rc,summary_fail,export_fail,diagnostic,tmp_path):
     tree=ast.parse((ROOT/'scripts/build_notebook.py').read_text())
     cell=next(node.value for node in ast.walk(tree) if isinstance(node,ast.Constant)
               and isinstance(node.value,str) and node.value.startswith('cmd = [sys.executable'))
@@ -103,19 +104,20 @@ def test_finalization_attempts_export_and_preserves_primary_failure(study_rc,sum
         if (script=='summarize_isic_study.py' and summary_fail) or (script=='export_results.py' and export_fail):
             raise subprocess.CalledProcessError(2,cmd)
         return SimpleNamespace(returncode=0)
-    child=SimpleNamespace(wait=lambda:study_rc,poll=lambda:study_rc)
-    fake=SimpleNamespace(Popen=lambda *a,**kw:child,run=run)
+    child=SimpleNamespace(wait=lambda:study_rc,poll=lambda:study_rc,stdout=['training output\n'])
+    fake=SimpleNamespace(Popen=lambda *a,**kw:child,run=run,PIPE=subprocess.PIPE,STDOUT=subprocess.STDOUT)
     ns=dict(subprocess=fake,sys=sys,Path=Path,PROJECT=ROOT,DATA=Path('/fresh/data'),CANONICAL_CSV=Path('/fresh/labels.csv'),
-            RUNS=Path('/fresh/runs'),CACHE=Path('/fresh/cache'),SEED=0,TRAIN_N=7,VAL_N=7,TEST_N=7,EPOCHS=1,
+            RUNS=tmp_path,CACHE=Path('/fresh/cache'),SEED=0,TRAIN_N=7,VAL_N=7,TEST_N=7,EPOCHS=1,
             AUTHENTIC_EPOCHS=2,WIDTH=4,RESUME=False,SANITY=True,STAGE='check',RUN_NAME='fresh-check',
-            shutil=SimpleNamespace(copy2=Mock()))
-    with pytest.raises(RuntimeError) as exc:
-        exec(compile(cell,'<fresh finalization probe>','exec'),ns)
-    assert calls==['summarize_isic_study.py','export_results.py']
-    if study_rc:
-        assert str(exc.value).startswith('Study failed:')
+            shutil=SimpleNamespace(copy2=Mock()),json=json,DIAGNOSTIC=diagnostic,DIAGNOSTIC_EPOCHS=1)
+    if study_rc or export_fail or (summary_fail and not diagnostic):
+        with pytest.raises(RuntimeError) as exc:
+            exec(compile(cell,'<fresh finalization probe>','exec'),ns)
+        assert str(exc.value).startswith('Study failed:' if study_rc else 'Finalization failed:')
     else:
-        assert str(exc.value).startswith('Finalization failed:')
+        exec(compile(cell,'<fresh finalization probe>','exec'),ns)
+    assert calls == (['export_results.py'] if diagnostic else ['summarize_isic_study.py','export_results.py'])
+    assert 'training output' in (tmp_path/'execution.log').read_text()
 
 
 def test_mixed_training_recipe_cannot_be_aggregated(tmp_path):
@@ -137,7 +139,7 @@ def test_notebook_full_stages_require_unresolved_design_acknowledgment():
     exec(cell,ns)
     assert ns['SANITY'] and ns['TRAIN_N']==ns['VAL_N']==ns['TEST_N']==7
     with pytest.raises(RuntimeError,match='Full run blocked'):
-        exec(cell.replace("STAGE = 'check'", "STAGE = 'main-model'"),{'Path':Path})
+        exec(cell.replace("STAGE = 'diagnostic'", "STAGE = 'main-model'"),{'Path':Path})
 
 
 def test_notebook_rejects_unknown_cached_modules_before_extracting(tmp_path):
