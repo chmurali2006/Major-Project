@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.venv/
+runs/
+data/
+datasets/
+*.pt
+*.pth
+*.npy
+.pytest_cache/

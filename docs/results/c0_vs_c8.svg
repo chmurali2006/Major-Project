@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 820" width="381mm" height="208mm" data-units="1500x820">
+<defs><pattern id="hatch" width="6" height="6" patternTransform="rotate(45)" patternUnits="userSpaceOnUse"><line x1="0" y1="0" x2="0" y2="6" stroke="#ffffff" stroke-width="2"/></pattern></defs>
+<rect x="0" y="0" width="1500" height="820" fill="#ffffff"/>
+<text x="70" y="48" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="20" fill="#101010" font-weight="700" text-anchor="start">The learned half lifts localisation against its own control</text>
+<text x="70" y="72" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="11.5" fill="#3a3a3a" font-weight="400" text-anchor="start">Same split, same tamper families, same protocol. 120 real dermoscopic images (PH2), split 60/20/20 by lesion group; 24 held out and opened once.</text>
+<line x1="110" y1="550.0" x2="670" y2="550.0" stroke="#dcdcdc" stroke-width="1"/>
+<text x="100" y="554.0" font-family="SF Mono, Menlo, Consolas, monospace" font-size="10.5" fill="#6b6b6b" font-weight="400" text-anchor="end">0.0</text>
+<line x1="110" y1="466.0" x2="670" y2="466.0" stroke="#dcdcdc" stroke-width="1"/>
+<text x="100" y="470.0" font-family="SF Mono, Menlo, Consolas, monospace" font-size="10.5" fill="#6b6b6b" font-weight="400" text-anchor="end">0.2</text>
+<line x1="110" y1="382.0" x2="670" y2="382.0" stroke="#dcdcdc" stroke-width="1"/>
+<text x="100" y="386.0" font-family="SF Mono, Menlo, Consolas, monospace" font-size="10.5" fill="#6b6b6b" font-weight="400" text-anchor="end">0.4</text>
+<line x1="110" y1="298.0" x2="670" y2="298.0" stroke="#dcdcdc" stroke-width="1"/>
+<text x="100" y="302.0" font-family="SF Mono, Menlo, Consolas, monospace" font-size="10.5" fill="#6b6b6b" font-weight="400" text-anchor="end">0.6</text>
+<line x1="110" y1="214.0" x2="670" y2="214.0" stroke="#dcdcdc" stroke-width="1"/>
+<text x="100" y="218.0" font-family="SF Mono, Menlo, Consolas, monospace" font-size="10.5" fill="#6b6b6b" font-weight="400" text-anchor="end">0.8</text>
+<line x1="110" y1="130.0" x2="670" y2="130.0" stroke="#dcdcdc" stroke-width="1"/>
+<text x="100" y="134.0" font-family="SF Mono, Menlo, Consolas, monospace" font-size="10.5" fill="#6b6b6b" font-weight="400" text-anchor="end">1.0</text>
+<line x1="110" y1="550" x2="670" y2="550" stroke="#101010" stroke-width="1.4"/>
+<text x="110" y="116" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="12" fill="#101010" font-weight="700" text-anchor="start">LOCALISATION IoU</text>
+<line x1="110" y1="124" x2="670" y2="124" stroke="#101010" stroke-width="1.1"/>
+<rect x="180" y="323.8575701855189" width="120" height="226.1424298144811" fill="#8a8a8a"/>
+<text x="240.0" y="313.8575701855189" font-family="SF Mono, Menlo, Consolas, monospace" font-size="15" fill="#101010" font-weight="700" text-anchor="middle">0.5384</text>
+<text x="240.0" y="570" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="11.5" fill="#3a3a3a" font-weight="600" text-anchor="middle">C0</text>
+<text x="240.0" y="586" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="11.5" fill="#3a3a3a" font-weight="600" text-anchor="middle">classical</text>
+<rect x="390" y="189.34268369597532" width="120" height="360.6573163040247" fill="#1f4e79"/>
+<text x="450.0" y="179.34268369597532" font-family="SF Mono, Menlo, Consolas, monospace" font-size="15" fill="#101010" font-weight="700" text-anchor="middle">0.8587</text>
+<text x="450.0" y="570" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="11.5" fill="#3a3a3a" font-weight="600" text-anchor="middle">C8</text>
+<text x="450.0" y="586" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="11.5" fill="#3a3a3a" font-weight="600" text-anchor="middle">learned</text>
+<line x1="300" y1="323.8575701855189" x2="345.0" y2="323.8575701855189" stroke="#6b6b6b" stroke-width="1.1" stroke-dasharray="4 3"/>
+<line x1="300" y1="189.34268369597532" x2="345.0" y2="189.34268369597532" stroke="#6b6b6b" stroke-width="1.1" stroke-dasharray="4 3"/>
+<line x1="345.0" y1="323.8575701855189" x2="345.0" y2="189.34268369597532" stroke="#1f4e79" stroke-width="2.2"/>
+<path d="M 340.0 198.34268369597532 L 345.0 189.34268369597532 L 350.0 198.34268369597532" fill="none" stroke="#1f4e79" stroke-width="2.2"/>
+<text x="339.0" y="254.60012694074715" font-family="SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#1f4e79" font-weight="700" text-anchor="end">+0.3203</text>
+<text x="339.0" y="269.60012694074715" font-family="SF Mono, Menlo, Consolas, monospace" font-size="9.5" fill="#6b6b6b" font-weight="400" text-anchor="end">IoU</text>
+<text x="760" y="116" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="12" fill="#101010" font-weight="700" text-anchor="start">FALSE CLAIMS</text>
+<line x1="760" y1="124" x2="1040" y2="124" stroke="#101010" stroke-width="1.1"/>
+<rect x="800" y="170.0" width="70" height="150.0" fill="#8a8a8a"/>
+<text x="835" y="162.0" font-family="SF Mono, Menlo, Consolas, monospace" font-size="13" fill="#101010" font-weight="700" text-anchor="middle">3 / 3</text>
+<text x="835" y="338" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="11" fill="#3a3a3a" font-weight="600" text-anchor="middle">C0</text>
+<line x1="910" y1="320" x2="980" y2="320" stroke="#1f4e79" stroke-width="3"/>
+<text x="945" y="312.0" font-family="SF Mono, Menlo, Consolas, monospace" font-size="13" fill="#101010" font-weight="700" text-anchor="middle">0 / 3</text>
+<text x="945" y="338" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="11" fill="#3a3a3a" font-weight="600" text-anchor="middle">C8</text>
+<text x="760" y="378" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.5" fill="#3a3a3a" font-weight="400" text-anchor="start">benign images wrongly flagged</text>
+<text x="760" y="394" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.5" fill="#3a3a3a" font-weight="400" text-anchor="start">as tampered</text>
+<text x="1110" y="116" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="12" fill="#101010" font-weight="700" text-anchor="start">THE SECURITY CONTROLS</text>
+<line x1="1110" y1="124" x2="1430" y2="124" stroke="#101010" stroke-width="1.1"/>
+<text x="1110" y="152" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.5" fill="#3a3a3a" font-weight="400" text-anchor="start">C8  same key</text>
+<text x="1430" y="152" font-family="SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#101010" font-weight="700" text-anchor="end">0.8587</text>
+<text x="1110" y="171" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.5" fill="#3a3a3a" font-weight="400" text-anchor="start">C10  key never seen in training</text>
+<text x="1430" y="171" font-family="SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#101010" font-weight="700" text-anchor="end">0.7853</text>
+<text x="1110" y="190" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.5" fill="#3a3a3a" font-weight="400" text-anchor="start">C10  key denied entirely</text>
+<text x="1430" y="190" font-family="SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#b03a2e" font-weight="700" text-anchor="end">0.1047</text>
+<text x="1110" y="215" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.5" fill="#b03a2e" font-weight="600" text-anchor="start">memorisation cost  -0.0734</text>
+<text x="1110" y="232" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.5" fill="#b03a2e" font-weight="700" text-anchor="start">gate: drop &lt;= 0.05  -&gt;  FAIL</text>
+<text x="1110" y="258" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.2" fill="#3a3a3a" font-weight="400" text-anchor="start">A denied key collapses the reader to</text>
+<text x="1110" y="273" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.2" fill="#3a3a3a" font-weight="400" text-anchor="start">chance. That is the property working:</text>
+<text x="1110" y="288" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.2" fill="#3a3a3a" font-weight="400" text-anchor="start">without the key there is no evidence</text>
+<text x="1110" y="303" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.2" fill="#3a3a3a" font-weight="400" text-anchor="start">to read, so nothing can be fabricated.</text>
+<line x1="70" y1="670" x2="1430" y2="670" stroke="#b9b9b9" stroke-width="1"/>
+<text x="70" y="694" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="11.5" fill="#101010" font-weight="700" text-anchor="start">What this figure does and does not show</text>
+<text x="70" y="716" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.5" fill="#3a3a3a" font-weight="400" text-anchor="start">PH2 is a stand-in corpus, not a benchmark: ISIC 2019 was unreachable from the machine these runs were made on. A PH2 number must never be presented as an ISIC number.</text>
+<text x="70" y="732" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.5" fill="#3a3a3a" font-weight="400" text-anchor="start">The learned model is 0.64 M parameters at 5 epochs on 72 training images. The reference system reports 15.1 M at convergence, so this is not a capacity-matched comparison.</text>
+<text x="70" y="748" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.5" fill="#3a3a3a" font-weight="400" text-anchor="start">The memorisation gate fails at +0.0734 against a bound of 0.05 and is printed rather than dropped. Nothing here beats the published 0.832, which is a LiTS pixel-level figure and was not reproduced.</text>
+</svg>

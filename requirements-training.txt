@@ -1,0 +1,6 @@
+-r requirements.txt
+# NumPy <2 also supports older Torch wheels on CPU-only Python 3.11 hosts.
+torch>=2.2
+pytest>=8
+matplotlib>=3.8
+PyWavelets>=1.5
