@@ -1,0 +1,28 @@
+{
+  "source_sha256": "862b25610d43566b64baac29517c24673e2693e7fddd0330a29e0cb0666f69b5",
+  "python": "3.11.2",
+  "torch": "2.2.2+cu121",
+  "numpy": "1.26.4",
+  "device_tested": "cpu",
+  "unit_tests": {
+    "passed": 119
+  },
+  "portable_integration": {
+    "source_zip_without_git": "passed",
+    "synthetic_disk_images": "passed",
+    "C8_C12_training": "passed",
+    "rekey_wrong_key_probes": "passed",
+    "completed_job_resume": "passed",
+    "unchanged_cache_reuse": "passed",
+    "changed_input_resume_rejected": "passed",
+    "changed_source_resume_rejected": "passed",
+    "result_zip_export": "passed"
+  },
+  "epoch_resume": "bitwise equality to uninterrupted CPU training tested",
+  "not_verified": [
+    "Kaggle notebook execution",
+    "CUDA execution",
+    "full ISIC multi-seed training"
+  ],
+  "note": "Portability/wiring verification only; not new scientific results."
+}

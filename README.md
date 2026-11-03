@@ -5,6 +5,22 @@ localisation and calibrated abstention, extended into a synthesis study that
 assembles the best published answer to each sub-problem and measures the assembly
 against every constituent on a protocol frozen in code.
 
+## Run this project (current entrypoints)
+
+**Start with [RUNNING.md](RUNNING.md)** for local GPU/CPU or Kaggle execution, persistent
+outputs, exact commands, interruption recovery and limitations.
+
+- Local: `scripts/run_suite.py` (same pipeline used by Kaggle).
+- Kaggle: `notebooks/keyswm_isic2019.ipynb`, generated from the portable source ZIP.
+- Checks: `python scripts/preflight.py`, then `python -m pytest -q`.
+- Downloads: `deliverables/keyswm-project.zip`; no dataset pixels or credentials.
+- Resume: completed-epoch model/optimizer/RNG checkpoints plus immutable source/data/settings checks.
+
+Use Kaggle GPU if you do not have a usable local NVIDIA GPU. Save/download outputs;
+interactive session storage alone is not a durable backup. GPU execution is not
+validated in the Arena CPU environment. Historical figures below are **not** new
+portable-study results; use the current run's receipts and split manifest.
+
 ---
 
 ## The one-paragraph version
@@ -31,16 +47,15 @@ is traceable to a receipt.**
 
 ## Status
 
-| layer | state | evidence |
+| layer | current implementation state | evidence |
 |---|---|---|
-| keyed protect / verify / three-way verdict | **built and measured** | receipt `isic-full-v8`, 12 970 images, clean tree |
-| protocol, metrics, tamper synthesis, evidence channel | **built** | `src/`, 86 tests (78 without torch) |
-| learned refinement (AE, PixelRefineNet, saliency, three-way head) | **built and unit-tested, never trained** | forward pass verified, gradients asserted, **no result** |
-| the C0–C11 matrix | **designed, not run** | `src/protocol.py` |
+| keyed dual carrier, tamper synthesis and learned models | implemented | `src/`, automated tests |
+| C8/C12 attention ablation and count controls | runnable; no claim that Carrier B improves results | `scripts/run_isic_study.py`, preserved numerical receipts under `results/` |
+| seeded suite, abstention, key probes, held-out T5 and paired bootstrap | implemented; full multi-seed measurements remain to be completed | `scripts/run_suite.py` |
+| portable execution, persistence and epoch resume | CPU-tested; Kaggle/CUDA verification required | `RUNNING.md`, `tests/test_persistence.py` |
 
-The third row is why the matrix is labelled *designed, not run* everywhere in
-this repository. Any document, figure or slide that omits that label is claiming
-twelve results that do not exist.
+Do not infer completion of experiments from completion of implementation.
+The legacy notebook implementation has been replaced with the canonical CLI source.
 
 ---
 

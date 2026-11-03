@@ -445,7 +445,8 @@ def load_state(model, st):
 
 def train(model, train_s: list[Sample], val_s: list[Sample], *,
           epochs: int, batch: int, lr: float, smoke: bool,
-          pos_weight: float = 1.0, pos_weight_pixel: float = 1.0, log=print):
+          pos_weight: float = 1.0, pos_weight_pixel: float = 1.0, log=print,
+          checkpoint_path=None, resume=False, run_id=None, device="auto"):
     """Train with the single objective from `models.total_loss`.
 
     Only the heads named by `total_loss` receive gradient, and the tests assert
@@ -455,7 +456,7 @@ def train(model, train_s: list[Sample], val_s: list[Sample], *,
     import torch
     from src import models
 
-    dev = "cuda" if torch.cuda.is_available() else "cpu"
+    dev = ("cuda" if torch.cuda.is_available() else "cpu") if device == "auto" else device
     model["refine"] = model["refine"].to(dev)
     model["saliency"] = model["saliency"].to(dev)
     if model["ae"] is not None:
@@ -476,7 +477,21 @@ def train(model, train_s: list[Sample], val_s: list[Sample], *,
     n_cls = model["refine"].cls_head[-1].out_features
     best, best_state = -1.0, None
 
-    for ep in range(epochs):
+    start_epoch = 0
+    if checkpoint_path is not None and resume and Path(checkpoint_path).exists():
+        from src.persistence import load_checkpoint
+        ck = load_checkpoint(checkpoint_path, dev)
+        if ck['run_id'] != run_id:
+            raise ValueError('checkpoint configuration/source mismatch')
+        load_state(model, ck['model'])
+        opt.load_state_dict(ck['optimizer'])
+        best, best_state, start_epoch = ck['best'], ck['best_state'], ck['epoch']
+        torch.set_rng_state(ck['rng'].cpu())
+        if dev.startswith('cuda') and ck.get('cuda_rng') is not None:
+            torch.cuda.set_rng_state_all([t.cpu() for t in ck['cuda_rng']])
+        log(f'Loaded completed epoch {start_epoch}/{epochs}; restoring training/best state')
+
+    for ep in range(start_epoch, epochs):
         to_train(model)
         order = np.random.default_rng(ep).permutation(len(train_s))
         run = 0.0
@@ -504,6 +519,15 @@ def train(model, train_s: list[Sample], val_s: list[Sample], *,
             best, best_state = v["iou_tampered_mean"], {
                 k: {n: x.detach().clone() for n, x in sd.items()}
                 for k, sd in state_of(model).items()}
+        if checkpoint_path is not None:
+            from src.persistence import atomic_write
+            checkpoint = {'run_id': run_id, 'epoch': ep + 1,
+                          'model': state_of(model), 'optimizer': opt.state_dict(),
+                          'best': best, 'best_state': best_state,
+                          'rng': torch.get_rng_state(),
+                          'cuda_rng': torch.cuda.get_rng_state_all() if dev.startswith('cuda') else None}
+            atomic_write(checkpoint_path, lambda f: torch.save(checkpoint, f))
+            log(f'Checkpoint saved after epoch {ep + 1}')
     if best_state is not None:
         load_state(model, best_state)
     return model

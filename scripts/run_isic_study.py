@@ -9,6 +9,8 @@ import hashlib
 import json
 from pathlib import Path
 import random
+import os
+os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":4096:8")
 import sys
 import time
 import numpy as np
@@ -20,6 +22,7 @@ import run_matrix as R
 from src import evidence as E, protocol as P
 from src.classical import fit_count_rule
 from src.calibration import fit_selective_rule, risk_coverage
+from src.persistence import source_digest, atomic_write, atomic_json
 from src.isic_meta import Metadata
 META = Metadata(None)
 
@@ -54,6 +57,13 @@ def cache(paths, indices, out, families, seed, key=b'isic-study-key', wrong=Fals
     result = []
     for j, idx in enumerate(indices):
         dst = out / f'{idx}.npz'
+        if dst.exists():
+            try:
+                DiskSamples([dst])[0]
+                result.append(dst)
+                continue
+            except (ValueError, OSError, KeyError, EOFError):
+                pass  # a corrupt cache entry is rebuilt, never trusted
         it = item(paths[idx], int(idx), key)
         fam = families[j % len(families)]
         # Donors stay within this partition; no train/test content leakage.
@@ -61,7 +71,7 @@ def cache(paths, indices, out, families, seed, key=b'isic-study-key', wrong=Fals
                      int(indices[(j + 1) % len(indices)]), key) if fam == 'T5' else None
         s = R.build_sample(it, fam, np.random.default_rng(seed + int(idx)),
                            wrong_key=wrong, donor=donor)
-        np.savez(dst, **asdict(s))
+        atomic_write(dst, lambda f: np.savez(f, **asdict(s)))
         result.append(dst)
         if j % 100 == 0:
             print(f'cache {out.name}: {j}/{len(indices)}', flush=True)
@@ -106,26 +116,43 @@ def main():
     ap.add_argument('--seed', type=int, default=0)
     ap.add_argument('--configs', default='C8,C12')
     ap.add_argument('--probes', action='store_true')
+    ap.add_argument('--resume', action='store_true')
+    ap.add_argument('--sanity', action='store_true', help='wiring check only; receipts marked not usable as results')
+    ap.add_argument('--device', choices=['auto','cpu','cuda'], default='auto')
+    ap.add_argument('--threads', type=int, default=2)
     ap.add_argument('--heldout', choices=['T1','T2','T3','T4','T5'], default=None)
     args = ap.parse_args()
     if ROOT == args.cache.resolve() or ROOT in args.cache.resolve().parents:
         raise ValueError('cache contains pixels and must be outside the repository')
+    cache_path, output_path = args.cache.resolve(), args.out.resolve()
+    if cache_path == output_path or output_path in cache_path.parents:
+        raise ValueError('cache must not be inside the persistent output directory')
+    if args.data.resolve() == output_path or output_path in args.data.resolve().parents:
+        raise ValueError('dataset must not be inside the persistent output directory')
     if args.epochs < 1:
         raise ValueError('epochs must be positive')
     import torch
-    torch.set_num_threads(2)
+    torch.set_num_threads(args.threads)
+    if args.device == "cuda" and not torch.cuda.is_available():
+        raise ValueError("CUDA requested but no usable GPU is available")
     random.seed(args.seed)
     np.random.seed(args.seed)
     torch.manual_seed(args.seed)
-    torch.use_deterministic_algorithms(True)
+    # CUDA pooling/interpolation kernels vary by Torch release. Prefer
+    # deterministic implementations, but surface warnings rather than make a
+    # supported GPU unusable. CPU remains strict and bitwise-resume tested.
+    gpu_run = args.device != 'cpu' and torch.cuda.is_available()
+    torch.use_deterministic_algorithms(True, warn_only=gpu_run)
     if min(args.train_n, args.val_n, args.test_n) < 7:
         raise ValueError('each partition requires at least 7 images')
-    if args.out.exists() and any(args.out.iterdir()):
+    if args.out.exists() and any(args.out.iterdir()) and not args.resume:
         raise ValueError('refusing to overwrite an existing experiment')
     args.out.mkdir(parents=True, exist_ok=True)
     global META
     metadata = args.metadata or args.data / 'ISIC_2019_GroundTruth_deduplicated.csv'
     META = Metadata(metadata if metadata.exists() else None)
+    if not META.has_diagnosis:
+        raise ValueError('ISIC ground-truth CSV required; pass --metadata')
     paths = sorted(args.data.rglob('*.jpg'))
     if META.has_diagnosis:
         paths = [p for p in paths if p.stem in META.diagnosis]
@@ -148,9 +175,51 @@ def main():
     manifest['limitations'] = ['Image-level split: lesion/patient grouping unavailable.',
                                'Diagnosis labels are used when supplied; otherwise strata are UNK.',
                                'JPEG75 is a tamper event under fragile-integrity semantics.']
-    (args.out / 'manifest.json').write_text(json.dumps(manifest, indent=2))
+    source = source_digest(ROOT)
+    # Bind selected image bytes, not host-specific absolute paths or mtimes.
+    images_hash = hashlib.sha256()
+    for idx in sorted(set(int(i) for ids in selected for i in ids)):
+        images_hash.update(paths[idx].stem.encode())
+        images_hash.update(hashlib.sha256(paths[idx].read_bytes()).digest())
+    manifest['selected_images_sha256'] = images_hash.hexdigest()
+    manifest['diagnoses_sha256'] = hashlib.sha256(json.dumps(
+        {paths[i].stem: META.dx_of(paths[i].stem) for ids in selected for i in ids},
+        sort_keys=True).encode()).hexdigest()
+    settings = {k:v for k,v in vars(args).items()
+                if k not in ('data','out','cache','metadata','resume','device','threads')}
+    spec = {'source_sha256': source, 'settings': settings, 'manifest': manifest}
+    spec_path = args.out / 'experiment.json'
+    if spec_path.exists():
+        if json.loads(spec_path.read_text()) != spec:
+            raise ValueError('resume refused: source, data, split or settings changed; use a new output directory')
+    elif args.resume and any(args.out.iterdir()):
+        raise ValueError('legacy output has no resume contract; use a new output directory')
+    atomic_json(spec_path, spec)
+    atomic_json(args.out / 'manifest.json', manifest)
+    run_id = hashlib.sha256(json.dumps(spec, sort_keys=True).encode()).hexdigest()
+    import platform
+    import subprocess
+    environment = {'python': sys.version, 'platform': platform.platform(),
+                   'torch': torch.__version__, 'numpy': np.__version__,
+                   'cuda_available': torch.cuda.is_available(),
+                   'cuda_runtime': torch.version.cuda,
+                   'determinism': 'best-effort-warn' if gpu_run else 'strict',
+                   'gpu': torch.cuda.get_device_name() if torch.cuda.is_available() else None,
+                   'command': sys.argv, 'source_sha256': source,
+                   'packages': subprocess.check_output([sys.executable, '-m', 'pip', 'freeze'], text=True).splitlines()}
+    env_name = f'environment-resume-{time.time_ns()}.json' if args.resume else 'environment.json'
+    atomic_json(args.out / env_name, environment)
+    # Separate caches by input bytes, metadata, code and attack schedule.
+    cache_id = hashlib.sha256(json.dumps({'source': source, 'manifest': manifest,
+                                         'heldout': args.heldout}, sort_keys=True).encode()).hexdigest()[:24]
+    args.cache = args.cache / cache_id
     prov = R.provenance()
-    prov.update({'seed': args.seed, 'torch': torch.__version__,
+    if prov['commit'] == 'unknown':
+        # Portable source bundles have no Git checkout; still content-addressed.
+        prov.update({'usable': True, 'code_dirty': None, 'versioning': 'source_sha256'})
+    if args.sanity:
+        prov['usable'] = False
+    prov.update({'sanity': args.sanity, 'source_sha256': source, 'seed': args.seed, 'torch': torch.__version__,
                  'split_seed': 20261103,
                  'manifest_sha256': hashlib.sha256(json.dumps(manifest, sort_keys=True).encode()).hexdigest()})
     families = ['T1','T2','T3','T4','T5','none','B1:jpeg75']
@@ -160,11 +229,15 @@ def main():
                 for name, ids in zip(('train','val','test'), selected)]
     train, val, test = datasets
     def save(name, receipt):
-        receipt.update({'provenance': prov, 'usable': prov['usable'], 'protocol': 'isic-study-v2',
+        receipt.update({'provenance': prov, 'usable': prov['usable'], 'protocol': 'isic-study-v3-portable',
                         'parameters': {k: str(v) if isinstance(v, Path) else v for k,v in vars(args).items()}})
-        (args.out / f'{name}.json').write_text(json.dumps(receipt, indent=2, allow_nan=False))
+        atomic_json(args.out / f'{name}.json', receipt)
         print(name, receipt.get('iou_tampered_mean'), receipt.get('balanced_accuracy'), flush=True)
     for carrier_b in (False, True):
+        name = 'C0_B' if carrier_b else 'C0_count'
+        if args.resume and (args.out / f'{name}.json').exists() and (args.out / f'{name}_verdicts.npz').exists():
+            print(f'Skipping completed {name}', flush=True)
+            continue
         rule = fit_count_rule(val, carrier_b)
         outputs = [rule.predict(s.ev) for s in test]
         r = R.score(test, [m for m,c in outputs], [R.upsample(m) for m,c in outputs], [c for m,c in outputs])
@@ -177,13 +250,19 @@ def main():
     for cid in args.configs.split(','):
         if cid not in ('C8', 'C12'):
             raise ValueError('this paired runner supports C8,C12 only; use --heldout/--probes for probes')
+        if args.resume and (args.out / f'{cid}.json').exists() and all(
+            (args.out / f'{cid}_{suffix}').exists() for suffix in ('state.pt','validation.npz','verdicts.npz')):
+            print(f'Skipping completed {cid}', flush=True)
+            continue
         cfg = next(c for c in P.MATRIX if c.cid == cid)
         torch.manual_seed(args.seed)  # paired initialisation discipline
         model = R.build_model(cfg, E.N_FULL, args.width)
         t0 = time.time()
         model = R.train(model, train, val, epochs=args.epochs, batch=1, lr=3e-4,
-                        smoke=False, pos_weight=12., pos_weight_pixel=4.)
-        torch.save(R.state_of(model), args.out / f'{cid}_state.pt')
+                        smoke=False, pos_weight=12., pos_weight_pixel=4.,
+                        checkpoint_path=args.out / f'{cid}_checkpoint.pt',
+                        resume=args.resume, run_id=f'{run_id}:{cid}', device=args.device)
+        atomic_write(args.out / f'{cid}_state.pt', lambda f: torch.save(R.state_of(model), f))
         vb, vp = R.predict_maps(model, val)
         tau, k = learned_rule(val, list(zip(vb, vp)))
         _, vpc = verdicts(val, list(zip(vb, vp)), tau, k)
@@ -224,4 +303,18 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    from filelock import FileLock, Timeout
+    # Lock sits beside the output so it does not invalidate an empty-run check.
+    lock_parser = argparse.ArgumentParser(add_help=False)
+    lock_parser.add_argument('--out', type=Path)
+    lock_args, _ = lock_parser.parse_known_args()
+    if lock_args.out is None:
+        main()
+    else:
+        output = lock_args.out
+        output.parent.mkdir(parents=True, exist_ok=True)
+        try:
+            with FileLock(str(output) + '.lock', timeout=0):
+                main()
+        except Timeout:
+            raise SystemExit('another process is already writing this output directory')
