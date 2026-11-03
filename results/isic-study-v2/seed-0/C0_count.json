@@ -1,0 +1,142 @@
+{
+  "n": 1000,
+  "n_tampered": 857,
+  "n_intact": 143,
+  "iou_mean": 0.47499854454865204,
+  "iou_tampered_mean": 0.554257344864238,
+  "block_acc": 0.990606689453125,
+  "detection": 0.86,
+  "detection_denominator": "860 / 1000",
+  "false_claims": 1,
+  "n_intact_denominator": 143,
+  "true_positives": 718,
+  "tpr": 0.8378063010501751,
+  "fpr": 0.006993006993006993,
+  "balanced_accuracy": 0.915406647028584,
+  "by_diagnosis": [
+    {
+      "dx": "AK",
+      "n": 40,
+      "iou": 0.5696,
+      "small_n": false
+    },
+    {
+      "dx": "BCC",
+      "n": 119,
+      "iou": 0.519,
+      "small_n": false
+    },
+    {
+      "dx": "BKL",
+      "n": 101,
+      "iou": 0.4865,
+      "small_n": false
+    },
+    {
+      "dx": "DF",
+      "n": 12,
+      "iou": 0.5949,
+      "small_n": false
+    },
+    {
+      "dx": "MEL",
+      "n": 188,
+      "iou": 0.4734,
+      "small_n": false
+    },
+    {
+      "dx": "NV",
+      "n": 503,
+      "iou": 0.4582,
+      "small_n": false
+    },
+    {
+      "dx": "SCC",
+      "n": 27,
+      "iou": 0.4197,
+      "small_n": false
+    },
+    {
+      "dx": "VASC",
+      "n": 10,
+      "iou": 0.338,
+      "small_n": false
+    }
+  ],
+  "by_area": [
+    {
+      "bucket": "area_0.000-0.005",
+      "n": 128,
+      "median_radius_px": 16.6,
+      "iou": 0.1969,
+      "ceiling": 0.6789,
+      "small_n": false
+    },
+    {
+      "bucket": "area_0.005-0.020",
+      "n": 390,
+      "median_radius_px": 31.5,
+      "iou": 0.4771,
+      "ceiling": 0.8138,
+      "small_n": false
+    },
+    {
+      "bucket": "area_0.020-0.050",
+      "n": 184,
+      "median_radius_px": 48.3,
+      "iou": 0.6335,
+      "ceiling": 0.8439,
+      "small_n": false
+    },
+    {
+      "bucket": "area_0.050-0.200",
+      "n": 13,
+      "median_radius_px": 66.0,
+      "iou": 0.8135,
+      "ceiling": 0.8551,
+      "small_n": false
+    },
+    {
+      "bucket": "area_0.200-1.010",
+      "n": 142,
+      "median_radius_px": 284.5,
+      "iou": 0.9618,
+      "ceiling": 0.9843,
+      "small_n": false
+    }
+  ],
+  "rule": {
+    "tau": 0.4,
+    "k": 64,
+    "semi_weight": 0.0
+  },
+  "provenance": {
+    "commit": "6dc18a4",
+    "code_dirty": false,
+    "usable": true,
+    "python": "3.11.2",
+    "numpy": "1.26.4",
+    "started": "2026-11-03T10:42:53",
+    "seed": 0,
+    "torch": "2.2.2+cu121",
+    "split_seed": 20261103,
+    "manifest_sha256": "47cf4f949c3005556da3b06df28f90eeba8e0138efdf305ddd0ea9a7aac339c9"
+  },
+  "usable": true,
+  "protocol": "isic-study-v2",
+  "parameters": {
+    "data": "/tmp/isic2019",
+    "out": "runs/isic-study-v2/seed-0",
+    "metadata": null,
+    "cache": "/tmp/isic-study-cache",
+    "train_n": 2000,
+    "val_n": 150,
+    "test_n": 1000,
+    "epochs": 3,
+    "width": 16,
+    "seed": 0,
+    "configs": "C8,C12",
+    "probes": true,
+    "heldout": null
+  }
+}

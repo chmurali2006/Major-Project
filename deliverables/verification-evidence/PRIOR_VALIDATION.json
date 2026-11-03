@@ -1,0 +1,39 @@
+{
+  "source_sha256": "bcef892b2f19cb20346f909b0d690912a4d02a676be35b874e473833e03d9836",
+  "python": "3.11.2",
+  "torch": "2.2.2+cu121",
+  "numpy": "1.26.4",
+  "tested_device": "cpu",
+  "unit_tests_passed": 133,
+  "portable_staged_integration": "passed",
+  "authentic_only_training_and_frozen_batchnorm": "passed",
+  "exact_shared_model_initialisation": "passed",
+  "metric_alignment_and_nonfinite_guards": "passed",
+  "exact_block_oracle_vs_exhaustive_search": "passed",
+  "strict_attack_mask_pairing": "passed",
+  "epoch_resume_bitwise_cpu_equality": "passed",
+  "corrupt_artifact_recovery_without_retraining": "passed",
+  "source_and_data_change_resume_rejection": "passed",
+  "actual_isic_sanity": {
+    "train": 7,
+    "validation": 7,
+    "test": 7,
+    "authentic_epochs": 2,
+    "localisation_epochs": 1,
+    "width": 4,
+    "main_attention_controls_keys_heldout": "passed",
+    "scientific_results": false,
+    "corpus_images": 25331,
+    "distinct_labels": 20455,
+    "dataset_scope": "explicit labelled mirror subset"
+  },
+  "readiness": "GO for Kaggle wiring-check; long-run authorisation conditional on GPU/input checks",
+  "not_proven": [
+    "Kaggle/CUDA execution",
+    "full official-corpus training",
+    "clinical safety",
+    "patient/lesion independence without identifiers",
+    "adaptive-attack security",
+    "paper parity"
+  ]
+}

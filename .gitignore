@@ -1,19 +1,16 @@
-# Python
 __pycache__/
-*.py[cod]
+*.pyc
 .venv/
+runs/
+data/
+datasets/
+*.pt
+*.pth
+*.npy
 .pytest_cache/
 
-# experiment output: receipts stay, bulk results do not
-runs/*/raw/
-runs/*/*.npy
-
-# datasets are never committed (Trap 29)
-data/raw/
+.DS_Store
+Thumbs.db
 data/**/*.png
 data/**/*.jpg
 data/**/*.nii*
-
-# OS noise
-.DS_Store
-Thumbs.db

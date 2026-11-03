@@ -1,12 +1,13 @@
-# Project Context
+# Project context
 
-Reference material for the Major-Project deliverable. **Not** application
-code and **not** part of the shipped build — do not import from here.
+- Goal: keyed fragile watermarking with tamper localisation and honest abstention.
+- Current target: ISIC 2019. Historical PH2 work is a pilot, not ISIC evidence.
+- Current method: [protocol v2](../PROTOCOL_V2.md); previous checkpoints/results
+  are incompatible. Main/attention models and constituent controls are experiments.
+- Execution: [RUNNING.md](../RUNNING.md). Unknowns: [design notes](../docs/DESIGN_REVIEW.md#5-open-questions).
+- Keep dataset pixels and large caches out of Git. Preserve negative measurements.
+- `facts.json` is a historical ledger, not current protocol validation. Its dated
+  statuses must not be reused as present-day readiness or performance claims.
 
-| Field | Value |
-| --- | --- |
-| Original archive | PROJECT_IMPLEMENTATION_PACKAGE_2026-10-19.zip |
-| SHA-256 | b5922fe2fc0f895ffc78808fa546cc6694ca5f651e6eb9519facb53aaec23ca6 |
-| Received | 2026-10-19 |
-| Files | 8 |
-| Uncompressed size | 1,674,113 bytes (1.6 MiB) |
+Use the implementation and newly generated receipts for current measurements.
+Do not maintain separate architecture, poster, planning and verification narratives.

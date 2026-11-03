@@ -1,0 +1,41 @@
+Running run_isic_study.py; log: /tmp/final-audited-real-run/logs/seed-0.log
+corpus: 20455 images; schema=one-hot rows=20455 explicit_lesion=0 explicit_patient=0 with_dx=20455
+cache train: 0/7
+cache val: 0/7
+cache test: 0/7
+Classical watermark baseline 0.5854312631478203 0.9166666666666667
+Dual-carrier classical baseline 0.5854312631478203 0.9166666666666667
+Authentic reconstruction epoch 1/2: loss=1.02514, n=1, elapsed=0.00 min
+Authentic reconstruction epoch 2/2: loss=0.97442, n=1, elapsed=0.00 min
+    epoch   1  loss 5.0388  val IoU 0.1446  val blk-acc 0.1506  @tau 0.05  elapsed 0.07 min
+Checkpoint saved after epoch 1
+cache rekey: 0/7
+cache wrong_key: 0/7
+Main watermark-verification model 0.1751232147216797 0.5
+Authentic reconstruction epoch 1/2: loss=1.02514, n=1, elapsed=0.00 min
+Authentic reconstruction epoch 2/2: loss=0.97442, n=1, elapsed=0.00 min
+    epoch   1  loss 5.1396  val IoU 0.1446  val blk-acc 0.1506  @tau 0.05  elapsed 0.07 min
+Checkpoint saved after epoch 1
+Attention-enhanced model 0.1751232147216797 0.5
+Running compare_paired.py; log: /tmp/final-audited-real-run/logs/seed-0.log
+Running compare_paired.py; log: /tmp/final-audited-real-run/logs/seed-0.log
+Running compare_paired.py; log: /tmp/final-audited-real-run/logs/seed-0.log
+Running run_isic_study.py; log: /tmp/final-audited-real-run/logs/heldout-T5.log
+corpus: 20455 images; schema=one-hot rows=20455 explicit_lesion=0 explicit_patient=0 with_dx=20455
+cache train: 0/7
+cache val: 0/7
+cache test: 0/7
+Classical watermark baseline 0.5554337574604236 0.9166666666666667
+Dual-carrier classical baseline 0.5554337574604236 0.9166666666666667
+Authentic reconstruction epoch 1/2: loss=1.02199, n=1, elapsed=0.00 min
+Authentic reconstruction epoch 2/2: loss=0.97008, n=1, elapsed=0.00 min
+    epoch   1  loss 4.9734  val IoU 0.1501  val blk-acc 0.1538  @tau 0.05  elapsed 0.07 min
+Checkpoint saved after epoch 1
+cache rekey: 0/7
+cache wrong_key: 0/7
+Main watermark-verification model 0.1751232147216797 0.5
+Running compare_paired.py; log: /tmp/final-audited-real-run/logs/heldout-T5.log
+Running compare_paired.py; log: /tmp/final-audited-real-run/logs/heldout-T5.log
+Running summarize_isic_study.py; log: /tmp/final-audited-real-run/logs/summary.log
+complete=False; completed receipts=4; missing=8
+Finished requested jobs. Keep the entire output directory, including checkpoints.

@@ -1,12 +1,10 @@
-# Pinned for the reproducibility package. Environment receipt records these.
-numpy==2.4.6
-scipy==1.17.1
-Pillow==13.0.0
-PyWavelets==1.8.0
-scikit-image==0.26.0
-opencv-python-headless==5.0.0.93
-pytest==9.0.2
+numpy>=1.26,<2
+scipy>=1.14
+opencv-python-headless>=4.10,<4.12
+Pillow>=11
+# training (not needed to run the tests)
+# torch>=2.4
+# pytest>=8
 
-# Python 3.11 and 3.13 are what this was measured on. Python 3.14 has no
-# PyWavelets 1.8.0 wheel and pip falls back to a source build that fails;
-# use 3.11-3.13 until PyWavelets publishes one.
+# Retained historical transform tests / classical tooling
+PyWavelets>=1.5

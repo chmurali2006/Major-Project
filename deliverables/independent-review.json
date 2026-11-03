@@ -1,0 +1,142 @@
+{
+  "method": "source inspection and newly generated inputs; no previous run evidence loaded",
+  "source_sha256": "1c2724442842fc601d3b0a219783413d1ddeedf4febd109c62f8526dcebbd45a",
+  "fresh_engineering_checks": {
+    "scalar_haar_max_error": 0.0,
+    "direct_cosine_dct_max_error": 1.000532989792191e-12,
+    "set_based_iou_cases": 100,
+    "manual_tied_risk_integral": "matched",
+    "numeric_label_formatting": "correct",
+    "malformed_receipt_handling": "reported, not crash",
+    "fresh_process_crash_resume": "bitwise identical checkpoint after new-process crash/restart (CPU toy training only)"
+  },
+  "source_observations": {
+    "sharpness_feature": {
+      "flat_raw_sharpness": 0.0,
+      "striped_raw_sharpness": 988.125,
+      "default_sharpness_feature": [
+        0.0,
+        0.6850097179412842
+      ],
+      "interpretation": "Default uses a fixed analytic Sobel bound; no corpus statistics are fitted."
+    },
+    "sparse_pixel_block_label": {
+      "changed_pixels": 1,
+      "positive_block_labels": 1,
+      "image_class": 1,
+      "interpretation": "Block truth now uses any changed pixel, including a single payload-bit edit."
+    }
+  },
+  "watermark_brightness_challenge": {
+    "blocking": false,
+    "changed_pixel_fraction": 0.0625,
+    "rgb_offset": 64,
+    "patch": [
+      32,
+      64,
+      48,
+      80
+    ],
+    "clipping": false,
+    "max_map_differences": {
+      "E": 1.0,
+      "surv": 0.0,
+      "peak": 0.0,
+      "mag": 0.0,
+      "band_LH1": 0.0,
+      "band_HL1": 0.0,
+      "band_HH1": 0.0,
+      "band_LH2": 0.0,
+      "band_HL2": 0.0,
+      "band_HH2": 0.0,
+      "semi": 0.0,
+      "semi_abs": 0.0,
+      "semi_surv": 0.0
+    },
+    "same_classical_mask": false,
+    "classical_verdict_before": 0,
+    "classical_verdict_after": 1,
+    "profile": "authenticated",
+    "scope": "Tests evidence response; no neural-model performance claim."
+  },
+  "watermark_chroma_challenge": {
+    "blocking": false,
+    "rgb_offset": [
+      15,
+      -9,
+      7
+    ],
+    "region": "non-block-aligned disk: (y-65)^2+(x-61)^2 < 17^2",
+    "changed_pixel_fraction": 0.05426025390625,
+    "clipping": false,
+    "max_luma_roundoff": 1.4210854715202004e-14,
+    "max_map_difference": 1.0,
+    "all_maps_bitwise_equal": false,
+    "same_classical_mask": false,
+    "classical_verdict_before": 0,
+    "classical_verdict_after": 1,
+    "profile": "authenticated",
+    "scope": "Tests colour-edit verification; neural-model behaviour unmeasured."
+  },
+  "legacy_challenges_retained": {
+    "brightness": {
+      "blocking": true,
+      "changed_pixel_fraction": 0.0625,
+      "rgb_offset": 64,
+      "patch": [
+        32,
+        64,
+        48,
+        80
+      ],
+      "clipping": false,
+      "max_map_differences": {
+        "E": 0.0,
+        "surv": 0.0,
+        "peak": 0.0,
+        "mag": 0.0,
+        "band_LH1": 0.0,
+        "band_HL1": 0.0,
+        "band_HH1": 0.0,
+        "band_LH2": 0.0,
+        "band_HL2": 0.0,
+        "band_HH2": 0.0,
+        "semi": 0.0,
+        "semi_abs": 0.0,
+        "semi_surv": 0.0
+      },
+      "same_classical_mask": true,
+      "classical_verdict_before": 0,
+      "classical_verdict_after": 0,
+      "profile": "dual",
+      "scope": "Tests evidence response; no neural-model performance claim."
+    },
+    "chroma": {
+      "blocking": true,
+      "rgb_offset": [
+        15,
+        -9,
+        7
+      ],
+      "region": "non-block-aligned disk: (y-65)^2+(x-61)^2 < 17^2",
+      "changed_pixel_fraction": 0.05426025390625,
+      "clipping": false,
+      "max_luma_roundoff": 1.4210854715202004e-14,
+      "max_map_difference": 0.0,
+      "all_maps_bitwise_equal": true,
+      "same_classical_mask": true,
+      "classical_verdict_before": 0,
+      "classical_verdict_after": 0,
+      "profile": "dual",
+      "scope": "Tests colour-edit verification; neural-model behaviour unmeasured."
+    }
+  },
+  "verdict": "v2 counterexamples closed; full ISIC/CUDA study and external security review not established",
+  "not_established": [
+    "Kaggle/CUDA operation",
+    "clinical validity",
+    "adaptive-attack resistance",
+    "patient independence",
+    "paper parity"
+  ]
+}

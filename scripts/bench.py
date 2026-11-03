@@ -32,7 +32,7 @@ from src.battery.conditions import FROZEN
 from src.config import BETA0, DEFAULT, DELTA_F
 from src.fixtures import phantom
 from src.ladder import CANNOT_SAY, INTACT, TAMPERED
-from src.metrics import block_f1, detected, iou
+from src.legacy_metrics import block_f1, detected, iou
 from src.pipeline import System
 
 # The paper's operating point, for context only. Cross-paper comparison is

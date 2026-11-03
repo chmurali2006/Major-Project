@@ -32,7 +32,7 @@ from dataclasses import dataclass
 import numpy as np
 
 from .binder import Binder, dc_code, signature
-from .carriers import FragileCarrier, RobustCarrier, block_region
+from .legacy_carriers import FragileCarrier, RobustCarrier, block_region
 from .config import Config, DEFAULT
 from .config import BLOCK
 from .container import (Protected, block_gamut, blocks_out_of_range, compose, exact_bounds,

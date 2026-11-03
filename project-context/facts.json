@@ -1,0 +1,471 @@
+{
+  "_meta": {
+    "purpose": "Every number this project is allowed to print, with its provenance and its status. A poster, slide, abstract or viva answer may print a fact only if status is 'verified', 'computed' or 'published'. Anything else is a bug in the poster, not a rounding choice.",
+    "rule": "If a number is not in this file, it does not exist. Add it here first, with a source, then print it.",
+    "date": "2026-10-25",
+    "statuses": {
+      "verified": "came back in a receipt produced by a run; source names the receipt",
+      "computed": "derived deterministically by code in this repo; anyone can rerun it",
+      "published": "quoted from an external paper; citation required; corpus tag is part of the fact",
+      "planned": "a configuration, gate or target that has NOT been run. Never print as a result.",
+      "unverified": "appears in older project documents with no locatable receipt. DO NOT PRINT until re-derived.",
+      "forbidden": "a sentence that must never appear, with the reason"
+    }
+  },
+  "measured": [
+    {
+      "id": "M-01",
+      "label": "image-level detection accuracy",
+      "value": 0.9999229,
+      "display": "0.99992",
+      "detail": "12 969 / 12 970",
+      "unit": "fraction of images",
+      "status": "verified",
+      "corpus": "ISIC 2018 Task 1",
+      "source": "runs/isic-full-v8/receipt.json, n_images 2594, code_dirty false, commit 28e4e6e",
+      "definition": "an image counts as detected if any 8x8 block carries a TAMPERED verdict",
+      "may_print": "always with the corpus tag; never beside a CheXpert figure"
+    },
+    {
+      "id": "M-02",
+      "label": "tamper localisation IoU",
+      "value": 0.9936026,
+      "display": "0.9936",
+      "detail": "block level, 8x8 grid",
+      "unit": "IoU",
+      "status": "verified",
+      "corpus": "ISIC 2018 Task 1",
+      "source": "runs/isic-full-v8/receipt.json",
+      "note": "This is a BLOCK-granular IoU. It is not comparable to a pixel IoU of 0.832 measured on LiTS with lesion insertion. See C-04.",
+      "may_print": "with the words 'block level' attached"
+    },
+    {
+      "id": "M-03",
+      "label": "benign false claims",
+      "value": 0.0,
+      "display": "0 / 12 970",
+      "detail": "0.000",
+      "unit": "false claims",
+      "status": "verified",
+      "corpus": "ISIC 2018 Task 1, benign battery",
+      "source": "runs/isic-full-v8/receipt.json",
+      "note": "Out of criterion on the transformed set. NOT the same as the envelope result M-09, which does fail."
+    },
+    {
+      "id": "M-04",
+      "label": "marked-image fidelity",
+      "value": 40.4656,
+      "display": "40.47 dB",
+      "unit": "PSNR",
+      "status": "verified",
+      "corpus": "ISIC 2018 Task 1",
+      "source": "runs/isic-full-v8/receipt.json",
+      "note": "Mean over the run. A worst-image figure of 35.75 dB circulates in older notes with no receipt; it is retired as U-02."
+    },
+    {
+      "id": "M-05",
+      "label": "verification latency",
+      "value": 58.596,
+      "display": "58.6 ms",
+      "unit": "ms per 512x512 image",
+      "status": "verified",
+      "corpus": "ISIC 2018 Task 1",
+      "source": "runs/isic-full-v8/receipt.json",
+      "note": "Isolated single-image run on the development machine. Not a GPU number."
+    },
+    {
+      "id": "M-06",
+      "label": "run size",
+      "value": 2594,
+      "display": "n = 2 594",
+      "unit": "images",
+      "status": "verified",
+      "source": "runs/isic-full-v8/receipt.json"
+    },
+    {
+      "id": "M-07",
+      "label": "run provenance",
+      "value": "28e4e6e",
+      "display": "code_dirty = false",
+      "status": "verified",
+      "source": "runs/isic-full-v8/receipt.json",
+      "note": "Print this. A receipt from a dirty tree is worthless and this one is clean."
+    },
+    {
+      "id": "M-08",
+      "label": "detection, reduced set",
+      "value": 1.0,
+      "display": "1.000",
+      "detail": "ISIC-300",
+      "status": "verified",
+      "corpus": "ISIC 2018 Task 1, 300 images",
+      "source": "ISIC-300 receipt",
+      "note": "accompanies IoU 0.9853"
+    },
+    {
+      "id": "M-09",
+      "label": "envelope false-claim rate at JPEG Q100",
+      "value": 0.0067,
+      "display": "2 / 300",
+      "detail": "0.67 % against our own 0.5 % bound",
+      "unit": "false claims per image",
+      "status": "verified",
+      "corpus": "ISIC 2018 Task 1, envelope sweep n = 300",
+      "source": "A-031 scatter-rule envelope measurement",
+      "note": "THIS CRITERION FAILS. Print it as a disclosed failure, on the figure, not buried. It is the single best evidence that the record is honest."
+    },
+    {
+      "id": "M-10",
+      "label": "public-corpus stand-in",
+      "value": 0.994,
+      "display": "det 0.9940 \u00b7 IoU 0.9336 \u00b7 PSNR 38.68 dB",
+      "status": "verified",
+      "corpus": "PH2, n = 200",
+      "source": "PH2 receipt",
+      "note": "A stand-in corpus for transportability only. Never present PH2 as a benchmark of this system."
+    },
+    {
+      "id": "M-11",
+      "label": "naive baseline, for contrast only",
+      "value": 55.91,
+      "display": "LSB \u00b7 benign 1.000 \u00b7 PSNR 55.91 dB",
+      "status": "verified",
+      "corpus": "ISIC 2018 Task 1",
+      "source": "LSB baseline receipt",
+      "note": "Benign score 1.000 means it never stays silent. Its PSNR is better because it hides almost nothing. Both halves must be printed together or neither."
+    },
+    {
+      "id": "M-12",
+      "label": "keyed evidence separability, held-out",
+      "value": 0.9953,
+      "display": "10-ch 0.9953 \u00b7 2-ch 0.9901 \u00b7 peak alone 0.904",
+      "unit": "AUC",
+      "status": "verified",
+      "source": "measurement recorded in docs/DESIGN_REVIEW.md, item F5",
+      "note": "The real but SMALL gain from 2 to 10 channels. Report it as half a point of AUC, not as a breakthrough."
+    },
+    {
+      "id": "M-13",
+      "label": "family-wise evidence separation",
+      "value": 0.9884,
+      "display": "T1 .9884 \u00b7 T2 .8078 \u00b7 T3 .8288 \u00b7 T4 .9509 \u00b7 T5 .9870",
+      "unit": "separation, tamp vs clean",
+      "status": "verified",
+      "source": "notebook cell 5 separation check",
+      "note": "T2 and T3 are the hard families. Never quote a mean over families without this row."
+    },
+    {
+      "id": "M-14",
+      "label": "compute cost",
+      "value": 75,
+      "display": "86 ms/img preprocess \u00b7 0.96 s/step \u00b7 13 min/epoch \u00b7 6.3 GPU-h/config \u00b7 75 GPU-h matrix",
+      "status": "verified",
+      "source": "docs/KAGGLE_RUNBOOK.md section 1, measured on T4 and on the development CPU",
+      "note": "30 GPU-h/week is one week of headline runs, not the whole matrix. Say this rather than 'it fits'."
+    },
+    {
+      "id": "M-15",
+      "label": "model capacity",
+      "value": 1.54,
+      "display": "PixelRefineNet w32 1.54 M \u00b7 w12 0.22 M \u00b7 w96 13.74 M \u00b7 v1 FusionNet 0.96 M",
+      "unit": "parameters, millions",
+      "status": "verified",
+      "source": "docs/DESIGN_REVIEW.md item F7",
+      "note": "The published bar is 15.1 M. Any comparison must state capacity and hold it constant."
+    },
+    {
+      "id": "M-16",
+      "label": "C0 classical control, real dermoscopy",
+      "value": 0.5384,
+      "display": "IoU 0.5384 \u00b7 detection 0.8750 (21/24) \u00b7 false claims 3/3",
+      "status": "verified",
+      "corpus": "PH2, n = 120 (72/24/24 by lesion group)",
+      "source": "runs/ph2-v1/C0.json, usable: true, clean tree",
+      "note": "PH2 is a STAND-IN, not a benchmark. It is real dermoscopy with three diagnoses, used because ISIC was unreachable from the build environment. Never present a PH2 number as an ISIC number.",
+      "may_print": "with the PH2 corpus tag and the words 'stand-in'"
+    },
+    {
+      "id": "M-17",
+      "label": "C8 full synthesis, real dermoscopy",
+      "value": 0.8587,
+      "display": "IoU 0.8587 \u00b7 detection 1.0000 (24/24) \u00b7 false claims 0/3",
+      "status": "verified",
+      "corpus": "PH2, n = 120 (72/24/24 by lesion group)",
+      "source": "runs/ph2-v1/C8.json, usable: true, clean tree, 5 epochs, width 16",
+      "note": "The learned half lifts localisation from 0.5384 to 0.8587 against its own classical control on the same split, and eliminates the three false claims. This is the C0-vs-C8 result the study is designed around."
+    },
+    {
+      "id": "M-18",
+      "label": "C0 vs C8 on one split",
+      "value": 0.3203,
+      "display": "IoU +0.3203 \u00b7 false claims 3 -> 0",
+      "status": "verified",
+      "corpus": "PH2, n = 120",
+      "source": "difference of M-16 and M-17, both from the same clean-tree run",
+      "note": "THE HEADLINE OF THE LEARNED PHASE. Needs no external corpus: same split, same families, same protocol, one control."
+    },
+    {
+      "id": "M-19",
+      "label": "C10 key memorisation test",
+      "value": 0.7853,
+      "display": "IoU 0.7853 vs C8 0.8587 \u2014 a drop of 0.0734",
+      "status": "verified",
+      "corpus": "PH2, n = 120; trained on key K1, test images re-marked and read with K2",
+      "source": "runs/ph2-v1/C10.json, usable: true",
+      "note": "THIS GATE FAILS (bound: drop <= 0.05). The network retains some key-specific structure rather than reading evidence in a fully key-agnostic way. Reported as a limitation, not smoothed over. It is not a collapse: 0.785 is still strong localisation on a key the model never saw."
+    },
+    {
+      "id": "M-20",
+      "label": "key dependence under a denied key",
+      "value": 0.1047,
+      "display": "IoU 0.1047 vs 0.8587 \u2014 a drop of 0.6806",
+      "status": "verified",
+      "corpus": "PH2, n = 120; API images read with a key they were not marked with",
+      "source": "runs/ph2-v1/C10.json key_dependence block",
+      "note": "This is the security property WORKING, not a failure. Without the key the evidence is noise (measured E 0.010 -> 1.005) and the reader collapses. It is the measurement that answers 'isn't a learned reader just a learned forger'."
+    },
+    {
+      "id": "M-21",
+      "label": "dual-carrier fidelity on real dermoscopy",
+      "value": 40.85,
+      "display": "PSNR 40.85 dB",
+      "status": "verified",
+      "corpus": "PH2, n = 120",
+      "source": "run_matrix load_items, printed at load time",
+      "note": "Against the reference system's reported 40.47 dB. This is the one published figure the project matches on equal terms, because it needs no shared corpus."
+    },
+    {
+      "id": "M-22",
+      "label": "the full configuration matrix",
+      "value": 0.8587,
+      "display": "C0 .5384 \u00b7 C1 .7273 \u00b7 C2 .6929 \u00b7 C3 .7441 \u00b7 C4 .7489 \u00b7 C5 .6345 \u00b7 C6 .7862 \u00b7 C7 .6821 \u00b7 C8 .8587 \u00b7 C9 .7840 \u00b7 C10 .7853 \u00b7 C11 .7912",
+      "status": "verified",
+      "corpus": "PH2 stand-in, n=120, 5 epochs, width 16",
+      "source": "runs/ph2-v1/*.json \u2014 12 receipts, 12 usable, all code_dirty=false",
+      "note": "The first complete run of the matrix. C8 is the best of the twelve, and the ordering is informative rather than decorative: see M-23 and M-24."
+    },
+    {
+      "id": "M-23",
+      "label": "what the learned half is worth",
+      "value": 0.3203,
+      "display": "C8 .8587 - C0 .5384 = +.3203 IoU; false claims 3 -> 0",
+      "status": "verified",
+      "corpus": "PH2, n=120",
+      "source": "difference of M-16 and M-17, same clean-tree run",
+      "note": "The headline. Needs no external corpus."
+    },
+    {
+      "id": "M-24",
+      "label": "component attribution \u2014 the larger claim",
+      "value": 0.1214,
+      "display": "C1 (+AE alone) .7273 = +.1889 over C0. C8 (all eight) .8587 = +.3203 over C0. The other six components together add .1314.",
+      "status": "verified",
+      "corpus": "PH2, n=120",
+      "source": "runs/ph2-v1/C0,C1,C8",
+      "note": "59% of the total gain comes from adding the one-class AE alone. This is an ATTRIBUTION finding, and it is the kind of statement the field does not make because everyone reports one aggregate. It must be stated as measured on this corpus at this scale, not as a general law: 5 epochs and 72 training images is not convergence."
+    },
+    {
+      "id": "M-25",
+      "label": "single-component ablations",
+      "value": 0.6929,
+      "display": "C2 (+RefineNet only) .6929 \u00b7 C3 (+AE+RefineNet) .7441 \u00b7 C4 (+attention) .7489 \u00b7 C5 (+degradation) .6345 \u00b7 C6 (+segmentation) .7862 \u00b7 C7 (+three-way) .6821",
+      "status": "verified",
+      "corpus": "PH2, n=120",
+      "source": "runs/ph2-v1/C2..C7",
+      "note": "C5 is BELOW C3 despite adding a component, and C7 is below C6. Neither is a bug: these are 5-epoch runs on 72 images, so configuration ordering at this scale is noisy and partly reflects optimisation luck. Report the ordering, do not over-read it."
+    },
+    {
+      "id": "M-26",
+      "label": "held-out family transfer",
+      "value": 0.7912,
+      "display": "C11 .7912 vs C8 .8587 \u2014 a drop of .0675; 1/3 false claims",
+      "status": "verified",
+      "corpus": "PH2, n=120, one tamper family withheld",
+      "source": "runs/ph2-v1/C11.json",
+      "note": "Transfers to an unseen family with a moderate drop, but produces one false claim where C8 produces none. Both facts reported."
+    }
+  ],
+  "computed": [
+    {
+      "id": "C-01",
+      "label": "block-granular ceiling on pixel IoU",
+      "value": {
+        "r8": 0.513,
+        "r16": 0.692,
+        "r24": 0.757,
+        "r32": 0.809,
+        "r48": 0.854,
+        "r64": 0.889,
+        "r128": 0.937,
+        "r160": 0.95
+      },
+      "display": "0.513 / 0.692 / 0.757 / 0.809 / 0.854 / 0.889 / 0.937 / 0.950",
+      "status": "computed",
+      "corpus": "synthetic disks of radius r on a 64x64 decision grid",
+      "source": "src/metrics.py block_ceiling(), reproduced by tests at r = 8/16/32/96/128/160",
+      "headline": "A flawless block classifier scores 0.809 at radius 32 and 0.854 at radius 48.",
+      "note": "THE central argument of the project. It is arithmetic, not a measurement, so it cannot be argued with. IMPORTANT: it bounds a DISK-shaped region at the worst-case block placement. A block-aligned region is not bounded by it and can exceed it -- the C8 per-area bucket at r~17px scored 0.849 against a disk ceiling of 0.618 because T1 copy-move is block-aligned. Report the ceiling as 'disk-model ceiling' and never as an absolute bound on all shapes."
+    },
+    {
+      "id": "C-02",
+      "label": "square-paste ceiling",
+      "value": 1.0,
+      "display": "1.000",
+      "status": "computed",
+      "source": "same",
+      "note": "A block-aligned square paste is the one shape where a block system is not penalised. Any figure of the ceiling must include this line, or the ceiling looks like special pleading."
+    }
+  ],
+  "published": [
+    {
+      "id": "P-01",
+      "label": "PFF-WM headline",
+      "display": "detection 97.6 % \u00b7 AUC 0.989 \u00b7 44 ms \u00b7 15.1 M",
+      "status": "published",
+      "corpus": "CheXpert",
+      "source": "Khaldi et al. 2026, Table 2 and Table 6",
+      "may_print": "ONLY with the corpus named. This is a CheXpert number and this project ran no CheXpert."
+    },
+    {
+      "id": "P-02",
+      "label": "PFF-WM localisation",
+      "display": "IoU 83.2 \u00b7 pixel acc 98.1 \u00b7 F1 90.4 (raw AE 77.0)",
+      "status": "published",
+      "corpus": "LiTS, synthetic lesion insertion",
+      "source": "Khaldi et al. 2026, Table 4",
+      "may_print": "ONLY with the corpus and tamper family named. This project ran no LiTS."
+    },
+    {
+      "id": "P-03",
+      "label": "PFF-WM ablation",
+      "display": "full .989/.832 \u00b7 fragile-only .952/.765 \u00b7 minus AE .963/.744 \u00b7 minus attention .971/.801",
+      "status": "published",
+      "corpus": "CheXpert / LiTS as above",
+      "source": "Khaldi et al. 2026, ablation table",
+      "note": "The RefineNet is worth +6.2 IoU, more than attention (+3.1) and the dual carrier combined. This is the sentence that justifies the whole study design."
+    },
+    {
+      "id": "P-04",
+      "label": "detection baselines",
+      "display": "SECURENet 90.8/.951 \u00b7 TFPDD 91.2/.958 \u00b7 ConMark 93.5/.965 \u00b7 DeepMark 94.1/.971 \u00b7 ASFW 95.2/.978",
+      "status": "published",
+      "corpus": "CheXpert",
+      "source": "as tabulated in PFF-WM Table 2"
+    },
+    {
+      "id": "P-05",
+      "label": "WAM degradation result",
+      "display": "mIoU 85 % \u2192 59 % after JPEG-80",
+      "status": "published",
+      "corpus": "WAM, ICLR 2025",
+      "source": "arXiv:2411.07231",
+      "note": "Use it for one purpose: a learned watermark loses 26 points to routine handling. That is why the classical layer must survive JPEG and why B1/B2 exist."
+    },
+    {
+      "id": "P-06",
+      "label": "SMARTMed",
+      "display": "PSNR 44.91 \u00b7 detection 94.9 % \u00b7 localisation 97.9 %",
+      "status": "published",
+      "corpus": "as published",
+      "source": "Sci. Rep. 2026"
+    }
+  ],
+  "planned": [
+    {
+      "id": "T-01",
+      "label": "the experiment matrix",
+      "display": "C0 classical \u00b7 C1 +AE \u00b7 C2 +RefineNet \u00b7 C3 +AE+RefineNet \u00b7 C4 +attention \u00b7 C5 +degradation \u00b7 C6 +segmentation \u00b7 C7 +3-way head \u00b7 C8 full \u00b7 C9 no key \u00b7 C10 re-key \u00b7 C11 held-out family",
+      "status": "planned",
+      "source": "src/protocol.py MATRIX",
+      "note": "NOTHING in this row has run. Any poster must label it 'planned' or 'designed', never place it in a results table."
+    },
+    {
+      "id": "T-02",
+      "label": "disqualifying gates, fixed before any run",
+      "display": "coverage floor 0.90 \u00b7 re-key drop <= 0.05 IoU \u00b7 test opened once",
+      "status": "planned",
+      "source": "src/protocol.py GATES",
+      "note": "Printing these is the strongest possible answer to 'how do we know you did not tune to the test set'."
+    },
+    {
+      "id": "T-03",
+      "label": "split",
+      "display": "70 / 15 / 15, grouped by lesion, test opened once",
+      "status": "planned",
+      "source": "src/protocol.py SPLIT"
+    },
+    {
+      "id": "T-04",
+      "label": "corpus for the next phase",
+      "display": "ISIC 2019, 25 331 images, Kaggle",
+      "status": "planned",
+      "source": "src/protocol.py CORPORA",
+      "note": "Deferred by explicit decision: LiTS and CheXpert. Do not reintroduce them."
+    }
+  ],
+  "unverified": [
+    {
+      "id": "U-01",
+      "label": "block coverage",
+      "display": "0.987",
+      "status": "unverified",
+      "source": "appears in older notes; the only 0.987 in the repository is T5 evidence separation in KAGGLE_RUNBOOK.md, a different quantity",
+      "action": "REMOVED from the figure. Re-derive from runs/isic-full-v8/receipt.json before it is ever printed again."
+    },
+    {
+      "id": "U-02",
+      "label": "worst-image PSNR",
+      "display": "35.75 dB",
+      "status": "unverified",
+      "source": "no receipt locatable in the tree",
+      "action": "REMOVED from the figure. Retired."
+    }
+  ],
+  "forbidden": [
+    {
+      "id": "X-01",
+      "text": "we beat 0.832 IoU",
+      "why": "0.832 is LiTS with lesion insertion. No LiTS run exists."
+    },
+    {
+      "id": "X-02",
+      "text": "we beat 97.6 % detection",
+      "why": "that figure is CheXpert. No CheXpert run exists."
+    },
+    {
+      "id": "X-03",
+      "text": "state of the art / SOTA",
+      "why": "no shared-protocol comparison has been run. The protocol is designed, not executed."
+    },
+    {
+      "id": "X-04",
+      "text": "the released notebook is secure",
+      "why": "it publishes the key, which is required for reproducibility and which voids the security claim for that artifact. F10."
+    },
+    {
+      "id": "X-05",
+      "text": "placing an ISIC number in a CheXpert or LiTS column",
+      "why": "different corpus, different tamper family, different mask definition. The single most likely way this project gets caught."
+    },
+    {
+      "id": "X-06",
+      "text": "clinical saliency / diagnostic attention",
+      "why": "the attention head is trained from a localisation loss and is never validated against pathology annotations. F2."
+    },
+    {
+      "id": "X-07",
+      "text": "quoting the smoke run as a result",
+      "why": "n = 120 on procedural images with an untrained-scale model. It is a plumbing check."
+    },
+    {
+      "id": "X-08",
+      "text": "presenting C8 or any learned configuration as achieved",
+      "why": "none has been trained. The learned half is implemented and unit-tested only."
+    },
+    {
+      "id": "X-09",
+      "text": "'the model detects tampering'",
+      "why": "the model reads keyed evidence; the keyed channel detects tampering. Saying otherwise hands the panel the exact objection they are looking for."
+    }
+  ]
+}

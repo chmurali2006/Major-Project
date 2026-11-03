@@ -1,68 +1,36 @@
-# A Fragile Watermarking for Medical Image Tamper Detection
+# Medical Image Tamper Detection
 
-Position-bound, zero-training, keyed fragile watermarking for medical images,
-with designed abstention. Primary corpus: ISIC 2018 Task 1. Secondary: LiTS.
-Validation: PH2.
+Experimental fragile watermarking and learned tamper localisation on ISIC 2019.
 
-The design authority is the context package in `project-context/`. Where this
-code departs from it, the departure is recorded with its measurement in
-`docs/AMENDMENTS.md`.
+## Start here
+
+- [Run locally or on Kaggle](RUNNING.md)
+- [Current method and protocol](PROTOCOL_V2.md)
+- [Open questions](docs/DESIGN_REVIEW.md#5-open-questions)
+- [References](docs/LITERATURE.md)
+
+The current fragile verifier uses block-local RGB HMAC tags. The main learned
+model estimates pixel localisation; the attention-enhanced model and seven
+constituent controls are experiments, not demonstrated improvements.
 
 ## Status
 
-Mid-project review checkpoint, measured on real tissue (PH2, n=200, 22 frozen
-conditions). All five operating-point bars are met on the mean: detection
-99.40%, IoU 0.9336, benign claims 0.00%, PSNR 38.68 dB, verify 40.19 ms, and
-zero false claims on the 200 untouched images. Measured outside the battery, on
-a swept envelope of re-encodes and noise, it makes **no false claim in 3 800
-readings** and keeps 89% of the frame certified at JPEG Q99. The known
-weaknesses — worst-case PSNR 36.00 dB, burned-in text as an alarm rather than a
-localiser, a latency tail above the 44 ms bar — are stated with their numbers in
-[`docs/MID_PROJECT_REVIEW.md`](docs/MID_PROJECT_REVIEW.md) §5 and
-[`docs/BENCHMARKS.md`](docs/BENCHMARKS.md) §3.
+Targeted CPU checks cover authentication edits, checkpoint recovery and synthetic
+training of all variants. Full ISIC three-seed results, CUDA operation and clinical
+validity are not established. Raw check outputs are in `deliverables/*.json`;
+historical performance receipts remain in `results/`. Neither is a paper-parity
+claim. See each output's source fingerprint and scope before using its numbers.
 
-Start with the review document; the measured tables are generated from the
-receipt by `scripts/make_tables.py`.
+## Files
 
-## Layout
+- `src/`, `scripts/`, `tests/`: implementation, runners and tests.
+- `notebooks/keyswm_isic2019.ipynb`: generated standalone Kaggle notebook.
+- `deliverables/`: portable ZIPs, notebook copy and machine-readable checks.
+- `project-context/`: concise project context and historical facts.
 
-```
-src/            config, transform, binder, carriers, container, pipeline, ladder, metrics
-src/battery/    the frozen conditions, one function each
-scripts/        dataset preparation, benchmark harness, local runner
-tests/          40 tests, including the six pre-flight checks
-docs/           MID_PROJECT_REVIEW, BENCHMARKS, AMENDMENTS, REPRODUCE, figures/
-project-context/ reference material only — never imported by code
-```
+Use a fresh `isic2019-rgb-auth-v2` study. Old checkpoints are incompatible.
+Protected images require lossless storage. Public benchmark keys are not
+production secrets; learned predictions cannot override failed authentication.
 
-## Quickstart
-
-```bash
-python3 -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
-pytest -q                                    # 39 tests, no data needed
-
-# prepare a corpus (the public PH2 mirror needs no registration)
-git clone https://github.com/vikaschouhan/PH2-dataset /tmp/ph2src
-python scripts/prepare_ph2_public.py --src /tmp/ph2src --out datasets/ph2
-
-# run the battery, leave a receipt
-python scripts/bench.py --data datasets/ph2 --limit 200 \
-                        --receipt runs/<utc>/receipt.json
-```
-
-`runs/<timestamp>/receipt.json` records the command, configuration, git commit,
-environment and per-condition counts. A number without a receipt does not exist.
-
-## Datasets
-
-Never committed (Trap 29). `scripts/prepare_*` writes a per-file SHA-256
-receipt into the dataset directory. ISIC 2018 and LiTS require registration and
-are not downloadable from an automated environment; PH2 has a public mirror.
-
-## Honest limitation
-
-The container is PNG with metadata chunks. Stripping the metadata costs an
-abstention (CANNOT SAY), not an accusation — but it does mean an attacker who
-strips metadata can cost you coverage. Integrity of the pixel payload survives;
-the claim to the image's identity does not.
+Historical `src/pipeline.py` and `scripts/bench.py` retain the earlier classical
+implementation through `legacy_carriers`/`legacy_metrics`; they are not v2 runners.

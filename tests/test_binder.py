@@ -1,7 +1,7 @@
 import numpy as np
 
 from src.binder import Binder, dc_code, signature
-from src.carriers import FragileCarrier
+from src.legacy_carriers import FragileCarrier
 from src.config import TAG_BITS
 from src.transform import Haar2, Haar2Int
 
