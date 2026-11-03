@@ -1,0 +1,87 @@
+{
+  "method": "source inspection and newly generated inputs; no previous run evidence loaded",
+  "source_sha256": "993eccb461e4604129d613b1d48195efc97dbc38cff9b049a2d35ae414479a01",
+  "fresh_engineering_checks": {
+    "scalar_haar_max_error": 0.0,
+    "direct_cosine_dct_max_error": 1.000532989792191e-12,
+    "set_based_iou_cases": 100,
+    "manual_tied_risk_integral": "matched",
+    "numeric_label_formatting": "correct",
+    "malformed_receipt_handling": "reported, not crash",
+    "fresh_process_crash_resume": "bitwise identical checkpoint after new-process crash/restart (CPU toy training only)"
+  },
+  "source_observations": {
+    "unwired_sharpness_reference": {
+      "flat_raw_sharpness": 0.0,
+      "striped_raw_sharpness": 988.125,
+      "default_sharpness_feature": [
+        1.0,
+        1.0
+      ],
+      "interpretation": "Active caller supplies no reference, so this feature is constant 1, not sharpness."
+    },
+    "sparse_pixel_block_label": {
+      "changed_pixels": 1,
+      "positive_block_labels": 0,
+      "image_class": 1,
+      "interpretation": "Current >5% occupancy labels omit blocks with only 1-3 changed pixels. Policy unresolved."
+    }
+  },
+  "watermark_brightness_challenge": {
+    "blocking": true,
+    "changed_pixel_fraction": 0.0625,
+    "rgb_offset": 64,
+    "patch": [
+      32,
+      64,
+      48,
+      80
+    ],
+    "clipping": false,
+    "max_map_differences": {
+      "E": 0.0,
+      "surv": 0.0,
+      "peak": 0.0,
+      "mag": 0.0,
+      "band_LH1": 0.0,
+      "band_HL1": 0.0,
+      "band_HH1": 0.0,
+      "band_LH2": 0.0,
+      "band_HL2": 0.0,
+      "band_HH2": 0.0,
+      "semi": 0.0,
+      "semi_abs": 0.0,
+      "semi_surv": 0.0
+    },
+    "same_classical_mask": true,
+    "classical_verdict_before": 0,
+    "classical_verdict_after": 0,
+    "scope": "Watermark evidence blindness demonstrated. No neural-model miss is asserted."
+  },
+  "watermark_chroma_challenge": {
+    "blocking": true,
+    "rgb_offset": [
+      15,
+      -9,
+      7
+    ],
+    "region": "non-block-aligned disk: (y-65)^2+(x-61)^2 < 17^2",
+    "changed_pixel_fraction": 0.05426025390625,
+    "clipping": false,
+    "max_luma_roundoff": 1.4210854715202004e-14,
+    "max_map_difference": 0.0,
+    "all_maps_bitwise_equal": true,
+    "same_classical_mask": true,
+    "classical_verdict_before": 0,
+    "classical_verdict_after": 0,
+    "scope": "Luma-only watermark evidence cannot authenticate this colour change; neural-model behaviour unmeasured."
+  },
+  "verdict": "NO-GO for submission-readiness claim",
+  "not_established": [
+    "Kaggle/CUDA operation",
+    "clinical validity",
+    "adaptive-attack resistance",
+    "patient independence",
+    "paper parity"
+  ]
+}

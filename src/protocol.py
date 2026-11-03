@@ -1,7 +1,12 @@
-"""The frozen protocol. Single source of truth.
+"""Configuration registry and historical protocol declarations.
+
+The active portable ISIC recipe is implemented by run_isic_study/run_suite.
+Do not read legacy grouping/family/metric declarations below as proof that the
+active runner implements them. See PROTOCOL_V2.md for current findings.
+The historical specification follows; it is not a submission-readiness claim.
 
 Nothing in this file may change after the first training run. Any change is an
-amendment: appended to docs/AMENDMENTS.md, the superseded number retired, the
+amendment: documented in PROTOCOL_V2.md, the superseded number retired, the
 new number reported separately. This is the same discipline that produced 34
 amendments on the classical system, applied to a larger one.
 

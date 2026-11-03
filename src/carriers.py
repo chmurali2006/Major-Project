@@ -1,5 +1,10 @@
 """Carrier B: the semi-robust DCT watermark.
 
+REVIEW LIMITATION (2026-11-03): luma-only, non-DC features do not authenticate
+brightness/colour edits; see PROTOCOL_V2.md. Historical sweep comments
+below are not current validation or matched-paper evidence. Carrier response
+cannot establish benign intent or cryptographic authenticity.
+
 Why this module exists
 ----------------------
 

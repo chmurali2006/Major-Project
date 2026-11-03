@@ -1,4 +1,11 @@
-"""Run the C0-C11 configuration matrix and write a receipt per configuration.
+"""Legacy standalone matrix; utilities are imported by the portable ISIC runner.
+
+Standalone use requires explicit legacy opt-in and is not a substitute for matched
+constituent ablations under the corrected training recipe. The historical
+entrypoint description below is not current scientific/security validation.
+See PROTOCOL_V2.md for current method changes and limitations.
+
+Run the C0-C11 configuration matrix and write a receipt per configuration.
 
 This is the script that turns the design into results. Everything else in the
 repository exists to make this run trustworthy.
@@ -209,7 +216,7 @@ def build_sample(item: Item, family: str, rng: np.random.Generator,
     deg = degradation.estimate(tampered)
 
     ny = nx = IMAGE_SIZE // BLOCK
-    gt_block = gt_pixel.reshape(ny, BLOCK, nx, BLOCK).mean(axis=(1, 3)) > 0.05
+    gt_block = gt_pixel.reshape(ny, BLOCK, nx, BLOCK).any(axis=(1, 3))
     return Sample(ev=np.stack([e[c] for c in ev.FULL_CHANNELS]).astype(np.float16),
                   degrade=np.asarray(deg, np.float32),
                   image=np.transpose(tampered, (2, 0, 1)).astype(np.uint8),
@@ -387,13 +394,17 @@ def forward_all(model, t: dict) -> dict:
     labelled differently but computed identically is the same failure as F2 --
     claiming a component that is not there.
     """
-    ev = t["ev"]
-    if model["ae"] is not None:
+    from src.ablations import mask_evidence
+    ev = mask_evidence(model, t["ev"])
+    if model["ae"] is not None and model.get("use_ae", True):
         # A reconstruction-residual feature. The portable runner explicitly
         # pretrains this on authentic TRAIN evidence and freezes it; the legacy
         # matrix alone does not enforce that one-class training discipline.
         _rec, err = model["ae"](ev)                 # err: (B,1,h,w)
         ev = torch_cat([ev, F_avg(err, ev.shape[-1])], dim=1)
+
+    elif model['ae'] is not None:
+        ev = torch_cat([ev, ev[:, :1]*0.0], dim=1)
 
     sal = (model["saliency"](t["image"]) if model["use_saliency"]
            else t["image"][:, :1] * 0.0 + 0.5)               # constant, no gradient
@@ -534,6 +545,8 @@ def train(model, train_s: list[Sample], val_s: list[Sample], *,
                 out = forward_all(model, t)
                 cls_t = t["cls"]  # real INTACT/TAMPERED labels; no fabricated abstain target
                 loss, _ = models.total_loss(out, t["gt_block"], t["gt_pixel"], cls_t,
+                                            w_pixel=1.0 if model["use_pixel"] else 0.0,
+                                            w_consistency=.5 if model["use_pixel"] else 0.0,
                                             pos_weight=pos_weight,
                                             pos_weight_pixel=pos_weight_pixel)
                 total = total + loss

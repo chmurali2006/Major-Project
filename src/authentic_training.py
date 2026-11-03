@@ -7,8 +7,11 @@ from .persistence import atomic_write, load_checkpoint
 
 def pretrain_authentic(model, samples, epochs, checkpoint, resume, run_id, device='auto', log=print):
     ae = model['ae']
-    if ae is None:
-        return {'epochs': 0, 'n_authentic_train': 0}
+    if ae is None or not model.get("use_ae", True):
+        if ae is not None:
+            ae.eval()
+            for p in ae.parameters(): p.requires_grad_(False)
+        return {'epochs': 0, 'n_authentic_train': 0, 'reason': 'ablation removes AE'}
     device = ('cuda' if torch.cuda.is_available() else 'cpu') if device == 'auto' else device
     ae.to(device)
     for p in ae.parameters():
@@ -38,6 +41,8 @@ def pretrain_authentic(model, samples, epochs, checkpoint, resume, run_id, devic
             if sample.cls != 0 or sample.gt_pixel.any():
                 raise ValueError('tampered example reached authentic-only reconstruction training')
             x = torch.from_numpy(sample.ev).float().unsqueeze(0).to(device)
+            from .ablations import mask_evidence
+            x = mask_evidence(model,x)
             opt.zero_grad()
             rec, _ = ae(x)
             # Scale-normalised squared residual avoids a high-scale carrier channel

@@ -1,0 +1,1162 @@
+{
+  "source_sha256": "1ee6a8a57bb07cc3670f3d944f76f9288ebfe4a792b97dc210243c6120b0e8de",
+  "scheme": "rgb-lsb-hmac-sha256-192-v1",
+  "input_kind": "synthetic",
+  "images": 16,
+  "protected_cases": 32,
+  "rows": [
+    {
+      "image": "synthetic-0",
+      "input_sha256": "710514f5560c39426171410756539ea1404f8d6cff75731a5c69538453b4edea",
+      "profile": "authenticated",
+      "psnr_db": 42.473510725844264,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "synthetic-0",
+      "input_sha256": "710514f5560c39426171410756539ea1404f8d6cff75731a5c69538453b4edea",
+      "profile": "authenticated-single",
+      "psnr_db": 51.14145700945494,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "synthetic-1",
+      "input_sha256": "3e2d7a4f9a5000bbea7ff64c0b605439893a9e2ba7b28ba6470bcc30f291e07c",
+      "profile": "authenticated",
+      "psnr_db": 42.45984272159233,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "synthetic-1",
+      "input_sha256": "3e2d7a4f9a5000bbea7ff64c0b605439893a9e2ba7b28ba6470bcc30f291e07c",
+      "profile": "authenticated-single",
+      "psnr_db": 51.10625421624964,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "synthetic-2",
+      "input_sha256": "55dfdfcac1e3efc59d492ea6640a3a65f37ac9d15be016fda25ea3e66e76cb49",
+      "profile": "authenticated",
+      "psnr_db": 42.477042620540075,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "synthetic-2",
+      "input_sha256": "55dfdfcac1e3efc59d492ea6640a3a65f37ac9d15be016fda25ea3e66e76cb49",
+      "profile": "authenticated-single",
+      "psnr_db": 51.126284826235974,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "synthetic-3",
+      "input_sha256": "965dd9906aeacc775c8f49ca16243a64497df8a0a4f2b3895ddd89c79a058574",
+      "profile": "authenticated",
+      "psnr_db": 42.47447150120774,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "synthetic-3",
+      "input_sha256": "965dd9906aeacc775c8f49ca16243a64497df8a0a4f2b3895ddd89c79a058574",
+      "profile": "authenticated-single",
+      "psnr_db": 51.13386429229999,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "synthetic-4",
+      "input_sha256": "64750c954c41777cb64f4226a182c74ff6347ff86bae8685cf066abde61f6916",
+      "profile": "authenticated",
+      "psnr_db": 42.47444747923303,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "synthetic-4",
+      "input_sha256": "64750c954c41777cb64f4226a182c74ff6347ff86bae8685cf066abde61f6916",
+      "profile": "authenticated-single",
+      "psnr_db": 51.14181048235784,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "synthetic-5",
+      "input_sha256": "39d8b717a744ced826db0defc4b2f2ba2b50aa8b0d93a21595f59cf4c1c59b04",
+      "profile": "authenticated",
+      "psnr_db": 42.469957703970415,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "synthetic-5",
+      "input_sha256": "39d8b717a744ced826db0defc4b2f2ba2b50aa8b0d93a21595f59cf4c1c59b04",
+      "profile": "authenticated-single",
+      "psnr_db": 51.14516991057875,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "synthetic-6",
+      "input_sha256": "a3a12fd910a139f9b1925414f2b3fd896052948f9e9568f3c027d36db298d2a8",
+      "profile": "authenticated",
+      "psnr_db": 42.48613784665062,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "synthetic-6",
+      "input_sha256": "a3a12fd910a139f9b1925414f2b3fd896052948f9e9568f3c027d36db298d2a8",
+      "profile": "authenticated-single",
+      "psnr_db": 51.138806879303935,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "synthetic-7",
+      "input_sha256": "2095385f1d4c94a8d18d9451903ffab77292b1ebe40817b72cc348a53d90df88",
+      "profile": "authenticated",
+      "psnr_db": 42.45534409519706,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "synthetic-7",
+      "input_sha256": "2095385f1d4c94a8d18d9451903ffab77292b1ebe40817b72cc348a53d90df88",
+      "profile": "authenticated-single",
+      "psnr_db": 51.118542762276675,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "synthetic-8",
+      "input_sha256": "d7b071322a69931429e4ac77fd8ef2dd1c5580b7fdde8b6f338dcad47ca74262",
+      "profile": "authenticated",
+      "psnr_db": 42.48204504397932,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "synthetic-8",
+      "input_sha256": "d7b071322a69931429e4ac77fd8ef2dd1c5580b7fdde8b6f338dcad47ca74262",
+      "profile": "authenticated-single",
+      "psnr_db": 51.10993713048491,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "synthetic-9",
+      "input_sha256": "99cddbeb74a72912c81a212975a20b787af94c30348a646cbc3bdd8af5a2e4fe",
+      "profile": "authenticated",
+      "psnr_db": 42.48397058830949,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "synthetic-9",
+      "input_sha256": "99cddbeb74a72912c81a212975a20b787af94c30348a646cbc3bdd8af5a2e4fe",
+      "profile": "authenticated-single",
+      "psnr_db": 51.15632769758595,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "synthetic-10",
+      "input_sha256": "66ed3fd2d9f42de3cab79610623f228e1eea95618b8f611f321cc967873f58d0",
+      "profile": "authenticated",
+      "psnr_db": 42.46906990249987,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "synthetic-10",
+      "input_sha256": "66ed3fd2d9f42de3cab79610623f228e1eea95618b8f611f321cc967873f58d0",
+      "profile": "authenticated-single",
+      "psnr_db": 51.15792400984469,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "synthetic-11",
+      "input_sha256": "23ca195a85572801bdbe8ebcf286ab4e5f53e9cb7748e640cbea63714c2f42fe",
+      "profile": "authenticated",
+      "psnr_db": 42.49728016373687,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "synthetic-11",
+      "input_sha256": "23ca195a85572801bdbe8ebcf286ab4e5f53e9cb7748e640cbea63714c2f42fe",
+      "profile": "authenticated-single",
+      "psnr_db": 51.104852022414214,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "synthetic-12",
+      "input_sha256": "80f9057c3e6eb111ae7696eabb3618dc81f42dcd030af96bfd0933215263347b",
+      "profile": "authenticated",
+      "psnr_db": 42.484596574081294,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "synthetic-12",
+      "input_sha256": "80f9057c3e6eb111ae7696eabb3618dc81f42dcd030af96bfd0933215263347b",
+      "profile": "authenticated-single",
+      "psnr_db": 51.11502819963522,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "synthetic-13",
+      "input_sha256": "878df30b3a035cdf677d04689d66c8519036355583dd5617bdb9ab82a2c71af9",
+      "profile": "authenticated",
+      "psnr_db": 42.46448981168616,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "synthetic-13",
+      "input_sha256": "878df30b3a035cdf677d04689d66c8519036355583dd5617bdb9ab82a2c71af9",
+      "profile": "authenticated-single",
+      "psnr_db": 51.16289407026094,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "synthetic-14",
+      "input_sha256": "0577f957d2349badb4924c3a578a5049fecd78c12b4ebe8050dc76dceb921bcb",
+      "profile": "authenticated",
+      "psnr_db": 42.46659941056225,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "synthetic-14",
+      "input_sha256": "0577f957d2349badb4924c3a578a5049fecd78c12b4ebe8050dc76dceb921bcb",
+      "profile": "authenticated-single",
+      "psnr_db": 51.15171942203237,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "synthetic-15",
+      "input_sha256": "aad17239d2557d41bb36498b4f3bbc6a62d4c08a880862a106559d23e1184cf3",
+      "profile": "authenticated",
+      "psnr_db": 42.44545394457623,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "synthetic-15",
+      "input_sha256": "aad17239d2557d41bb36498b4f3bbc6a62d4c08a880862a106559d23e1184cf3",
+      "profile": "authenticated-single",
+      "psnr_db": 51.15136514175163,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    }
+  ],
+  "scope": "Integrity/fidelity probes only; no learned-model, clinical, adversarial-rate or paper-parity claim."
+}

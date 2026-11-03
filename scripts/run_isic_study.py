@@ -26,6 +26,7 @@ from src.calibration import fit_selective_rule, risk_coverage
 from src.persistence import source_digest, atomic_write, atomic_json, seal_artifacts, artifacts_valid
 from src.isic_meta import Metadata
 from src.names import model_name
+from src.ablations import ABLATIONS, configure
 from src.authentic_training import pretrain_authentic
 META = Metadata(None)
 
@@ -98,20 +99,9 @@ def verdicts(samples, maps, tau, k):
 
 
 def learned_rule(samples, maps):
-    best = None
-    for tau in np.arange(.05, 1, .05):
-        loc = np.mean([R.M.iou(p > tau, s.gt_pixel) for s, (b, p) in zip(samples, maps) if s.cls])
-        if best is None or loc > best[0]:
-            best = loc, float(tau)
-    tau = best[1]
-    labels = np.array([s.cls for s in samples])
-    counts = np.array([(b > tau).sum() for b, p in maps])
-    if not labels.any() or labels.all():
-        raise ValueError('validation must include both classes')
-    ks = (0, 1, 2, 4, 8, 16, 32, 64, 128, 256)
-    k = max(ks, key=lambda k: .5 * ((counts[labels == 1] > k).mean() +
-                                    (counts[labels == 0] <= k).mean()))
-    return tau, k
+    from src.decision import fit_boundary
+    _,tau,k=fit_boundary(samples,[b for b,p in maps],[p for b,p in maps])
+    return tau,k
 
 
 def build_paired_model(cid, width, seed):
@@ -119,8 +109,8 @@ def build_paired_model(cid, width, seed):
     import torch
     torch.manual_seed(seed)
     base = R.build_model(next(c for c in P.MATRIX if c.cid=='C8'), E.N_FULL, width, binary_verdict_head=True)
-    if cid == 'C8':
-        return base
+    if cid == 'C8' or cid in ABLATIONS:
+        return configure(base,cid,E.N_FULL)
     if cid != 'C12':
         raise ValueError('unknown learned model')
     torch.manual_seed(seed)
@@ -155,6 +145,9 @@ def main():
     ap.add_argument('--threads', type=int, default=2)
     ap.add_argument('--heldout', choices=['T1','T2','T3','T4','T5'], default=None)
     args = ap.parse_args()
+    declared=args.configs.split(',')
+    if len(set(declared))!=len(declared) or not set(declared)<={'C8','C12',*ABLATIONS}:
+        raise ValueError('configs must be unique registered learned variants')
     if ROOT == args.cache.resolve() or ROOT in args.cache.resolve().parents:
         raise ValueError('cache contains pixels and must be outside the repository')
     cache_path, output_path = args.cache.resolve(), args.out.resolve()
@@ -279,10 +272,19 @@ def main():
                       observed if name in ('train','val') else families, 10000)
                 for name, ids in zip(('train','val','test'), selected)]
     train, val, test = datasets
+    strict_failures = [bool(s.ev[0].any()) for s in test]
+    integrity_packet = {'authentication_failed': np.array(strict_failures),
+                        'strict_integrity_verdict': np.where(strict_failures,'FAILED_INTEGRITY','VERIFIED')}
     pairing = {'family': np.array([s.family for s in test]),
                'gt_sha256': np.array([hashlib.sha256(s.gt_pixel.tobytes()).hexdigest() for s in test])}
     def save(name, receipt):
-        receipt.update({'provenance': prov, 'usable': prov['usable'], 'protocol': 'isic-audited-v1', 'model': model_name(name),
+        from src.authentication import SCHEME
+        receipt['authentication_scheme'] = SCHEME
+        receipt['strict_authentication'] = {'n_failed': sum(strict_failures), 'n_verified': len(test)-sum(strict_failures),
+            'matches_measured_edit_labels': all(f == bool(s.cls) for f,s in zip(strict_failures,test)),
+            'rule': 'any block MAC failure; independent of learned prediction and abstention'}
+        receipt['integrity_semantics'] = 'Strict RGB MAC verification is independent of learned/thresholded experimental predictions; failed MAC does not prove malicious intent.'
+        receipt.update({'provenance': prov, 'usable': prov['usable'], 'protocol': 'isic-rgb-auth-v2', 'model': model_name(name),
                         'parameters': {k: str(v) if isinstance(v, Path) else v for k,v in vars(args).items()}})
         atomic_json(args.out / f'{name}.json', receipt)
         suffixes = ['.json', '_verdicts.npz'] if name.startswith('C0') else ['.json','_verdicts.npz','_state.pt','_validation.npz']
@@ -298,7 +300,7 @@ def main():
         r = R.score(test, [m for m,c in outputs], [R.upsample(m) for m,c in outputs], [c for m,c in outputs])
         r['rule'] = rule.to_dict()
         name = 'C0_B' if carrier_b else 'C0_count'
-        atomic_write(args.out / f'{name}_verdicts.npz', lambda f: np.savez(f, image_id=manifest['test'], **pairing,
+        atomic_write(args.out / f'{name}_verdicts.npz', lambda f: np.savez(f, image_id=manifest['test'], **pairing, **integrity_packet,
                  prediction=[c for m,c in outputs], tampered=[s.cls for s in test],
                  iou=[R.M.iou(R.upsample(m),s.gt_pixel) for (m,c),s in zip(outputs,test)]))
         save(name, r)
@@ -306,12 +308,12 @@ def main():
     if not set(requested) <= set(args.configs.split(',')):
         raise ValueError('execute-configs must be a subset of the frozen configs')
     for cid in requested:
-        if cid not in ('C8', 'C12'):
-            raise ValueError('this paired runner supports C8,C12 only; use --heldout/--probes for probes')
+        if cid not in ('C8', 'C12', *ABLATIONS):
+            raise ValueError('unknown learned variant; use main, attention or a registered constituent ablation')
         if args.resume and artifacts_valid(args.out, cid, ['.json','_verdicts.npz','_state.pt','_validation.npz']):
             print(f'Skipping completed {model_name(cid)}', flush=True)
             continue
-        cfg = next(c for c in P.MATRIX if c.cid == cid)
+        # Variant construction is explicit; legacy matrix is not executed.
         torch.manual_seed(args.seed)  # paired initialisation discipline
         model = build_paired_model(cid, args.width, args.seed)
         t0 = time.time()
@@ -344,7 +346,13 @@ def main():
                 'iou_tampered_mean': float(np.mean([R.M.iou(tp[i]>tau,test[i].gt_pixel) for i in idx])) if idx else None,
                 'training_families': observed}
         r.update({'authentic_reconstruction': ae_info,
+                  'ablation': {'variant': cid, 'evidence_mask': model.get('evidence_mask'),
+                               'use_ae': model.get('use_ae',True), 'use_saliency': model['use_saliency'],
+                               'use_degrade': model['use_degrade'], 'use_pixel': model['use_pixel'],
+                               'carrier_removal_scope': 'input features only; same protection and ground truth'},
+                  'decision_objective': 'validation balanced accuracy, then tampered pixel IoU; shared classical/learned fit',
                   'image_classifier': 'binary auxiliary head; verdict uses validation-fitted block count',
+                  'trainable_parameters': sum(p.numel() for module in ('refine','saliency','ae') for p in model[module].parameters() if p.requires_grad),
                   'total_parameters': sum(p.numel() for module in ('refine','saliency','ae') for p in model[module].parameters()),
                   'tau': tau, 'k': k, 'seconds': time.time()-t0,
                   'aurc': risk_coverage(tc,ty)['aurc'],
@@ -356,7 +364,7 @@ def main():
                       'reason': 'validation_constraints_met' if rule.feasible else 'validation_constraints_infeasible',
                       'test_coverage': float(accept.mean()),
                       'test_risk': float((~ty[accept]).mean()) if accept.any() else None}})
-        atomic_write(args.out / f'{cid}_verdicts.npz', lambda f: np.savez(f, image_id=manifest['test'], **pairing,
+        atomic_write(args.out / f'{cid}_verdicts.npz', lambda f: np.savez(f, image_id=manifest['test'], **pairing, **integrity_packet,
                  confidence=tc, correct=ty, prediction=tpc, selective_accept=accept,
                  selective_verdict=np.where(accept, np.where(np.array(tpc)==1,'TAMPERED','INTACT'),'CANNOT_SAY'),
                  iou=[R.M.iou(p>tau,s.gt_pixel) for p,s in zip(tp,test)],
@@ -366,6 +374,9 @@ def main():
                 probe = cache(paths, selected[2], args.cache/name, families,10000,key,wrong)
                 b,p = R.predict_maps(model,probe)
                 result,_ = verdicts(probe,list(zip(b,p)),tau,k)
+                failed=[bool(s.ev[0].any()) for s in probe]
+                result['strict_authentication']={'n_failed':sum(failed),'n_verified':len(failed)-sum(failed),
+                    'interpretation':'Wrong-key failures mean not verifiable under that key; experimental detection scores are not authentication approval.'}
                 r[name] = result
         save(cid, r)
 

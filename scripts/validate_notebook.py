@@ -12,6 +12,7 @@ ROOT=Path(__file__).resolve().parents[1]
 def main():
     ap=argparse.ArgumentParser(__doc__)
     ap.add_argument('--execute-wiring', action='store_true')
+    ap.add_argument('--exercise-ablations', action='store_true')
     args=ap.parse_args()
     notebook=json.loads((ROOT/'notebooks/keyswm_isic2019.ipynb').read_text())
     cells=[c for c in notebook['cells'] if c['cell_type']=='code']
@@ -40,6 +41,7 @@ def main():
              '--metadata',str(metadata),'--out',str(base/'runs'),'--cache',str(base/'cache'),
              '--train-n','7','--val-n','7','--test-n','7','--epochs','1','--width','4',
              '--device','cpu','--seeds','0','--sanity','--probes']
+        if args.exercise_ablations: cmd.append('--ablations')
         subprocess.run(cmd+['--execute-configs','C8'],check=True,cwd=project)
         assert not (base/'runs'/'seed-0'/'C12.json').exists()
         first_checkpoint=(base/'runs'/'seed-0'/'C8_checkpoint.pt').read_bytes()
@@ -62,6 +64,20 @@ def main():
         with np.load(verdict,allow_pickle=False) as z:
             np.testing.assert_array_equal(previous_iou,z['iou'])
         print('Damaged model artifact recovered from checkpoint without retraining PASS')
+        if args.exercise_ablations:
+            sys.path.insert(0,str(project))
+            from src.ablations import ABLATIONS
+            for variant in ABLATIONS:
+                subprocess.run(cmd+['--resume','--execute-configs',variant],check=True,cwd=project)
+                r=json.loads((base/'runs'/'seed-0'/f'{variant}.json').read_text())
+                assert r['ablation']['variant']==variant
+                assert r['strict_authentication']['matches_measured_edit_labels']
+                assert not r['usable']
+                with np.load(base/'runs'/'seed-0'/f'{variant}_verdicts.npz',allow_pickle=False) as packet:
+                    np.testing.assert_array_equal(packet['authentication_failed'],packet['tampered'].astype(bool))
+                    np.testing.assert_array_equal(packet['strict_integrity_verdict'],
+                        np.where(packet['authentication_failed'],'FAILED_INTEGRITY','VERIFIED'))
+            print('All seven constituent removals trained/evaluated in separate resumed CPU jobs PASS (synthetic only)')
         # Moving the same experiment is supported; altered data/source is not.
         manifest=json.loads((base/'runs'/'seed-0'/'manifest.json').read_text())
         image=data/(manifest['train'][0]+'.jpg')

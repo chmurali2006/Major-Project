@@ -84,7 +84,11 @@ def estimate(rgb: np.ndarray, ref_sharpness: float | None = None) -> np.ndarray:
     """
     g = _gray(rgb)
     s = sharpness(g)
-    rel = 1.0 if ref_sharpness is None or ref_sharpness <= 0 else float(
+    if ref_sharpness is not None and (not np.isfinite(ref_sharpness) or ref_sharpness <= 0):
+        raise ValueError('reference sharpness must be finite and positive')
+    # Fixed analytic bound: each 3x3 Sobel directional response is at most
+    # 4*255 on uint8 luma. No VAL/TEST statistic or guessed corpus scale.
+    rel = s / (4.0 * 255.0 * np.sqrt(2.0)) if ref_sharpness is None else float(
         np.clip(s / ref_sharpness, 0.0, 2.0))
     return np.array([
         jpeginess(g),

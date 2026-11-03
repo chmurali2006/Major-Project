@@ -81,7 +81,15 @@ class Metadata:
             self.patient[stem] = str(pid).strip()
             explicit_patients += bool(str(pid).strip())
             if self.schema == "one-hot":
-                hit = [d for d in one_hot if str(r.get(d, "0")).strip() not in ("", "0", "0.0")]
+                try:
+                    values = {d: float(r.get(d) or 0) for d in one_hot}
+                except (ValueError, TypeError):
+                    raise ValueError(f'invalid numeric diagnosis for {stem}')
+                if any(v not in (0., 1.) for v in values.values()):
+                    raise ValueError(f'non-binary diagnosis for {stem}')
+                hit = [d for d,v in values.items() if v == 1.]
+                if len(hit) > 1:
+                    raise ValueError(f'multiple diagnoses in one-hot row for {stem}')
                 self.diagnosis[stem] = hit[0] if hit else UNKNOWN
             elif self.schema == "single":
                 self.diagnosis[stem] = str(r[single]).strip().upper() or UNKNOWN

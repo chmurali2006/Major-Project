@@ -14,7 +14,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 N_SLOTS_CH = 2          # E and S from the keyed channel
-N_DEGRADE = 4           # jpeg quality, noise sigma, resample factor, sharpness
+N_DEGRADE = 4           # jpeginess, noise, sharpness, clipping
 
 
 # ---------------------------------------------------------------- building blocks
@@ -303,22 +303,31 @@ class PixelRefineNet(nn.Module):
         s3 = self.stage_gates[1](s3)
         s4 = self.d4(torch.cat([F.max_pool2d(s3, 2), ev_feat], dim=1)) # 64
         s4 = self.stage_gates[2](s4)
-        u4 = self.u4(s4, s3)            # 128
-        u3 = self.u3(u4, s1)            # 256
-        u2 = self.u2(u3, None)          # 512
+        block_logits = self.block_head(s4)
+        if getattr(self,'pixel_enabled',True):
+            u4 = self.u4(s4, s3)
+            u3 = self.u3(u4, s1)
+            u2 = self.u2(u3, None)
+            pixel_logits = self.pixel_head(u2)
+        else:
+            pixel_logits = block_logits.repeat_interleave(8,2).repeat_interleave(8,3)
         return {
-            "pixel_logits": self.pixel_head(u2),                       # 512x512
-            "block_logits": self.block_head(s4),                       # 64x64
+            "pixel_logits": pixel_logits,                       # 512x512
+            "block_logits": block_logits,                       # 64x64
             "cls": self.cls_head(s4),
         }
 
 
 def consistency_loss(pixel_logits: torch.Tensor, block_logits: torch.Tensor) -> torch.Tensor:
-    """The two heads must agree. Average the pixel probabilities inside each
-    8x8 block and compare with the block probability."""
+    """Match block-presence probability to max pixel probability in that block.
+
+    Protocol v2 labels a block positive for ANY changed pixel. Average occupancy
+    is incompatible with that target for sparse edits. Max is a differentiable
+    presence surrogate, not a calibrated probability of the union event.
+    """
     p = torch.sigmoid(pixel_logits)
     b = p.shape[0]
-    pooled = F.avg_pool2d(p, kernel_size=8)
+    pooled = F.max_pool2d(p, kernel_size=8)
     return F.mse_loss(pooled, torch.sigmoid(block_logits))
 
 

@@ -20,24 +20,34 @@ def main():
     payload = base64.b64encode(archive.read_bytes()).decode()
     sha = hashlib.sha256(archive.read_bytes()).hexdigest()
     cells = [cell('markdown', '''# ISIC 2019: audited, staged watermarking study
-**Submission workflow, not a claim of published-paper parity.** Train and compare main model,
-attention-enhanced model and classical controls on identical held-out images. Thresholds are selected on
-validation only. Reconstruction is pretrained on intact TRAIN examples only and
-frozen during localisation training. Abstention is fitted separately, not a learned
-third class. One model/seed per saved version keeps interrupted work bounded.
+**Protocol v2 — incompatible with all earlier checkpoints/results.**
+The fragile verifier now checks a block-local RGB HMAC carried in RGB low bits;
+it no longer relies on the periodic luma code for authentication. Read
+`PROTOCOL_V2.md` for capacity, fidelity, lossless-storage and replay/key limitations.
+The earlier brightness/colour failures are retained as legacy regression cases.
+
+Main model, attention-enhanced model and constituent removals share the same
+protected inputs, measured masks and validation decision objective. The AE is
+pretrained on authentic TRAIN samples then frozen. Abstention is empirical, not
+a clinical guarantee. Corrected code is not yet a full measured ISIC study.
 
 **Before running:** attach ISIC 2019 training images and the eight-class ground-truth
-CSV with **Add Input / Add Data**, enable a GPU, and read `KAGGLE_SETUP.md` supplied
+CSV with **Add Input / Add Data**, enable a GPU, and read `RUNNING.md` supplied
 with this notebook. No private GitHub login or API token is required.
 
-Start with `STAGE='check'`. Save it, then run main model seed 0, attention-enhanced model seed 0, remaining seeds,
-and the held-out-T5 study as separate saved versions. Restore the preceding saved
+For engineering checks only, start with `STAGE='check'`. Do not advance to the full study
+until the new GPU wiring check passes and the amended protocol has been reviewed. Restore the preceding saved
 output each time. Do not change training settings based on test results.
 The method is a research prototype, not a clinically validated medical system.
 '''), cell('code', f'''# 1. Verify/extract the exact project source. No separate notebook model implementation.
 import base64, hashlib, io, json, zipfile, sys, subprocess, os, shutil
 from pathlib import Path
 PROJECT = Path('/kaggle/working/keyswm-project')
+# Byte verification cannot invalidate Python's already-imported module cache.
+# A different/unknown project version needs a fresh kernel before extraction.
+loaded_project_modules = [name for name in sys.modules if name == 'src' or name.startswith('src.') or name in ('run_matrix','run_isic_study')]
+if loaded_project_modules and globals().get('_KEYSWM_SOURCE_BUNDLE_SHA256') != {sha!r}:
+    raise RuntimeError('Project modules are already loaded from an unknown/different source. Restart the kernel, then run from the top.')
 PROJECT.mkdir(parents=True, exist_ok=True)
 raw = base64.b64decode({payload!r})
 assert hashlib.sha256(raw).hexdigest() == {sha!r}
@@ -49,6 +59,7 @@ with zipfile.ZipFile(io.BytesIO(raw)) as z:
 for name, expected in json.loads((PROJECT / 'SOURCE_MANIFEST.json').read_text()).items():
     assert hashlib.sha256((PROJECT / name).read_bytes()).hexdigest() == expected
 sys.path.insert(0, str(PROJECT))
+_KEYSWM_SOURCE_BUNDLE_SHA256 = {sha!r}
 print('Verified source bundle:', {sha!r})
 '''), cell('markdown', '''## 2. Configuration — edit only this cell
 Leave paths as `None` for unambiguous auto-discovery. If more than one image root
@@ -59,9 +70,11 @@ correct paths explicitly. Attaching only a CSV is not sufficient.
 same frozen model list/settings so they can be executed in separate sessions.
 Full-profile count checks are strict by default. A count/profile match is an audit,
 not cryptographic proof that a third-party mirror is authentic.
-'''), cell('code', '''STAGE = 'check'              # 'check', 'main-model', 'attention-enhanced', or 'heldout'
+'''), cell('code', '''ACKNOWLEDGE_EXPERIMENTAL_PROTOCOL_V2 = False  # See PROTOCOL_V2.md; engineering fixes are not measured submission results.
+STAGE = 'check'              # 'check', 'main-model', 'attention-enhanced', 'ablation', 'heldout'
+ABLATION = 'without-ae'       # one registered removal per saved job; see PROTOCOL_V2.md
 SEED = 0                     # use 0, then 1, then 2; heldout uses seed 0
-STUDY_NAME = 'isic2019-audited-v1'    # new name if changing source, data or training settings
+STUDY_NAME = 'isic2019-rgb-auth-v2'    # new name if changing source, data or training settings
 
 INPUT_ROOT = Path('/kaggle/input')
 DATA = None                  # e.g. Path('/kaggle/input/<your-input>/training-images')
@@ -77,14 +90,16 @@ RESTORE_FROM = None           # e.g. Path('/kaggle/input/<previous-output>/isic-
 # Freeze these BEFORE the first full run. Never extend epochs inside an existing run.
 TRAIN_N, VAL_N, TEST_N, EPOCHS, WIDTH = 2000, 150, 1000, 3, 16
 AUTHENTIC_EPOCHS = 2
-if STAGE not in ('check', 'main-model', 'attention-enhanced', 'heldout') or SEED not in (0, 1, 2):
+if STAGE not in ('check', 'main-model', 'attention-enhanced', 'ablation', 'heldout') or SEED not in (0, 1, 2):
     raise ValueError('invalid stage or seed')
+if STAGE != 'check' and not ACKNOWLEDGE_EXPERIMENTAL_PROTOCOL_V2:
+    raise RuntimeError('Full run blocked: acknowledge the new experimental RGB-authentication protocol after checking PROTOCOL_V2.md and the GPU wiring check. This does not certify accuracy or clinical/security validity.')
 if STAGE == 'heldout' and SEED != 0:
     raise ValueError('the planned held-out run uses seed 0')
 SANITY = STAGE == 'check'
 if SANITY:
     TRAIN_N, VAL_N, TEST_N, EPOCHS, WIDTH = 7, 7, 7, 1, 4
-RUN_NAME = 'wiring-check' if SANITY else STUDY_NAME
+RUN_NAME = 'wiring-check-v2' if SANITY else STUDY_NAME
 RUNS = Path('/kaggle/working/isic-runs') / RUN_NAME
 CACHE = Path('/kaggle/temp/keyswm-cache')  # disposable, not copied into saved results
 print(dict(stage=STAGE, seed=SEED, output=str(RUNS), sanity=SANITY))
@@ -162,8 +177,8 @@ a fingerprint mismatch.
     if RUNS.exists():
         raise ValueError('Restore target already exists. Do not merge two experiments.')
     shutil.copytree(restore, RUNS)
-if STAGE == 'attention-enhanced' and not (RUNS / f'seed-{SEED}' / 'C8.json').exists():
-    raise ValueError('attention-enhanced model continuation requires the preceding main model output for this seed. Attach it and set RESTORE_FROM.')
+if STAGE in ('attention-enhanced','ablation') and not (RUNS / f'seed-{SEED}' / 'C8.json').exists():
+    raise ValueError('attention/ablation continuation requires the preceding main model output for this seed. Attach it and set RESTORE_FROM.')
 RESUME = RUNS.exists()
 RUNS.mkdir(parents=True, exist_ok=True)
 shutil.copy2('/kaggle/working/dataset_audit.json', RUNS/'dataset_audit.json')
@@ -182,16 +197,19 @@ If you must interrupt, stop the training subprocess before archiving.
 '''), cell('code', '''cmd = [sys.executable, '-u', str(PROJECT/'scripts/run_suite.py'),
        '--data', str(DATA), '--metadata', str(CANONICAL_CSV), '--out', str(RUNS),
        '--cache', str(CACHE), '--device', 'cuda', '--seeds', str(SEED),
-       '--configs', 'C8,C12', '--train-n', str(TRAIN_N), '--val-n', str(VAL_N),
+       '--configs', 'C8,C12', '--ablations', '--train-n', str(TRAIN_N), '--val-n', str(VAL_N),
        '--test-n', str(TEST_N), '--epochs', str(EPOCHS), '--ae-epochs', str(AUTHENTIC_EPOCHS), '--width', str(WIDTH)]
 if RESUME: cmd.append('--resume')
 if SANITY:
-    cmd.append('--sanity')
+    cmd.extend(['--sanity','--execute-configs','C8,C12'])
 elif STAGE == 'heldout':
     cmd.extend(['--only-heldout', '--probes'])
 else:
     from src.names import STAGE_MODELS
-    cmd.extend(['--execute-configs', STAGE_MODELS[STAGE], '--probes'])
+    from src.ablations import ABLATIONS
+    if STAGE == 'ablation' and ABLATION not in ABLATIONS:
+        raise ValueError('unknown constituent ablation')
+    cmd.extend(['--execute-configs', ABLATION if STAGE == 'ablation' else STAGE_MODELS[STAGE], '--probes'])
 print('Executing:', STAGE, 'seed', SEED, '| output:', RUNS)
 # Popen + finally prevents a failed child from skipping the export step.
 child = None
@@ -207,22 +225,44 @@ except BaseException as exc:
         try:
             os.killpg(child.pid, signal.SIGTERM)
             child.wait(timeout=30)
+        except (ProcessLookupError, subprocess.TimeoutExpired):
+            pass
+        except BaseException as cleanup_error:
+            print('CHILD STOP WARNING:', repr(cleanup_error))
         finally:
             try:
                 os.killpg(child.pid, signal.SIGKILL)
             except ProcessLookupError:
                 pass
-            child.wait()
+            except BaseException as cleanup_error:
+                print('CHILD KILL WARNING:', repr(cleanup_error))
+            try:
+                child.wait(timeout=10)
+            except BaseException as cleanup_error:
+                print('CHILD WAIT WARNING:', repr(cleanup_error))
 finally:
-    subprocess.run([sys.executable, str(PROJECT/'scripts/summarize_isic_study.py'),
-                    '--root', str(RUNS), '--out', str(RUNS/'summary.json')], check=True)
+    # Independent attempts: neither a bad summary nor its launch failure may
+    # prevent exporting raw checkpoints. Do not mask the original study error.
+    finalization_errors = []
+    try:
+        subprocess.run([sys.executable, str(PROJECT/'scripts/summarize_isic_study.py'),
+                        '--root', str(RUNS), '--out', str(RUNS/'summary.json')], check=True)
+    except BaseException as exc:
+        finalization_errors.append(('summary', exc))
+        print('SUMMARY FAILED:', repr(exc))
     archive = Path('/kaggle/working') / (RUN_NAME + '-results.zip')
-    subprocess.run([sys.executable, str(PROJECT/'scripts/export_results.py'),
-                    '--runs', str(RUNS), '--out', str(archive)], check=True)
-    shutil.copy2(PROJECT/'SOURCE_MANIFEST.json', '/kaggle/working/SOURCE_MANIFEST.json')
-    print('SAVE/DOWNLOAD:', archive)
+    try:
+        subprocess.run([sys.executable, str(PROJECT/'scripts/export_results.py'),
+                        '--runs', str(RUNS), '--out', str(archive)], check=True)
+        shutil.copy2(PROJECT/'SOURCE_MANIFEST.json', '/kaggle/working/SOURCE_MANIFEST.json')
+        print('SAVE/DOWNLOAD:', archive)
+    except BaseException as exc:
+        finalization_errors.append(('export', exc))
+        print('EXPORT FAILED: save the raw study folder if possible:', repr(exc))
 if failure is not None:
     raise failure
+if finalization_errors:
+    raise RuntimeError('Finalization failed: ' + ', '.join(name for name, _ in finalization_errors)) from finalization_errors[0][1]
 '''), cell('markdown', '''## 7. Inspect results, then Save Version
 A successful job is not the same as a successful scientific gate. Carrier-B losses,
 false claims, infeasible abstention and rekeying drops remain visible. Confidence
@@ -240,7 +280,9 @@ for row in summary['runs']:
           'IoU(tampered)', round(row['iou_tampered'], 4),
           'balanced', round(row['balanced_accuracy'], 4),
           'FPR', round(row['fpr'], 4))
-print('Full three-seed + heldout suite complete:', summary['complete'])
+print('Artifact suite complete (NOT security approval):', summary['complete'])
+print('Malformed receipts:', summary['invalid_receipts'])
+print('Comparison failures:', summary['comparison_failures'])
 print('Missing full-suite receipts:', len(summary['missing']))
 from IPython.display import FileLink, display
 display(FileLink(str(archive)))

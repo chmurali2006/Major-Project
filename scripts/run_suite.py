@@ -6,6 +6,7 @@ import subprocess
 import sys
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from src.persistence import atomic_json, source_digest
+from src.ablations import ABLATIONS
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -16,6 +17,7 @@ def main():
         ap.add_argument('--'+name, type=Path, required=True)
     ap.add_argument('--metadata', type=Path, required=True)
     ap.add_argument('--seeds', default='0,1,2')
+    ap.add_argument('--ablations', action='store_true', help='freeze/enable registered matched constituent removals')
     ap.add_argument('--configs', default='C8,C12')
     ap.add_argument('--execute-configs', default=None)
     ap.add_argument('--only-heldout', action='store_true')
@@ -31,6 +33,7 @@ def main():
     ap.add_argument('--probes', action='store_true')
     ap.add_argument('--heldout-run', action='store_true')
     args=ap.parse_args()
+    if args.ablations: args.configs=','.join(dict.fromkeys(args.configs.split(',')+list(ABLATIONS)))
     args.out.mkdir(parents=True, exist_ok=True)
     contract = {k:v for k,v in vars(args).items() if k not in (
         'data','metadata','out','cache','seeds','execute_configs','only_heldout','heldout_run','resume','device')}
@@ -77,7 +80,7 @@ def main():
         if args.probes: options.append('--probes')
         if heldout: options.extend(['--heldout',heldout])
         execute('run_isic_study.py',options,logs/f'{name}.log')
-        for a,b in [('C0_count','C0_B'),('C0_count','C8'),('C8','C12')]:
+        for a,b in [('C0_count','C0_B'),('C0_count','C8'),('C8','C12')] + ([('C8',v) for v in ABLATIONS] if args.ablations else []):
             pa,pb=out/f'{a}_verdicts.npz',out/f'{b}_verdicts.npz'
             if pa.exists() and pb.exists():
                 execute('compare_paired.py',['--a',pa,'--b',pb,'--out',out/f'{b}_vs_{a}.json','--strict'],logs/f'{name}.log')

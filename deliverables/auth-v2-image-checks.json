@@ -1,0 +1,2314 @@
+{
+  "source_sha256": "1ee6a8a57bb07cc3670f3d944f76f9288ebfe4a792b97dc210243c6120b0e8de",
+  "scheme": "rgb-lsb-hmac-sha256-192-v1",
+  "input_kind": "local JPEG sample; corpus authenticity/patient independence not established",
+  "images": 32,
+  "protected_cases": 64,
+  "rows": [
+    {
+      "image": "ISIC_0013306_downsampled",
+      "input_sha256": "c2654a3c77371fc44a43449bb4a1ae5a88ebfdcf17753b21fad7026d6606322c",
+      "profile": "authenticated",
+      "psnr_db": 42.47340565393286,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0013306_downsampled",
+      "input_sha256": "c2654a3c77371fc44a43449bb4a1ae5a88ebfdcf17753b21fad7026d6606322c",
+      "profile": "authenticated-single",
+      "psnr_db": 51.132133510525094,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0025384",
+      "input_sha256": "0aa238cd9f1946c4592a8a22c779e5f6e05dce53c8c9cb1099a94baabe46677b",
+      "profile": "authenticated",
+      "psnr_db": 42.47534088583406,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 802,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0025384",
+      "input_sha256": "0aa238cd9f1946c4592a8a22c779e5f6e05dce53c8c9cb1099a94baabe46677b",
+      "profile": "authenticated-single",
+      "psnr_db": 51.13630178512294,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 793,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0060053",
+      "input_sha256": "aa58ca14ab27c7d95230f1abd4023d3ba19cd741751a38303e5d68bd8d00d5ad",
+      "profile": "authenticated",
+      "psnr_db": 42.469014420933455,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 27,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0060053",
+      "input_sha256": "aa58ca14ab27c7d95230f1abd4023d3ba19cd741751a38303e5d68bd8d00d5ad",
+      "profile": "authenticated-single",
+      "psnr_db": 51.13963487127218,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 26,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0032585",
+      "input_sha256": "9f40a411b26643a1c70ef210f92f4411fdf84492f7b4ecb2bc78da896b6a190f",
+      "profile": "authenticated",
+      "psnr_db": 42.480377430330705,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1023,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 61,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0032585",
+      "input_sha256": "9f40a411b26643a1c70ef210f92f4411fdf84492f7b4ecb2bc78da896b6a190f",
+      "profile": "authenticated-single",
+      "psnr_db": 51.139524463221946,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 55,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0062799",
+      "input_sha256": "fc5bf5e5552d800ac1c979336fdd6b43c47c9a3436766119f46be40739093a89",
+      "profile": "authenticated",
+      "psnr_db": 42.47972649796496,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1023,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0062799",
+      "input_sha256": "fc5bf5e5552d800ac1c979336fdd6b43c47c9a3436766119f46be40739093a89",
+      "profile": "authenticated-single",
+      "psnr_db": 51.131913078292754,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0025120",
+      "input_sha256": "73ad2b2144a19c178cf256144a18518bff7548fa52d0d15b6b6443a37fda6b50",
+      "profile": "authenticated",
+      "psnr_db": 42.47906213643831,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 46,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 6,
+          "failed_blocks": 2,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0025120",
+      "input_sha256": "73ad2b2144a19c178cf256144a18518bff7548fa52d0d15b6b6443a37fda6b50",
+      "profile": "authenticated-single",
+      "psnr_db": 51.1433904160253,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1023,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 41,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0028820",
+      "input_sha256": "1184c72d3159b1239651297334e13557a4b19d0992423c2acdd5aa121c4632bf",
+      "profile": "authenticated",
+      "psnr_db": 42.47772169816973,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 36,
+          "failed_blocks": 2,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0028820",
+      "input_sha256": "1184c72d3159b1239651297334e13557a4b19d0992423c2acdd5aa121c4632bf",
+      "profile": "authenticated-single",
+      "psnr_db": 51.14743678240316,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 32,
+          "failed_blocks": 2,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0067868",
+      "input_sha256": "1ac458e54b9c713d3b213c24baf0c82a8b0430f7f5a7c0a0ba585bf348d8c703",
+      "profile": "authenticated",
+      "psnr_db": 42.477418203450924,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0067868",
+      "input_sha256": "1ac458e54b9c713d3b213c24baf0c82a8b0430f7f5a7c0a0ba585bf348d8c703",
+      "profile": "authenticated-single",
+      "psnr_db": 51.1418546684936,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0070647",
+      "input_sha256": "90e8ae94f1282fa74b58b2ec5d45da60ff6c021f1f5d26768291fcd16d354ba2",
+      "profile": "authenticated",
+      "psnr_db": 42.473656329695004,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 111,
+          "failed_blocks": 6,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0070647",
+      "input_sha256": "90e8ae94f1282fa74b58b2ec5d45da60ff6c021f1f5d26768291fcd16d354ba2",
+      "profile": "authenticated-single",
+      "psnr_db": 51.14645248295246,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 101,
+          "failed_blocks": 4,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0000354",
+      "input_sha256": "b01b719a742d83c6a07ff23dbbe18b3ae3a9a4fd78b4c6eeb09b26e57af31129",
+      "profile": "authenticated",
+      "psnr_db": 42.52244931993719,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 63,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 977,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0000354",
+      "input_sha256": "b01b719a742d83c6a07ff23dbbe18b3ae3a9a4fd78b4c6eeb09b26e57af31129",
+      "profile": "authenticated-single",
+      "psnr_db": 51.141291328934656,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 59,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 996,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0069261",
+      "input_sha256": "48fb5d4f0cc225dd36225111f0ad86d0d8ca50b4bba107437bf4bbf0420ba4de",
+      "profile": "authenticated",
+      "psnr_db": 42.47194841855827,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1019,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0069261",
+      "input_sha256": "48fb5d4f0cc225dd36225111f0ad86d0d8ca50b4bba107437bf4bbf0420ba4de",
+      "profile": "authenticated-single",
+      "psnr_db": 51.13270668669614,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1021,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0071964",
+      "input_sha256": "5b0454af69f766afad7c6aaf959b357bd31234f4d40cffdd1d2066fb7ebb91e4",
+      "profile": "authenticated",
+      "psnr_db": 42.47600467830313,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0071964",
+      "input_sha256": "5b0454af69f766afad7c6aaf959b357bd31234f4d40cffdd1d2066fb7ebb91e4",
+      "profile": "authenticated-single",
+      "psnr_db": 51.1363569478483,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0065283",
+      "input_sha256": "2f43def721295b3fd3a8fb0dd44b91a5263e06e0c67bff754a887e2fda005d97",
+      "profile": "authenticated",
+      "psnr_db": 42.47714627817829,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0065283",
+      "input_sha256": "2f43def721295b3fd3a8fb0dd44b91a5263e06e0c67bff754a887e2fda005d97",
+      "profile": "authenticated-single",
+      "psnr_db": 51.146198149702215,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0030984",
+      "input_sha256": "b1deb4285615d43d789de2442f3c2c80395bc8971001cfadadd765503921d499",
+      "profile": "authenticated",
+      "psnr_db": 42.471774363398566,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 32,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0030984",
+      "input_sha256": "b1deb4285615d43d789de2442f3c2c80395bc8971001cfadadd765503921d499",
+      "profile": "authenticated-single",
+      "psnr_db": 51.13747138495221,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 29,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0067750",
+      "input_sha256": "ad8dbfe92d89d4331691ed2b35e575028609aed03aaa26974826db593400a032",
+      "profile": "authenticated",
+      "psnr_db": 42.474630650146345,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 47,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0067750",
+      "input_sha256": "ad8dbfe92d89d4331691ed2b35e575028609aed03aaa26974826db593400a032",
+      "profile": "authenticated-single",
+      "psnr_db": 51.147868174941,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 39,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0026226",
+      "input_sha256": "076533e2da373aeb383bb2f9455fa8e5dbc4dd422666d159fb124f007d9e5b90",
+      "profile": "authenticated",
+      "psnr_db": 42.468459644248924,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 80,
+          "failed_blocks": 7,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0026226",
+      "input_sha256": "076533e2da373aeb383bb2f9455fa8e5dbc4dd422666d159fb124f007d9e5b90",
+      "profile": "authenticated-single",
+      "psnr_db": 51.13742724339027,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 82,
+          "failed_blocks": 3,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0056132",
+      "input_sha256": "9af1a58144fef0a301779e3adc36e742e5bfb18a56fa2bf3cb2f38a42254b3d2",
+      "profile": "authenticated",
+      "psnr_db": 42.474153220825684,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0056132",
+      "input_sha256": "9af1a58144fef0a301779e3adc36e742e5bfb18a56fa2bf3cb2f38a42254b3d2",
+      "profile": "authenticated-single",
+      "psnr_db": 51.14470562430884,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0059427",
+      "input_sha256": "93f896297980d13e3e01f918ebd9acbd36f7eaba694354e510ec02acbb3abe8c",
+      "profile": "authenticated",
+      "psnr_db": 42.49943142527732,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0059427",
+      "input_sha256": "93f896297980d13e3e01f918ebd9acbd36f7eaba694354e510ec02acbb3abe8c",
+      "profile": "authenticated-single",
+      "psnr_db": 51.14170001898521,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0067226",
+      "input_sha256": "beb1f278a8c65c4b94ebe8dabd7a31089135f02e9d0717154ca714fc868a16d4",
+      "profile": "authenticated",
+      "psnr_db": 42.46833070630443,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 20,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0067226",
+      "input_sha256": "beb1f278a8c65c4b94ebe8dabd7a31089135f02e9d0717154ca714fc868a16d4",
+      "profile": "authenticated-single",
+      "psnr_db": 51.13114165357587,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 20,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0071751",
+      "input_sha256": "07322108932b4ff72b2c10721de0ed9f1597f39aad0ad7ed2771426fcdb233e7",
+      "profile": "authenticated",
+      "psnr_db": 42.975629148878156,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 953,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 58,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0071751",
+      "input_sha256": "07322108932b4ff72b2c10721de0ed9f1597f39aad0ad7ed2771426fcdb233e7",
+      "profile": "authenticated-single",
+      "psnr_db": 51.13380916122628,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 877,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 44,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0030725",
+      "input_sha256": "46bc1c361e1747f5e80b005a7e1e2d1a4f039ab551ab2c27329107e89c80ea1a",
+      "profile": "authenticated",
+      "psnr_db": 42.47580943469194,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1019,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 35,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 859,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0030725",
+      "input_sha256": "46bc1c361e1747f5e80b005a7e1e2d1a4f039ab551ab2c27329107e89c80ea1a",
+      "profile": "authenticated-single",
+      "psnr_db": 51.14326886225817,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1011,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 34,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 938,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0014600_downsampled",
+      "input_sha256": "3ce0777057a2050c8c24ffaef5f8fda9657fc9cee240673cd9465baefdaf5b4e",
+      "profile": "authenticated",
+      "psnr_db": 42.472156993842745,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 56,
+          "failed_blocks": 4,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0014600_downsampled",
+      "input_sha256": "3ce0777057a2050c8c24ffaef5f8fda9657fc9cee240673cd9465baefdaf5b4e",
+      "profile": "authenticated-single",
+      "psnr_db": 51.1422413163593,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 51,
+          "failed_blocks": 4,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0031350",
+      "input_sha256": "c844904aaa549025858634df759d192cff597499d059cf336bfb4c5c34343066",
+      "profile": "authenticated",
+      "psnr_db": 42.47718083127417,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 850,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0031350",
+      "input_sha256": "c844904aaa549025858634df759d192cff597499d059cf336bfb4c5c34343066",
+      "profile": "authenticated-single",
+      "psnr_db": 51.1401096578747,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 873,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0033038",
+      "input_sha256": "4188c52ced827625d5087c3647a5405e233014aaac759c1f6a45067490852560",
+      "profile": "authenticated",
+      "psnr_db": 42.47569980174308,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1023,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0033038",
+      "input_sha256": "4188c52ced827625d5087c3647a5405e233014aaac759c1f6a45067490852560",
+      "profile": "authenticated-single",
+      "psnr_db": 51.140186953629836,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0024787",
+      "input_sha256": "fddc47908923b8cd6caf36341bd96c423a85f737ed47a4d648557ae83d9591ff",
+      "profile": "authenticated",
+      "psnr_db": 42.4814389750494,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 22,
+          "failed_blocks": 4,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0024787",
+      "input_sha256": "fddc47908923b8cd6caf36341bd96c423a85f737ed47a4d648557ae83d9591ff",
+      "profile": "authenticated-single",
+      "psnr_db": 51.14167792664784,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 18,
+          "failed_blocks": 2,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0026342",
+      "input_sha256": "4f60c321f4509be8393798b840919c13eced33b128c7a2f39642dbc262a849ce",
+      "profile": "authenticated",
+      "psnr_db": 42.48193374954839,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 51,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 378,
+          "failed_blocks": 14,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0026342",
+      "input_sha256": "4f60c321f4509be8393798b840919c13eced33b128c7a2f39642dbc262a849ce",
+      "profile": "authenticated-single",
+      "psnr_db": 51.13878480167888,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 42,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 368,
+          "failed_blocks": 13,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0032047",
+      "input_sha256": "0f069920abb0c6e95cb084e9e866107b0f4356640b074ff19a01ea8fa51f411e",
+      "profile": "authenticated",
+      "psnr_db": 42.47208646726594,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 53,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0032047",
+      "input_sha256": "0f069920abb0c6e95cb084e9e866107b0f4356640b074ff19a01ea8fa51f411e",
+      "profile": "authenticated-single",
+      "psnr_db": 51.14424138766856,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 56,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0027542",
+      "input_sha256": "a66fe45692a68171704d4b0632dc0fecfa218c81ec38e2095055ffb39d5aa8ec",
+      "profile": "authenticated",
+      "psnr_db": 42.475926579805346,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 69,
+          "failed_blocks": 4,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 915,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0027542",
+      "input_sha256": "a66fe45692a68171704d4b0632dc0fecfa218c81ec38e2095055ffb39d5aa8ec",
+      "profile": "authenticated-single",
+      "psnr_db": 51.14719345166912,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1023,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 66,
+          "failed_blocks": 4,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 941,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0028973",
+      "input_sha256": "19e7e74896d92006ecbed32d6bdb0cc4d74ae746c6ad1cdd70f7aa2d28c70b8a",
+      "profile": "authenticated",
+      "psnr_db": 42.46946579154579,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 325,
+          "failed_blocks": 12,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0028973",
+      "input_sha256": "19e7e74896d92006ecbed32d6bdb0cc4d74ae746c6ad1cdd70f7aa2d28c70b8a",
+      "profile": "authenticated-single",
+      "psnr_db": 51.15126550562968,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1023,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 332,
+          "failed_blocks": 11,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0032615",
+      "input_sha256": "7b60ff0eb48c4de7902664ce8929117d8cfb999c4fe2c62913e51289335917a9",
+      "profile": "authenticated",
+      "psnr_db": 42.46789144646187,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 225,
+          "failed_blocks": 15,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0032615",
+      "input_sha256": "7b60ff0eb48c4de7902664ce8929117d8cfb999c4fe2c62913e51289335917a9",
+      "profile": "authenticated-single",
+      "psnr_db": 51.141722111434966,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 153,
+          "failed_blocks": 12,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0063583",
+      "input_sha256": "cd0c83f2fc5d05aa04e77dc38d4246827755624e4a39ff4d3e5a8929a458569e",
+      "profile": "authenticated",
+      "psnr_db": 43.34500714598601,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 931,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 57,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0063583",
+      "input_sha256": "cd0c83f2fc5d05aa04e77dc38d4246827755624e4a39ff4d3e5a8929a458569e",
+      "profile": "authenticated-single",
+      "psnr_db": 51.13633488267408,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 877,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 36,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0031636",
+      "input_sha256": "5819d899e219a469c13f2296bf6fb2d61cfdb1231c07d51b623cc25ff6b94e9d",
+      "profile": "authenticated",
+      "psnr_db": 42.471564306116,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1023,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 47,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    },
+    {
+      "image": "ISIC_0031636",
+      "input_sha256": "5819d899e219a469c13f2296bf6fb2d61cfdb1231c07d51b623cc25ff6b94e9d",
+      "profile": "authenticated-single",
+      "psnr_db": 51.13902766172754,
+      "intact_failed_blocks": 0,
+      "wrong_key_all_blocks_failed": true,
+      "wrong_id_all_blocks_failed": true,
+      "edits": {
+        "single-payload-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "single-content-bit": {
+          "changed_pixels": 1,
+          "failed_blocks": 1,
+          "matches_changed_blocks": true
+        },
+        "copy-move": {
+          "changed_pixels": 1021,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        },
+        "brightness": {
+          "changed_pixels": 1024,
+          "failed_blocks": 43,
+          "matches_changed_blocks": true
+        },
+        "chroma": {
+          "changed_pixels": 1024,
+          "failed_blocks": 16,
+          "matches_changed_blocks": true
+        }
+      }
+    }
+  ],
+  "scope": "Integrity/fidelity probes only; no learned-model, clinical, adversarial-rate or paper-parity claim."
+}

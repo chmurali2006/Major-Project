@@ -4,6 +4,7 @@ Intervals reflect test-image sampling, not variability across training seeds.
 """
 import argparse
 import json
+import hashlib
 from pathlib import Path
 import numpy as np
 
@@ -47,7 +48,9 @@ def compare(a, b, seed=0, draws=2000, strict=False):
     rng = np.random.default_rng(seed)
     vals = np.array([delta(rng.choice(pos,len(pos)),rng.choice(neg,len(neg))) for _ in range(draws)])
     point = delta(pos,neg)
-    return {'measured_masks_verified':verified,'n':len(label), 'direction':'B minus A', 'bootstrap_seed':seed,'draws':draws,
+    return {'input_sha256':{'a':hashlib.sha256(Path(a).read_bytes()).hexdigest(),
+                           'b':hashlib.sha256(Path(b).read_bytes()).hexdigest()},
+            'measured_masks_verified':verified,'n':len(label), 'direction':'B minus A', 'bootstrap_seed':seed,'draws':draws,
             'interval_scope':'image sampling only, not training-seed uncertainty',
             'delta':{name:{'estimate':point[k], 'ci95':np.quantile(vals[:,k],[.025,.975]).tolist()}
                      for k,name in enumerate(('iou_tampered','balanced_accuracy'))}}

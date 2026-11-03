@@ -1,5 +1,7 @@
 """Keyed fragile watermark evidence (8x8 blocks, Haar details, QIM tags).
 
+Default profile uses exact RGB HMAC authentication; legacy Haar APIs/profiles
+remain for explicitly labelled historical comparisons. See PROTOCOL_V2.md.
 This is a research integrity signal, not a proof of cryptographic unforgeability.
 The benchmark uses public test keys; an attacker knowing those constants is not
 excluded by the experiments. Wrong-key/rekey behaviour is measured by the runner.
@@ -96,7 +98,7 @@ def _key_stream(key: bytes, image_id: int, n_blocks: int) -> tuple[np.ndarray, n
     """60 keyed pad bits and a 16-entry selector, per block."""
     # int() coercion is deliberate: callers pass numpy integers constantly
     # (array indices), and numpy ints have no .to_bytes.
-    m = hmac.new(key, int(image_id).to_bytes(4, "big"), hashlib.sha256).digest()
+    m = hmac.new(key, int(image_id).to_bytes(4 if int(image_id)<2**32 else 8, "big"), hashlib.sha256).digest()
     rng = np.random.default_rng(int.from_bytes(m[:8], "big"))
     pad = rng.integers(0, 2, (n_blocks, N_SLOTS)).astype(np.uint8)
     sel = rng.integers(0, 2, (n_blocks, 16)).astype(np.uint8)
@@ -249,7 +251,11 @@ PROTECT_PROFILES = {
     "single": {"delta": DELTA, "beta": None},     # Carrier A only; the measured C0
     "dual":   {"delta": 4.0,   "beta": 3.0},      # both carriers; PSNR 40.76 dB
 }
-DEFAULT_PROFILE = "dual"
+PROTECT_PROFILES.update({
+    "authenticated": {"delta": 4.0, "beta": 3.0},
+    "authenticated-single": {"delta": 4.0, "beta": None},
+})
+DEFAULT_PROFILE = "authenticated"
 
 SEMI_CHANNELS = ("semi", "semi_abs", "semi_surv")
 FULL_CHANNELS = RICH_CHANNELS + SEMI_CHANNELS          # 13 channels
@@ -269,18 +275,19 @@ def _profile(profile: str, delta: float | None, beta: float | None):
 def protect(rgb: np.ndarray, key: bytes, image_id: int,
             profile: str = DEFAULT_PROFILE,
             delta: float | None = None, beta: float | None = None) -> np.ndarray:
-    """Apply both carriers in the only order that works.
+    """Default: DCT semi-carrier first, then self-consistent RGB HMAC low bits.
 
-        Carrier B (semi-robust, DCT)  ->  Carrier A (fragile, Haar)
-
-    B first because it is the larger perturbation (beta = 4 per coefficient
-    against A's Delta/4 = 2), and because A's tag is a function of the block's
-    own detail coefficients -- computing that function after B is written binds
-    the tag to the content as it will actually be stored. Writing B afterwards
-    would leave every tag stale by exactly B's contribution.
+    Explicit legacy single/dual profiles retain Haar QIM for historical probes.
+    The new profile never treats periodic wavelet tags as authentication.
     """
+    if profile.startswith('authenticated'):
+        from .authentication import _validate
+        _validate(rgb,key,image_id)
     d, b = _profile(profile, delta, beta)
     marked = rgb if b is None else _carriers.embed(rgb, key, image_id, beta=b)
+    if profile.startswith('authenticated'):
+        from .authentication import embed as authenticate
+        return authenticate(marked, key, image_id)
     return embed(marked, key, image_id, delta=d)
 
 
@@ -288,17 +295,21 @@ def read_full(rgb: np.ndarray, key: bytes, image_id: int,
               profile: str = DEFAULT_PROFILE,
               delta: float | None = None,
               beta: float | None = None) -> dict[str, np.ndarray]:
-    """All 13 evidence channels: 10 fragile + 3 semi-robust.
+    """Default: E=RGB MAC failure, nine wavelet diagnostics, three DCT cues.
 
-    The three semi channels answer a question the fragile ten cannot:
-
-        semi, semi_abs, semi_surv provide possible cues about mark survival.
-
-    They cannot prove whether an edit was benign or malicious. Their empirical
-    usefulness is measured against controls, including any regressions.
+    Explicit legacy profiles retain old E semantics. None of the diagnostic
+    channels or a learned prediction can override strict MAC verification.
     """
+    if profile.startswith('authenticated'):
+        from .authentication import _validate
+        _validate(rgb,key,image_id)
     dt, bt = _profile(profile, delta, beta)
     out = read_rich(rgb, key, image_id, delta=dt)
+    if profile.startswith('authenticated'):
+        from .authentication import failures
+        # E is an exact authentication-failure mask in protocol v2. Remaining
+        # wavelet channels are legacy diagnostic features, not authentication.
+        out['E'] = failures(rgb, key, image_id).astype(np.float64)
     out.update(_carriers.read(rgb, key, image_id,
                               beta=_carriers.BETA if bt is None else bt))
     return out
