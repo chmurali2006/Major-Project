@@ -40,7 +40,12 @@ def main():
              '--metadata',str(metadata),'--out',str(base/'runs'),'--cache',str(base/'cache'),
              '--train-n','7','--val-n','7','--test-n','7','--epochs','1','--width','4',
              '--device','cpu','--seeds','0','--sanity','--probes']
-        subprocess.run(cmd,check=True,cwd=project)
+        subprocess.run(cmd+['--execute-configs','C8'],check=True,cwd=project)
+        assert not (base/'runs'/'seed-0'/'C12.json').exists()
+        first_checkpoint=(base/'runs'/'seed-0'/'C8_checkpoint.pt').read_bytes()
+        subprocess.run(cmd+['--execute-configs','C12','--resume'],check=True,cwd=project)
+        assert (base/'runs'/'seed-0'/'C8_checkpoint.pt').read_bytes() == first_checkpoint
+        print('Separate C8/C12 sessions with one immutable experiment PASS')
         cached = {p: p.stat().st_mtime_ns for p in (base/'cache').rglob('*.npz')}
         subprocess.run(cmd+['--resume'],check=True,cwd=project)
         assert all(p.stat().st_mtime_ns == stamp for p,stamp in cached.items())

@@ -7,7 +7,7 @@ against every constituent on a protocol frozen in code.
 
 ## Run this project (current entrypoints)
 
-**Start with [RUNNING.md](RUNNING.md)** for local GPU/CPU or Kaggle execution, persistent
+**Kaggle: [KAGGLE_SETUP.md](KAGGLE_SETUP.md). Local: [RUNNING.md](RUNNING.md). Start there** for local GPU/CPU or Kaggle execution, persistent
 outputs, exact commands, interruption recovery and limitations.
 
 - Local: `scripts/run_suite.py` (same pipeline used by Kaggle).

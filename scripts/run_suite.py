@@ -15,6 +15,8 @@ def main():
     ap.add_argument('--metadata', type=Path, required=True)
     ap.add_argument('--seeds', default='0,1,2')
     ap.add_argument('--configs', default='C8,C12')
+    ap.add_argument('--execute-configs', default=None)
+    ap.add_argument('--only-heldout', action='store_true')
     ap.add_argument('--train-n', type=int, default=2000)
     ap.add_argument('--val-n', type=int, default=150)
     ap.add_argument('--test-n', type=int, default=1000)
@@ -48,8 +50,8 @@ def main():
                 child.wait()
                 raise
     seeds=[int(s) for s in args.seeds.split(',')]
-    jobs=[(f'seed-{s}',s,None,args.configs) for s in seeds]
-    if args.heldout_run:
+    jobs=[] if args.only_heldout else [(f'seed-{s}',s,None,args.configs) for s in seeds]
+    if args.heldout_run or args.only_heldout:
         jobs.append(('heldout-T5',seeds[0],'T5','C8'))
     for name,seed,heldout,configs in jobs:
         out=args.out/name
@@ -57,6 +59,7 @@ def main():
                  '--cache',args.cache,'--seed',seed,'--configs',configs,'--device',args.device]
         for key in ('train_n','val_n','test_n','epochs','width'):
             options.extend(['--'+key.replace('_','-'),getattr(args,key)])
+        if args.execute_configs and not heldout: options.extend(['--execute-configs',args.execute_configs])
         if args.resume: options.append('--resume')
         if args.sanity: options.append('--sanity')
         if args.probes: options.append('--probes')

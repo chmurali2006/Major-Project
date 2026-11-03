@@ -1,32 +1,39 @@
-"""Generate the Kaggle entrypoint from the canonical portable source bundle."""
+"""Generate a staged, audited Kaggle notebook from the canonical tested source."""
 import base64
 import hashlib
 import json
 from pathlib import Path
 from package_project import build
 
-ROOT=Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[1]
 
 
-def cell(kind,text):
-    d={'cell_type':kind,'metadata':{},'source':text.strip().splitlines(True)}
-    if kind=='code': d.update(execution_count=None,outputs=[])
+def cell(kind, text):
+    d = {'cell_type': kind, 'metadata': {}, 'source': text.strip().splitlines(True)}
+    if kind == 'code':
+        d.update(execution_count=None, outputs=[])
     return d
 
 
 def main():
-    archive=build(ROOT/'deliverables'/'keyswm-project.zip')
-    payload=base64.b64encode(archive.read_bytes()).decode()
-    sha=hashlib.sha256(archive.read_bytes()).hexdigest()
-    cells=[cell('markdown', '''# ISIC 2019 — persistent, resumable study
-Enable a GPU and attach the ISIC 2019 images and ground-truth CSV as Kaggle inputs.
-This notebook runs the same code as the local CLI; it contains no separate model implementation.
-Start with the small wiring run, then change only the configuration cell for a new full output directory.
-Save **a notebook version with outputs**, and download the result ZIP after each session.
-Working-directory files are not guaranteed to survive an unsaved/disconnected session.
-The model and empirical abstention mechanism are research prototypes, not clinically validated software.
-'''),cell('code',f'''# Extract the exact source bundle; no GitHub authentication required.
-import base64, hashlib, io, json, zipfile, sys, subprocess, os
+    archive = build(ROOT / 'deliverables' / 'keyswm-project.zip')
+    payload = base64.b64encode(archive.read_bytes()).decode()
+    sha = hashlib.sha256(archive.read_bytes()).hexdigest()
+    cells = [cell('markdown', '''# ISIC 2019: audited, staged watermarking study
+**Submission workflow, not a claim of published-paper parity.** Train and compare C8,
+C12 and classical controls on identical held-out images. Thresholds are selected on
+validation only. One model/seed per saved version keeps interrupted work bounded.
+
+**Before running:** attach ISIC 2019 training images and the eight-class ground-truth
+CSV with **Add Input / Add Data**, enable a GPU, and read `KAGGLE_SETUP.md` supplied
+with this notebook. No private GitHub login or API token is required.
+
+Start with `STAGE='check'`. Save it, then run C8 seed 0, C12 seed 0, remaining seeds,
+and the held-out-T5 study as separate saved versions. Restore the preceding saved
+output each time. Do not change training settings based on test results.
+The method is a research prototype, not a clinically validated medical system.
+'''), cell('code', f'''# 1. Verify/extract the exact project source. No separate notebook model implementation.
+import base64, hashlib, io, json, zipfile, sys, subprocess, os, shutil
 from pathlib import Path
 PROJECT = Path('/kaggle/working/keyswm-project')
 PROJECT.mkdir(parents=True, exist_ok=True)
@@ -35,74 +42,216 @@ assert hashlib.sha256(raw).hexdigest() == {sha!r}
 with zipfile.ZipFile(io.BytesIO(raw)) as z:
     for name in z.namelist():
         if not (PROJECT / name).resolve().is_relative_to(PROJECT.resolve()):
-            raise ValueError('unsafe archive entry')
+            raise ValueError('unsafe source archive entry')
     z.extractall(PROJECT)
-manifest = json.loads((PROJECT / 'SOURCE_MANIFEST.json').read_text())
-for name, expected in manifest.items():
+for name, expected in json.loads((PROJECT / 'SOURCE_MANIFEST.json').read_text()).items():
     assert hashlib.sha256((PROJECT / name).read_bytes()).hexdigest() == expected
-print('Source verified:', PROJECT)
-'''),cell('code','''# Set True only if required packages are missing. Keep Kaggle's supplied Torch/CUDA.
-# If pip changes an already-imported numerical package, restart the kernel before continuing.
-INSTALL_DEPENDENCIES = False
-if INSTALL_DEPENDENCIES:
-    subprocess.run([sys.executable, '-m', 'pip', 'install', '-r',
-                    str(PROJECT / 'requirements-training.txt')], check=True)
-'''),cell('code','''# EDIT THESE TWO PATHS to match your attached Kaggle dataset.
-DATA = Path('/kaggle/input/YOUR-ISIC-DATASET/ISIC_2019_Training_Input')
-METADATA = Path('/kaggle/input/YOUR-ISIC-DATASET/ISIC_2019_Training_GroundTruth.csv')
+sys.path.insert(0, str(PROJECT))
+print('Verified source bundle:', {sha!r})
+'''), cell('markdown', '''## 2. Configuration — edit only this cell
+Leave paths as `None` for unambiguous auto-discovery. If more than one image root
+or ground truth is attached, the notebook lists candidates and stops; enter the
+correct paths explicitly. Attaching only a CSV is not sufficient.
 
-# Start with wiring-check sizes; these do NOT establish performance.
-# Full study: TRAIN_N=2000, VAL_N=150, TEST_N=1000, EPOCHS=3, WIDTH=16,
-# SEEDS='0,1,2', PROBES=True, HELDOUT_RUN=True. Use a NEW RUN_NAME.
-RUN_NAME = 'wiring-check'
-TRAIN_N, VAL_N, TEST_N, EPOCHS, WIDTH = 7, 7, 7, 1, 4
-SEEDS = '0'
-PROBES = False
-HELDOUT_RUN = False
-RESUME = False
-SANITY = True  # Set False for the full study; never quote wiring-check results.
+`STAGE` chooses work, **not a different scientific protocol**. C8 and C12 use the
+same frozen model list/settings so they can be executed in separate sessions.
+Full-profile count checks are strict by default. A count/profile match is an audit,
+not cryptographic proof that a third-party mirror is authentic.
+'''), cell('code', '''STAGE = 'check'              # 'check', 'C8', 'C12', or 'heldout'
+SEED = 0                     # use 0, then 1, then 2; heldout uses seed 0
+STUDY_NAME = 'isic2019-v4'    # new name if changing source, data or training settings
+
+INPUT_ROOT = Path('/kaggle/input')
+DATA = None                  # e.g. Path('/kaggle/input/<your-input>/training-images')
+METADATA = None              # actual ISIC_2019_Training_GroundTruth.csv
+IMAGE_ZIP = None             # optional: Path to attached training-image ZIP, if not extracted
+ALLOW_LABELLED_SUBSET = False # explicit exception; clearly labelled as a subset in the audit
+INSTALL_MISSING = False      # only if imports fail; enable Internet for that setup run
+
+# Attach the PREVIOUS saved notebook output as an input for later stages/sessions.
+# This must be its whole study directory, not a seed folder or a checkpoint file.
+RESTORE_FROM = None           # e.g. Path('/kaggle/input/<previous-output>/isic-runs/isic2019-v4')
+
+# Freeze these BEFORE the first full run. Never extend epochs inside an existing run.
+TRAIN_N, VAL_N, TEST_N, EPOCHS, WIDTH = 2000, 150, 1000, 3, 16
+if STAGE not in ('check', 'C8', 'C12', 'heldout') or SEED not in (0, 1, 2):
+    raise ValueError('invalid stage or seed')
+if STAGE == 'heldout' and SEED != 0:
+    raise ValueError('the planned held-out run uses seed 0')
+SANITY = STAGE == 'check'
+if SANITY:
+    TRAIN_N, VAL_N, TEST_N, EPOCHS, WIDTH = 7, 7, 7, 1, 4
+RUN_NAME = 'wiring-check' if SANITY else STUDY_NAME
 RUNS = Path('/kaggle/working/isic-runs') / RUN_NAME
-CACHE = Path('/kaggle/temp/keyswm-cache')
-
-# To resume from an earlier SAVED notebook output, attach that output as an input,
-# set RESTORE_FROM to its isic-runs/<RUN_NAME> directory, keep the same source and
-# experiment settings, and set RESUME=True. Trusted checkpoints only.
-RESTORE_FROM = None
-if RESTORE_FROM is not None:
-    import shutil
+CACHE = Path('/kaggle/temp/keyswm-cache')  # disposable, not copied into saved results
+print(dict(stage=STAGE, seed=SEED, output=str(RUNS), sanity=SANITY))
+'''), cell('markdown', '''## 3. Dependencies — preserve Kaggle's supplied Torch/CUDA
+Do not blindly upgrade Torch or the entire Kaggle environment. Missing non-Torch
+packages may be installed explicitly. If numerical libraries were already imported
+before changing them, restart the kernel and run from the top. No package installation
+is needed if these imports pass. Runtime versions are recorded with every experiment.
+'''), cell('code', '''import importlib.util
+required = {'numpy':'numpy', 'scipy':'scipy', 'cv2':'opencv-python-headless==4.10.0.84',
+            'PIL':'Pillow', 'filelock':'filelock'}
+missing = [package for module, package in required.items() if importlib.util.find_spec(module) is None]
+if importlib.util.find_spec('torch') is None:
+    raise RuntimeError('Use Kaggle Python with a GPU/PyTorch image; do not install an arbitrary CPU Torch wheel.')
+if missing:
+    if not INSTALL_MISSING:
+        raise RuntimeError(f'Missing {missing}. Enable Internet and INSTALL_MISSING for setup, then rerun.')
+    subprocess.run([sys.executable, '-m', 'pip', 'install', '--no-deps', *missing], check=True)
+import numpy as np, scipy, cv2, torch, filelock
+print('Python', sys.version.split()[0], 'Torch', torch.__version__, 'NumPy', np.__version__)
+if not torch.cuda.is_available():
+    raise RuntimeError('No usable CUDA GPU. Enable an available GPU accelerator in notebook settings.')
+print('GPU:', torch.cuda.get_device_name(0), '| CUDA:', torch.version.cuda)
+print('Multiple GPUs are not used by this single-device runner.')
+'''), cell('markdown', '''## 4. Find and verify the attached data
+The audit requires all 25,331 labelled training images with the official eight-class
+count profile unless you explicitly allow a subset. It rejects missing images,
+ambiguous inputs, conflicting duplicate labels, invalid one-hot labels and duplicate
+image identifiers. A small image sample is decoded here; selected experiment images
+are decoded and fingerprinted by the runner. Image-level splitting is a limitation
+where lesion/patient identifiers are unavailable.
+'''), cell('code', '''from src.dataset_audit import discover, audit
+candidates = discover(INPUT_ROOT)
+print(json.dumps(candidates, indent=2))
+if IMAGE_ZIP is not None:
+    IMAGE_ZIP = Path(IMAGE_ZIP)
+    extracted = Path('/kaggle/temp/isic2019-extracted')
+    with zipfile.ZipFile(IMAGE_ZIP) as z:
+        needed = sum(i.file_size for i in z.infolist())
+        if needed + 4 * 2**30 > shutil.disk_usage('/kaggle/working').free:
+            raise RuntimeError('Not enough free space to extract images and prepare samples. Attach extracted images instead.')
+        extracted.mkdir(parents=True, exist_ok=True)
+        for member in z.infolist():
+            if not (extracted / member.filename).resolve().is_relative_to(extracted.resolve()):
+                raise ValueError('unsafe dataset ZIP entry')
+            if (member.external_attr >> 16) & 0o170000 == 0o120000:
+                raise ValueError('symlink in dataset ZIP')
+        z.extractall(extracted)
+    DATA = extracted
+    candidates['ground_truth_csvs'] = sorted(set(candidates['ground_truth_csvs'] + discover(extracted)['ground_truth_csvs']))
+if DATA is None:
+    if len(candidates['image_roots']) != 1:
+        raise ValueError('Choose DATA explicitly from the listed image roots. If images are zipped, set IMAGE_ZIP.')
+    DATA = Path(candidates['image_roots'][0])
+if METADATA is None:
+    if len(candidates['ground_truth_csvs']) != 1:
+        raise ValueError('Choose METADATA explicitly from the listed ground-truth CSVs.')
+    METADATA = Path(candidates['ground_truth_csvs'][0])
+CANONICAL_CSV = Path('/kaggle/working/verified-isic-ground-truth.csv')
+dataset_audit = audit(DATA, METADATA, CANONICAL_CSV, allow_subset=ALLOW_LABELLED_SUBSET)
+Path('/kaggle/working/dataset_audit.json').write_text(json.dumps(dataset_audit, indent=2))
+print(json.dumps(dataset_audit, indent=2))
+subprocess.run([sys.executable, str(PROJECT/'scripts/preflight.py'), '--require-gpu',
+                '--data', str(DATA), '--metadata', str(CANONICAL_CSV)], check=True)
+'''), cell('markdown', '''## 5. Restore the preceding saved output, if continuing
+Use the **same notebook/source version**, image bytes and frozen settings. Only stage
+and seed advance. Checkpoints are trusted Torch files: restore only your own outputs.
+If the working output already exists, it is resumed rather than merged with another
+experiment. To start a different study, use a new name. Do not delete results to bypass
+a fingerprint mismatch.
+'''), cell('code', '''if RESTORE_FROM is not None:
+    restore = Path(RESTORE_FROM)
+    if not restore.is_dir():
+        raise ValueError('RESTORE_FROM must be a study directory in an attached previous output')
     if RUNS.exists():
-        raise ValueError('restore target already exists; do not merge experiments')
-    shutil.copytree(Path(RESTORE_FROM), RUNS)
-'''),cell('code','''# Hardware/data checks. Fail before training if GPU or labels are missing.
-subprocess.run([sys.executable, str(PROJECT/'scripts/preflight.py'),
-                '--require-gpu', '--data', str(DATA), '--metadata', str(METADATA)], check=True)
-'''),cell('code','''# Train with epoch checkpoints and streamed logs; failures are never hidden.
-cmd = [sys.executable, '-u', str(PROJECT/'scripts/run_suite.py'),
-       '--data', str(DATA), '--metadata', str(METADATA), '--out', str(RUNS),
-       '--cache', str(CACHE), '--device', 'cuda', '--seeds', SEEDS,
-       '--train-n', str(TRAIN_N), '--val-n', str(VAL_N), '--test-n', str(TEST_N),
-       '--epochs', str(EPOCHS), '--width', str(WIDTH)]
+        raise ValueError('Restore target already exists. Do not merge two experiments.')
+    shutil.copytree(restore, RUNS)
+if STAGE == 'C12' and not (RUNS / f'seed-{SEED}' / 'C8.json').exists():
+    raise ValueError('C12 continuation requires the preceding C8 output for this seed. Attach it and set RESTORE_FROM.')
+RESUME = RUNS.exists()
+RUNS.mkdir(parents=True, exist_ok=True)
+shutil.copy2('/kaggle/working/dataset_audit.json', RUNS/'dataset_audit.json')
+shutil.copy2(CANONICAL_CSV, RUNS/'ground-truth-used.csv')
+print('Resume existing study:', RESUME)
+print('Free space (GiB):', round(shutil.disk_usage('/kaggle/working').free / 2**30, 1))
+'''), cell('markdown', '''## 6. Execute one bounded job; export outputs even if it fails
+This runs CPU evidence preparation followed by GPU training/evaluation. GPU time is
+still consumed while a GPU-enabled session prepares data. The wiring check measures
+plumbing, **not scientific accuracy**; its receipts are non-claimable.
+
+Training checkpoints are atomic, once per completed epoch. An unfinished epoch must
+be repeated. There is no guarantee of surviving a forced platform shutdown before
+outputs are saved. Logs stream progress; no fixed GPU runtime is claimed in advance.
+If you must interrupt, stop the training subprocess before archiving.
+'''), cell('code', '''cmd = [sys.executable, '-u', str(PROJECT/'scripts/run_suite.py'),
+       '--data', str(DATA), '--metadata', str(CANONICAL_CSV), '--out', str(RUNS),
+       '--cache', str(CACHE), '--device', 'cuda', '--seeds', str(SEED),
+       '--configs', 'C8,C12', '--train-n', str(TRAIN_N), '--val-n', str(VAL_N),
+       '--test-n', str(TEST_N), '--epochs', str(EPOCHS), '--width', str(WIDTH)]
 if RESUME: cmd.append('--resume')
-if SANITY: cmd.append('--sanity')
-if PROBES: cmd.append('--probes')
-if HELDOUT_RUN: cmd.append('--heldout-run')
-subprocess.run(cmd, check=True)
-'''),cell('code','''# Run this cell even after a manual interruption, once the training process stops.
-# Download the ZIP AND save a notebook version including outputs.
-archive = Path('/kaggle/working') / (RUN_NAME + '-results.zip')
-subprocess.run([sys.executable, str(PROJECT/'scripts/export_results.py'),
-                '--runs', str(RUNS), '--out', str(archive)], check=True)
-# Matching source is necessary to pass the resume fingerprint check later.
-import shutil
-shutil.copy2(PROJECT/'SOURCE_MANIFEST.json', '/kaggle/working/SOURCE_MANIFEST.json')
+if SANITY:
+    cmd.append('--sanity')
+elif STAGE == 'heldout':
+    cmd.extend(['--only-heldout', '--probes'])
+else:
+    cmd.extend(['--execute-configs', STAGE, '--probes'])
+print('Command:', subprocess.list2cmdline(cmd))
+# Popen + finally prevents a failed child from skipping the export step.
+child = None
+failure = None
+try:
+    child = subprocess.Popen(cmd, start_new_session=True)
+    if child.wait() != 0:
+        raise RuntimeError('Study failed: inspect logs; outputs will still be exported.')
+except BaseException as exc:
+    failure = exc
+    if child is not None and child.poll() is None:
+        import signal
+        try:
+            os.killpg(child.pid, signal.SIGTERM)
+            child.wait(timeout=30)
+        finally:
+            try:
+                os.killpg(child.pid, signal.SIGKILL)
+            except ProcessLookupError:
+                pass
+            child.wait()
+finally:
+    subprocess.run([sys.executable, str(PROJECT/'scripts/summarize_isic_study.py'),
+                    '--root', str(RUNS), '--out', str(RUNS/'summary.json')], check=True)
+    archive = Path('/kaggle/working') / (RUN_NAME + '-results.zip')
+    subprocess.run([sys.executable, str(PROJECT/'scripts/export_results.py'),
+                    '--runs', str(RUNS), '--out', str(archive)], check=True)
+    shutil.copy2(PROJECT/'SOURCE_MANIFEST.json', '/kaggle/working/SOURCE_MANIFEST.json')
+    print('SAVE/DOWNLOAD:', archive)
+if failure is not None:
+    raise failure
+'''), cell('markdown', '''## 7. Inspect results, then Save Version
+A successful job is not the same as a successful scientific gate. Carrier-B losses,
+false claims, infeasible abstention and rekeying drops remain visible. Confidence
+margins are not posterior probabilities. IoU is reported over tampered images only;
+TPR/FPR and denominators accompany verdict accuracy. Bootstrap CIs represent image
+sampling, while the three seeds measure training variability.
+
+For submission, finish all seeds and the held-out run, keep the manifests, runtime
+versions and checksummed artifacts. PFF-WM results on other datasets/protocols must
+not be placed beside these numbers as if directly comparable. This assembled
+implementation is not an exact verified reproduction of PFF-WM.
+'''), cell('code', '''summary = json.loads((RUNS/'summary.json').read_text())
+for row in summary['runs']:
+    print(row['config'], 'seed', row['seed'], 'usable', row['usable'],
+          'IoU(tampered)', round(row['iou_tampered'], 4),
+          'balanced', round(row['balanced_accuracy'], 4),
+          'FPR', round(row['fpr'], 4))
+print('Full three-seed + heldout suite complete:', summary['complete'])
+print('Missing full-suite receipts:', len(summary['missing']))
 from IPython.display import FileLink, display
 display(FileLink(str(archive)))
+print('For the next job: configure its stage/seed, attach this saved output, then Save Version -> Save & Run All.')
+print('Do not accidentally pay for an interactive run and a second fresh run of the same job.')
+print('Download the result ZIP; verify saved output files exist before ending the session.')
 ''')]
-    nb={'cells':cells,'metadata':{'kernelspec':{'display_name':'Python 3','language':'python','name':'python3'},
-        'language_info':{'name':'python','version':'3.11'}},'nbformat':4,'nbformat_minor':5}
-    dest=ROOT/'notebooks'/'keyswm_isic2019.ipynb'
-    dest.write_text(json.dumps(nb,indent=1)+'\n')
+    for i, c in enumerate(cells):
+        c['id'] = f'keyswm-{i:02d}'
+    nb = {'cells': cells, 'metadata': {'kernelspec': {'display_name': 'Python 3', 'language': 'python', 'name': 'python3'},
+          'language_info': {'name': 'python', 'version': '3.11'}}, 'nbformat': 4, 'nbformat_minor': 5}
+    dest = ROOT / 'notebooks' / 'keyswm_isic2019.ipynb'
+    dest.write_text(json.dumps(nb, indent=1) + '\n')
     print(dest)
 
 
-if __name__=='__main__': main()
+if __name__ == '__main__':
+    main()

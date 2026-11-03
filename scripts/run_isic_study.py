@@ -115,6 +115,7 @@ def main():
     ap.add_argument('--width', type=int, default=16)
     ap.add_argument('--seed', type=int, default=0)
     ap.add_argument('--configs', default='C8,C12')
+    ap.add_argument('--execute-configs', default=None, help='runtime subset of frozen configs; controls always run')
     ap.add_argument('--probes', action='store_true')
     ap.add_argument('--resume', action='store_true')
     ap.add_argument('--sanity', action='store_true', help='wiring check only; receipts marked not usable as results')
@@ -186,7 +187,7 @@ def main():
         {paths[i].stem: META.dx_of(paths[i].stem) for ids in selected for i in ids},
         sort_keys=True).encode()).hexdigest()
     settings = {k:v for k,v in vars(args).items()
-                if k not in ('data','out','cache','metadata','resume','device','threads')}
+                if k not in ('data','out','cache','metadata','resume','device','threads','execute_configs')}
     spec = {'source_sha256': source, 'settings': settings, 'manifest': manifest}
     spec_path = args.out / 'experiment.json'
     if spec_path.exists():
@@ -247,7 +248,10 @@ def main():
                  prediction=[c for m,c in outputs], tampered=[s.cls for s in test],
                  iou=[R.M.iou(R.upsample(m),s.gt_pixel) for (m,c),s in zip(outputs,test)])
         save(name, r)
-    for cid in args.configs.split(','):
+    requested = args.execute_configs.split(',') if args.execute_configs else args.configs.split(',')
+    if not set(requested) <= set(args.configs.split(',')):
+        raise ValueError('execute-configs must be a subset of the frozen configs')
+    for cid in requested:
         if cid not in ('C8', 'C12'):
             raise ValueError('this paired runner supports C8,C12 only; use --heldout/--probes for probes')
         if args.resume and (args.out / f'{cid}.json').exists() and all(

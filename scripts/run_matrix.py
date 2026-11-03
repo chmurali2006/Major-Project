@@ -492,6 +492,7 @@ def train(model, train_s: list[Sample], val_s: list[Sample], *,
         log(f'Loaded completed epoch {start_epoch}/{epochs}; restoring training/best state')
 
     for ep in range(start_epoch, epochs):
+        epoch_started = time.monotonic()
         to_train(model)
         order = np.random.default_rng(ep).permutation(len(train_s))
         run = 0.0
@@ -514,7 +515,7 @@ def train(model, train_s: list[Sample], val_s: list[Sample], *,
         tau_v, v = tune_learned_tau(model, val_s)
         log(f"    epoch {ep + 1:3d}  loss {run / max(1, len(order) // batch):.4f}"
             f"  val IoU {v['iou_mean']:.4f}  val blk-acc {v['block_acc']:.4f}"
-            f"  @tau {tau_v:.2f}")
+            f"  @tau {tau_v:.2f}  elapsed {(time.monotonic()-epoch_started)/60:.2f} min")
         if v["iou_tampered_mean"] > best:
             best, best_state = v["iou_tampered_mean"], {
                 k: {n: x.detach().clone() for n, x in sd.items()}

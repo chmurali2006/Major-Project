@@ -106,12 +106,14 @@ Retain that ZIP and the matching `keyswm-project.zip` on a persistent local disk
 
 ## Kaggle
 
-1. Upload `notebooks/keyswm_isic2019.ipynb` (also supplied as a standalone deliverable). It embeds the same source ZIP; it does not clone a private repository.
-2. Attach ISIC 2019 JPEGs and the ground-truth CSV. Choose a GPU accelerator; Internet is needed only if installing missing packages. Preserve Kaggle's supplied working PyTorch/CUDA installation when possible.
-3. Set `DATA` and `METADATA` to the actual input paths. Leave the tiny defaults and `SANITY=True` for the first wiring check.
-4. For training, use a **new `RUN_NAME`**, full settings shown in the configuration cell, and `SANITY=False`. Run one seed first if session/GPU quotas are tight; the CLI also supports an individual C8 or C12 configuration.
-5. Results/checkpoints go under `/kaggle/working/isic-runs/<RUN_NAME>`. Cache goes under `/kaggle/temp/keyswm-cache` and is disposable. **Neither a running notebook nor unsaved working storage is a permanent backup.** Save a notebook version with output files and download the exported result ZIP. Prefer short saved runs over risking an entire suite in one interactive session.
-6. To resume in another session, attach the prior saved output as an input, use the **same notebook/source version**, set `RESTORE_FROM` to its run directory, retain identical experiment settings and set `RESUME=True`. The notebook copies read-only input outputs into writable working storage before resuming. If dependencies were changed by pip, restart the kernel before importing them.
+Use **[KAGGLE_SETUP.md](KAGGLE_SETUP.md)** for the current staged notebook workflow.
+The notebook audits actual attachments, requires the full ISIC 2019 count/class
+profile unless a subset is explicitly allowed, and runs one model/seed per saved
+version. `STAGE='check'` is the non-claimable wiring check. Full stages are `C8`,
+`C12` and `heldout`; the first two share a frozen `C8,C12` experiment and can run
+in separate sessions without retraining the completed model. Restore prior saved
+outputs to preserve all seeds. No dataset is attached to your Kaggle account by
+Arena; you must attach the images/CSV and previous outputs in Kaggle.
 
 ## Validate/build the deliverables
 

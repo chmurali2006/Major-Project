@@ -1,28 +1,30 @@
 {
-  "source_sha256": "862b25610d43566b64baac29517c24673e2693e7fddd0330a29e0cb0666f69b5",
+  "source_sha256": "a98963734dffeab42abee5776b5cdbff8b097499a24b525fbdf71fecafb777fb",
   "python": "3.11.2",
   "torch": "2.2.2+cu121",
   "numpy": "1.26.4",
   "device_tested": "cpu",
   "unit_tests": {
-    "passed": 119
+    "passed": 122
   },
   "portable_integration": {
-    "source_zip_without_git": "passed",
-    "synthetic_disk_images": "passed",
-    "C8_C12_training": "passed",
-    "rekey_wrong_key_probes": "passed",
-    "completed_job_resume": "passed",
-    "unchanged_cache_reuse": "passed",
-    "changed_input_resume_rejected": "passed",
-    "changed_source_resume_rejected": "passed",
-    "result_zip_export": "passed"
+    "source_verification": "passed",
+    "staged_C8_then_C12_no_retraining": "passed",
+    "synthetic_training_and_key_probes": "passed",
+    "epoch_resume_equality": "passed",
+    "cache_reuse": "passed",
+    "changed_data_and_source_rejected": "passed",
+    "result_export": "passed"
   },
-  "epoch_resume": "bitwise equality to uninterrupted CPU training tested",
+  "dataset_audit": {
+    "missing_duplicates_conflicts_subset_guards": "passed",
+    "actual_mirror_25331_images_20455_labels_rejected_in_strict_mode": "passed"
+  },
   "not_verified": [
-    "Kaggle notebook execution",
+    "Kaggle execution",
     "CUDA execution",
-    "full ISIC multi-seed training"
+    "full official corpus training",
+    "paper parity"
   ],
-  "note": "Portability/wiring verification only; not new scientific results."
+  "note": "Readiness tests, not new scientific performance results."
 }
