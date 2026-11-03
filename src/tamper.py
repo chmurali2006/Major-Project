@@ -157,7 +157,11 @@ def splice(donor: np.ndarray, host: np.ndarray, rng: np.random.Generator,
 # ---------------------------------------------------------------- benign
 
 def benign_op(rgb: np.ndarray, kind: str = "jpeg75", rng: np.random.Generator | None = None) -> np.ndarray:
-    """Routine handling. Must never produce a tamper claim."""
+    """Image-processing operations. Label policy belongs to the evaluation protocol.
+
+    The audited fragile-integrity study treats changed JPEG pixels as tampering,
+    not as evidence of malicious intent.
+    """
     if kind.startswith("jpeg"):
         q = int(kind.replace("jpeg", ""))
         ok, buf = cv2.imencode(".jpg", cv2.cvtColor(rgb, cv2.COLOR_RGB2BGR),

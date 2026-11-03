@@ -15,6 +15,7 @@ def main():
     shutil.copy2(ROOT/'notebooks/keyswm_isic2019.ipynb',out/'keyswm_isic2019.ipynb')
     shutil.copy2(ROOT/'RUNNING.md',out/'RUNNING.md')
     shutil.copy2(ROOT/'KAGGLE_SETUP.md',out/'KAGGLE_SETUP.md')
+    shutil.copy2(ROOT/'VERIFICATION.md',out/'VERIFICATION.md')
     release=out/'keyswm-ready.zip'
     with zipfile.ZipFile(out/'keyswm-project.zip') as source, zipfile.ZipFile(release,'w',zipfile.ZIP_DEFLATED) as z:
         for name in source.namelist():

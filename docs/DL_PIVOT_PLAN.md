@@ -1,3 +1,5 @@
+> **Historical / pre-audit material.** This file is not evidence for the current audited recipe. See root `VERIFICATION.md` and use fresh measured receipts for submission. In particular, any-overlap block IoU is not a universal ceiling.
+
 # Recovery Plan: from classical-only to a full PFF-WM-class system
 
 Status: draft for decision, 2026-10-24.

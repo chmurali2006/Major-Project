@@ -28,12 +28,12 @@ def main():
         exec(compile(first,'<source extraction>','exec'),{})
         data=base/'synthetic-data'
         data.mkdir()
-        rows=['image,NV']
+        rows=['image,MEL,NV,BCC,AK,BKL,DF,VASC,SCC']
         rng=np.random.default_rng(7)
         for i in range(64):
             name=f'ISIC_TEST_{i:04d}'
             cv2.imwrite(str(data/f'{name}.jpg'),rng.integers(30,220,(64,64,3),dtype=np.uint8))
-            rows.append(f'{name},1')
+            rows.append(f'{name},0,1,0,0,0,0,0,0')
         metadata=data/'labels.csv'
         metadata.write_text('\n'.join(rows)+'\n')
         cmd=[sys.executable,str(project/'scripts/run_suite.py'),'--data',str(data),
@@ -45,10 +45,23 @@ def main():
         first_checkpoint=(base/'runs'/'seed-0'/'C8_checkpoint.pt').read_bytes()
         subprocess.run(cmd+['--execute-configs','C12','--resume'],check=True,cwd=project)
         assert (base/'runs'/'seed-0'/'C8_checkpoint.pt').read_bytes() == first_checkpoint
-        print('Separate C8/C12 sessions with one immutable experiment PASS')
+        print('Separate main/attention sessions with one immutable experiment PASS')
         cached = {p: p.stat().st_mtime_ns for p in (base/'cache').rglob('*.npz')}
         subprocess.run(cmd+['--resume'],check=True,cwd=project)
         assert all(p.stat().st_mtime_ns == stamp for p,stamp in cached.items())
+        # Corrupted evaluation artifacts must not be skipped or force retraining.
+        state=base/'runs'/'seed-0'/'C8_state.pt'
+        verdict=base/'runs'/'seed-0'/'C8_verdicts.npz'
+        with np.load(verdict,allow_pickle=False) as z:
+            previous_iou=z['iou'].copy()
+        state.write_bytes(b'truncated-state')
+        repaired=subprocess.run(cmd+['--resume'],cwd=project,capture_output=True,text=True)
+        assert repaired.returncode==0, repaired.stdout+repaired.stderr
+        assert 'Loaded completed epoch 1/1' in repaired.stdout
+        assert (base/'runs'/'seed-0'/'C8_checkpoint.pt').read_bytes()==first_checkpoint
+        with np.load(verdict,allow_pickle=False) as z:
+            np.testing.assert_array_equal(previous_iou,z['iou'])
+        print('Damaged model artifact recovered from checkpoint without retraining PASS')
         # Moving the same experiment is supported; altered data/source is not.
         manifest=json.loads((base/'runs'/'seed-0'/'manifest.json').read_text())
         image=data/(manifest['train'][0]+'.jpg')

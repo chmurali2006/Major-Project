@@ -4,7 +4,7 @@ Two jobs, both needed for an ISIC-2019-only evaluation to be worth anything:
 
 1. **Grouping.** Images of the same lesion must never straddle train and test.
    ISIC 2019 ships a `lesion_id`; where it is missing we fall back to the image
-   stem, which is conservative (it can only split more finely, never leak more).
+   stem. This is an image-level split and cannot rule out lesion/patient leakage.
 
 2. **Stratification by diagnosis.** The eight ISIC categories are not
    interchangeable for localisation. A flat naevus and a textured basal-cell
@@ -39,6 +39,7 @@ class Metadata:
     def __init__(self, path: str | Path | None):
         self.path = Path(path) if path else None
         self.lesion: dict[str, str] = {}
+        self.patient: dict[str, str] = {}
         self.diagnosis: dict[str, str] = {}
         self.schema = "none"
         self.note = ""
@@ -69,10 +70,16 @@ class Metadata:
         else:
             self.schema = "no-diagnosis"
 
+        explicit_lesions = 0
+        explicit_patients = 0
         for r in rows:
             stem = Path(str(r[img_key])).stem
             lid = r.get(lower.get("lesion_id", ""), "") or ""
+            explicit_lesions += bool(str(lid).strip())
             self.lesion[stem] = str(lid).strip() or stem
+            pid = r.get(lower.get('patient_id',''), '') or ''
+            self.patient[stem] = str(pid).strip()
+            explicit_patients += bool(str(pid).strip())
             if self.schema == "one-hot":
                 hit = [d for d in one_hot if str(r.get(d, "0")).strip() not in ("", "0", "0.0")]
                 self.diagnosis[stem] = hit[0] if hit else UNKNOWN
@@ -80,7 +87,7 @@ class Metadata:
                 self.diagnosis[stem] = str(r[single]).strip().upper() or UNKNOWN
 
         self.note = (f"schema={self.schema} rows={len(rows)} "
-                     f"with_lesion={sum(1 for v in self.lesion.values() if v)} "
+                     f"explicit_lesion={explicit_lesions} explicit_patient={explicit_patients} "
                      f"with_dx={len(self.diagnosis)}")
 
     # ------------------------------------------------------------------
@@ -90,7 +97,7 @@ class Metadata:
 
     def group_of(self, stem: str) -> str:
         """The grouping key for splitting. Falls back to the stem."""
-        return self.lesion.get(stem, stem)
+        return self.patient.get(stem) or self.lesion.get(stem, stem)
 
     def dx_of(self, stem: str) -> str:
         """Diagnosis, or 'UNKNOWN' when the corpus does not carry one."""

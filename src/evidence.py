@@ -1,31 +1,10 @@
-"""The keyed evidence channel.
+"""Keyed fragile watermark evidence (8x8 blocks, Haar details, QIM tags).
 
-This module is row 2 of the synthesis table, and it is the one component no
-published system in the comparison has. Everything downstream — autoencoder,
-RefineNet, decision head — reads the two maps this produces:
-
-    E   per-block disagreement with the keyed tag      (64x64, high = suspicious)
-    S   per-block mark survival                        (64x64, low = the mark
-                                                        was erased or never fit)
-
-The principle the architecture depends on:
-
-    THE NETWORK NEVER REPLACES THIS EVIDENCE. IT READS IT.
-
-The mark is keyed. An attacker without the key cannot construct a valid tag for
-content they fabricated, so the evidence cannot be manufactured by the attacker.
-A learned embedder has no such property: given enough input/output pairs, the
-inverse can be trained. That asymmetry is the contribution, and C9 in the
-experiment matrix is the run that prices it.
-
-Design carried over from the classical phase:
-
-  * 8x8 blocks, 2-level Haar, 60 detail coefficients per block (48 + 12)
-  * QIM with step DELTA, amplitude DELTA/4, so the embedding never crosses a
-    lattice boundary and the quantisation index is exactly recoverable
-  * the tag binds KEY + IMAGE ID + ADDRESS + the block's own quantisation
-    signature, so a block pasted from elsewhere carries the wrong address and a
-    block whose content changed carries the wrong signature
+This is a research integrity signal, not a proof of cryptographic unforgeability.
+The benchmark uses public test keys; an attacker knowing those constants is not
+excluded by the experiments. Wrong-key/rekey behaviour is measured by the runner.
+No clinical safety, adversarial-security or literature-novelty claim follows from
+these functions alone.
 """
 
 from __future__ import annotations
@@ -301,7 +280,7 @@ def protect(rgb: np.ndarray, key: bytes, image_id: int,
     would leave every tag stale by exactly B's contribution.
     """
     d, b = _profile(profile, delta, beta)
-    marked = _carriers.embed(rgb, key, image_id, beta=_carriers.BETA if b is None else b)
+    marked = rgb if b is None else _carriers.embed(rgb, key, image_id, beta=b)
     return embed(marked, key, image_id, delta=d)
 
 
@@ -313,11 +292,10 @@ def read_full(rgb: np.ndarray, key: bytes, image_id: int,
 
     The three semi channels answer a question the fragile ten cannot:
 
-        semi collapses, semi_abs collapses   -> flattened by a codec  (benign)
-        semi collapses, semi_abs stays high  -> content was rewritten (tampering)
+        semi, semi_abs, semi_surv provide possible cues about mark survival.
 
-    That separation is the reason the second carrier exists. It is a feature for
-    the learned reader, never a decision rule (contrast A-032).
+    They cannot prove whether an edit was benign or malicious. Their empirical
+    usefulness is measured against controls, including any regressions.
     """
     dt, bt = _profile(profile, delta, beta)
     out = read_rich(rgb, key, image_id, delta=dt)

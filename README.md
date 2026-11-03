@@ -23,25 +23,20 @@ portable-study results; use the current run's receipts and split manifest.
 
 ---
 
-## The one-paragraph version
+## The project
 
-Published systems in this area each optimise one component and report a single
-aggregate, so the field cannot say **which component is carrying the result**.
-This project decomposes tamper detection into eight sub-problems, takes the best
-measured answer to each, assembles them, and prices every component against every
-other on one split. Two components are not reproductions: a **keyed,
-training-free evidence channel**, in which the mark is a function of the secret,
-the block address and the block's own content, so a fabricated region cannot be
-marked; and a verifier that **refuses with a cause** — INTACT, TAMPERED or
-CANNOT SAY, with a reason code attached to every refusal. Underneath both sits a
-computed result: an 8×8 decision grid cannot express a boundary finer than 8
-pixels, so a **flawless** block classifier scores 0.809 pixel IoU on a radius-32
-lesion — below the published 0.832 bar, at zero errors. The gap is architectural,
-not a learning deficit.
+This is an ISIC 2019 assembly/ablation study of keyed watermark evidence,
+authentic-only reconstruction, pixel-level localisation and validation-fitted
+abstention. Main and attention-enhanced models are compared to classical controls
+on paired images. Reconstruction is frozen after intact-TRAIN pretraining; the
+image classifier is binary, not a trained unknown class. Abstention is a separate
+empirical rule with measured risk/coverage, not a population guarantee.
 
-**The deliverable is not a better number. It is an attribution study with a
-frozen protocol, in which every number — including the one criterion that fails —
-is traceable to a receipt.**
+**The current pipeline is not an exact verified reproduction of a reference paper,
+a clinically validated tool, or a cryptographically proven authentication system.**
+Benchmark keys are public constants for reproducibility, not production secrets.
+Full scientific results must come from the corrected recipe; earlier receipts and
+figures cannot be promoted into new results. See [VERIFICATION.md](VERIFICATION.md).
 
 ---
 

@@ -247,11 +247,14 @@ def stratify(samples: list[Sample], pred_pixel: list[np.ndarray]) -> dict:
 
     ious = [M.iou(pp > 0.5, s.gt_pixel) for s, pp in zip(samples, pred_pixel)]
 
-    dx = isic_meta.stratify_by([{"dx": s.strata} for s in samples], "dx")
-    by_dx = [{"dx": r["stratum"], "n": r["n"],
-              "iou": round(r["mean"], 4) if r["n"] else None,
-              "small_n": r["small_n"]}
-             for r in isic_meta.report(dx, ious)]
+    by_dx = []
+    for diagnosis in sorted({s.strata for s in samples}):
+        idx = [i for i,s in enumerate(samples) if s.strata == diagnosis]
+        positive = [i for i in idx if samples[i].cls == 1]
+        by_dx.append({'dx': diagnosis, 'n': len(positive), 'n_total': len(idx),
+                      'n_intact': len(idx)-len(positive),
+                      'iou': float(np.mean([ious[i] for i in positive])) if positive else None,
+                      'iou_convention': 'tampered images only', 'small_n': len(positive) < 10})
 
     # tampered-area buckets, with the ceiling each one is bounded by
     tampered = [i for i, s in enumerate(samples) if s.cls == 1]
@@ -272,7 +275,9 @@ def stratify(samples: list[Sample], pred_pixel: list[np.ndarray]) -> dict:
         by_area.append({"bucket": name, "n": len(idx),
                         "median_radius_px": round(radius, 1),
                         "iou": round(float(np.mean(vals)), 4),
-                        "ceiling": round(M.disk_ceiling(radius), 4),
+                        "ceiling": float(np.mean([M.optimal_block_iou(samples[i].gt_pixel) for i in idx])),
+                        "ceiling_convention": "exact per-image block oracle, averaged",
+                        "any_overlap_block_iou": float(np.mean([M.block_ceiling(samples[i].gt_pixel) for i in idx])),
                         "small_n": len(idx) < 10})
     return {"by_diagnosis": by_dx, "by_area": by_area}
 
@@ -280,6 +285,17 @@ def stratify(samples: list[Sample], pred_pixel: list[np.ndarray]) -> dict:
 def score(samples: list[Sample], pred_block: list[np.ndarray],
           pred_pixel: list[np.ndarray], pred_cls: list[int]) -> dict:
     """Score a run. Every ratio carries its denominator."""
+    if not len(samples) or any(len(x) != len(samples) for x in (pred_block, pred_pixel, pred_cls)):
+        raise ValueError('score requires nonempty aligned predictions and samples')
+    for s, pb, pp, pc in zip(samples, pred_block, pred_pixel, pred_cls):
+        if np.asarray(pc).ndim != 0 or pc not in (0, 1):
+            raise ValueError('verdict must be a scalar binary integer')
+        if np.shape(pb) != np.shape(s.gt_block) or np.shape(pp) != np.shape(s.gt_pixel):
+            raise ValueError('prediction/ground-truth shapes differ')
+        if not np.isfinite(pb).all() or not np.isfinite(pp).all():
+            raise ValueError('predictions contain nonfinite values')
+        if s.cls not in (0, 1) or bool(s.cls) != bool(s.gt_pixel.any()):
+            raise ValueError('ground-truth class disagrees with measured pixel mask')
     ious, accs, dets = [], [], []
     for s, pb, pp, pc in zip(samples, pred_block, pred_pixel, pred_cls):
         ious.append(M.iou(pp > 0.5, s.gt_pixel > 0.5))
@@ -307,13 +323,23 @@ def score(samples: list[Sample], pred_block: list[np.ndarray],
                 "fpr": fp / len(intact) if intact else None,
                 "balanced_accuracy": .5 * (tp / len(tampered) + 1 - fp / len(intact))
                     if tampered and intact else None})
+    out['by_family'] = []
+    for family in sorted({s.family for s in samples}):
+        idx = [i for i,s in enumerate(samples) if s.family == family]
+        pos = [i for i in idx if samples[i].cls == 1]
+        neg = [i for i in idx if samples[i].cls == 0]
+        out['by_family'].append({'family': family, 'n': len(idx), 'n_tampered': len(pos),
+            'n_intact': len(neg),
+            'iou_tampered_mean': float(ious[pos].mean()) if pos else None,
+            'tpr': float(np.mean([pred_cls[i] == 1 for i in pos])) if pos else None,
+            'fpr': float(np.mean([pred_cls[i] == 1 for i in neg])) if neg else None})
     out.update(stratify(samples, pred_pixel))
     return out
 
 
 # ================================================================ training
 
-def build_model(cfg: P.Config, n_ev: int, width: int):
+def build_model(cfg: P.Config, n_ev: int, width: int, binary_verdict_head=False):
     """Map a configuration id onto an architecture.
 
     C0 is not here: it has no parameters. `components` comes from
@@ -335,7 +361,7 @@ def build_model(cfg: P.Config, n_ev: int, width: int):
     # markers" therefore wrongly made them classical. Only C0 has no components.
     if cfg.cid == "C0":
         return None                              # C0: classical control
-    n_cls = 3 if "three" in has else 2
+    n_cls = 2 if binary_verdict_head else (3 if "three" in has else 2)
     n_ev_in = n_ev + (1 if "ae" in has else 0)   # AE error map is an extra channel
     refine = models.PixelRefineNet(n_ev=n_ev_in, width=width, n_cls=n_cls,
                                    stage_attention="stage_attn" in has)
@@ -363,9 +389,9 @@ def forward_all(model, t: dict) -> dict:
     """
     ev = t["ev"]
     if model["ae"] is not None:
-        # Reconstruction error of authentic evidence, as one extra channel. The
-        # AE never sees a tampered sample, so this stays a genuine anomaly score
-        # for edits invented after training.
+        # A reconstruction-residual feature. The portable runner explicitly
+        # pretrains this on authentic TRAIN evidence and freezes it; the legacy
+        # matrix alone does not enforce that one-class training discipline.
         _rec, err = model["ae"](ev)                 # err: (B,1,h,w)
         ev = torch_cat([ev, F_avg(err, ev.shape[-1])], dim=1)
 
@@ -407,7 +433,7 @@ def params_of(model):
     if model["use_saliency"]:
         ps += [p for p in model["saliency"].parameters() if p.requires_grad]
     if model["ae"] is not None:
-        ps += list(model["ae"].parameters())
+        ps += [p for p in model["ae"].parameters() if p.requires_grad]
     return ps
 
 
@@ -423,7 +449,10 @@ def to_train(model):
     if model["use_saliency"]:
         model["saliency"].train()
     if model["ae"] is not None:
-        model["ae"].train()
+        if any(p.requires_grad for p in model["ae"].parameters()):
+            model["ae"].train()
+        else:
+            model["ae"].eval()  # frozen BatchNorm statistics must not see edits
 
 
 def state_of(model):
@@ -508,6 +537,8 @@ def train(model, train_s: list[Sample], val_s: list[Sample], *,
                                             pos_weight=pos_weight,
                                             pos_weight_pixel=pos_weight_pixel)
                 total = total + loss
+            if not torch.isfinite(total):
+                raise FloatingPointError('nonfinite localisation/classification training loss')
             (total / len(chunk)).backward()
             opt.step()
             run += float(total.detach()) / len(chunk)
@@ -547,6 +578,8 @@ def predict_maps(model, samples: list[Sample]):
                  "deg": torch.from_numpy(s.degrade)[None].to(dev),
                  "image": torch.from_numpy(s.image)[None].float().to(dev) / 255.0}
             out = forward_all(model, t)
+            if any(not torch.isfinite(out[key]).all() for key in ('block_logits','pixel_logits','cls')):
+                raise FloatingPointError('nonfinite model logits during evaluation')
             blk.append(torch.sigmoid(out["block_logits"])[0, 0].cpu().numpy())
             p = torch.sigmoid(out["pixel_logits"])[0, 0].cpu().numpy()
             pix.append(p if p.shape[0] == IMAGE_SIZE else upsample((blk[-1] > 0.5).astype(np.float32)))
@@ -746,6 +779,7 @@ def main() -> int:
                          "minimised by predicting all-zero. 12 is a starting "
                          "point; tune it on validation, never on test.")
     ap.add_argument("--seed", type=int, default=0)
+    ap.add_argument("--legacy-unverified", action="store_true", help="explicitly permit the non-audited legacy matrix; results remain unusable")
     ap.add_argument("--smoke", action="store_true",
                     help="procedural images, tiny n: proves the matrix executes")
     ap.add_argument("--families", default="T1,T2,T3,T4,T5,none,B1:jpeg75",
@@ -754,6 +788,8 @@ def main() -> int:
                          "(T1) is the one case where the block ceiling is 1.000, "
                          "so it cannot show what refinement is worth.")
     args = ap.parse_args()
+    if not args.smoke and not args.legacy_unverified:
+        raise SystemExit('Use scripts/run_suite.py for the audited protocol; this standalone matrix is legacy/unverified.')
     import random
     import torch
     random.seed(args.seed)
@@ -772,6 +808,7 @@ def main() -> int:
           f"{len(P.TAMPER_FAMILIES)} families)")
 
     prov = provenance()
+    prov['usable'] = False  # legacy CLI is not the audited portable study
     if not prov["usable"]:
         print("WARNING: working tree is dirty; receipts will be marked unusable")
 

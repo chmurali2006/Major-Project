@@ -1,3 +1,5 @@
+> **Historical / pre-audit material.** This file is not evidence for the current audited recipe. See root `VERIFICATION.md` and use fresh measured receipts for submission. In particular, any-overlap block IoU is not a universal ceiling.
+
 # project-context
 
 Everything needed to talk about this project — on a poster, in a deck, in an

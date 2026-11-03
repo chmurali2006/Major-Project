@@ -48,3 +48,14 @@ def test_invalid_and_conflicting_labels(tmp_path):
     labels.write_text('image,'+','.join(CLASSES)+'\nISIC_0,1,1,0,0,0,0,0,0\n')
     with pytest.raises(ValueError,match='exactly one'):
         label_rows(labels)
+
+
+def test_canonicalisation_preserves_group_identifiers(tmp_path):
+    from src.isic_meta import Metadata
+    data,labels=fixture(tmp_path)
+    lines=labels.read_text().strip().splitlines()
+    labels.write_text(lines[0]+',lesion_id,patient_id\n'+lines[1]+',lesion-a,patient-a\n'+lines[2]+',lesion-b,patient-a\n')
+    target=tmp_path/'verified.csv'
+    audit(data,labels,target,True)
+    meta=Metadata(target)
+    assert meta.group_of('ISIC_0')==meta.group_of('ISIC_1')=='patient-a'

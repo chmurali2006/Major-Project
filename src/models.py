@@ -1,22 +1,10 @@
-"""The learned half of the synthesis.
+"""Evidence-reading neural modules for the watermarking assembly study.
 
-Three pieces, each traceable to a row of the table in docs/SYNTHESIS_STUDY.md:
-
-  OneClassAE   row 3  — trained ONLY on authentic protected images, so its
-                        reconstruction error is elevated where evidence breaks.
-                        PFF-WM §3.3.
-  RefineNet    row 4  — 3 encoder levels with skips, turns the evidence maps
-                        into a tamper mask. PFF-WM §3.4, worth +6.2 IoU.
-  FusionNet    rows 5-8 — segmentation output, degradation conditioning,
-                        three-way decision with a reason code.
-
-The one architectural rule that makes this more than a reimplementation:
-
-    the network never generates evidence, it only reads it.
-
-Every suspicious signal entering these models originates in the keyed channel.
-If the key is wrong, the evidence is noise and the network has nothing to
-amplify. That is tested in C9/C10, not asserted here.
+The audited portable trainer pretrains/freeze-checks authentic reconstruction,
+then trains binary auxiliary classification and block/pixel localisation.
+Abstention is calibrated separately, not learned as an unsupported third class.
+Image features remain an input: wrong-key collapse/security must be measured,
+not asserted. These custom modules are not a verified paper reproduction.
 """
 
 from __future__ import annotations
@@ -62,12 +50,11 @@ class Up(nn.Module):
 # ---------------------------------------------------------------- row 3
 
 class OneClassAE(nn.Module):
-    """Trained only on authentic watermarked images.
+    """Evidence autoencoder; one-class behaviour depends on the trainer.
 
-    Anomaly score = per-pixel reconstruction error. Nothing about tampering is
-    learned; only the manifold of authentic evidence is learned. That is why it
-    generalises to unseen edit types — and why it cannot be fooled by an edit
-    that happens to look like another edit.
+    The audited portable pipeline trains reconstruction on intact TRAIN cases
+    only and freezes this module during segmentation training. Elevated error
+    on unseen tampering is a hypothesis to measure, not a security guarantee.
     """
 
     def __init__(self, cin: int = N_SLOTS_CH, width: int = 24):
@@ -197,14 +184,9 @@ def counting_summary() -> dict[str, int]:
 # v2 architecture — pixel-resolution localisation (see docs/DESIGN_REVIEW.md)
 # =====================================================================
 #
-# The v1 models above output a 64x64 block map. That caps pixel IoU at the
-# block ceiling: for a circular lesion of radius 32 the ceiling is 0.809 no
-# matter how perfect the block classification is. The published bar is 0.832.
-# So v1 cannot reach it by construction, and no amount of training fixes that.
-#
-# v2 keeps the block head -- the verdict layer is block-granular by nature --
-# and adds a pixel head that reads the image at full resolution. Both are
-# supervised; a consistency term stops them disagreeing.
+# The pixel branch can represent sub-block boundaries. The old claim that an
+# any-overlap block mask was a universal IoU ceiling was incorrect; exact block
+# oracle IoU is computed by metrics.optimal_block_iou on each actual mask.
 
 N_RICH = 10
 
@@ -212,7 +194,8 @@ N_RICH = 10
 class SaliencyNet(nn.Module):
     """Module 1: multi-scale attention, Conv 3x3 / 5x5 / 7x7 in parallel.
 
-    This is PFF-WM's diagnostic-saliency map. In v1 it was passed as zeros,
+    This is a custom multi-scale saliency input inspired by the reference design,
+    not a verified reproduction of its diagnostic-saliency map. In v1 it was passed as zeros,
     which means row 1 of the synthesis table was claimed but never built.
 
     A note on what it does and does not do here: it is trained end-to-end from
@@ -317,8 +300,8 @@ class PixelRefineNet(nn.Module):
         s2 = self.d2(F.max_pool2d(s1, 2))                             # 128
         ev_at_128 = F.interpolate(ev_feat, size=s2.shape[-2:], mode="nearest")
         s3 = self.d3(torch.cat([s2, ev_at_128], dim=1))                # 128
-        s4 = self.d4(torch.cat([F.max_pool2d(s3, 2), ev_feat], dim=1)) # 64
         s3 = self.stage_gates[1](s3)
+        s4 = self.d4(torch.cat([F.max_pool2d(s3, 2), ev_feat], dim=1)) # 64
         s4 = self.stage_gates[2](s4)
         u4 = self.u4(s4, s3)            # 128
         u3 = self.u3(u4, s1)            # 256

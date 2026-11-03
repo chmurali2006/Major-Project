@@ -1,0 +1,518 @@
+{
+  "n": 7,
+  "n_tampered": 6,
+  "n_intact": 1,
+  "iou_mean": 0.1501056126185826,
+  "iou_tampered_mean": 0.1751232147216797,
+  "block_acc": 0.15865652901785715,
+  "detection": 0.8571428571428571,
+  "detection_denominator": "6 / 7",
+  "false_claims": 1,
+  "n_intact_denominator": 1,
+  "true_positives": 6,
+  "tpr": 1.0,
+  "fpr": 1.0,
+  "balanced_accuracy": 0.5,
+  "by_family": [
+    {
+      "family": "B1:jpeg75",
+      "n": 1,
+      "n_tampered": 1,
+      "n_intact": 0,
+      "iou_tampered_mean": 0.9671745300292969,
+      "tpr": 1.0,
+      "fpr": null
+    },
+    {
+      "family": "T1",
+      "n": 1,
+      "n_tampered": 1,
+      "n_intact": 0,
+      "iou_tampered_mean": 0.00390625,
+      "tpr": 1.0,
+      "fpr": null
+    },
+    {
+      "family": "T2",
+      "n": 1,
+      "n_tampered": 1,
+      "n_intact": 0,
+      "iou_tampered_mean": 0.017078399658203125,
+      "tpr": 1.0,
+      "fpr": null
+    },
+    {
+      "family": "T3",
+      "n": 1,
+      "n_tampered": 1,
+      "n_intact": 0,
+      "iou_tampered_mean": 0.02661895751953125,
+      "tpr": 1.0,
+      "fpr": null
+    },
+    {
+      "family": "T4",
+      "n": 1,
+      "n_tampered": 1,
+      "n_intact": 0,
+      "iou_tampered_mean": 0.02356719970703125,
+      "tpr": 1.0,
+      "fpr": null
+    },
+    {
+      "family": "T5",
+      "n": 1,
+      "n_tampered": 1,
+      "n_intact": 0,
+      "iou_tampered_mean": 0.012393951416015625,
+      "tpr": 1.0,
+      "fpr": null
+    },
+    {
+      "family": "none",
+      "n": 1,
+      "n_tampered": 0,
+      "n_intact": 1,
+      "iou_tampered_mean": null,
+      "tpr": null,
+      "fpr": 1.0
+    }
+  ],
+  "by_diagnosis": [
+    {
+      "dx": "BCC",
+      "n": 2,
+      "n_total": 2,
+      "n_intact": 0,
+      "iou": 0.48554039001464844,
+      "iou_convention": "tampered images only",
+      "small_n": true
+    },
+    {
+      "dx": "BKL",
+      "n": 1,
+      "n_total": 1,
+      "n_intact": 0,
+      "iou": 0.012393951416015625,
+      "iou_convention": "tampered images only",
+      "small_n": true
+    },
+    {
+      "dx": "NV",
+      "n": 3,
+      "n_total": 4,
+      "n_intact": 1,
+      "iou": 0.022421518961588543,
+      "iou_convention": "tampered images only",
+      "small_n": true
+    }
+  ],
+  "by_area": [
+    {
+      "bucket": "area_0.000-0.005",
+      "n": 1,
+      "median_radius_px": 18.1,
+      "iou": 0.0039,
+      "ceiling": 1.0,
+      "ceiling_convention": "exact per-image block oracle, averaged",
+      "any_overlap_block_iou": 1.0,
+      "small_n": true
+    },
+    {
+      "bucket": "area_0.005-0.020",
+      "n": 2,
+      "median_radius_px": 35.1,
+      "iou": 0.0147,
+      "ceiling": 0.9368236341903218,
+      "ceiling_convention": "exact per-image block oracle, averaged",
+      "any_overlap_block_iou": 0.8080954159007353,
+      "small_n": true
+    },
+    {
+      "bucket": "area_0.020-0.050",
+      "n": 2,
+      "median_radius_px": 45.8,
+      "iou": 0.0251,
+      "ceiling": 0.7983322699285844,
+      "ceiling_convention": "exact per-image block oracle, averaged",
+      "any_overlap_block_iou": 0.6856954887218045,
+      "small_n": true
+    },
+    {
+      "bucket": "area_0.200-1.010",
+      "n": 1,
+      "median_radius_px": 284.1,
+      "iou": 0.9672,
+      "ceiling": 0.9671745300292969,
+      "ceiling_convention": "exact per-image block oracle, averaged",
+      "any_overlap_block_iou": 0.9671745300292969,
+      "small_n": true
+    }
+  ],
+  "authentic_reconstruction": {
+    "epochs": 2,
+    "n_authentic_train": 1,
+    "selection": "cls=0 and empty measured pixel mask, TRAIN partition only",
+    "frozen_during_localisation_training": true
+  },
+  "image_classifier": "binary auxiliary head; verdict uses validation-fitted block count",
+  "total_parameters": 269962,
+  "tau": 0.05,
+  "k": 0,
+  "seconds": 7.278173446655273,
+  "aurc": 0.14285714285714285,
+  "selective": {
+    "feasible_on_validation": false,
+    "threshold": null,
+    "validation_coverage": 0.0,
+    "validation_risk": null,
+    "coverage_floor": 0.9,
+    "max_risk": 0.05,
+    "reason": "validation_constraints_infeasible",
+    "test_coverage": 0.0,
+    "test_risk": null
+  },
+  "rekey": {
+    "n": 7,
+    "n_tampered": 6,
+    "n_intact": 1,
+    "iou_mean": 0.15016446794782365,
+    "iou_tampered_mean": 0.17519187927246094,
+    "block_acc": 0.15865652901785715,
+    "detection": 0.8571428571428571,
+    "detection_denominator": "6 / 7",
+    "false_claims": 1,
+    "n_intact_denominator": 1,
+    "true_positives": 6,
+    "tpr": 1.0,
+    "fpr": 1.0,
+    "balanced_accuracy": 0.5,
+    "by_family": [
+      {
+        "family": "B1:jpeg75",
+        "n": 1,
+        "n_tampered": 1,
+        "n_intact": 0,
+        "iou_tampered_mean": 0.9675788879394531,
+        "tpr": 1.0,
+        "fpr": null
+      },
+      {
+        "family": "T1",
+        "n": 1,
+        "n_tampered": 1,
+        "n_intact": 0,
+        "iou_tampered_mean": 0.00390625,
+        "tpr": 1.0,
+        "fpr": null
+      },
+      {
+        "family": "T2",
+        "n": 1,
+        "n_tampered": 1,
+        "n_intact": 0,
+        "iou_tampered_mean": 0.017078399658203125,
+        "tpr": 1.0,
+        "fpr": null
+      },
+      {
+        "family": "T3",
+        "n": 1,
+        "n_tampered": 1,
+        "n_intact": 0,
+        "iou_tampered_mean": 0.026622772216796875,
+        "tpr": 1.0,
+        "fpr": null
+      },
+      {
+        "family": "T4",
+        "n": 1,
+        "n_tampered": 1,
+        "n_intact": 0,
+        "iou_tampered_mean": 0.023571014404296875,
+        "tpr": 1.0,
+        "fpr": null
+      },
+      {
+        "family": "T5",
+        "n": 1,
+        "n_tampered": 1,
+        "n_intact": 0,
+        "iou_tampered_mean": 0.012393951416015625,
+        "tpr": 1.0,
+        "fpr": null
+      },
+      {
+        "family": "none",
+        "n": 1,
+        "n_tampered": 0,
+        "n_intact": 1,
+        "iou_tampered_mean": null,
+        "tpr": null,
+        "fpr": 1.0
+      }
+    ],
+    "by_diagnosis": [
+      {
+        "dx": "BCC",
+        "n": 2,
+        "n_total": 2,
+        "n_intact": 0,
+        "iou": 0.48574256896972656,
+        "iou_convention": "tampered images only",
+        "small_n": true
+      },
+      {
+        "dx": "BKL",
+        "n": 1,
+        "n_total": 1,
+        "n_intact": 0,
+        "iou": 0.012393951416015625,
+        "iou_convention": "tampered images only",
+        "small_n": true
+      },
+      {
+        "dx": "NV",
+        "n": 3,
+        "n_total": 4,
+        "n_intact": 1,
+        "iou": 0.022424062093098957,
+        "iou_convention": "tampered images only",
+        "small_n": true
+      }
+    ],
+    "by_area": [
+      {
+        "bucket": "area_0.000-0.005",
+        "n": 1,
+        "median_radius_px": 18.1,
+        "iou": 0.0039,
+        "ceiling": 1.0,
+        "ceiling_convention": "exact per-image block oracle, averaged",
+        "any_overlap_block_iou": 1.0,
+        "small_n": true
+      },
+      {
+        "bucket": "area_0.005-0.020",
+        "n": 2,
+        "median_radius_px": 35.1,
+        "iou": 0.0147,
+        "ceiling": 0.9368236341903218,
+        "ceiling_convention": "exact per-image block oracle, averaged",
+        "any_overlap_block_iou": 0.8080954159007353,
+        "small_n": true
+      },
+      {
+        "bucket": "area_0.020-0.050",
+        "n": 2,
+        "median_radius_px": 45.8,
+        "iou": 0.0251,
+        "ceiling": 0.798442165662707,
+        "ceiling_convention": "exact per-image block oracle, averaged",
+        "any_overlap_block_iou": 0.6857988721804511,
+        "small_n": true
+      },
+      {
+        "bucket": "area_0.200-1.010",
+        "n": 1,
+        "median_radius_px": 284.1,
+        "iou": 0.9676,
+        "ceiling": 0.9675788879394531,
+        "ceiling_convention": "exact per-image block oracle, averaged",
+        "any_overlap_block_iou": 0.9675788879394531,
+        "small_n": true
+      }
+    ]
+  },
+  "wrong_key": {
+    "n": 7,
+    "n_tampered": 6,
+    "n_intact": 1,
+    "iou_mean": 0.1501056126185826,
+    "iou_tampered_mean": 0.1751232147216797,
+    "block_acc": 0.15865652901785715,
+    "detection": 0.8571428571428571,
+    "detection_denominator": "6 / 7",
+    "false_claims": 1,
+    "n_intact_denominator": 1,
+    "true_positives": 6,
+    "tpr": 1.0,
+    "fpr": 1.0,
+    "balanced_accuracy": 0.5,
+    "by_family": [
+      {
+        "family": "B1:jpeg75",
+        "n": 1,
+        "n_tampered": 1,
+        "n_intact": 0,
+        "iou_tampered_mean": 0.9671745300292969,
+        "tpr": 1.0,
+        "fpr": null
+      },
+      {
+        "family": "T1",
+        "n": 1,
+        "n_tampered": 1,
+        "n_intact": 0,
+        "iou_tampered_mean": 0.00390625,
+        "tpr": 1.0,
+        "fpr": null
+      },
+      {
+        "family": "T2",
+        "n": 1,
+        "n_tampered": 1,
+        "n_intact": 0,
+        "iou_tampered_mean": 0.017078399658203125,
+        "tpr": 1.0,
+        "fpr": null
+      },
+      {
+        "family": "T3",
+        "n": 1,
+        "n_tampered": 1,
+        "n_intact": 0,
+        "iou_tampered_mean": 0.02661895751953125,
+        "tpr": 1.0,
+        "fpr": null
+      },
+      {
+        "family": "T4",
+        "n": 1,
+        "n_tampered": 1,
+        "n_intact": 0,
+        "iou_tampered_mean": 0.02356719970703125,
+        "tpr": 1.0,
+        "fpr": null
+      },
+      {
+        "family": "T5",
+        "n": 1,
+        "n_tampered": 1,
+        "n_intact": 0,
+        "iou_tampered_mean": 0.012393951416015625,
+        "tpr": 1.0,
+        "fpr": null
+      },
+      {
+        "family": "none",
+        "n": 1,
+        "n_tampered": 0,
+        "n_intact": 1,
+        "iou_tampered_mean": null,
+        "tpr": null,
+        "fpr": 1.0
+      }
+    ],
+    "by_diagnosis": [
+      {
+        "dx": "BCC",
+        "n": 2,
+        "n_total": 2,
+        "n_intact": 0,
+        "iou": 0.48554039001464844,
+        "iou_convention": "tampered images only",
+        "small_n": true
+      },
+      {
+        "dx": "BKL",
+        "n": 1,
+        "n_total": 1,
+        "n_intact": 0,
+        "iou": 0.012393951416015625,
+        "iou_convention": "tampered images only",
+        "small_n": true
+      },
+      {
+        "dx": "NV",
+        "n": 3,
+        "n_total": 4,
+        "n_intact": 1,
+        "iou": 0.022421518961588543,
+        "iou_convention": "tampered images only",
+        "small_n": true
+      }
+    ],
+    "by_area": [
+      {
+        "bucket": "area_0.000-0.005",
+        "n": 1,
+        "median_radius_px": 18.1,
+        "iou": 0.0039,
+        "ceiling": 1.0,
+        "ceiling_convention": "exact per-image block oracle, averaged",
+        "any_overlap_block_iou": 1.0,
+        "small_n": true
+      },
+      {
+        "bucket": "area_0.005-0.020",
+        "n": 2,
+        "median_radius_px": 35.1,
+        "iou": 0.0147,
+        "ceiling": 0.9368236341903218,
+        "ceiling_convention": "exact per-image block oracle, averaged",
+        "any_overlap_block_iou": 0.8080954159007353,
+        "small_n": true
+      },
+      {
+        "bucket": "area_0.020-0.050",
+        "n": 2,
+        "median_radius_px": 45.8,
+        "iou": 0.0251,
+        "ceiling": 0.7983322699285844,
+        "ceiling_convention": "exact per-image block oracle, averaged",
+        "any_overlap_block_iou": 0.6856954887218045,
+        "small_n": true
+      },
+      {
+        "bucket": "area_0.200-1.010",
+        "n": 1,
+        "median_radius_px": 284.1,
+        "iou": 0.9672,
+        "ceiling": 0.9671745300292969,
+        "ceiling_convention": "exact per-image block oracle, averaged",
+        "any_overlap_block_iou": 0.9671745300292969,
+        "small_n": true
+      }
+    ]
+  },
+  "provenance": {
+    "commit": "a29b910",
+    "code_dirty": true,
+    "usable": false,
+    "python": "3.11.2",
+    "numpy": "1.26.4",
+    "started": "2026-11-03T11:57:44",
+    "key_policy": "public benchmark keys; not production secrets or adversarial-security proof",
+    "sanity": true,
+    "source_sha256": "bcef892b2f19cb20346f909b0d690912a4d02a676be35b874e473833e03d9836",
+    "seed": 0,
+    "torch": "2.2.2+cu121",
+    "split_seed": 20261103,
+    "manifest_sha256": "702ef8077624683687dab6827ce35a4decb00c09e62b690de2c9920b2895fc10"
+  },
+  "usable": false,
+  "protocol": "isic-audited-v1",
+  "model": "Main watermark-verification model",
+  "parameters": {
+    "data": "/tmp/isic2019",
+    "out": "/tmp/final-audited-real-run/seed-0",
+    "metadata": "/tmp/isic2019/ISIC_2019_GroundTruth_deduplicated.csv",
+    "cache": "/tmp/final-audited-real-cache/36d69b005693bc39af3d029d",
+    "train_n": 7,
+    "val_n": 7,
+    "test_n": 7,
+    "epochs": 1,
+    "ae_epochs": 2,
+    "width": 4,
+    "seed": 0,
+    "configs": "C8,C12",
+    "execute_configs": null,
+    "probes": true,
+    "resume": false,
+    "sanity": true,
+    "device": "cpu",
+    "threads": 2,
+    "heldout": null
+  }
+}

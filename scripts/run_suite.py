@@ -4,6 +4,8 @@ import json
 from pathlib import Path
 import subprocess
 import sys
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
+from src.persistence import atomic_json, source_digest
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -21,6 +23,7 @@ def main():
     ap.add_argument('--val-n', type=int, default=150)
     ap.add_argument('--test-n', type=int, default=1000)
     ap.add_argument('--epochs', type=int, default=3)
+    ap.add_argument('--ae-epochs', type=int, default=2)
     ap.add_argument('--width', type=int, default=16)
     ap.add_argument('--device', choices=['auto','cpu','cuda'], default='auto')
     ap.add_argument('--resume', action='store_true')
@@ -29,11 +32,18 @@ def main():
     ap.add_argument('--heldout-run', action='store_true')
     args=ap.parse_args()
     args.out.mkdir(parents=True, exist_ok=True)
+    contract = {k:v for k,v in vars(args).items() if k not in (
+        'data','metadata','out','cache','seeds','execute_configs','only_heldout','heldout_run','resume','device')}
+    contract['source_sha256'] = source_digest(ROOT)
+    contract_path = args.out/'study.json'
+    if contract_path.exists() and json.loads(contract_path.read_text()) != contract:
+        raise ValueError('resume refused: study source or frozen training settings changed; use a new output directory')
+    atomic_json(contract_path, contract)
     logs=args.out/'logs'
     logs.mkdir(exist_ok=True)
     def execute(script, options, log):
         cmd=[sys.executable, '-u', str(ROOT/'scripts'/script), *map(str,options)]
-        print('Running:', subprocess.list2cmdline(cmd), flush=True)
+        print(f'Running {script}; log: {log}', flush=True)
         with log.open('a',encoding='utf-8') as fh:
             fh.write('\nCOMMAND '+json.dumps(cmd)+'\n')
             child=subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True)
@@ -50,14 +60,16 @@ def main():
                 child.wait()
                 raise
     seeds=[int(s) for s in args.seeds.split(',')]
+    if not seeds or len(seeds) != len(set(seeds)) or any(s < 0 for s in seeds):
+        raise ValueError('seeds must be distinct nonnegative integers')
     jobs=[] if args.only_heldout else [(f'seed-{s}',s,None,args.configs) for s in seeds]
     if args.heldout_run or args.only_heldout:
-        jobs.append(('heldout-T5',seeds[0],'T5','C8'))
+        jobs.append(('heldout-T5',0,'T5','C8'))
     for name,seed,heldout,configs in jobs:
         out=args.out/name
         options=['--data',args.data,'--metadata',args.metadata,'--out',out,
                  '--cache',args.cache,'--seed',seed,'--configs',configs,'--device',args.device]
-        for key in ('train_n','val_n','test_n','epochs','width'):
+        for key in ('train_n','val_n','test_n','epochs','ae_epochs','width'):
             options.extend(['--'+key.replace('_','-'),getattr(args,key)])
         if args.execute_configs and not heldout: options.extend(['--execute-configs',args.execute_configs])
         if args.resume: options.append('--resume')
@@ -68,7 +80,7 @@ def main():
         for a,b in [('C0_count','C0_B'),('C0_count','C8'),('C8','C12')]:
             pa,pb=out/f'{a}_verdicts.npz',out/f'{b}_verdicts.npz'
             if pa.exists() and pb.exists():
-                execute('compare_paired.py',['--a',pa,'--b',pb,'--out',out/f'{b}_vs_{a}.json'],logs/f'{name}.log')
+                execute('compare_paired.py',['--a',pa,'--b',pb,'--out',out/f'{b}_vs_{a}.json','--strict'],logs/f'{name}.log')
     execute('summarize_isic_study.py',['--root',args.out,'--out',args.out/'summary.json'],logs/'summary.log')
     print('Finished requested jobs. Keep the entire output directory, including checkpoints.')
 

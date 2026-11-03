@@ -3,11 +3,17 @@ import argparse
 import json
 from pathlib import Path
 import numpy as np
+import sys
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
+from src.names import model_name
+from src.persistence import artifacts_valid
 
 
 def summarize(root):
     rows = []
     missing = []
+    source_versions = set()
+    integrity_failures = []
     for seed in (0,1,2):
         folder = root / f'seed-{seed}'
         for config in ('C0_count','C0_B','C8','C12'):
@@ -16,7 +22,13 @@ def summarize(root):
                 missing.append(str(path))
                 continue
             r = json.loads(path.read_text())
-            row = {'seed':seed,'config':config,'usable':r['usable'],
+            suffixes = ['.json','_verdicts.npz'] if config.startswith('C0') else ['.json','_verdicts.npz','_state.pt','_validation.npz']
+            intact_artifacts = artifacts_valid(folder,config,suffixes)
+            if not intact_artifacts:
+                integrity_failures.append(str(path))
+            if r.get('provenance',{}).get('source_sha256'):
+                source_versions.add(r['provenance']['source_sha256'])
+            row = {'seed':seed,'config':config,'model':model_name(config),'usable':r['usable'] and intact_artifacts, 'artifacts_verified':intact_artifacts,
                    'iou_tampered':r['iou_tampered_mean'],
                    'balanced_accuracy':r['balanced_accuracy'],
                    'tpr':r['tpr'],'fpr':r['fpr']}
@@ -30,15 +42,19 @@ def summarize(root):
     aggregates = {}
     for config in ('C8','C12'):
         rr = [r for r in rows if r['config'] == config and r['usable']]
-        if len(rr) == 3:
-            aggregates[config] = {metric:{'mean':float(np.mean([r[metric] for r in rr])),
+        if len(rr) == 3 and len(source_versions) == 1:
+            aggregates[model_name(config)] = {metric:{'mean':float(np.mean([r[metric] for r in rr])),
                                           'seed_sd':float(np.std([r[metric] for r in rr], ddof=1))}
                                   for metric in ('iou_tampered','balanced_accuracy','tpr','fpr')}
     heldout_path = root/'heldout-T5'/'C8.json'
     heldout = json.loads(heldout_path.read_text()).get('heldout') if heldout_path.exists() else None
     if heldout is None:
         missing.append(str(heldout_path))
-    return {'complete':not missing,'missing':missing,'runs':rows,
+    heldout_integrity = artifacts_valid(root/'heldout-T5','C8',['.json','_verdicts.npz','_state.pt','_validation.npz']) if heldout is not None else False
+    if heldout is not None and not heldout_integrity:
+        integrity_failures.append(str(heldout_path))
+    return {'integrity_failures':integrity_failures,'mixed_source_versions':len(source_versions)>1,
+            'complete':not missing and not integrity_failures and len(source_versions)==1,'missing':missing,'runs':rows,
             'three_seed_aggregates':aggregates,'heldout_T5':heldout,
             'limitations':['Image-level split, not lesion/patient grouped.',
                            'Bootstrap intervals reflect image sampling, not training-seed uncertainty.',

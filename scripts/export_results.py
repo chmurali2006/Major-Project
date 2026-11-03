@@ -4,6 +4,9 @@ import hashlib
 import json
 from pathlib import Path
 import zipfile
+import sys
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
+from src.persistence import atomic_write
 
 
 def main():
@@ -17,13 +20,15 @@ def main():
         raise SystemExit('archive must be outside the runs directory')
     args.out.parent.mkdir(parents=True,exist_ok=True)
     hashes={}
-    with zipfile.ZipFile(args.out,'w',zipfile.ZIP_DEFLATED) as z:
-        for p in sorted(root.rglob('*')):
-            if p.is_file() and not p.name.endswith(('.tmp','.lock')):
-                name=p.relative_to(root).as_posix()
-                hashes[name]=hashlib.sha256(p.read_bytes()).hexdigest()
-                z.write(p,name)
-        z.writestr('ARTIFACT_MANIFEST.json',json.dumps(hashes,indent=2)+'\n')
+    def write_archive(fh):
+        with zipfile.ZipFile(fh,'w',zipfile.ZIP_DEFLATED) as z:
+            for p in sorted(root.rglob('*')):
+                if p.is_file() and not p.name.endswith(('.tmp','.lock')):
+                    name=p.relative_to(root).as_posix()
+                    hashes[name]=hashlib.sha256(p.read_bytes()).hexdigest()
+                    z.write(p,name)
+            z.writestr('ARTIFACT_MANIFEST.json',json.dumps(hashes,indent=2)+'\n')
+    atomic_write(args.out, write_archive)
     print(f'{args.out}: {len(hashes)} files. Retain the matching source ZIP too.')
 
 

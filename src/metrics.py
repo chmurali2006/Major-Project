@@ -214,21 +214,12 @@ def summarise(results: list[dict]) -> dict:
 # ---------------------------------------------------------------- comparison guards
 
 def block_ceiling(pixel_mask: np.ndarray, block: int = BLOCK) -> float:
-    """Pixel IoU that a PERFECT block-granular detector scores on this mask.
+    """Legacy any-overlap block-mask IoU, NOT a universal upper bound.
 
-    This is the number that decides whether a comparison is fair. An 8x8 verdict
-    grid cannot express a boundary finer than 8 pixels, so for a circular lesion
-    of radius 32 (1.2% of a 512x512 frame) even a flawless block classifier tops
-    out at 0.809 pixel IoU. A system reporting pixel masks from a 64x64 grid
-    therefore cannot reach a published pixel IoU above this ceiling, whatever
-    it learns.
-
-    Measured, circular lesions on 512x512:
-        r=8   -> 0.513     r=32 -> 0.809     r=96  -> 0.930
-        r=16  -> 0.692     r=48 -> 0.854     r=128 -> 0.937    r=160 -> 0.950
-
-    Always report this beside a block-granular IoU so a shortfall is
-    attributable to the architecture rather than blamed on the model.
+    Marks every block touching truth. Rejecting very sparsely occupied boundary
+    blocks can produce higher pixel IoU. Use ``optimal_block_iou`` for the exact
+    oracle under an unconstrained binary block-mask model. Kept for historical
+    receipt compatibility; old numerical values are not silently redefined.
     """
     m = np.asarray(pixel_mask, bool)
     ny, nx = m.shape[0] // block, m.shape[1] // block
@@ -237,18 +228,30 @@ def block_ceiling(pixel_mask: np.ndarray, block: int = BLOCK) -> float:
     return iou(approx, m[:ny * block, :nx * block])
 
 
+def optimal_block_iou(pixel_mask: np.ndarray, block: int = BLOCK) -> float:
+    """Exact maximum pixel IoU over binary masks constant within each block.
+
+    For any fixed number k of positive blocks, choosing the k largest truth
+    occupancies maximises TP and minimises FP. Enumerating those sorted prefixes
+    therefore gives the global optimum, not just the any-overlap convention.
+    """
+    m = np.asarray(pixel_mask, bool)
+    if m.ndim != 2 or not m.size or block < 1 or any(d % block for d in m.shape):
+        raise ValueError('nonempty 2D mask dimensions must be divisible by block')
+    ny,nx = m.shape[0]//block,m.shape[1]//block
+    occupancy = m.reshape(ny,block,nx,block).sum(axis=(1,3)).ravel()
+    total = occupancy.sum()
+    if not total:
+        return 1.
+    tp = np.cumsum(np.sort(occupancy)[::-1])
+    k = np.arange(1,len(tp)+1)
+    return float(np.max(tp / (total + k*block*block - tp)))
+
+
 def disk_mask(radius: float, size: int = 512) -> np.ndarray:
-    """A binary disk of the given radius, at the WORST-CASE grid placement.
+    """A disk centred on a block boundary (one chosen grid placement).
 
-    The centre is `size / 2`, which for size = 512 and block = 8 lands exactly on
-    a block boundary (256 = 32 blocks). A disk straddling a boundary touches more
-    blocks than one centred inside a block, so this placement maximises the
-    block-approximation area and therefore MINIMISES the ceiling.
-
-    That matters: the claim is an upper bound ("no block-granular system can
-    exceed this"), and an upper bound has to be computed at the least favourable
-    placement. Centring at 255.5 instead -- the block centre -- gives 0.812 at
-    r = 8 rather than 0.513 and would quietly invert the argument.
+    This placement is not a proof of a universal architectural bound.
     """
     yy, xx = np.mgrid[0:size, 0:size]
     c = size / 2.0
@@ -256,12 +259,7 @@ def disk_mask(radius: float, size: int = 512) -> np.ndarray:
 
 
 def disk_ceiling(radius: float, size: int = 512, block: int = BLOCK) -> float:
-    """Best achievable pixel IoU for a circular region of this radius.
-
-    This is the number the report prints beside every block-granular IoU. It
-    depends only on the grid and the target size -- no model, no training, no
-    dataset -- which is why it cannot be argued with.
-    """
+    """Legacy any-overlap disk IoU at a chosen placement, not an upper bound."""
     return block_ceiling(disk_mask(radius, size), block=block)
 
 

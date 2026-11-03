@@ -20,15 +20,17 @@ def main():
     payload = base64.b64encode(archive.read_bytes()).decode()
     sha = hashlib.sha256(archive.read_bytes()).hexdigest()
     cells = [cell('markdown', '''# ISIC 2019: audited, staged watermarking study
-**Submission workflow, not a claim of published-paper parity.** Train and compare C8,
-C12 and classical controls on identical held-out images. Thresholds are selected on
-validation only. One model/seed per saved version keeps interrupted work bounded.
+**Submission workflow, not a claim of published-paper parity.** Train and compare main model,
+attention-enhanced model and classical controls on identical held-out images. Thresholds are selected on
+validation only. Reconstruction is pretrained on intact TRAIN examples only and
+frozen during localisation training. Abstention is fitted separately, not a learned
+third class. One model/seed per saved version keeps interrupted work bounded.
 
 **Before running:** attach ISIC 2019 training images and the eight-class ground-truth
 CSV with **Add Input / Add Data**, enable a GPU, and read `KAGGLE_SETUP.md` supplied
 with this notebook. No private GitHub login or API token is required.
 
-Start with `STAGE='check'`. Save it, then run C8 seed 0, C12 seed 0, remaining seeds,
+Start with `STAGE='check'`. Save it, then run main model seed 0, attention-enhanced model seed 0, remaining seeds,
 and the held-out-T5 study as separate saved versions. Restore the preceding saved
 output each time. Do not change training settings based on test results.
 The method is a research prototype, not a clinically validated medical system.
@@ -53,13 +55,13 @@ Leave paths as `None` for unambiguous auto-discovery. If more than one image roo
 or ground truth is attached, the notebook lists candidates and stops; enter the
 correct paths explicitly. Attaching only a CSV is not sufficient.
 
-`STAGE` chooses work, **not a different scientific protocol**. C8 and C12 use the
+`STAGE` chooses work, **not a different scientific protocol**. main model and attention-enhanced model use the
 same frozen model list/settings so they can be executed in separate sessions.
 Full-profile count checks are strict by default. A count/profile match is an audit,
 not cryptographic proof that a third-party mirror is authentic.
-'''), cell('code', '''STAGE = 'check'              # 'check', 'C8', 'C12', or 'heldout'
+'''), cell('code', '''STAGE = 'check'              # 'check', 'main-model', 'attention-enhanced', or 'heldout'
 SEED = 0                     # use 0, then 1, then 2; heldout uses seed 0
-STUDY_NAME = 'isic2019-v4'    # new name if changing source, data or training settings
+STUDY_NAME = 'isic2019-audited-v1'    # new name if changing source, data or training settings
 
 INPUT_ROOT = Path('/kaggle/input')
 DATA = None                  # e.g. Path('/kaggle/input/<your-input>/training-images')
@@ -74,7 +76,8 @@ RESTORE_FROM = None           # e.g. Path('/kaggle/input/<previous-output>/isic-
 
 # Freeze these BEFORE the first full run. Never extend epochs inside an existing run.
 TRAIN_N, VAL_N, TEST_N, EPOCHS, WIDTH = 2000, 150, 1000, 3, 16
-if STAGE not in ('check', 'C8', 'C12', 'heldout') or SEED not in (0, 1, 2):
+AUTHENTIC_EPOCHS = 2
+if STAGE not in ('check', 'main-model', 'attention-enhanced', 'heldout') or SEED not in (0, 1, 2):
     raise ValueError('invalid stage or seed')
 if STAGE == 'heldout' and SEED != 0:
     raise ValueError('the planned held-out run uses seed 0')
@@ -159,8 +162,8 @@ a fingerprint mismatch.
     if RUNS.exists():
         raise ValueError('Restore target already exists. Do not merge two experiments.')
     shutil.copytree(restore, RUNS)
-if STAGE == 'C12' and not (RUNS / f'seed-{SEED}' / 'C8.json').exists():
-    raise ValueError('C12 continuation requires the preceding C8 output for this seed. Attach it and set RESTORE_FROM.')
+if STAGE == 'attention-enhanced' and not (RUNS / f'seed-{SEED}' / 'C8.json').exists():
+    raise ValueError('attention-enhanced model continuation requires the preceding main model output for this seed. Attach it and set RESTORE_FROM.')
 RESUME = RUNS.exists()
 RUNS.mkdir(parents=True, exist_ok=True)
 shutil.copy2('/kaggle/working/dataset_audit.json', RUNS/'dataset_audit.json')
@@ -180,15 +183,16 @@ If you must interrupt, stop the training subprocess before archiving.
        '--data', str(DATA), '--metadata', str(CANONICAL_CSV), '--out', str(RUNS),
        '--cache', str(CACHE), '--device', 'cuda', '--seeds', str(SEED),
        '--configs', 'C8,C12', '--train-n', str(TRAIN_N), '--val-n', str(VAL_N),
-       '--test-n', str(TEST_N), '--epochs', str(EPOCHS), '--width', str(WIDTH)]
+       '--test-n', str(TEST_N), '--epochs', str(EPOCHS), '--ae-epochs', str(AUTHENTIC_EPOCHS), '--width', str(WIDTH)]
 if RESUME: cmd.append('--resume')
 if SANITY:
     cmd.append('--sanity')
 elif STAGE == 'heldout':
     cmd.extend(['--only-heldout', '--probes'])
 else:
-    cmd.extend(['--execute-configs', STAGE, '--probes'])
-print('Command:', subprocess.list2cmdline(cmd))
+    from src.names import STAGE_MODELS
+    cmd.extend(['--execute-configs', STAGE_MODELS[STAGE], '--probes'])
+print('Executing:', STAGE, 'seed', SEED, '| output:', RUNS)
 # Popen + finally prevents a failed child from skipping the export step.
 child = None
 failure = None
@@ -232,7 +236,7 @@ not be placed beside these numbers as if directly comparable. This assembled
 implementation is not an exact verified reproduction of PFF-WM.
 '''), cell('code', '''summary = json.loads((RUNS/'summary.json').read_text())
 for row in summary['runs']:
-    print(row['config'], 'seed', row['seed'], 'usable', row['usable'],
+    print(row['model'], 'seed', row['seed'], 'usable', row['usable'],
           'IoU(tampered)', round(row['iou_tampered'], 4),
           'balanced', round(row['balanced_accuracy'], 4),
           'FPR', round(row['fpr'], 4))

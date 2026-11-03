@@ -1,3 +1,5 @@
+> **Historical / pre-audit material.** This file is not evidence for the current audited recipe. See root `VERIFICATION.md` and use fresh measured receipts for submission. In particular, any-overlap block IoU is not a universal ceiling.
+
 # The architecture, and how it works
 
 **What this document is.** The definitive description of the final architecture:

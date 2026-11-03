@@ -73,11 +73,22 @@ def audit(data, labels, canonical_csv, allow_subset=False):
         raise ValueError(f'not the complete official class/count profile: {len(paths)} images, '
                          f'{len(rows)} labels, counts={dict(counts)}. '
                          'Attach complete ISIC 2019 training input/ground truth, or explicitly allow a labelled subset.')
+    # Do not strip grouping identifiers while canonicalising ground truth.
+    groups = {}
+    with labels.open(newline='', encoding='utf-8-sig') as f:
+        reader = csv.DictReader(f)
+        group_columns = [c for c in ('lesion_id','patient_id') if c in (reader.fieldnames or [])]
+        for row in reader:
+            ident = Path(row['image'].strip()).stem
+            value = tuple((row.get(c) or '').strip() for c in group_columns)
+            if ident in groups and groups[ident] != value:
+                raise ValueError(f'conflicting grouping identifiers for {ident}')
+            groups[ident] = value
     canonical_csv.parent.mkdir(parents=True, exist_ok=True)
     with canonical_csv.open('w', newline='') as f:
         writer = csv.writer(f)
-        writer.writerow(['image', *CLASSES])
-        writer.writerows([ident, *rows[ident]] for ident in sorted(rows))
+        writer.writerow(['image', *CLASSES, *group_columns])
+        writer.writerows([ident, *rows[ident], *groups[ident]] for ident in sorted(rows))
     # Decode all selected experiment images later; here inspect a small fixed sample.
     import cv2
     for p in paths[::max(1,len(paths)//16)]:
@@ -86,6 +97,6 @@ def audit(data, labels, canonical_csv, allow_subset=False):
     return {'image_root':str(data), 'ground_truth':str(labels), 'image_files':len(paths),
             'label_rows':total, 'unique_labels':len(rows), 'class_counts':dict(counts),
             'full_official_count_profile':full, 'allow_subset':allow_subset,
-            'canonical_csv':str(canonical_csv),
+            'canonical_csv':str(canonical_csv), 'group_columns_preserved': group_columns,
             'canonical_label_sha256':hashlib.sha256(canonical_csv.read_bytes()).hexdigest(),
             'identity_limitation':'Class counts/ids are audited; this does not prove mirror authenticity or absence of lesion leakage.'}

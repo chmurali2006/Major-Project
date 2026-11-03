@@ -1,5 +1,7 @@
 # Run locally or on Kaggle
 
+**This audited recipe requires a fresh study directory and current source.** Pre-audit weights/receipts are not results for this corrected training protocol. See `VERIFICATION.md` for findings and limits.
+
 ## Which should you choose?
 
 - **Local NVIDIA GPU available:** local is the best persistence/control option. Verify with `preflight.py --require-gpu`; GPU model, VRAM and drivers determine feasibility. This project has not been GPU-tested in Arena.
@@ -70,7 +72,7 @@ The tiny run tests both models and controls, not accuracy. Receipts are marked u
 python scripts/run_suite.py --data ../isic2019 --metadata ../isic2019/ISIC_2019_GroundTruth_deduplicated.csv --out ../experiments/isic-v3 --cache ../keyswm-cache --device cuda --seeds 0,1,2 --train-n 2000 --val-n 150 --test-n 1000 --epochs 3 --width 16 --probes --heldout-run
 ```
 
-Use `--device cpu` or `--device auto` if you intentionally accept CPU execution. `cuda` fails rather than silently falling back. Plan for roughly **15–20 GB free storage**, plus the environment/dataset; actual use depends on selected sizes and cached probes. Epoch progress, logs and checkpoints are retained. The suite runs sequentially: two controls, C8/C12 for each seed, key probes when requested, then C8 trained without T5. Seeds share fixed corpus partitions and attack realisations. Changing sizes changes which selected images are evaluated; never mix protocols or splits in one comparison.
+Use `--device cpu` or `--device auto` if you intentionally accept CPU execution. `cuda` fails rather than silently falling back. Plan for roughly **15–20 GB free storage**, plus the environment/dataset; actual use depends on selected sizes and cached probes. Epoch progress, logs and checkpoints are retained. Authentic reconstruction runs for 2 epochs on intact TRAIN cases and is frozen before localisation training. The suite runs sequentially: two controls, C8/C12 for each seed, key probes when requested, then C8 trained without T5. Seeds share fixed corpus partitions and attack realisations. Changing sizes changes which selected images are evaluated; never mix protocols or splits in one comparison.
 
 ## Interrupt and resume
 
@@ -109,8 +111,8 @@ Retain that ZIP and the matching `keyswm-project.zip` on a persistent local disk
 Use **[KAGGLE_SETUP.md](KAGGLE_SETUP.md)** for the current staged notebook workflow.
 The notebook audits actual attachments, requires the full ISIC 2019 count/class
 profile unless a subset is explicitly allowed, and runs one model/seed per saved
-version. `STAGE='check'` is the non-claimable wiring check. Full stages are `C8`,
-`C12` and `heldout`; the first two share a frozen `C8,C12` experiment and can run
+version. `STAGE='check'` is the non-claimable wiring check. Full stages are `main-model`,
+`attention-enhanced` and `heldout`; the first two share a frozen main/attention experiment and can run
 in separate sessions without retraining the completed model. Restore prior saved
 outputs to preserve all seeds. No dataset is attached to your Kaggle account by
 Arena; you must attach the images/CSV and previous outputs in Kaggle.

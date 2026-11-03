@@ -5,6 +5,11 @@ The embedded source is the canonical CLI implementation, not a second model.
 This is a runnable research study, **not a guarantee of paper parity or clinical validity**.
 Kaggle/CUDA execution must be verified on your account; development tests here use CPU.
 
+**Use this audited notebook for a new study.** It corrects training/metric issues found
+in the earlier recipe; do not restore pre-audit checkpoints into this version.
+The source fingerprint intentionally rejects incompatible restoration. Existing
+receipts remain historical, not silently corrected measurements.
+
 ## 1. Prepare inputs before enabling/using long GPU runs
 
 1. Create a Kaggle notebook and import/upload the supplied `.ipynb`.
@@ -69,26 +74,28 @@ After completion, open the saved version's **Output** files and verify that the 
 
 ## 4. Run one full model/seed per saved version
 
+The audited recipe first trains evidence reconstruction for **2 epochs on intact training examples only**, then freezes it while training localisation. The image classifier is a **binary auxiliary task**; the separately validation-fitted abstention rule supplies the third verdict.
+
 The defaults for full stages are **2000 train / 150 validation / 1000 test, 3 epochs, width 16**. Set them before the first full job and freeze them. The two model configurations and controls share the same selected images, attack schedule and splits. Runtime, dependency versions, input hashes and source fingerprint are saved. Evidence preparation uses CPU even in a GPU-enabled session, so it still consumes session time.
 
 | saved job | STAGE | SEED | restore input |
 |---|---|---:|---|
 | wiring check | `check` | 0 | none |
-| first measured model | `C8` | 0 | none—do not restore tiny wiring outputs into the full study |
-| paired attention ablation | `C12` | 0 | previous full-study output |
-| second training seed | `C8`, then `C12` in two jobs | 1 | preceding full-study output each time |
-| third training seed | `C8`, then `C12` in two jobs | 2 | preceding full-study output each time |
+| first measured model | `main-model` | 0 | none—do not restore tiny wiring outputs into the full study |
+| paired attention ablation | `attention-enhanced` | 0 | previous full-study output |
+| second training seed | `main-model`, then `attention-enhanced` in two jobs | 1 | preceding full-study output each time |
+| third training seed | `main-model`, then `attention-enhanced` in two jobs | 2 | preceding full-study output each time |
 | held-out-family test | `heldout` | 0 | preceding full-study output |
 
 For every subsequent job:
 
 1. Attach the preceding **saved notebook output** using the notebook/output input option in Kaggle. If that UI is unavailable, download the result ZIP, extract it locally, upload those output files as a **private Kaggle Dataset**, then attach it.
-2. Set `RESTORE_FROM` to its **whole study directory**, e.g. the actual input path ending in `isic-runs/isic2019-v4`. If you uploaded an extracted result ZIP as a dataset, the study files might instead be at the attachment root. It should contain `seed-0/`, logs, and the other completed seed folders—not just a `.pt` file.
+2. Set `RESTORE_FROM` to its **whole study directory**, e.g. the actual input path ending in `isic-runs/isic2019-audited-v1`. If you uploaded an extracted result ZIP as a dataset, the study files might instead be at the attachment root. It should contain `seed-0/`, logs, and the other completed seed folders—not just a `.pt` file.
 3. Keep `STUDY_NAME`, training settings, input bytes and source version unchanged. Change only `STAGE` and `SEED` as shown above.
-4. Save & Run All as a new version. The notebook copies prior read-only outputs into `/kaggle/working`, restores or skips completed work, and adds the requested job. It does **not** retrain C8 when continuing with C12.
-5. Verify and download the new outputs before proceeding. Preserve all seed folders in the chain.
+4. Save & Run All as a new version. The notebook copies prior read-only outputs into `/kaggle/working`, restores or skips completed work, and adds the requested job. It does **not** retrain main model when continuing with attention-enhanced model.
+5. Verify and download the new outputs before proceeding. Preserve all seed folders in the chain. Completed artifact checksums are checked before skipping a model; corrupted/incomplete evaluation files are regenerated from the saved training checkpoint.
 
-`C8` and `C12` are runtime selections from a frozen `C8,C12` experiment, not a mutation of the scientific configuration. `heldout` is a separate C8 experiment without T5 in training/validation; T5 remains in the test schedule. Key probes and calibration run with the measured stages.
+`main-model` and `attention-enhanced` are runtime selections from a frozen `main model,attention-enhanced model` experiment, not a mutation of the scientific configuration. `heldout` is a separate main model experiment without T5 in training/validation; T5 remains in the test schedule. Key probes and calibration run with the measured stages.
 
 ## 5. Quota and recovery rules
 
@@ -107,7 +114,7 @@ Each saved output includes numerical receipts, verdict arrays, split manifests, 
 
 Submission requirements:
 
-- Quote tampered-only localisation IoU, TPR, FPR, denominators, balanced verdict accuracy, and paired C8−C0/C12−C8 differences with bootstrap intervals.
+- Quote tampered-only localisation IoU, TPR, FPR, denominators, balanced verdict accuracy, and paired main-model minus classical-baseline and attention-enhanced minus main-model differences with bootstrap intervals.
 - Report all three training seeds and distinguish image-bootstrap uncertainty from seed variability.
 - Preserve Carrier-B regressions, false claims, infeasible empirical abstention constraints, and rekeying/held-out failures. A confidence margin is not a calibrated posterior or population-risk guarantee.
 - Disclose synthetic tamper generation, JPEG-as-tamper semantics, image-level grouping limitations and training subsampling.

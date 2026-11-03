@@ -13,6 +13,7 @@ import os
 os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":4096:8")
 import sys
 import time
+import zipfile
 import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -22,8 +23,10 @@ import run_matrix as R
 from src import evidence as E, protocol as P
 from src.classical import fit_count_rule
 from src.calibration import fit_selective_rule, risk_coverage
-from src.persistence import source_digest, atomic_write, atomic_json
+from src.persistence import source_digest, atomic_write, atomic_json, seal_artifacts, artifacts_valid
 from src.isic_meta import Metadata
+from src.names import model_name
+from src.authentic_training import pretrain_authentic
 META = Metadata(None)
 
 
@@ -40,7 +43,16 @@ class DiskSamples:
         for name in ('family', 'strata'):
             data[name] = str(data[name])
         data['cls'] = int(data['cls'])
-        return R.Sample(**data)
+        sample = R.Sample(**data)
+        if sample.ev.ndim != 3 or sample.ev.shape[0] != E.N_FULL or sample.degrade.shape != (4,):
+            raise ValueError('invalid cached evidence/degradation shapes')
+        if sample.image.shape != (3, *sample.gt_pixel.shape) or sample.gt_block.shape != sample.ev.shape[1:]:
+            raise ValueError('invalid cached image/mask shapes')
+        if not np.isfinite(sample.ev).all() or not np.isfinite(sample.degrade).all():
+            raise ValueError('nonfinite cached evidence')
+        if sample.cls not in (0,1) or bool(sample.cls) != bool(sample.gt_pixel.any()):
+            raise ValueError('cached class disagrees with measured mask')
+        return sample
 
 
 def item(path, ident, key):
@@ -62,7 +74,7 @@ def cache(paths, indices, out, families, seed, key=b'isic-study-key', wrong=Fals
                 DiskSamples([dst])[0]
                 result.append(dst)
                 continue
-            except (ValueError, OSError, KeyError, EOFError):
+            except (ValueError, OSError, KeyError, EOFError, zipfile.BadZipFile):
                 pass  # a corrupt cache entry is rebuilt, never trusted
         it = item(paths[idx], int(idx), key)
         fam = families[j % len(families)]
@@ -102,6 +114,25 @@ def learned_rule(samples, maps):
     return tau, k
 
 
+def build_paired_model(cid, width, seed):
+    """Identical initial weights for every shared tensor; attention alone is added."""
+    import torch
+    torch.manual_seed(seed)
+    base = R.build_model(next(c for c in P.MATRIX if c.cid=='C8'), E.N_FULL, width, binary_verdict_head=True)
+    if cid == 'C8':
+        return base
+    if cid != 'C12':
+        raise ValueError('unknown learned model')
+    torch.manual_seed(seed)
+    model = R.build_model(next(c for c in P.MATRIX if c.cid==cid), E.N_FULL, width, binary_verdict_head=True)
+    for module in ('refine','saliency','ae'):
+        shared = base[module].state_dict()
+        state = model[module].state_dict()
+        state.update({k:v for k,v in shared.items() if k in state and state[k].shape==v.shape})
+        model[module].load_state_dict(state)
+    return model
+
+
 def main():
     ap = argparse.ArgumentParser(__doc__)
     ap.add_argument('--data', type=Path, required=True)
@@ -112,6 +143,7 @@ def main():
     ap.add_argument('--val-n', type=int, default=150)
     ap.add_argument('--test-n', type=int, default=1000)
     ap.add_argument('--epochs', type=int, default=3)
+    ap.add_argument('--ae-epochs', type=int, default=2)
     ap.add_argument('--width', type=int, default=16)
     ap.add_argument('--seed', type=int, default=0)
     ap.add_argument('--configs', default='C8,C12')
@@ -151,6 +183,9 @@ def main():
     args.out.mkdir(parents=True, exist_ok=True)
     global META
     metadata = args.metadata or args.data / 'ISIC_2019_GroundTruth_deduplicated.csv'
+    if metadata.exists():
+        from src.dataset_audit import label_rows
+        label_rows(metadata)  # strict labels also apply to direct CLI, not just notebooks
     META = Metadata(metadata if metadata.exists() else None)
     if not META.has_diagnosis:
         raise ValueError('ISIC ground-truth CSV required; pass --metadata')
@@ -158,8 +193,10 @@ def main():
     if META.has_diagnosis:
         paths = [p for p in paths if p.stem in META.diagnosis]
     print(f'corpus: {len(paths)} images; {META.note}', flush=True)
-    if len({META.group_of(p.stem) for p in paths}) != len(paths):
-        raise ValueError('lesion grouping present: image-level runner refuses to leak groups')
+    lesion_groups = [META.lesion.get(p.stem,p.stem) for p in paths]
+    patient_groups = [META.patient.get(p.stem) for p in paths if META.patient.get(p.stem)]
+    if len(set(lesion_groups)) != len(lesion_groups) or len(set(patient_groups)) != len(patient_groups):
+        raise ValueError('shared lesion/patient identifiers present: image-level profile refuses to risk group leakage')
     if len({p.stem for p in paths}) != len(paths):
         raise ValueError('duplicate image identifiers')
     # Fixed 70/15/15 corpus partitions. Training seed never changes membership.
@@ -179,9 +216,14 @@ def main():
     source = source_digest(ROOT)
     # Bind selected image bytes, not host-specific absolute paths or mtimes.
     images_hash = hashlib.sha256()
+    seen_content = {}
     for idx in sorted(set(int(i) for ids in selected for i in ids)):
+        digest = hashlib.sha256(paths[idx].read_bytes()).digest()
+        if digest in seen_content:
+            raise ValueError(f'duplicate selected image bytes: {paths[idx].stem} and {seen_content[digest]}')
+        seen_content[digest] = paths[idx].stem
         images_hash.update(paths[idx].stem.encode())
-        images_hash.update(hashlib.sha256(paths[idx].read_bytes()).digest())
+        images_hash.update(digest)
     manifest['selected_images_sha256'] = images_hash.hexdigest()
     manifest['diagnoses_sha256'] = hashlib.sha256(json.dumps(
         {paths[i].stem: META.dx_of(paths[i].stem) for ids in selected for i in ids},
@@ -195,6 +237,13 @@ def main():
             raise ValueError('resume refused: source, data, split or settings changed; use a new output directory')
     elif args.resume and any(args.out.iterdir()):
         raise ValueError('legacy output has no resume contract; use a new output directory')
+    # All seeds in one study must use the same source and corpus/sample manifest.
+    for prior in args.out.parent.glob('seed-*/experiment.json'):
+        if prior == spec_path:
+            continue
+        previous = json.loads(prior.read_text())
+        if previous['source_sha256'] != source or previous['manifest'] != manifest:
+            raise ValueError('study mixes source versions or dataset/split manifests; use a new study directory')
     atomic_json(spec_path, spec)
     atomic_json(args.out / 'manifest.json', manifest)
     run_id = hashlib.sha256(json.dumps(spec, sort_keys=True).encode()).hexdigest()
@@ -220,6 +269,7 @@ def main():
         prov.update({'usable': True, 'code_dirty': None, 'versioning': 'source_sha256'})
     if args.sanity:
         prov['usable'] = False
+    prov['key_policy'] = 'public benchmark keys; not production secrets or adversarial-security proof'
     prov.update({'sanity': args.sanity, 'source_sha256': source, 'seed': args.seed, 'torch': torch.__version__,
                  'split_seed': 20261103,
                  'manifest_sha256': hashlib.sha256(json.dumps(manifest, sort_keys=True).encode()).hexdigest()})
@@ -229,24 +279,28 @@ def main():
                       observed if name in ('train','val') else families, 10000)
                 for name, ids in zip(('train','val','test'), selected)]
     train, val, test = datasets
+    pairing = {'family': np.array([s.family for s in test]),
+               'gt_sha256': np.array([hashlib.sha256(s.gt_pixel.tobytes()).hexdigest() for s in test])}
     def save(name, receipt):
-        receipt.update({'provenance': prov, 'usable': prov['usable'], 'protocol': 'isic-study-v3-portable',
+        receipt.update({'provenance': prov, 'usable': prov['usable'], 'protocol': 'isic-audited-v1', 'model': model_name(name),
                         'parameters': {k: str(v) if isinstance(v, Path) else v for k,v in vars(args).items()}})
         atomic_json(args.out / f'{name}.json', receipt)
-        print(name, receipt.get('iou_tampered_mean'), receipt.get('balanced_accuracy'), flush=True)
+        suffixes = ['.json', '_verdicts.npz'] if name.startswith('C0') else ['.json','_verdicts.npz','_state.pt','_validation.npz']
+        seal_artifacts(args.out, name, suffixes)
+        print(model_name(name), receipt.get('iou_tampered_mean'), receipt.get('balanced_accuracy'), flush=True)
     for carrier_b in (False, True):
         name = 'C0_B' if carrier_b else 'C0_count'
-        if args.resume and (args.out / f'{name}.json').exists() and (args.out / f'{name}_verdicts.npz').exists():
-            print(f'Skipping completed {name}', flush=True)
+        if args.resume and artifacts_valid(args.out, name, ['.json','_verdicts.npz']):
+            print(f'Skipping completed {model_name(name)}', flush=True)
             continue
         rule = fit_count_rule(val, carrier_b)
         outputs = [rule.predict(s.ev) for s in test]
         r = R.score(test, [m for m,c in outputs], [R.upsample(m) for m,c in outputs], [c for m,c in outputs])
         r['rule'] = rule.to_dict()
         name = 'C0_B' if carrier_b else 'C0_count'
-        np.savez(args.out / f'{name}_verdicts.npz', image_id=manifest['test'],
+        atomic_write(args.out / f'{name}_verdicts.npz', lambda f: np.savez(f, image_id=manifest['test'], **pairing,
                  prediction=[c for m,c in outputs], tampered=[s.cls for s in test],
-                 iou=[R.M.iou(R.upsample(m),s.gt_pixel) for (m,c),s in zip(outputs,test)])
+                 iou=[R.M.iou(R.upsample(m),s.gt_pixel) for (m,c),s in zip(outputs,test)]))
         save(name, r)
     requested = args.execute_configs.split(',') if args.execute_configs else args.configs.split(',')
     if not set(requested) <= set(args.configs.split(',')):
@@ -254,14 +308,16 @@ def main():
     for cid in requested:
         if cid not in ('C8', 'C12'):
             raise ValueError('this paired runner supports C8,C12 only; use --heldout/--probes for probes')
-        if args.resume and (args.out / f'{cid}.json').exists() and all(
-            (args.out / f'{cid}_{suffix}').exists() for suffix in ('state.pt','validation.npz','verdicts.npz')):
-            print(f'Skipping completed {cid}', flush=True)
+        if args.resume and artifacts_valid(args.out, cid, ['.json','_verdicts.npz','_state.pt','_validation.npz']):
+            print(f'Skipping completed {model_name(cid)}', flush=True)
             continue
         cfg = next(c for c in P.MATRIX if c.cid == cid)
         torch.manual_seed(args.seed)  # paired initialisation discipline
-        model = R.build_model(cfg, E.N_FULL, args.width)
+        model = build_paired_model(cid, args.width, args.seed)
         t0 = time.time()
+        ae_info = pretrain_authentic(model, train, args.ae_epochs,
+                        args.out / f'{cid}_authentic_checkpoint.pt', args.resume,
+                        f'{run_id}:{cid}:authentic', device=args.device)
         model = R.train(model, train, val, epochs=args.epochs, batch=1, lr=3e-4,
                         smoke=False, pos_weight=12., pos_weight_pixel=4.,
                         checkpoint_path=args.out / f'{cid}_checkpoint.pt',
@@ -280,23 +336,31 @@ def main():
         ty = np.array([pc == s.cls for pc,s in zip(tpc,test)])
         rule = fit_selective_rule(vc, vy)
         accept = rule.accept(tc)
-        np.savez(args.out / f'{cid}_validation.npz', image_id=manifest['val'],
-                 confidence=vc, correct=vy)
+        atomic_write(args.out / f'{cid}_validation.npz', lambda f: np.savez(f, image_id=manifest['val'],
+                 confidence=vc, correct=vy))
         if args.heldout:
             idx = [i for i,s in enumerate(test) if s.family == args.heldout]
             r['heldout'] = {'family': args.heldout, 'n': len(idx),
                 'iou_tampered_mean': float(np.mean([R.M.iou(tp[i]>tau,test[i].gt_pixel) for i in idx])) if idx else None,
                 'training_families': observed}
-        r.update({'tau': tau, 'k': k, 'seconds': time.time()-t0,
+        r.update({'authentic_reconstruction': ae_info,
+                  'image_classifier': 'binary auxiliary head; verdict uses validation-fitted block count',
+                  'total_parameters': sum(p.numel() for module in ('refine','saliency','ae') for p in model[module].parameters()),
+                  'tau': tau, 'k': k, 'seconds': time.time()-t0,
                   'aurc': risk_coverage(tc,ty)['aurc'],
                   'selective': {'feasible_on_validation': rule.feasible,
                       'threshold': rule.threshold if rule.feasible else None,
+                      'validation_coverage': rule.validation_coverage,
+                      'validation_risk': rule.validation_risk if rule.feasible else None,
+                      'coverage_floor': rule.coverage_floor, 'max_risk': rule.max_risk,
+                      'reason': 'validation_constraints_met' if rule.feasible else 'validation_constraints_infeasible',
                       'test_coverage': float(accept.mean()),
                       'test_risk': float((~ty[accept]).mean()) if accept.any() else None}})
-        np.savez(args.out / f'{cid}_verdicts.npz', image_id=manifest['test'],
-                 confidence=tc, correct=ty, prediction=tpc,
+        atomic_write(args.out / f'{cid}_verdicts.npz', lambda f: np.savez(f, image_id=manifest['test'], **pairing,
+                 confidence=tc, correct=ty, prediction=tpc, selective_accept=accept,
+                 selective_verdict=np.where(accept, np.where(np.array(tpc)==1,'TAMPERED','INTACT'),'CANNOT_SAY'),
                  iou=[R.M.iou(p>tau,s.gt_pixel) for p,s in zip(tp,test)],
-                 tampered=[s.cls for s in test])
+                 tampered=[s.cls for s in test]))
         if args.probes:
             for name,key,wrong in [('rekey',b'isic-study-key-2',False), ('wrong_key',b'isic-study-key',True)]:
                 probe = cache(paths, selected[2], args.cache/name, families,10000,key,wrong)

@@ -21,13 +21,18 @@ def test_atomic_failure_keeps_previous_file(tmp_path):
     assert not list(tmp_path.glob('*.tmp'))
 
 
-def test_epoch_resume_matches_uninterrupted_training(tmp_path,monkeypatch):
+@pytest.mark.parametrize('freeze_ae',[False,True])
+def test_epoch_resume_matches_uninterrupted_training(tmp_path,monkeypatch,freeze_ae):
     torch.set_num_threads(2)
     monkeypatch.setattr(R,'tune_learned_tau',lambda m,v:(.5,{'iou_tampered_mean':.1,'iou_mean':.1,'block_acc':.5}))
     cfg=next(c for c in MATRIX if c.cid=='C8')
     def build():
         torch.manual_seed(12)
-        return R.build_model(cfg,13,4)
+        model = R.build_model(cfg,13,4)
+        if freeze_ae:
+            for p in model['ae'].parameters(): p.requires_grad_(False)
+            model['ae'].eval()
+        return model
     s=R.Sample(np.ones((13,8,8),np.float16),np.zeros(4,np.float32),
                np.ones((3,64,64),np.uint8),np.zeros((8,8),bool),
                np.zeros((64,64),bool),0,'none','NV')

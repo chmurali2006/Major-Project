@@ -10,7 +10,7 @@ ROOT=Path(__file__).resolve().parents[1]
 
 def build(destination):
     files=[]
-    for pattern in ('src/*.py','scripts/*.py','tests/*.py','requirements*.txt','RUNNING.md','KAGGLE_SETUP.md','README.md'):
+    for pattern in ('src/*.py','scripts/*.py','tests/*.py','requirements*.txt','RUNNING.md','KAGGLE_SETUP.md','VERIFICATION.md','README.md'):
         files.extend(ROOT.glob(pattern))
     files=sorted(set(files))
     manifest={p.relative_to(ROOT).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in files}
