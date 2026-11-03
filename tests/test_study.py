@@ -30,3 +30,11 @@ def test_bootstrap_pairs_by_id(tmp_path):
     np.savez(b,image_id=['c','a'],tampered=[0,1],prediction=[0,1],iou=[1.,1.])
     with pytest.raises(ValueError):
         compare(a,b,draws=10)
+
+
+def test_summary_does_not_claim_completion_for_missing_runs(tmp_path):
+    from summarize_isic_study import summarize
+    result=summarize(tmp_path)
+    assert not result['complete']
+    assert len(result['missing']) == 13
+    assert not result['three_seed_aggregates']
