@@ -99,3 +99,20 @@ python scripts/review_from_source.py --exercise-crash --out /tmp/review.json
 Use another temporary path on Windows. On high-core CPU hosts, limiting
 `OMP_NUM_THREADS` and `MKL_NUM_THREADS` to 2 can reduce diagnostic overhead.
 These commands use synthetic CPU checks, not a completed ISIC/GPU study.
+
+### Inspecting the learning failure
+
+The TRAIN-only diagnostic now records per-epoch component losses, pixel-selection
+threshold/IoU, the selected epoch, the last completed epoch, and a contrast with
+the shared image/count rule. It writes the same `diagnostic.json` atomically after
+each completed observation; partial traces remain visible if later training fails.
+This adds inference on the same TRAIN examples, not validation/test access. The
+pixel-only contrast is not a replacement result or an amended study criterion.
+
+For a bounded CPU investigation of just the main model:
+```sh
+python scripts/diagnose_learning.py --synthetic --model main --epochs 8 --device cpu --out /tmp/keyswm-main-trace
+```
+Synthetic memorisation is not evidence of ISIC performance. Selection can restore
+an earlier epoch, so a final loss decrease does not imply better returned masks.
+Normal study training retains its existing objective and has no epoch observer.

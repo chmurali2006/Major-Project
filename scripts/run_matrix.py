@@ -486,7 +486,7 @@ def load_state(model, st):
 def train(model, train_s: list[Sample], val_s: list[Sample], *,
           epochs: int, batch: int, lr: float, smoke: bool,
           pos_weight: float = 1.0, pos_weight_pixel: float = 1.0, log=print,
-          checkpoint_path=None, resume=False, run_id=None, device="auto"):
+          checkpoint_path=None, resume=False, run_id=None, device="auto", epoch_observer=None):
     """Train with the single objective from `models.total_loss`.
 
     Only the heads named by `total_loss` receive gradient, and the tests assert
@@ -516,6 +516,7 @@ def train(model, train_s: list[Sample], val_s: list[Sample], *,
     opt = torch.optim.AdamW(params_of(model), lr=lr)
     n_cls = model["refine"].cls_head[-1].out_features
     best, best_state = -1.0, None
+    best_epoch, history = None, []
 
     start_epoch = 0
     if checkpoint_path is not None and resume and Path(checkpoint_path).exists():
@@ -526,6 +527,8 @@ def train(model, train_s: list[Sample], val_s: list[Sample], *,
         load_state(model, ck['model'])
         opt.load_state_dict(ck['optimizer'])
         best, best_state, start_epoch = ck['best'], ck['best_state'], ck['epoch']
+        best_epoch = ck.get('training_audit', {}).get('selected_epoch')
+        history = ck.get('training_audit', {}).get('history', [])
         torch.set_rng_state(ck['rng'].cpu())
         if dev.startswith('cuda') and ck.get('cuda_rng') is not None:
             torch.cuda.set_rng_state_all([t.cpu() for t in ck['cuda_rng']])
@@ -560,25 +563,42 @@ def train(model, train_s: list[Sample], val_s: list[Sample], *,
             run += float(total.detach()) / len(chunk)
         # select on validation, never on test
         tau_v, v = tune_learned_tau(model, val_s)
-        log(f"    epoch {ep + 1:3d}  loss {run / max(1, len(order) // batch):.4f}"
+        mean_update_loss = run / max(1, (len(order) + batch - 1) // batch)
+        log(f"    epoch {ep + 1:3d}  loss {mean_update_loss:.4f}"
             f"  val IoU {v['iou_mean']:.4f}  val blk-acc {v['block_acc']:.4f}"
             f"  @tau {tau_v:.2f}  elapsed {(time.monotonic()-epoch_started)/60:.2f} min"
             + '  losses ' + ' '.join(f'{name}={value/len(order):.4f}' for name,value in loss_parts.items()))
-        if v["iou_tampered_mean"] > best:
+        improved = v["iou_tampered_mean"] > best
+        if improved:
+            best_epoch = ep + 1
             best, best_state = v["iou_tampered_mean"], {
                 k: {n: x.detach().clone() for n, x in sd.items()}
                 for k, sd in state_of(model).items()}
+        record = {'epoch': ep + 1, 'mean_update_loss': mean_update_loss,
+                  'mean_sample_component_losses': {name: value/len(order) for name,value in loss_parts.items()},
+                  'selection_tau': float(tau_v), 'selection_tampered_pixel_iou': float(v['iou_tampered_mean']),
+                  'selected_this_epoch': bool(improved), 'selected_epoch_so_far': best_epoch}
+        # Observers are diagnostic-only. The normal study uses none; its objective
+        # and optimiser are unchanged. Diagnostic observers must not mutate weights.
+        if epoch_observer is not None:
+            epoch_observer(model, dict(record))
+        history.append(record)
+        audit = {'selection_objective': 'localisation-only validation tampered pixel IoU',
+                 'selected_epoch': best_epoch, 'last_completed_epoch': ep+1, 'history': history}
         if checkpoint_path is not None:
             from src.persistence import atomic_write
             checkpoint = {'run_id': run_id, 'epoch': ep + 1,
                           'model': state_of(model), 'optimizer': opt.state_dict(),
-                          'best': best, 'best_state': best_state,
+                          'best': best, 'best_state': best_state, 'training_audit': audit,
                           'rng': torch.get_rng_state(),
                           'cuda_rng': torch.cuda.get_rng_state_all() if dev.startswith('cuda') else None}
             atomic_write(checkpoint_path, lambda f: torch.save(checkpoint, f))
             log(f'Checkpoint saved after epoch {ep + 1}')
     if best_state is not None:
         load_state(model, best_state)
+    model['training_audit'] = {'selection_objective': 'localisation-only validation tampered pixel IoU',
+                               'selected_epoch': best_epoch, 'last_completed_epoch': max(start_epoch, epochs),
+                               'history': history}
     return model
 
 

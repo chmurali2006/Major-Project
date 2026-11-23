@@ -49,26 +49,29 @@ def overlay(rgb, mask):
     return out
 
 
-def scenarios(protected):
+def scenarios(protected, image_id=IMAGE_ID):
     h, w = protected.shape[:2]
     y, x = (h//16)*8, (w//16)*8
-    yield 'intact', 'Untouched protected image', protected.copy(), DEMO_KEY, IMAGE_ID, 'content'
+    yield 'intact', 'Untouched protected image', protected.copy(), DEMO_KEY, image_id, 'content'
     one = protected.copy()
     one[y, x, 0] ^= np.uint8(1)
-    yield 'one-pixel', 'One pixel: one embedded bit changed', one, DEMO_KEY, IMAGE_ID, 'content'
+    yield 'one-pixel', 'One pixel: one embedded bit changed', one, DEMO_KEY, image_id, 'content'
     bright = protected.copy()
     bright[y:y+8, x:x+8] = np.clip(bright[y:y+8, x:x+8].astype(np.int16)+12, 0, 255).astype(np.uint8)
-    yield 'brightness', 'Local brightness change (+12, clipped)', bright, DEMO_KEY, IMAGE_ID, 'content'
+    yield 'brightness', 'Local brightness change (+12, clipped)', bright, DEMO_KEY, image_id, 'content'
+    boundary = protected.copy()
+    boundary[y-1:y+2, x-2:x+3, 0] ^= np.uint8(1)
+    yield 'boundary-patch', '15-pixel edit crossing block boundaries', boundary, DEMO_KEY, image_id, 'content'
     copied = protected.copy()
     copied[y:y+8, x:x+8] = protected[:8, :8]
-    yield 'copy-move', 'Protected block copied to a different address', copied, DEMO_KEY, IMAGE_ID, 'content'
+    yield 'copy-move', 'Protected block copied to a different address', copied, DEMO_KEY, image_id, 'content'
     encoded = io.BytesIO()
     Image.fromarray(protected).save(encoded, format='JPEG', quality=75, subsampling=0)
     with Image.open(io.BytesIO(encoded.getvalue())) as decoded:
         jpeg = np.array(decoded.convert('RGB'))
-    yield 'jpeg75', 'JPEG quality 75: lossless contract violated', jpeg, DEMO_KEY, IMAGE_ID, 'content'
-    yield 'wrong-key', 'Unchanged pixels, wrong verification key', protected.copy(), b'wrong-public-key', IMAGE_ID, 'context'
-    yield 'wrong-id', 'Unchanged pixels, wrong trusted version identifier', protected.copy(), DEMO_KEY, IMAGE_ID+1, 'context'
+    yield 'jpeg75', 'JPEG quality 75: lossless contract violated', jpeg, DEMO_KEY, image_id, 'content'
+    yield 'wrong-key', 'Unchanged pixels, wrong verification key', protected.copy(), b'wrong-public-key', image_id, 'context'
+    yield 'wrong-id', 'Unchanged pixels, wrong trusted version identifier', protected.copy(), DEMO_KEY, image_id+1, 'context'
 
 
 def build_report(rgb, source_label, synthetic=False):

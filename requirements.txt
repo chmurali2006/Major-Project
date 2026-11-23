@@ -8,3 +8,6 @@ Pillow>=11
 
 # Retained historical transform tests / classical tooling
 PyWavelets>=1.5
+
+# Non-embedding public-key integrity baselines
+cryptography>=43
