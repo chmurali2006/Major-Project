@@ -66,12 +66,17 @@ Leave paths as `None` for unambiguous auto-discovery. If more than one image roo
 or ground truth is attached, the notebook lists candidates and stops; enter the
 correct paths explicitly. Attaching only a CSV is not sufficient.
 
+`diagnostic` is the default next step: seven TRAIN images, two authentic epochs and
+20 localisation epochs per model, with no validation/test evaluation. It is an
+in-sample learning diagnostic, never a study receipt. It reports the shared-rule
+result alongside a clearly separate pixel-only TRAIN operating point.
+
 `STAGE` chooses work, **not a different scientific protocol**. main model and attention-enhanced model use the
 same frozen model list/settings so they can be executed in separate sessions.
 Full-profile count checks are strict by default. A count/profile match is an audit,
 not cryptographic proof that a third-party mirror is authentic.
 '''), cell('code', '''ACKNOWLEDGE_EXPERIMENTAL_PROTOCOL_V2 = False  # See PROTOCOL_V2.md; engineering fixes are not measured submission results.
-STAGE = 'check'              # 'check', 'main-model', 'attention-enhanced', 'ablation', 'heldout'
+STAGE = 'diagnostic'         # 'diagnostic', 'check', 'main-model', 'attention-enhanced', 'ablation', 'heldout'
 ABLATION = 'without-ae'       # one registered removal per saved job; see PROTOCOL_V2.md
 SEED = 0                     # use 0, then 1, then 2; heldout uses seed 0
 STUDY_NAME = 'isic2019-rgb-auth-v2'    # new name if changing source, data or training settings
@@ -90,16 +95,18 @@ RESTORE_FROM = None           # e.g. Path('/kaggle/input/<previous-output>/isic-
 # Freeze these BEFORE the first full run. Never extend epochs inside an existing run.
 TRAIN_N, VAL_N, TEST_N, EPOCHS, WIDTH = 2000, 150, 1000, 3, 16
 AUTHENTIC_EPOCHS = 2
-if STAGE not in ('check', 'main-model', 'attention-enhanced', 'ablation', 'heldout') or SEED not in (0, 1, 2):
+DIAGNOSTIC_EPOCHS = 20  # TRAIN-only memorisation, not part of the full-study protocol
+DIAGNOSTIC = STAGE == 'diagnostic'
+if STAGE not in ('diagnostic', 'check', 'main-model', 'attention-enhanced', 'ablation', 'heldout') or SEED not in (0, 1, 2):
     raise ValueError('invalid stage or seed')
-if STAGE != 'check' and not ACKNOWLEDGE_EXPERIMENTAL_PROTOCOL_V2:
+if STAGE not in ('check', 'diagnostic') and not ACKNOWLEDGE_EXPERIMENTAL_PROTOCOL_V2:
     raise RuntimeError('Full run blocked: acknowledge the new experimental RGB-authentication protocol after checking PROTOCOL_V2.md and the GPU wiring check. This does not certify accuracy or clinical/security validity.')
 if STAGE == 'heldout' and SEED != 0:
     raise ValueError('the planned held-out run uses seed 0')
-SANITY = STAGE == 'check'
+SANITY = STAGE in ('check', 'diagnostic')
 if SANITY:
     TRAIN_N, VAL_N, TEST_N, EPOCHS, WIDTH = 7, 7, 7, 1, 4
-RUN_NAME = 'wiring-check-v2' if SANITY else STUDY_NAME
+RUN_NAME = 'learning-diagnostic-v2' if DIAGNOSTIC else ('wiring-check-v2' if SANITY else STUDY_NAME)
 RUNS = Path('/kaggle/working/isic-runs') / RUN_NAME
 CACHE = Path('/kaggle/temp/keyswm-cache')  # disposable, not copied into saved results
 print(dict(stage=STAGE, seed=SEED, output=str(RUNS), sanity=SANITY))
@@ -210,12 +217,24 @@ else:
     if STAGE == 'ablation' and ABLATION not in ABLATIONS:
         raise ValueError('unknown constituent ablation')
     cmd.extend(['--execute-configs', ABLATION if STAGE == 'ablation' else STAGE_MODELS[STAGE], '--probes'])
+if DIAGNOSTIC:
+    cmd = [sys.executable, '-u', str(PROJECT/'scripts/diagnose_learning.py'),
+           '--data', str(DATA), '--metadata', str(CANONICAL_CSV),
+           '--out', str(RUNS/'training-only'), '--epochs', str(DIAGNOSTIC_EPOCHS),
+           '--n', '7', '--width', '4', '--seed', str(SEED), '--device', 'cuda']
 print('Executing:', STAGE, 'seed', SEED, '| output:', RUNS)
 # Popen + finally prevents a failed child from skipping the export step.
 child = None
 failure = None
 try:
-    child = subprocess.Popen(cmd, start_new_session=True)
+    child = subprocess.Popen(cmd, start_new_session=True, stdout=subprocess.PIPE,
+                             stderr=subprocess.STDOUT, text=True)
+    with (RUNS/'execution.log').open('a') as execution_log:
+        execution_log.write('COMMAND ' + json.dumps(cmd) + '\\n')
+        for line in child.stdout:
+            print(line, end='', flush=True)
+            execution_log.write(line)
+            execution_log.flush()
     if child.wait() != 0:
         raise RuntimeError('Study failed: inspect logs; outputs will still be exported.')
 except BaseException as exc:
@@ -245,8 +264,9 @@ finally:
     # prevent exporting raw checkpoints. Do not mask the original study error.
     finalization_errors = []
     try:
-        subprocess.run([sys.executable, str(PROJECT/'scripts/summarize_isic_study.py'),
-                        '--root', str(RUNS), '--out', str(RUNS/'summary.json')], check=True)
+        if not DIAGNOSTIC:
+            subprocess.run([sys.executable, str(PROJECT/'scripts/summarize_isic_study.py'),
+                            '--root', str(RUNS), '--out', str(RUNS/'summary.json')], check=True)
     except BaseException as exc:
         finalization_errors.append(('summary', exc))
         print('SUMMARY FAILED:', repr(exc))
@@ -274,16 +294,25 @@ For submission, finish all seeds and the held-out run, keep the manifests, runti
 versions and checksummed artifacts. PFF-WM results on other datasets/protocols must
 not be placed beside these numbers as if directly comparable. This assembled
 implementation is not an exact verified reproduction of PFF-WM.
-'''), cell('code', '''summary = json.loads((RUNS/'summary.json').read_text())
-for row in summary['runs']:
-    print(row['model'], 'seed', row['seed'], 'usable', row['usable'],
-          'IoU(tampered)', round(row['iou_tampered'], 4),
-          'balanced', round(row['balanced_accuracy'], 4),
-          'FPR', round(row['fpr'], 4))
-print('Artifact suite complete (NOT security approval):', summary['complete'])
-print('Malformed receipts:', summary['invalid_receipts'])
-print('Comparison failures:', summary['comparison_failures'])
-print('Missing full-suite receipts:', len(summary['missing']))
+'''), cell('code', '''if DIAGNOSTIC:
+    diagnostic = json.loads((RUNS/'training-only'/'diagnostic.json').read_text())
+    print('TRAIN-only diagnostic. Not a benchmark result; usable:', diagnostic['usable'])
+    for name, result in diagnostic['models'].items():
+        for phase in ('before', 'after'):
+            row = result[phase]
+            print(name, phase, 'joint-rule TRAIN IoU', row['metrics']['iou_tampered_mean'],
+                  'pixel-only TRAIN IoU', row['pixel_only_training_iou'], 'collapse', row['collapse'])
+else:
+    summary = json.loads((RUNS/'summary.json').read_text())
+    for row in summary['runs']:
+        print(row['model'], 'seed', row['seed'], 'usable', row['usable'],
+              'IoU(tampered)', round(row['iou_tampered'], 4),
+              'balanced', round(row['balanced_accuracy'], 4),
+              'FPR', round(row['fpr'], 4))
+    print('Artifact suite complete (NOT security approval):', summary['complete'])
+    print('Malformed receipts:', summary['invalid_receipts'])
+    print('Comparison failures:', summary['comparison_failures'])
+    print('Missing full-suite receipts:', len(summary['missing']))
 from IPython.display import FileLink, display
 display(FileLink(str(archive)))
 print('For the next job: configure its stage/seed, attach this saved output, then Save Version -> Save & Run All.')

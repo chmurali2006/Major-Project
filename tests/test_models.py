@@ -89,3 +89,41 @@ def test_stage_attention_shapes_gradients_and_legacy_checkpoint():
     sum(v.square().mean() for v in result.values()).backward()
     assert result['pixel_logits'].shape == (2, 1, 64, 64)
     assert all(p.grad is not None for p in net.parameters())
+
+
+@pytest.mark.parametrize('ties', [False, True])
+def test_stage_attention_indexed_max_matches_pool_forward_and_gradient(ties):
+    import copy
+    from src.models import StageAttention
+    torch.manual_seed(123)
+    module = StageAttention(8).double()
+    reference = copy.deepcopy(module)
+    a = (torch.ones(2, 8, 4, 5) if ties else torch.randn(2, 8, 4, 5)).double().requires_grad_()
+    b = a.detach().clone().requires_grad_()
+    actual = module(a)
+    gate = torch.sigmoid(reference.channel(torch.nn.functional.adaptive_avg_pool2d(b, 1)) +
+                         reference.channel(torch.nn.functional.adaptive_max_pool2d(b, 1)))
+    x = b * gate
+    summary = torch.cat([x.mean(1, keepdim=True), x.amax(1, keepdim=True)], 1)
+    expected = x * torch.sigmoid(reference.spatial(summary))
+    torch.testing.assert_close(actual, expected, rtol=0, atol=0)
+    actual.square().sum().backward()
+    expected.square().sum().backward()
+    torch.testing.assert_close(a.grad, b.grad, rtol=0, atol=0)
+    for p, q in zip(module.parameters(), reference.parameters()):
+        torch.testing.assert_close(p.grad, q.grad, rtol=0, atol=0)
+
+
+@pytest.mark.skipif(not torch.cuda.is_available(), reason='CUDA required for strict backward check')
+def test_stage_attention_cuda_strict_backward():
+    from src.models import StageAttention
+    enabled = torch.are_deterministic_algorithms_enabled()
+    warn = torch.is_deterministic_algorithms_warn_only_enabled()
+    try:
+        torch.use_deterministic_algorithms(True)
+        module = StageAttention(8).cuda()
+        x = torch.randn(2, 8, 16, 16, device='cuda', requires_grad=True)
+        module(x).square().mean().backward()
+        assert torch.isfinite(x.grad).all()
+    finally:
+        torch.use_deterministic_algorithms(enabled, warn_only=warn)

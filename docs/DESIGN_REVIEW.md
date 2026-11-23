@@ -34,6 +34,11 @@ paper comparison, adaptive-attack resistance or clinical approval is established
   effects, key-change behaviour and empirical selective-risk gates.
 - Whether physical carrier-removal experiments are required beyond feature
   removals; changed protected pixels need a separately declared evaluation.
-- Actual Kaggle/CUDA operation, recovery, runtime and VRAM.
+- T4 sanity execution is now observed. Strict CUDA attention backward, GPU
+  recovery, full-profile runtime and VRAM remain unverified.
+- Why localisation and block-count operating points diverge: the 20-epoch
+  synthetic TRAIN-only diagnostic still has zero pixel IoU at the shared fitted
+  boundary. Whether the models can memorise actual ISIC training images is open;
+  do not change the frozen decision rule or tune on the seven test images.
 - Authorised complete inputs, patient/lesion identifiers and group independence.
 - Clinical preservation, novelty and literature parity; fidelity alone proves none.
