@@ -35,9 +35,10 @@ a clinical guarantee. Corrected code is not yet a full measured ISIC study.
 CSV with **Add Input / Add Data**, enable a GPU, and read `RUNNING.md` supplied
 with this notebook. No private GitHub login or API token is required.
 
-For engineering checks only, start with `STAGE='check'`. Do not advance to the full study
-until the new GPU wiring check passes and the amended protocol has been reviewed. Restore the preceding saved
-output each time. Do not change training settings based on test results.
+For the next learning investigation, keep the default `STAGE='diagnostic'`: TRAIN
+images only, not a measured study. `check` is a separate short wiring check. Do not
+advance to the full study until learning and the evaluation protocol are reviewed.
+Restore outputs only when continuing the exact same compatible experiment. Do not change training settings based on test results.
 The method is a research prototype, not a clinically validated medical system.
 '''), cell('code', f'''# 1. Verify/extract the exact project source. No separate notebook model implementation.
 import base64, hashlib, io, json, zipfile, sys, subprocess, os, shutil

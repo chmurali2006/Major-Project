@@ -2,7 +2,7 @@
   "date": "2026-11-03",
   "protocol": "isic-rgb-auth-v2",
   "authentication_scheme": "rgb-lsb-hmac-sha256-192-v1",
-  "readiness": "TRAIN-only Kaggle learning diagnostic next; full-study accuracy not established.",
+  "readiness": "Engineering integrity comparison implemented. Learned localisation benefit, novelty, full ISIC results and clinical suitability remain unestablished.",
   "fresh_regression_tests_passed": 169,
   "legacy_v1_failures_preserved": true,
   "v2_brightness_challenge_closed": true,
@@ -70,5 +70,31 @@
     "gpu_strict_backward_verified": false,
     "historical_measurements_above_relabelled": false,
     "training_only_portable_notebook_launch_export_test": "passed; unselected/validation/test fixture JPEGs intentionally undecodable"
+  },
+  "showcase_revision": {
+    "source_sha256": "bcf7f1a57c1e435cd4c524196390ec82293a31a6f41ab44f8b3bb575457cc822",
+    "scope": "CPU-only classical RGB verification showcase; synthetic input, not ISIC benchmark results",
+    "tests_passed": 234,
+    "cuda_only_tests_skipped": 1,
+    "notebook_cells_compile": 7,
+    "receipt": "verification-evidence/showcase-cpu.json",
+    "learned_localisation_improvement_claimed": false,
+    "dataset_pixels_added_to_repo": false
+  },
+  "integrity_reshape_revision": {
+    "source_sha256": "0f70538dcc0a6f5d50c81702d8bc86bbb84f13d41fc2917d4ee86df9f996268f",
+    "tests_passed": 282,
+    "cuda_only_tests_skipped": 1,
+    "notebook_cells_compile": 7,
+    "portable_synthetic_wiring_recovery_and_export": "passed",
+    "receipt": "verification-evidence/integrity-tradeoffs-v1.json",
+    "mirror_inputs": 4,
+    "mirror_input_geometry": "224x224 RGB; official/native-original status unverified",
+    "synthetic_inputs": 4,
+    "verification_scenarios_per_input_group": 112,
+    "scope": "CPU engineering checks, not population estimates or the frozen ISIC study",
+    "pixel_data_added_to_repo": false,
+    "learned_models_or_frozen_study_thresholds_changed": false,
+    "new_crypto_or_learned_superiority_claimed": false
   }
 }

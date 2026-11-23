@@ -1,0 +1,176 @@
+{
+  "schema": "rgb-auth-showcase-v1",
+  "scheme": "rgb-lsb-hmac-sha256-192-v1",
+  "scope": "single-image demonstration; not a benchmark or clinical validation",
+  "synthetic": true,
+  "source_label": "Procedural fixture, seed 7. Not a medical acquisition.",
+  "input_rgb_sha256": "7780aae24c9719888cda9ae762c15dfb5f901741fdb575fc6ce4f06a34f15609",
+  "protected_png_sha256": "cbc4fa401f244bd0b6e0ae970b46ae11a66b52e2f32f607bf9db0aab30bd2a9c",
+  "shape": [
+    512,
+    512,
+    3
+  ],
+  "trusted_image_id": 4242,
+  "key_policy": "public demonstration key; not a deployed secret",
+  "embedding": {
+    "mse": 0.5003929138183594,
+    "psnr_db": 51.13769209949196,
+    "maximum_absolute_channel_change": 1
+  },
+  "limitations": [
+    "Only lossless storage preserves this fragile watermark.",
+    "Failed integrity does not prove malicious intent.",
+    "The overlay marks suspect 8x8 blocks, not exact altered pixels.",
+    "Key and expected image/version identifier must be trusted externally.",
+    "Replay of an older valid block at the same ID/address is not prevented.",
+    "Not reversible watermarking; PSNR is not evidence of clinical safety.",
+    "No learned-model, novelty, or superiority claim is made."
+  ],
+  "cases": [
+    {
+      "id": "intact",
+      "label": "Untouched protected image",
+      "scenario_type": "content",
+      "verdict": "VERIFIED",
+      "changed_pixels": 0,
+      "failed_blocks": 0,
+      "total_blocks": 4096,
+      "verification_ms": 33.95645900002364,
+      "received_rgb_sha256": "acf902a042dde13a73061738e97dba37a709d41f8979150cdffc7b91efe6a124",
+      "failed_block_sha256": "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7",
+      "localisation": {
+        "block_confusion": {
+          "tp": 0,
+          "fp": 0,
+          "fn": 0,
+          "tn": 4096
+        },
+        "block_iou": null,
+        "expanded_block_pixel_iou": null
+      }
+    },
+    {
+      "id": "one-pixel",
+      "label": "One pixel: one embedded bit changed",
+      "scenario_type": "content",
+      "verdict": "FAILED_INTEGRITY",
+      "changed_pixels": 1,
+      "failed_blocks": 1,
+      "total_blocks": 4096,
+      "verification_ms": 28.662786999973378,
+      "received_rgb_sha256": "1630578541b194d6aa38f4a9a785cc94cf751ea980971d67ec47495d670bf50c",
+      "failed_block_sha256": "a1aaaea1f62413fadd6c25d26031ead219851aa851290835786e638d0b95897a",
+      "localisation": {
+        "block_confusion": {
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "tn": 4095
+        },
+        "block_iou": 1.0,
+        "expanded_block_pixel_iou": 0.015625
+      }
+    },
+    {
+      "id": "brightness",
+      "label": "Local brightness change (+12, clipped)",
+      "scenario_type": "content",
+      "verdict": "FAILED_INTEGRITY",
+      "changed_pixels": 64,
+      "failed_blocks": 1,
+      "total_blocks": 4096,
+      "verification_ms": 35.233184999981404,
+      "received_rgb_sha256": "1a947680a5450c7823afcc0d00f811c9625be1ddaf6421ae2c7bc1b736c199bf",
+      "failed_block_sha256": "a1aaaea1f62413fadd6c25d26031ead219851aa851290835786e638d0b95897a",
+      "localisation": {
+        "block_confusion": {
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "tn": 4095
+        },
+        "block_iou": 1.0,
+        "expanded_block_pixel_iou": 1.0
+      }
+    },
+    {
+      "id": "copy-move",
+      "label": "Protected block copied to a different address",
+      "scenario_type": "content",
+      "verdict": "FAILED_INTEGRITY",
+      "changed_pixels": 64,
+      "failed_blocks": 1,
+      "total_blocks": 4096,
+      "verification_ms": 30.853635999960716,
+      "received_rgb_sha256": "d170719ccfcd274e0c76f83f01266e48384dda2010120636da3d4e6d2a472138",
+      "failed_block_sha256": "a1aaaea1f62413fadd6c25d26031ead219851aa851290835786e638d0b95897a",
+      "localisation": {
+        "block_confusion": {
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "tn": 4095
+        },
+        "block_iou": 1.0,
+        "expanded_block_pixel_iou": 1.0
+      }
+    },
+    {
+      "id": "jpeg75",
+      "label": "JPEG quality 75: lossless contract violated",
+      "scenario_type": "content",
+      "verdict": "FAILED_INTEGRITY",
+      "changed_pixels": 258599,
+      "failed_blocks": 4096,
+      "total_blocks": 4096,
+      "verification_ms": 38.01686100001689,
+      "received_rgb_sha256": "1c4065122023cf065e01a4848261d31d926393dc8c6ef107fb700ddb9171ac7a",
+      "failed_block_sha256": "3431383721510cf1c211de027cf958c183e16db5fabb6b230eb284c85e196aa9",
+      "localisation": {
+        "block_confusion": {
+          "tp": 4096,
+          "fp": 0,
+          "fn": 0,
+          "tn": 0
+        },
+        "block_iou": 1.0,
+        "expanded_block_pixel_iou": 0.9864768981933594
+      }
+    },
+    {
+      "id": "wrong-key",
+      "label": "Unchanged pixels, wrong verification key",
+      "scenario_type": "context",
+      "verdict": "FAILED_INTEGRITY",
+      "changed_pixels": 0,
+      "failed_blocks": 4096,
+      "total_blocks": 4096,
+      "verification_ms": 28.042776000006597,
+      "received_rgb_sha256": "acf902a042dde13a73061738e97dba37a709d41f8979150cdffc7b91efe6a124",
+      "failed_block_sha256": "3431383721510cf1c211de027cf958c183e16db5fabb6b230eb284c85e196aa9",
+      "localisation": null
+    },
+    {
+      "id": "wrong-id",
+      "label": "Unchanged pixels, wrong trusted version identifier",
+      "scenario_type": "context",
+      "verdict": "FAILED_INTEGRITY",
+      "changed_pixels": 0,
+      "failed_blocks": 4096,
+      "total_blocks": 4096,
+      "verification_ms": 30.332035000014912,
+      "received_rgb_sha256": "acf902a042dde13a73061738e97dba37a709d41f8979150cdffc7b91efe6a124",
+      "failed_block_sha256": "3431383721510cf1c211de027cf958c183e16db5fabb6b230eb284c85e196aa9",
+      "localisation": null
+    }
+  ],
+  "source_sha256": "bcf7f1a57c1e435cd4c524196390ec82293a31a6f41ab44f8b3bb575457cc822",
+  "input_file_sha256": null,
+  "input_shape_before_preprocessing": [
+    512,
+    512,
+    3
+  ],
+  "preprocessing": "none"
+}
