@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+.venv/
+runs/
+data/
+datasets/
+*.pt
+*.pth
+*.npy
+.pytest_cache/
+
+.DS_Store
+Thumbs.db
+data/**/*.png
+data/**/*.jpg
+data/**/*.nii*

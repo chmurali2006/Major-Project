@@ -1,0 +1,233 @@
+{
+  "kind": "falsification",
+  "created_utc": "2026-10-20T12:06:57+00:00",
+  "command": "scripts/ablate.py --data /tmp/ph2mirror --limit 40 --receipt runs/2026-10-20-ablate-n40/receipt.json",
+  "dataset": "/tmp/ph2mirror",
+  "n": 40,
+  "conditions": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    21,
+    22
+  ],
+  "git_commit": "cdfb3aa",
+  "python": "3.11.2",
+  "results": {
+    "baseline": {
+      "det": 1.0,
+      "iou": 0.9556818181818183,
+      "paste_claim": 1.0,
+      "benign_claim": 0.0,
+      "cond6_claim": 0.975,
+      "resize_claim": 0.0,
+      "cond21_iou": 0.2965277777777778,
+      "jpeg100_claim": 0.0,
+      "jpeg100_coverage": 0.921337890625,
+      "clean_claim": 0.0,
+      "psnr": 38.654291084982965,
+      "coverage": 0.933636474609375,
+      "surround_verdicts": 0.0,
+      "refusal": 0.065777587890625
+    },
+    "A1 binding cut": {
+      "metrics": {
+        "det": 0.0,
+        "iou": 0.0,
+        "paste_claim": 0.0,
+        "benign_claim": 0.0,
+        "cond6_claim": 0.0,
+        "resize_claim": 0.0,
+        "cond21_iou": 0.27291666666666664,
+        "jpeg100_claim": 0.0,
+        "jpeg100_coverage": 0.92037353515625,
+        "clean_claim": 0.0,
+        "psnr": 38.65683975121032,
+        "coverage": 0.932843017578125,
+        "surround_verdicts": 0.0,
+        "refusal": 0.066546630859375
+      },
+      "predicted_metric": "det",
+      "predicted_direction": "drop",
+      "claim": "If copy-move detection survives without the address in the tag, position binding is not what defeats copy-move and contribution one is false."
+    },
+    "A2 Carrier B restored": {
+      "metrics": {
+        "det": 0.995,
+        "iou": 0.959559659090909,
+        "paste_claim": 1.0,
+        "benign_claim": 0.0,
+        "cond6_claim": 0.975,
+        "resize_claim": 0.0,
+        "cond21_iou": 0.2881944444444445,
+        "jpeg100_claim": 0.0,
+        "jpeg100_coverage": 0.894366455078125,
+        "clean_claim": 0.0,
+        "psnr": 38.25354422602304,
+        "coverage": 0.93533935546875,
+        "surround_verdicts": 0.0,
+        "refusal": 0.06400146484375
+      },
+      "predicted_metric": "jpeg100_coverage",
+      "predicted_direction": "drop",
+      "claim": "Carrier B is off by default (A-032). If switching it back on does not reduce the area the tool can certify after a Q100 re-encode, the semi-robust reference is inert and there is no reason for it to be in the design at all - it already costs 0.38 dB of PSNR."
+    },
+    "A3 capacity refusal removed": {
+      "metrics": {
+        "det": 0.975,
+        "iou": 0.8922320939060521,
+        "paste_claim": 0.975,
+        "benign_claim": 0.0,
+        "cond6_claim": 0.975,
+        "resize_claim": 0.0,
+        "cond21_iou": 0.5884034169416069,
+        "jpeg100_claim": 0.0,
+        "jpeg100_coverage": 0.925634765625,
+        "clean_claim": 0.325,
+        "psnr": 38.64134359610671,
+        "coverage": 0.938201904296875,
+        "surround_verdicts": 3.0517578125e-05,
+        "refusal": 0.061968994140625
+      },
+      "predicted_metric": "clean_claim",
+      "predicted_direction": "rise",
+      "claim": "If refusing to judge blocks it never marked is what keeps a clean image clean, switching the refusal off must produce a claim on an untouched image. The first version of this ablation measured verdicts on the unmarked surround instead and read 0.000 -> 0.000 while 14 of 40 clean images were in fact being claimed - the metric was wrong, not the mechanism."
+    },
+    "A4 tilt restored": {
+      "metrics": {
+        "det": 1.0,
+        "iou": 0.9556818181818183,
+        "paste_claim": 1.0,
+        "benign_claim": 0.0,
+        "cond6_claim": 0.975,
+        "resize_claim": 0.0,
+        "cond21_iou": 0.2965277777777778,
+        "jpeg100_claim": 0.0,
+        "jpeg100_coverage": 0.921337890625,
+        "clean_claim": 0.0,
+        "psnr": 38.654291084982965,
+        "coverage": 0.933636474609375,
+        "surround_verdicts": 0.0,
+        "refusal": 0.065777587890625
+      },
+      "predicted_metric": "psnr",
+      "predicted_direction": "drop",
+      "claim": "If restoring region weighting costs no measurable image quality, the decision to remove it (A-018) was not buying anything either."
+    },
+    "A6 global attenuation cut": {
+      "metrics": {
+        "det": 1.0,
+        "iou": 0.9556818181818183,
+        "paste_claim": 1.0,
+        "benign_claim": 0.0,
+        "cond6_claim": 0.975,
+        "resize_claim": 0.0,
+        "cond21_iou": 0.2965277777777778,
+        "jpeg100_claim": 0.0,
+        "jpeg100_coverage": 0.921337890625,
+        "clean_claim": 0.0,
+        "psnr": 38.654291084982965,
+        "coverage": 0.933636474609375,
+        "surround_verdicts": 0.0,
+        "refusal": 0.065777587890625
+      },
+      "predicted_metric": "resize_claim",
+      "predicted_direction": "rise",
+      "claim": "If a 90% resize of a smooth image still does not produce a false claim without the attenuation rule, the rule is not what fixes condition 11."
+    },
+    "A5 ladder collapsed": {
+      "metrics": {
+        "det": 1.0,
+        "iou": 0.9556818181818183,
+        "paste_claim": 1.0,
+        "benign_claim": 0.0,
+        "cond6_claim": 0.975,
+        "resize_claim": 0.0,
+        "cond21_iou": 0.2965277777777778,
+        "jpeg100_claim": 0.0,
+        "jpeg100_coverage": 0.921337890625,
+        "clean_claim": 0.0,
+        "psnr": 38.654291084982965,
+        "coverage": 0.933636474609375,
+        "surround_verdicts": 0.0,
+        "refusal": 0.065777587890625
+      },
+      "predicted_metric": "benign_claim",
+      "predicted_direction": "rise",
+      "claim": "If a single threshold with no abstention is equally quiet on benign handling, the ladder earns its complexity nowhere."
+    },
+    "A7 mean binding cut": {
+      "metrics": {
+        "det": 1.0,
+        "iou": 0.9527698863636362,
+        "paste_claim": 1.0,
+        "benign_claim": 0.0,
+        "cond6_claim": 0.95,
+        "resize_claim": 0.0,
+        "cond21_iou": 0.075,
+        "jpeg100_claim": 0.475,
+        "jpeg100_coverage": 0.9321044921875,
+        "clean_claim": 0.0,
+        "psnr": 38.65555099851817,
+        "coverage": 0.93311767578125,
+        "surround_verdicts": 0.0,
+        "refusal": 0.066204833984375
+      },
+      "predicted_metric": "cond21_iou",
+      "predicted_direction": "drop",
+      "claim": "If burned-in text localises just as well without the block mean in the tag, the detail coefficients were enough and A-030 buys nothing."
+    },
+    "A9 scatter rule cut": {
+      "metrics": {
+        "det": 1.0,
+        "iou": 0.9556818181818183,
+        "paste_claim": 1.0,
+        "benign_claim": 0.0,
+        "cond6_claim": 0.975,
+        "resize_claim": 0.0,
+        "cond21_iou": 0.2965277777777778,
+        "jpeg100_claim": 1.0,
+        "jpeg100_coverage": 0.93740234375,
+        "clean_claim": 0.0,
+        "psnr": 38.654291084982965,
+        "coverage": 0.933636474609375,
+        "surround_verdicts": 0.0,
+        "refusal": 0.065777587890625
+      },
+      "predicted_metric": "jpeg100_claim",
+      "predicted_direction": "rise",
+      "claim": "If a Q100 re-encode is still not claimed without the scatter rule, the rule is not what separates a codec's damage from surgery and A-031 is decoration."
+    },
+    "A8 both global rules cut": {
+      "metrics": {
+        "det": 1.0,
+        "iou": 0.9556818181818183,
+        "paste_claim": 1.0,
+        "benign_claim": 0.665,
+        "cond6_claim": 0.975,
+        "resize_claim": 0.875,
+        "cond21_iou": 0.2965277777777778,
+        "jpeg100_claim": 0.0,
+        "jpeg100_coverage": 0.921337890625,
+        "clean_claim": 0.0,
+        "psnr": 38.654291084982965,
+        "coverage": 0.933636474609375,
+        "surround_verdicts": 0.0,
+        "refusal": 0.065777587890625
+      },
+      "predicted_metric": "resize_claim",
+      "predicted_direction": "rise",
+      "claim": "A6 and A5 are individually redundant now that the mean binding makes a resample break every block rather than a few edge blocks. If removing BOTH still produces no false claim, there is no global-transform rule left and condition 11 is passing for an unstated reason."
+    }
+  },
+  "predicted_breaks": 6,
+  "ablations": 9
+}

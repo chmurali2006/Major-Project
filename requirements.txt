@@ -1,0 +1,10 @@
+numpy>=1.26,<2
+scipy>=1.14
+opencv-python-headless>=4.10,<4.12
+Pillow>=11
+# training (not needed to run the tests)
+# torch>=2.4
+# pytest>=8
+
+# Retained historical transform tests / classical tooling
+PyWavelets>=1.5

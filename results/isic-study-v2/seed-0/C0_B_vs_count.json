@@ -1,0 +1,23 @@
+{
+  "n": 1000,
+  "direction": "B minus A",
+  "bootstrap_seed": 0,
+  "draws": 2000,
+  "interval_scope": "image sampling only, not training-seed uncertainty",
+  "delta": {
+    "iou_tampered": {
+      "estimate": -0.018947448021421183,
+      "ci95": [
+        -0.022102787061662247,
+        -0.01588261144313784
+      ]
+    },
+    "balanced_accuracy": {
+      "estimate": -0.01979584009922397,
+      "ci95": [
+        -0.04368803600133819,
+        0.0011873628122169807
+      ]
+    }
+  }
+}

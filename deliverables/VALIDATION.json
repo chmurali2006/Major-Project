@@ -1,0 +1,84 @@
+{
+  "date": "2026-11-03",
+  "protocol": "isic-rgb-auth-v2",
+  "authentication_scheme": "rgb-lsb-hmac-sha256-192-v1",
+  "readiness": "TRAIN-only Kaggle learning diagnostic next; full-study accuracy not established.",
+  "fresh_regression_tests_passed": 169,
+  "legacy_v1_failures_preserved": true,
+  "v2_brightness_challenge_closed": true,
+  "v2_chroma_challenge_closed": true,
+  "local_jpeg_inputs": 32,
+  "synthetic_inputs": 16,
+  "protected_cases": 96,
+  "intact_failures": 0,
+  "tested_edit_cases": 480,
+  "tested_edit_block_masks": "all matched actual changed blocks",
+  "local_sample_fidelity": {
+    "authenticated": {
+      "minimum_psnr_db": 42.46789144646187,
+      "mean_psnr_db": 42.51974508231678
+    },
+    "authenticated-single": {
+      "minimum_psnr_db": 51.13114165357587,
+      "mean_psnr_db": 51.140480404753845
+    }
+  },
+  "cpu_crash_resume": "bitwise identical checkpoint after new-process crash/restart (CPU toy training only)",
+  "all_seven_constituent_jobs": "trained/evaluated in separate resumed synthetic CPU jobs; not ISIC results",
+  "gpu_verified": false,
+  "full_isic_results_verified": false,
+  "clinical_or_formal_security_approval": false,
+  "reports": [
+    "README.md",
+    "RUNNING.md",
+    "PROTOCOL_V2.md",
+    "independent-review-v2.json",
+    "auth-v2-image-checks.json",
+    "auth-v2-synthetic-checks.json",
+    "rgb-auth-v2-wiring.log"
+  ],
+  "historical_measurement_source_sha256": "1ee6a8a57bb07cc3670f3d944f76f9288ebfe4a792b97dc210243c6120b0e8de",
+  "current_source_sha256": "1c2724442842fc601d3b0a219783413d1ddeedf4febd109c62f8526dcebbd45a",
+  "documentation_cleanup": {
+    "markdown_files": 6,
+    "regression_tests_passed": 170,
+    "notebook_cells_compile": 7,
+    "fresh_counterexample_and_cpu_crash_probe_source": "55ece55ef76a465863bd73d74f570242e599e9edbfa8eaf1a19b2442c10d1349",
+    "scope": "Documentation references and packaging consolidated; full ISIC/GPU checks were not rerun. Earlier image/fidelity measurements retain their original source fingerprints."
+  },
+  "merge_validation": {
+    "base": "dev",
+    "cpu_tests_passed": 211,
+    "notebook_cells_compile": 7,
+    "extracted_source_wiring": "passed: main/attention, resume, corruption recovery, data/source rejection and export",
+    "fresh_rgb_counterexamples_and_cpu_crash_probe": "passed",
+    "legacy_compatibility": "Retained dev classical carriers/metrics under distinct legacy module names; legacy tests pass.",
+    "scope": "CPU checks only; historical image/ablation measurements retain original source fingerprints."
+  },
+  "current_revision_checks": {
+    "source_sha256": "f808f935ff51148a105320bd04bc8b7f251521e385eaaf8d7994bef57d1bebf6",
+    "cpu_tests_passed": 225,
+    "cuda_tests_skipped": 1,
+    "notebook_code_cells_compile": 7,
+    "synthetic_train_diagnostic_epochs": 20,
+    "synthetic_train_diagnostic_examples": 7,
+    "synthetic_train_diagnostic_receipt": "verification-evidence/learning-diagnostic-v2.json",
+    "shared_rule_pixel_iou_after_training": {
+      "main": 0.0,
+      "attention": 0.0
+    },
+    "gpu_strict_backward_verified": false,
+    "historical_measurements_above_relabelled": false,
+    "training_only_portable_notebook_launch_export_test": "passed; unselected/validation/test fixture JPEGs intentionally undecodable"
+  },
+  "showcase_revision": {
+    "source_sha256": "bcf7f1a57c1e435cd4c524196390ec82293a31a6f41ab44f8b3bb575457cc822",
+    "scope": "CPU-only classical RGB verification showcase; synthetic input, not ISIC benchmark results",
+    "tests_passed": 234,
+    "cuda_only_tests_skipped": 1,
+    "notebook_cells_compile": 7,
+    "receipt": "verification-evidence/showcase-cpu.json",
+    "learned_localisation_improvement_claimed": false,
+    "dataset_pixels_added_to_repo": false
+  }
+}

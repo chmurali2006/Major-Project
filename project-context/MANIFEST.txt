@@ -1,0 +1,41 @@
+# MANIFEST — implementation package
+
+**Project:** A Fragile Watermarking for Medical Image Tamper Detection
+**Established:** 2026-10-19, built from zero.
+**Purpose of this package:** everything needed to start implementation in a
+new chat, and nothing else.
+
+## The five documents
+
+| File | Lines | What it answers |
+|------|-------|-----------------|
+| **00_START_HERE.md** | 90 | Where to begin: reading order, the five things to remember, the first session step by step, the rules that do not bend. |
+| **01_PROJECT_DOSSIER.md** | 740 | **The authority.** Part I: what we want to do (problem, literature, promises, research questions, scope, claims with prices, eight bars, threat model). Part II: how (architecture to parameter level, two carriers, trip table, datasets, 22-condition battery, evaluation, falsification checks, recovery). Part III: what to do (prerequisites, data checklist, six phases, deliverables, risks, open decisions). |
+| **02_ARCHITECTURE.md** | 290 | Twelve modules with inputs, outputs, invariants and tests; the data model; embed and verify sequences; suggested code layout; ten invariants worth asserting in code. |
+| **03_PROJECT_FLOW.md** | 250 | The journey of one image; six phases with entry conditions, exit checks and gates; the dependency diagram; decision table with defaults; what mid-review needs; how the work fails if the order is ignored. |
+| **04_PITFALLS_AND_TRAPS.md** | 450 | **Thirty-five ways this project fails**, each with symptom, cause, guard and early warning, plus a two-minute pre-flight check of six tests. |
+
+## Evidence
+
+| Item | What it is |
+|------|------------|
+| papers/pff-wm.txt | Extracted full text of the closest rival paper — the source behind every constant quoted from it in the dossier. |
+| papers/PFF-WM_Khaldi_2026.pdf | The same paper as originally published. |
+
+## Not in this package, deliberately
+
+- **EXPECTED_RESULTS.txt** — the sealed expectations. It stays in the
+  workspace untouched and is excluded from the archive on purpose: its value is
+  that it was written before any result existed, and a fresh implementation
+  chat must not read it. Open it only when results are frozen.
+- No earlier blueprint, plan, synopsis or briefing pack. The dossier replaces
+  all of them; two authorities is how contradictions start.
+- No pilot output and no prior measured number. Every number this project
+  reports will come from its own receipts.
+
+## Four rules that hold across every file
+
+1. The dossier is the only authority. A file that disagrees with it is wrong.
+2. The title is fixed and never reworded.
+3. The battery is twenty-two conditions. Any other count is withdrawn.
+4. A number without a receipt does not exist.

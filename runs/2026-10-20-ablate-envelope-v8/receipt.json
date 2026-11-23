@@ -1,0 +1,206 @@
+{
+ "kind": "ablate_envelope",
+ "created_utc": "2026-10-20T11:38:46+00:00",
+ "command": "scripts/ablate_envelope.py --data /tmp/ph2mirror --limit 40 --receipt runs/2026-10-20-ablate-envelope-v8/receipt.json",
+ "dataset": "/tmp/ph2mirror",
+ "n": 40,
+ "jpeg_qualities": [
+  100,
+  99,
+  98,
+  95
+ ],
+ "noise_sigmas": [
+  1.0,
+  2.0
+ ],
+ "code": {
+  "git_commit": "e0b3b7c709f6ea01da80d6acd6eeafae121181c0"
+ },
+ "environment": {
+  "python": "3.11.2",
+  "platform": "Linux-6.1.158+-x86_64-with-glibc2.36"
+ },
+ "variants": {
+  "baseline": {
+   "png": {
+    "false_claims": 0,
+    "coverage": 0.93306884765625
+   },
+   "j100": {
+    "false_claims": 0,
+    "coverage": 0.920831298828125
+   },
+   "j99": {
+    "false_claims": 0,
+    "coverage": 0.902398681640625
+   },
+   "j98": {
+    "false_claims": 0,
+    "coverage": 0.6896728515625
+   },
+   "j95": {
+    "false_claims": 0,
+    "coverage": 0.016595458984375
+   },
+   "n1.0": {
+    "false_claims": 0,
+    "coverage": 0.778558349609375
+   },
+   "n2.0": {
+    "false_claims": 0,
+    "coverage": 0.247137451171875
+   }
+  },
+  "A2 Carrier B restored": {
+   "png": {
+    "false_claims": 0,
+    "coverage": 0.93480224609375
+   },
+   "j100": {
+    "false_claims": 0,
+    "coverage": 0.8941650390625
+   },
+   "j99": {
+    "false_claims": 0,
+    "coverage": 0.72030029296875
+   },
+   "j98": {
+    "false_claims": 0,
+    "coverage": 0.430157470703125
+   },
+   "j95": {
+    "false_claims": 0,
+    "coverage": 0.009771728515625
+   },
+   "n1.0": {
+    "false_claims": 0,
+    "coverage": 0.51475830078125
+   },
+   "n2.0": {
+    "false_claims": 0,
+    "coverage": 0.151416015625
+   }
+  },
+  "A3 no capacity refusal": {
+   "png": {
+    "false_claims": 14,
+    "coverage": 0.937591552734375
+   },
+   "j100": {
+    "false_claims": 0,
+    "coverage": 0.925079345703125
+   },
+   "j99": {
+    "false_claims": 0,
+    "coverage": 0.9064697265625
+   },
+   "j98": {
+    "false_claims": 0,
+    "coverage": 0.692572021484375
+   },
+   "j95": {
+    "false_claims": 0,
+    "coverage": 0.0166748046875
+   },
+   "n1.0": {
+    "false_claims": 0,
+    "coverage": 0.781884765625
+   },
+   "n2.0": {
+    "false_claims": 0,
+    "coverage": 0.2480224609375
+   }
+  },
+  "A5 no ladder": {
+   "png": {
+    "false_claims": 0,
+    "coverage": 0.93306884765625
+   },
+   "j100": {
+    "false_claims": 0,
+    "coverage": 0.920831298828125
+   },
+   "j99": {
+    "false_claims": 0,
+    "coverage": 0.902398681640625
+   },
+   "j98": {
+    "false_claims": 0,
+    "coverage": 0.6896728515625
+   },
+   "j95": {
+    "false_claims": 0,
+    "coverage": 0.016595458984375
+   },
+   "n1.0": {
+    "false_claims": 0,
+    "coverage": 0.778558349609375
+   },
+   "n2.0": {
+    "false_claims": 0,
+    "coverage": 0.247137451171875
+   }
+  },
+  "A6 no attenuation": {
+   "png": {
+    "false_claims": 0,
+    "coverage": 0.93306884765625
+   },
+   "j100": {
+    "false_claims": 0,
+    "coverage": 0.920831298828125
+   },
+   "j99": {
+    "false_claims": 0,
+    "coverage": 0.902398681640625
+   },
+   "j98": {
+    "false_claims": 0,
+    "coverage": 0.6896728515625
+   },
+   "j95": {
+    "false_claims": 0,
+    "coverage": 0.016595458984375
+   },
+   "n1.0": {
+    "false_claims": 0,
+    "coverage": 0.778558349609375
+   },
+   "n2.0": {
+    "false_claims": 0,
+    "coverage": 0.247137451171875
+   }
+  },
+  "A8 neither global rule": {
+   "png": {
+    "false_claims": 0,
+    "coverage": 0.93306884765625
+   },
+   "j100": {
+    "false_claims": 0,
+    "coverage": 0.920831298828125
+   },
+   "j99": {
+    "false_claims": 0,
+    "coverage": 0.902398681640625
+   },
+   "j98": {
+    "false_claims": 0,
+    "coverage": 0.6896728515625
+   },
+   "j95": {
+    "false_claims": 32,
+    "coverage": 0.731964111328125
+   },
+   "n1.0": {
+    "false_claims": 0,
+    "coverage": 0.778558349609375
+   },
+   "n2.0": {
+    "false_claims": 30,
+    "coverage": 0.74718017578125
+   }
+  }
+ }
+}

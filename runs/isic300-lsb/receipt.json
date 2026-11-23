@@ -1,0 +1,182 @@
+{
+ "kind": "baseline_lsb",
+ "created_utc": "2026-10-20T13:43:51+00:00",
+ "command": "scripts\\baseline_lsb.py --data datasets/isic2018 --limit 60 --receipt runs/isic300-lsb/receipt.json",
+ "dataset": "datasets/isic2018",
+ "n": 60,
+ "scheme": "Wong-style 8x8 block hash in the LSB plane",
+ "code": {
+  "git_commit": "3072c41d139002f4266d148d5bc703c478674339"
+ },
+ "environment": {
+  "python": "3.13.1",
+  "platform": "Windows-11-10.0.26200-SP0"
+ },
+ "summary": {
+  "detection": 1.0,
+  "iou": 1.0,
+  "benign_claim_rate": 1.0,
+  "clean_claims": 0,
+  "psnr": 55.91007110275263,
+  "jpeg100_claim": 1.0,
+  "jpeg95_claim": 1.0,
+  "jpeg90_claim": 1.0,
+  "noise1_claim": 1.0
+ },
+ "per_condition": {
+  "1": {
+   "n": 60,
+   "claim": 60,
+   "det": 60,
+   "iou_mean": 1.0,
+   "f1_mean": 1.0
+  },
+  "2": {
+   "n": 60,
+   "claim": 60,
+   "det": 60,
+   "iou_mean": 1.0,
+   "f1_mean": 1.0
+  },
+  "3": {
+   "n": 60,
+   "claim": 60,
+   "det": 60,
+   "iou_mean": 1.0,
+   "f1_mean": 1.0
+  },
+  "4": {
+   "n": 60,
+   "claim": 60,
+   "det": 60,
+   "iou_mean": 1.0,
+   "f1_mean": 1.0
+  },
+  "5": {
+   "n": 60,
+   "claim": 60,
+   "det": 60,
+   "iou_mean": 1.0,
+   "f1_mean": 1.0
+  },
+  "6": {
+   "n": 60,
+   "claim": 60,
+   "det": 60,
+   "iou_mean": 1.0,
+   "f1_mean": 1.0
+  },
+  "7": {
+   "n": 60,
+   "claim": 60,
+   "det": 0,
+   "iou_mean": NaN,
+   "f1_mean": NaN
+  },
+  "8": {
+   "n": 60,
+   "claim": 60,
+   "det": 0,
+   "iou_mean": NaN,
+   "f1_mean": NaN
+  },
+  "9": {
+   "n": 60,
+   "claim": 60,
+   "det": 0,
+   "iou_mean": NaN,
+   "f1_mean": NaN
+  },
+  "10": {
+   "n": 60,
+   "claim": 60,
+   "det": 0,
+   "iou_mean": NaN,
+   "f1_mean": NaN
+  },
+  "11": {
+   "n": 60,
+   "claim": 60,
+   "det": 0,
+   "iou_mean": NaN,
+   "f1_mean": NaN
+  },
+  "12": {
+   "n": 60,
+   "claim": 60,
+   "det": 0,
+   "iou_mean": NaN,
+   "f1_mean": NaN
+  },
+  "13": {
+   "n": 60,
+   "claim": 60,
+   "det": 0,
+   "iou_mean": NaN,
+   "f1_mean": NaN
+  },
+  "14": {
+   "n": 60,
+   "claim": 60,
+   "det": 0,
+   "iou_mean": NaN,
+   "f1_mean": NaN
+  },
+  "15": {
+   "n": 60,
+   "claim": 60,
+   "det": 0,
+   "iou_mean": NaN,
+   "f1_mean": NaN
+  },
+  "16": {
+   "n": 60,
+   "claim": 60,
+   "det": 0,
+   "iou_mean": NaN,
+   "f1_mean": NaN
+  },
+  "17": {
+   "n": 60,
+   "claim": 60,
+   "det": 0,
+   "iou_mean": NaN,
+   "f1_mean": NaN
+  },
+  "18": {
+   "n": 60,
+   "claim": 60,
+   "det": 0,
+   "iou_mean": NaN,
+   "f1_mean": NaN
+  },
+  "19": {
+   "n": 60,
+   "claim": 60,
+   "det": 60,
+   "iou_mean": 1.0,
+   "f1_mean": 1.0
+  },
+  "20": {
+   "n": 60,
+   "claim": 60,
+   "det": 60,
+   "iou_mean": 1.0,
+   "f1_mean": 1.0
+  },
+  "21": {
+   "n": 60,
+   "claim": 60,
+   "det": 60,
+   "iou_mean": 1.0,
+   "f1_mean": 1.0
+  },
+  "22": {
+   "n": 60,
+   "claim": 60,
+   "det": 60,
+   "iou_mean": 0.9988754050016492,
+   "f1_mean": 0.9994367811733691
+  }
+ }
+}
