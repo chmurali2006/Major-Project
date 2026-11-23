@@ -1,0 +1,4022 @@
+{
+  "scope": "CPU engineering checks, not the frozen ISIC learned study",
+  "mirror_provenance": {
+    "tree_sha": "b9a0b64d02f9d4893fe63b5dd7379f3e0491ec70",
+    "files": [
+      {
+        "path": "train-image/image/ISIC_0000000.jpg",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "a8e3d42848c027f6532f63e627623a6f240ddace",
+        "size": 14709,
+        "url": "https://api.github.com/repos/Sushma7890creator/ISIC-2019-dataset/git/blobs/a8e3d42848c027f6532f63e627623a6f240ddace"
+      },
+      {
+        "path": "train-image/image/ISIC_0000001.jpg",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "8b9e90410a117f1ef4ccac3c1a0bc85540e34c78",
+        "size": 11762,
+        "url": "https://api.github.com/repos/Sushma7890creator/ISIC-2019-dataset/git/blobs/8b9e90410a117f1ef4ccac3c1a0bc85540e34c78"
+      },
+      {
+        "path": "train-image/image/ISIC_0000002.jpg",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "c803ec5648a44586f41277cec97d4fdb089e2645",
+        "size": 16612,
+        "url": "https://api.github.com/repos/Sushma7890creator/ISIC-2019-dataset/git/blobs/c803ec5648a44586f41277cec97d4fdb089e2645"
+      },
+      {
+        "path": "train-image/image/ISIC_0000003.jpg",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "b3101eac1e57b3141cb575edf0bb9ccee150a26e",
+        "size": 14679,
+        "url": "https://api.github.com/repos/Sushma7890creator/ISIC-2019-dataset/git/blobs/b3101eac1e57b3141cb575edf0bb9ccee150a26e"
+      }
+    ],
+    "repository": "Sushma7890creator/ISIC-2019-dataset",
+    "sampling": "first four lexicographically listed JPGs; convenience sample, not representative or a study split",
+    "limitation": "224x224 mirror copies; official identity, native-original status, licence chain and patient independence unverified. No pixels redistributed."
+  },
+  "mirror_comparison": {
+    "protocol": "integrity-tradeoffs-v1",
+    "source_sha256": "0f70538dcc0a6f5d50c81702d8bc86bbb84f13d41fc2917d4ee86df9f996268f",
+    "synthetic": false,
+    "usable_as_isic_study": false,
+    "environment": {
+      "python": "3.11.2 (main, Apr  8 2026, 01:58:00) [GCC 12.2.0]",
+      "platform": "Linux-6.1.158+-x86_64-with-glibc2.36",
+      "machine": "x86_64",
+      "numpy": "1.26.4",
+      "Pillow": "13.0.0",
+      "cryptography": "50.0.2",
+      "command": [
+        "scripts/compare_integrity.py",
+        "--data",
+        "/tmp/isic-integrity-pilot",
+        "--n",
+        "4",
+        "--out",
+        "/tmp/integrity-comparison-final/index.json"
+      ]
+    },
+    "scope": "engineering trade-off comparison; not novelty, DICOM conformance or clinical validation",
+    "pairing": "same source/operator/coordinates; method-specific reference and measured truth; masks are NOT assumed identical",
+    "key_policy": "public deterministic benchmark keys; never production secrets",
+    "limitations": [
+      "Signed digests authenticate decoded RGB, not image file metadata.",
+      "No PKI, revocation, freshness authority or blockchain integration.",
+      "Tile hashes and signatures are standard baselines, not new cryptography.",
+      "Sidecar bytes are this JSON encoding, not an optimised storage lower bound.",
+      "Key distribution, certificates and trusted version-registry overhead are excluded for all methods.",
+      "No learned localisation, clinical fidelity or population accuracy inferred.",
+      "Replay is possible if the receiver accepts an old image and old signed manifest at a reused version ID.",
+      "Timings are single local CPU executions, not statistically stable benchmarks."
+    ],
+    "samples": [
+      {
+        "id": "user-supplied-0: dataset unverified",
+        "input_name": "ISIC_0000000.jpg",
+        "input_file_sha256": "07bc2dd364147da6a0374c0555885d7ddc9d2aef40bb87bf183c851e010f40e1",
+        "input_rgb_sha256": "6b954dbb0da9f37af68eca828e0271840489c8396e7995eca963c9a5d729a4e1",
+        "trusted_image_id": 4242,
+        "shape": [
+          224,
+          224,
+          3
+        ],
+        "methods": [
+          {
+            "method": "Embedded HMAC",
+            "reference_rgb_sha256": "425095c3909936ef302c18a38a5d917ce468e30f761295309c83bd183e1eab20",
+            "mse": 0.4986779868197279,
+            "psnr_db": 51.15260163320745,
+            "maximum_absolute_channel_change": 1,
+            "setup_ms": 5.191935999960151,
+            "sidecar_bytes": 0,
+            "reference_png_bytes": 69135,
+            "embedded_tag_payload_bits": 150528,
+            "trust": "shared secret key plus trusted version ID",
+            "cases": [
+              {
+                "scenario": "intact",
+                "label": "Untouched protected image",
+                "scenario_type": "content",
+                "verdict": "VERIFIED",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 0,
+                "verification_ms": 5.712938999977268,
+                "received_rgb_sha256": "425095c3909936ef302c18a38a5d917ce468e30f761295309c83bd183e1eab20",
+                "failed_blocks": 0,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 0,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 784
+                  },
+                  "block_iou": null,
+                  "expanded_block_pixel_iou": null
+                }
+              },
+              {
+                "scenario": "one-pixel",
+                "label": "One pixel: one embedded bit changed",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 1,
+                "verification_ms": 5.47954400008166,
+                "received_rgb_sha256": "971b1cb355a94c08661b3fd2566e669f0439812d2cb5888c9841e3cb2149830c",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 783
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.015625
+                }
+              },
+              {
+                "scenario": "brightness",
+                "label": "Local brightness change (+12, clipped)",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 64,
+                "verification_ms": 5.424879999964105,
+                "received_rgb_sha256": "f40aecb3bde787e6e0c358ef8903a3ad0a9db62c083e9342154842ee560865f9",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 783
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 1.0
+                }
+              },
+              {
+                "scenario": "boundary-patch",
+                "label": "15-pixel edit crossing block boundaries",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 15,
+                "verification_ms": 5.443427000045631,
+                "received_rgb_sha256": "724db19ee22900b8e39bdcbfc48cef32f3b0f5400425a3c6e2028fbc690a4d8c",
+                "failed_blocks": 4,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 4,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 780
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.05859375
+                }
+              },
+              {
+                "scenario": "copy-move",
+                "label": "Protected block copied to a different address",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 64,
+                "verification_ms": 5.606467999996312,
+                "received_rgb_sha256": "53c65b1bb2e186c8ec2e05f2015eed02f7201ae1194d7c510c633bb234c38616",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 783
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 1.0
+                }
+              },
+              {
+                "scenario": "jpeg75",
+                "label": "JPEG quality 75: lossless contract violated",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 49489,
+                "verification_ms": 5.514313000048787,
+                "received_rgb_sha256": "a028d761382e678ce042b64f98be3e0062ed4d7a926c0f2ae590de239b438011",
+                "failed_blocks": 784,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 784,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 0
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.9863081951530612
+                }
+              },
+              {
+                "scenario": "wrong-key",
+                "label": "Unchanged pixels, wrong verification key",
+                "scenario_type": "context",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 0,
+                "verification_ms": 5.4006220000246685,
+                "received_rgb_sha256": "425095c3909936ef302c18a38a5d917ce468e30f761295309c83bd183e1eab20",
+                "failed_blocks": 784,
+                "localisation": null
+              },
+              {
+                "scenario": "wrong-id",
+                "label": "Unchanged pixels, wrong trusted version identifier",
+                "scenario_type": "context",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 0,
+                "verification_ms": 5.373049000013452,
+                "received_rgb_sha256": "425095c3909936ef302c18a38a5d917ce468e30f761295309c83bd183e1eab20",
+                "failed_blocks": 784,
+                "localisation": null
+              }
+            ]
+          },
+          {
+            "method": "Whole-image signature",
+            "reference_rgb_sha256": "6b954dbb0da9f37af68eca828e0271840489c8396e7995eca963c9a5d729a4e1",
+            "mse": 0.0,
+            "psnr_db": null,
+            "maximum_absolute_channel_change": 0,
+            "setup_ms": 0.5001350000384264,
+            "sidecar_bytes": 338,
+            "reference_png_bytes": 61788,
+            "embedded_tag_payload_bits": 0,
+            "trust": "trusted public key plus trusted version ID and authentic sidecar",
+            "cases": [
+              {
+                "scenario": "intact",
+                "label": "Untouched protected image",
+                "scenario_type": "content",
+                "verdict": "VERIFIED",
+                "reason": "signed_pixels_match",
+                "changed_pixels": 0,
+                "verification_ms": 0.5644940000593124,
+                "received_rgb_sha256": "6b954dbb0da9f37af68eca828e0271840489c8396e7995eca963c9a5d729a4e1",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "one-pixel",
+                "label": "One pixel: one embedded bit changed",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 1,
+                "verification_ms": 0.30559200001789577,
+                "received_rgb_sha256": "e6842119fce08e05b50cd419fba6700305f485448d4c78ffd11515f4151f4279",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "brightness",
+                "label": "Local brightness change (+12, clipped)",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 64,
+                "verification_ms": 0.28227499990407523,
+                "received_rgb_sha256": "201163da1b65a5605abd959d5ff5ae2ada27416d918a9fd02144c3c8d8392ead",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "boundary-patch",
+                "label": "15-pixel edit crossing block boundaries",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 15,
+                "verification_ms": 0.2781759999379574,
+                "received_rgb_sha256": "03f6402372bcd7acc0e894d8fbffcf33a98ae56adac59ae4953f0a0727722d24",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "copy-move",
+                "label": "Protected block copied to a different address",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 64,
+                "verification_ms": 0.2695570000241787,
+                "received_rgb_sha256": "b4b8f5468c7c368339ae282bd18462750744afc67492d1c6fd713dbfcdcdeb6a",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "jpeg75",
+                "label": "JPEG quality 75: lossless contract violated",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 46976,
+                "verification_ms": 0.31691499998487416,
+                "received_rgb_sha256": "dca9b75aaa66d38f4193a026010036f7b88d6639a9a5e9ad809c775628bc1bf0",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "wrong-key",
+                "label": "Unchanged pixels, wrong verification key",
+                "scenario_type": "context",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "invalid_signature_or_untrusted_key",
+                "changed_pixels": 0,
+                "verification_ms": 0.20588400002452545,
+                "received_rgb_sha256": "6b954dbb0da9f37af68eca828e0271840489c8396e7995eca963c9a5d729a4e1",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "wrong-id",
+                "label": "Unchanged pixels, wrong trusted version identifier",
+                "scenario_type": "context",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "identifier_mismatch",
+                "changed_pixels": 0,
+                "verification_ms": 0.08468900000480062,
+                "received_rgb_sha256": "6b954dbb0da9f37af68eca828e0271840489c8396e7995eca963c9a5d729a4e1",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "missing-evidence",
+                "scenario_type": "evidence",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "missing_or_oversized_evidence",
+                "changed_pixels": 0,
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "modified-evidence",
+                "scenario_type": "evidence",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "invalid_signature_or_untrusted_key",
+                "changed_pixels": 0,
+                "failed_blocks": null,
+                "localisation": null
+              }
+            ]
+          },
+          {
+            "method": "Signed tile manifest",
+            "reference_rgb_sha256": "6b954dbb0da9f37af68eca828e0271840489c8396e7995eca963c9a5d729a4e1",
+            "mse": 0.0,
+            "psnr_db": null,
+            "maximum_absolute_channel_change": 0,
+            "setup_ms": 3.3670160000838223,
+            "sidecar_bytes": 52793,
+            "reference_png_bytes": 61788,
+            "embedded_tag_payload_bits": 0,
+            "trust": "trusted public key plus trusted version ID and authentic sidecar",
+            "cases": [
+              {
+                "scenario": "intact",
+                "label": "Untouched protected image",
+                "scenario_type": "content",
+                "verdict": "VERIFIED",
+                "reason": "signed_pixels_match",
+                "changed_pixels": 0,
+                "verification_ms": 2.680610999959754,
+                "received_rgb_sha256": "6b954dbb0da9f37af68eca828e0271840489c8396e7995eca963c9a5d729a4e1",
+                "failed_blocks": 0,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 0,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 784
+                  },
+                  "block_iou": null,
+                  "expanded_block_pixel_iou": null
+                }
+              },
+              {
+                "scenario": "one-pixel",
+                "label": "One pixel: one embedded bit changed",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 1,
+                "verification_ms": 2.5626469999906476,
+                "received_rgb_sha256": "e6842119fce08e05b50cd419fba6700305f485448d4c78ffd11515f4151f4279",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 783
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.015625
+                }
+              },
+              {
+                "scenario": "brightness",
+                "label": "Local brightness change (+12, clipped)",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 64,
+                "verification_ms": 2.7191190000621646,
+                "received_rgb_sha256": "201163da1b65a5605abd959d5ff5ae2ada27416d918a9fd02144c3c8d8392ead",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 783
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 1.0
+                }
+              },
+              {
+                "scenario": "boundary-patch",
+                "label": "15-pixel edit crossing block boundaries",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 15,
+                "verification_ms": 2.639244999954826,
+                "received_rgb_sha256": "03f6402372bcd7acc0e894d8fbffcf33a98ae56adac59ae4953f0a0727722d24",
+                "failed_blocks": 4,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 4,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 780
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.05859375
+                }
+              },
+              {
+                "scenario": "copy-move",
+                "label": "Protected block copied to a different address",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 64,
+                "verification_ms": 2.938847999985228,
+                "received_rgb_sha256": "b4b8f5468c7c368339ae282bd18462750744afc67492d1c6fd713dbfcdcdeb6a",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 783
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 1.0
+                }
+              },
+              {
+                "scenario": "jpeg75",
+                "label": "JPEG quality 75: lossless contract violated",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 46976,
+                "verification_ms": 3.111728000021685,
+                "received_rgb_sha256": "dca9b75aaa66d38f4193a026010036f7b88d6639a9a5e9ad809c775628bc1bf0",
+                "failed_blocks": 784,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 784,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 0
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.9362244897959183
+                }
+              },
+              {
+                "scenario": "wrong-key",
+                "label": "Unchanged pixels, wrong verification key",
+                "scenario_type": "context",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "invalid_signature_or_untrusted_key",
+                "changed_pixels": 0,
+                "verification_ms": 1.0955320000221036,
+                "received_rgb_sha256": "6b954dbb0da9f37af68eca828e0271840489c8396e7995eca963c9a5d729a4e1",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "wrong-id",
+                "label": "Unchanged pixels, wrong trusted version identifier",
+                "scenario_type": "context",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "identifier_mismatch",
+                "changed_pixels": 0,
+                "verification_ms": 0.09876100000383303,
+                "received_rgb_sha256": "6b954dbb0da9f37af68eca828e0271840489c8396e7995eca963c9a5d729a4e1",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "missing-evidence",
+                "scenario_type": "evidence",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "missing_or_oversized_evidence",
+                "changed_pixels": 0,
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "modified-evidence",
+                "scenario_type": "evidence",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "invalid_signature_or_untrusted_key",
+                "changed_pixels": 0,
+                "failed_blocks": null,
+                "localisation": null
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "user-supplied-1: dataset unverified",
+        "input_name": "ISIC_0000001.jpg",
+        "input_file_sha256": "706b50bbdfba4895a3f2f0359384dddb17bf4d366aa3e2d8adc6f6889983b1ac",
+        "input_rgb_sha256": "8580da8bc3a979a6272ff9dfb436e9cd76a29b02ddb9a5ccd09f2f4c610bcf01",
+        "trusted_image_id": 4244,
+        "shape": [
+          224,
+          224,
+          3
+        ],
+        "methods": [
+          {
+            "method": "Embedded HMAC",
+            "reference_rgb_sha256": "7df811ab0ed19967341603460d811c19288d006af99519806d95c737cec5b063",
+            "mse": 0.49978077168367346,
+            "psnr_db": 51.14300817585515,
+            "maximum_absolute_channel_change": 1,
+            "setup_ms": 5.235324000068431,
+            "sidecar_bytes": 0,
+            "reference_png_bytes": 63674,
+            "embedded_tag_payload_bits": 150528,
+            "trust": "shared secret key plus trusted version ID",
+            "cases": [
+              {
+                "scenario": "intact",
+                "label": "Untouched protected image",
+                "scenario_type": "content",
+                "verdict": "VERIFIED",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 0,
+                "verification_ms": 5.492876000062097,
+                "received_rgb_sha256": "7df811ab0ed19967341603460d811c19288d006af99519806d95c737cec5b063",
+                "failed_blocks": 0,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 0,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 784
+                  },
+                  "block_iou": null,
+                  "expanded_block_pixel_iou": null
+                }
+              },
+              {
+                "scenario": "one-pixel",
+                "label": "One pixel: one embedded bit changed",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 1,
+                "verification_ms": 5.336800999998559,
+                "received_rgb_sha256": "0862a366ac72989f916b61ffb5e94cfa88b588c37c49f039275c0d48448b1ed5",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 783
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.015625
+                }
+              },
+              {
+                "scenario": "brightness",
+                "label": "Local brightness change (+12, clipped)",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 64,
+                "verification_ms": 5.356043999995563,
+                "received_rgb_sha256": "0335359b6b3c0613686b8ac43eebcf30ed0a762e9ad0f180e5c64a4bc0c48ceb",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 783
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 1.0
+                }
+              },
+              {
+                "scenario": "boundary-patch",
+                "label": "15-pixel edit crossing block boundaries",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 15,
+                "verification_ms": 5.381514999953652,
+                "received_rgb_sha256": "5261945031ddc49d3781a4ad8c36f3d7c1a922490f0e795963b8ba90ec87c8bc",
+                "failed_blocks": 4,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 4,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 780
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.05859375
+                }
+              },
+              {
+                "scenario": "copy-move",
+                "label": "Protected block copied to a different address",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 64,
+                "verification_ms": 5.3407609999567285,
+                "received_rgb_sha256": "7aa925c6cc7e4237d78d7b725e481ae2e903192b42c26387d6c09be92fff7696",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 783
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 1.0
+                }
+              },
+              {
+                "scenario": "jpeg75",
+                "label": "JPEG quality 75: lossless contract violated",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 49129,
+                "verification_ms": 5.396494000024177,
+                "received_rgb_sha256": "4f6d7021078fba5d9403123a7308c570f97b6b059dfea617e3cc5d08850c170f",
+                "failed_blocks": 784,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 784,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 0
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.979133450255102
+                }
+              },
+              {
+                "scenario": "wrong-key",
+                "label": "Unchanged pixels, wrong verification key",
+                "scenario_type": "context",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 0,
+                "verification_ms": 5.320421000078568,
+                "received_rgb_sha256": "7df811ab0ed19967341603460d811c19288d006af99519806d95c737cec5b063",
+                "failed_blocks": 784,
+                "localisation": null
+              },
+              {
+                "scenario": "wrong-id",
+                "label": "Unchanged pixels, wrong trusted version identifier",
+                "scenario_type": "context",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 0,
+                "verification_ms": 5.330821000029573,
+                "received_rgb_sha256": "7df811ab0ed19967341603460d811c19288d006af99519806d95c737cec5b063",
+                "failed_blocks": 784,
+                "localisation": null
+              }
+            ]
+          },
+          {
+            "method": "Whole-image signature",
+            "reference_rgb_sha256": "8580da8bc3a979a6272ff9dfb436e9cd76a29b02ddb9a5ccd09f2f4c610bcf01",
+            "mse": 0.0,
+            "psnr_db": null,
+            "maximum_absolute_channel_change": 0,
+            "setup_ms": 0.2808850000519669,
+            "sidecar_bytes": 338,
+            "reference_png_bytes": 46991,
+            "embedded_tag_payload_bits": 0,
+            "trust": "trusted public key plus trusted version ID and authentic sidecar",
+            "cases": [
+              {
+                "scenario": "intact",
+                "label": "Untouched protected image",
+                "scenario_type": "content",
+                "verdict": "VERIFIED",
+                "reason": "signed_pixels_match",
+                "changed_pixels": 0,
+                "verification_ms": 0.39504200003648293,
+                "received_rgb_sha256": "8580da8bc3a979a6272ff9dfb436e9cd76a29b02ddb9a5ccd09f2f4c610bcf01",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "one-pixel",
+                "label": "One pixel: one embedded bit changed",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 1,
+                "verification_ms": 0.2949370000351337,
+                "received_rgb_sha256": "bd5a0275ef5df4388fc86a799a406402fe540a45de026e5af3d05a2a025b59f1",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "brightness",
+                "label": "Local brightness change (+12, clipped)",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 64,
+                "verification_ms": 0.2818520000573699,
+                "received_rgb_sha256": "6bb73af50ab5f5acfd7e717391293cabdecb83792b8717b17e8b333007c37050",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "boundary-patch",
+                "label": "15-pixel edit crossing block boundaries",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 15,
+                "verification_ms": 0.2805560000069818,
+                "received_rgb_sha256": "40209ce6fc95be81ad0f8ba6e8ec9194128de83a37ba6f5b66f2c0564de642fa",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "copy-move",
+                "label": "Protected block copied to a different address",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 64,
+                "verification_ms": 0.28554699997584976,
+                "received_rgb_sha256": "ecc12731c1ceafbe0a5d25b6a0b5dde0071e2b7d0e912911604decae9afd5b88",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "jpeg75",
+                "label": "JPEG quality 75: lossless contract violated",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 43283,
+                "verification_ms": 0.32913800009737315,
+                "received_rgb_sha256": "5fd7fcd1de90b2658150a913828f4f4bfbf442f7e1cee6f2568b97722cf472d7",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "wrong-key",
+                "label": "Unchanged pixels, wrong verification key",
+                "scenario_type": "context",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "invalid_signature_or_untrusted_key",
+                "changed_pixels": 0,
+                "verification_ms": 0.16709199996967072,
+                "received_rgb_sha256": "8580da8bc3a979a6272ff9dfb436e9cd76a29b02ddb9a5ccd09f2f4c610bcf01",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "wrong-id",
+                "label": "Unchanged pixels, wrong trusted version identifier",
+                "scenario_type": "context",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "identifier_mismatch",
+                "changed_pixels": 0,
+                "verification_ms": 0.030999000045994762,
+                "received_rgb_sha256": "8580da8bc3a979a6272ff9dfb436e9cd76a29b02ddb9a5ccd09f2f4c610bcf01",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "missing-evidence",
+                "scenario_type": "evidence",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "missing_or_oversized_evidence",
+                "changed_pixels": 0,
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "modified-evidence",
+                "scenario_type": "evidence",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "invalid_signature_or_untrusted_key",
+                "changed_pixels": 0,
+                "failed_blocks": null,
+                "localisation": null
+              }
+            ]
+          },
+          {
+            "method": "Signed tile manifest",
+            "reference_rgb_sha256": "8580da8bc3a979a6272ff9dfb436e9cd76a29b02ddb9a5ccd09f2f4c610bcf01",
+            "mse": 0.0,
+            "psnr_db": null,
+            "maximum_absolute_channel_change": 0,
+            "setup_ms": 2.1515309999813326,
+            "sidecar_bytes": 52793,
+            "reference_png_bytes": 46991,
+            "embedded_tag_payload_bits": 0,
+            "trust": "trusted public key plus trusted version ID and authentic sidecar",
+            "cases": [
+              {
+                "scenario": "intact",
+                "label": "Untouched protected image",
+                "scenario_type": "content",
+                "verdict": "VERIFIED",
+                "reason": "signed_pixels_match",
+                "changed_pixels": 0,
+                "verification_ms": 2.689086000032148,
+                "received_rgb_sha256": "8580da8bc3a979a6272ff9dfb436e9cd76a29b02ddb9a5ccd09f2f4c610bcf01",
+                "failed_blocks": 0,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 0,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 784
+                  },
+                  "block_iou": null,
+                  "expanded_block_pixel_iou": null
+                }
+              },
+              {
+                "scenario": "one-pixel",
+                "label": "One pixel: one embedded bit changed",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 1,
+                "verification_ms": 2.596783999933905,
+                "received_rgb_sha256": "bd5a0275ef5df4388fc86a799a406402fe540a45de026e5af3d05a2a025b59f1",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 783
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.015625
+                }
+              },
+              {
+                "scenario": "brightness",
+                "label": "Local brightness change (+12, clipped)",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 64,
+                "verification_ms": 2.5658510000994283,
+                "received_rgb_sha256": "6bb73af50ab5f5acfd7e717391293cabdecb83792b8717b17e8b333007c37050",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 783
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 1.0
+                }
+              },
+              {
+                "scenario": "boundary-patch",
+                "label": "15-pixel edit crossing block boundaries",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 15,
+                "verification_ms": 2.5867570000173146,
+                "received_rgb_sha256": "40209ce6fc95be81ad0f8ba6e8ec9194128de83a37ba6f5b66f2c0564de642fa",
+                "failed_blocks": 4,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 4,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 780
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.05859375
+                }
+              },
+              {
+                "scenario": "copy-move",
+                "label": "Protected block copied to a different address",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 64,
+                "verification_ms": 2.5740139999470557,
+                "received_rgb_sha256": "ecc12731c1ceafbe0a5d25b6a0b5dde0071e2b7d0e912911604decae9afd5b88",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 783
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 1.0
+                }
+              },
+              {
+                "scenario": "jpeg75",
+                "label": "JPEG quality 75: lossless contract violated",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 43283,
+                "verification_ms": 2.61080600000696,
+                "received_rgb_sha256": "5fd7fcd1de90b2658150a913828f4f4bfbf442f7e1cee6f2568b97722cf472d7",
+                "failed_blocks": 784,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 784,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 0
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.8626235650510204
+                }
+              },
+              {
+                "scenario": "wrong-key",
+                "label": "Unchanged pixels, wrong verification key",
+                "scenario_type": "context",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "invalid_signature_or_untrusted_key",
+                "changed_pixels": 0,
+                "verification_ms": 0.9367349999820362,
+                "received_rgb_sha256": "8580da8bc3a979a6272ff9dfb436e9cd76a29b02ddb9a5ccd09f2f4c610bcf01",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "wrong-id",
+                "label": "Unchanged pixels, wrong trusted version identifier",
+                "scenario_type": "context",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "identifier_mismatch",
+                "changed_pixels": 0,
+                "verification_ms": 0.08683700002620753,
+                "received_rgb_sha256": "8580da8bc3a979a6272ff9dfb436e9cd76a29b02ddb9a5ccd09f2f4c610bcf01",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "missing-evidence",
+                "scenario_type": "evidence",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "missing_or_oversized_evidence",
+                "changed_pixels": 0,
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "modified-evidence",
+                "scenario_type": "evidence",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "invalid_signature_or_untrusted_key",
+                "changed_pixels": 0,
+                "failed_blocks": null,
+                "localisation": null
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "user-supplied-2: dataset unverified",
+        "input_name": "ISIC_0000002.jpg",
+        "input_file_sha256": "18576a8b30f6ea1cf428cce0c388fafa4128777ee8e5c1058455150659dd4d86",
+        "input_rgb_sha256": "c90493798fe6d60c4e58e0ce79105fa5d4cd25f7e07ae9a35839ca00ff632e75",
+        "trusted_image_id": 4246,
+        "shape": [
+          224,
+          224,
+          3
+        ],
+        "methods": [
+          {
+            "method": "Embedded HMAC",
+            "reference_rgb_sha256": "a014b82c2a43590b82262bbd00b8434cd327bc61414a4417858c65b3e0b3ad1c",
+            "mse": 0.499820631377551,
+            "psnr_db": 51.142661820896905,
+            "maximum_absolute_channel_change": 1,
+            "setup_ms": 5.2033889999165694,
+            "sidecar_bytes": 0,
+            "reference_png_bytes": 73283,
+            "embedded_tag_payload_bits": 150528,
+            "trust": "shared secret key plus trusted version ID",
+            "cases": [
+              {
+                "scenario": "intact",
+                "label": "Untouched protected image",
+                "scenario_type": "content",
+                "verdict": "VERIFIED",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 0,
+                "verification_ms": 5.49362200001724,
+                "received_rgb_sha256": "a014b82c2a43590b82262bbd00b8434cd327bc61414a4417858c65b3e0b3ad1c",
+                "failed_blocks": 0,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 0,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 784
+                  },
+                  "block_iou": null,
+                  "expanded_block_pixel_iou": null
+                }
+              },
+              {
+                "scenario": "one-pixel",
+                "label": "One pixel: one embedded bit changed",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 1,
+                "verification_ms": 5.402431999982582,
+                "received_rgb_sha256": "bd1650c707947ec02d339a703778c63436854bc6693c7f9600698fbd9c1a4852",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 783
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.015625
+                }
+              },
+              {
+                "scenario": "brightness",
+                "label": "Local brightness change (+12, clipped)",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 64,
+                "verification_ms": 5.384723000020131,
+                "received_rgb_sha256": "a1a090a6058070d7a61ced9d068a975127175174ed1b21c4dfb85f0602c5b407",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 783
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 1.0
+                }
+              },
+              {
+                "scenario": "boundary-patch",
+                "label": "15-pixel edit crossing block boundaries",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 15,
+                "verification_ms": 5.329480999989755,
+                "received_rgb_sha256": "4687febd5cf9c5416d5b7157a404ca937b8b0ff91317abf0285ca3911bed0c93",
+                "failed_blocks": 4,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 4,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 780
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.05859375
+                }
+              },
+              {
+                "scenario": "copy-move",
+                "label": "Protected block copied to a different address",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 64,
+                "verification_ms": 5.396195999992415,
+                "received_rgb_sha256": "29e4f8ceb7f848e84e14e443ed24b663bbc9b6f16a58f71641dcda9c8f29f5eb",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 783
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 1.0
+                }
+              },
+              {
+                "scenario": "jpeg75",
+                "label": "JPEG quality 75: lossless contract violated",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 49716,
+                "verification_ms": 5.396188000077018,
+                "received_rgb_sha256": "431ca6a7337bf3d97dd0500be261b4462aee7c85dbf86e21047892876ebb143b",
+                "failed_blocks": 784,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 784,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 0
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.9908322704081632
+                }
+              },
+              {
+                "scenario": "wrong-key",
+                "label": "Unchanged pixels, wrong verification key",
+                "scenario_type": "context",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 0,
+                "verification_ms": 5.411469000023317,
+                "received_rgb_sha256": "a014b82c2a43590b82262bbd00b8434cd327bc61414a4417858c65b3e0b3ad1c",
+                "failed_blocks": 784,
+                "localisation": null
+              },
+              {
+                "scenario": "wrong-id",
+                "label": "Unchanged pixels, wrong trusted version identifier",
+                "scenario_type": "context",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 0,
+                "verification_ms": 5.397205000008398,
+                "received_rgb_sha256": "a014b82c2a43590b82262bbd00b8434cd327bc61414a4417858c65b3e0b3ad1c",
+                "failed_blocks": 784,
+                "localisation": null
+              }
+            ]
+          },
+          {
+            "method": "Whole-image signature",
+            "reference_rgb_sha256": "c90493798fe6d60c4e58e0ce79105fa5d4cd25f7e07ae9a35839ca00ff632e75",
+            "mse": 0.0,
+            "psnr_db": null,
+            "maximum_absolute_channel_change": 0,
+            "setup_ms": 0.26001799994901376,
+            "sidecar_bytes": 338,
+            "reference_png_bytes": 69443,
+            "embedded_tag_payload_bits": 0,
+            "trust": "trusted public key plus trusted version ID and authentic sidecar",
+            "cases": [
+              {
+                "scenario": "intact",
+                "label": "Untouched protected image",
+                "scenario_type": "content",
+                "verdict": "VERIFIED",
+                "reason": "signed_pixels_match",
+                "changed_pixels": 0,
+                "verification_ms": 0.39677600000231905,
+                "received_rgb_sha256": "c90493798fe6d60c4e58e0ce79105fa5d4cd25f7e07ae9a35839ca00ff632e75",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "one-pixel",
+                "label": "One pixel: one embedded bit changed",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 1,
+                "verification_ms": 0.2932170000349288,
+                "received_rgb_sha256": "8248d0997dfc444ac34ae8198c05c17cbcaa991c85b761dabd5d8252b98b1a96",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "brightness",
+                "label": "Local brightness change (+12, clipped)",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 64,
+                "verification_ms": 0.29524599995056633,
+                "received_rgb_sha256": "dbbaa275f8f5e3483f5f38034622e7421b1f89b8791cbf2eb93e2504e971652e",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "boundary-patch",
+                "label": "15-pixel edit crossing block boundaries",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 15,
+                "verification_ms": 0.28174600004149397,
+                "received_rgb_sha256": "4444613a0b2c7c082491ddffe2d7582549bda08e0124e5be77a6da6730f6a0fa",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "copy-move",
+                "label": "Protected block copied to a different address",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 64,
+                "verification_ms": 0.26831100001345476,
+                "received_rgb_sha256": "a55584eccc855a2c73e2920c96344eef2378898f15763230235cd18cc133ddbf",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "jpeg75",
+                "label": "JPEG quality 75: lossless contract violated",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 48021,
+                "verification_ms": 0.31327600004260603,
+                "received_rgb_sha256": "6e58d60fc2cd7b180b8f6db5891280d169ecb77d94e8264e94922af714e18e82",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "wrong-key",
+                "label": "Unchanged pixels, wrong verification key",
+                "scenario_type": "context",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "invalid_signature_or_untrusted_key",
+                "changed_pixels": 0,
+                "verification_ms": 0.16684399997757282,
+                "received_rgb_sha256": "c90493798fe6d60c4e58e0ce79105fa5d4cd25f7e07ae9a35839ca00ff632e75",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "wrong-id",
+                "label": "Unchanged pixels, wrong trusted version identifier",
+                "scenario_type": "context",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "identifier_mismatch",
+                "changed_pixels": 0,
+                "verification_ms": 0.027864000003319234,
+                "received_rgb_sha256": "c90493798fe6d60c4e58e0ce79105fa5d4cd25f7e07ae9a35839ca00ff632e75",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "missing-evidence",
+                "scenario_type": "evidence",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "missing_or_oversized_evidence",
+                "changed_pixels": 0,
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "modified-evidence",
+                "scenario_type": "evidence",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "invalid_signature_or_untrusted_key",
+                "changed_pixels": 0,
+                "failed_blocks": null,
+                "localisation": null
+              }
+            ]
+          },
+          {
+            "method": "Signed tile manifest",
+            "reference_rgb_sha256": "c90493798fe6d60c4e58e0ce79105fa5d4cd25f7e07ae9a35839ca00ff632e75",
+            "mse": 0.0,
+            "psnr_db": null,
+            "maximum_absolute_channel_change": 0,
+            "setup_ms": 2.0475840000244716,
+            "sidecar_bytes": 52793,
+            "reference_png_bytes": 69443,
+            "embedded_tag_payload_bits": 0,
+            "trust": "trusted public key plus trusted version ID and authentic sidecar",
+            "cases": [
+              {
+                "scenario": "intact",
+                "label": "Untouched protected image",
+                "scenario_type": "content",
+                "verdict": "VERIFIED",
+                "reason": "signed_pixels_match",
+                "changed_pixels": 0,
+                "verification_ms": 2.664255000013327,
+                "received_rgb_sha256": "c90493798fe6d60c4e58e0ce79105fa5d4cd25f7e07ae9a35839ca00ff632e75",
+                "failed_blocks": 0,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 0,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 784
+                  },
+                  "block_iou": null,
+                  "expanded_block_pixel_iou": null
+                }
+              },
+              {
+                "scenario": "one-pixel",
+                "label": "One pixel: one embedded bit changed",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 1,
+                "verification_ms": 2.592980999907013,
+                "received_rgb_sha256": "8248d0997dfc444ac34ae8198c05c17cbcaa991c85b761dabd5d8252b98b1a96",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 783
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.015625
+                }
+              },
+              {
+                "scenario": "brightness",
+                "label": "Local brightness change (+12, clipped)",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 64,
+                "verification_ms": 2.5676909999674535,
+                "received_rgb_sha256": "dbbaa275f8f5e3483f5f38034622e7421b1f89b8791cbf2eb93e2504e971652e",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 783
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 1.0
+                }
+              },
+              {
+                "scenario": "boundary-patch",
+                "label": "15-pixel edit crossing block boundaries",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 15,
+                "verification_ms": 2.555160999918371,
+                "received_rgb_sha256": "4444613a0b2c7c082491ddffe2d7582549bda08e0124e5be77a6da6730f6a0fa",
+                "failed_blocks": 4,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 4,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 780
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.05859375
+                }
+              },
+              {
+                "scenario": "copy-move",
+                "label": "Protected block copied to a different address",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 64,
+                "verification_ms": 2.5631889999431223,
+                "received_rgb_sha256": "a55584eccc855a2c73e2920c96344eef2378898f15763230235cd18cc133ddbf",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 783
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 1.0
+                }
+              },
+              {
+                "scenario": "jpeg75",
+                "label": "JPEG quality 75: lossless contract violated",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 48021,
+                "verification_ms": 2.6026650000403606,
+                "received_rgb_sha256": "6e58d60fc2cd7b180b8f6db5891280d169ecb77d94e8264e94922af714e18e82",
+                "failed_blocks": 784,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 784,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 0
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.9570511798469388
+                }
+              },
+              {
+                "scenario": "wrong-key",
+                "label": "Unchanged pixels, wrong verification key",
+                "scenario_type": "context",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "invalid_signature_or_untrusted_key",
+                "changed_pixels": 0,
+                "verification_ms": 0.9700919999886537,
+                "received_rgb_sha256": "c90493798fe6d60c4e58e0ce79105fa5d4cd25f7e07ae9a35839ca00ff632e75",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "wrong-id",
+                "label": "Unchanged pixels, wrong trusted version identifier",
+                "scenario_type": "context",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "identifier_mismatch",
+                "changed_pixels": 0,
+                "verification_ms": 0.08662100003675732,
+                "received_rgb_sha256": "c90493798fe6d60c4e58e0ce79105fa5d4cd25f7e07ae9a35839ca00ff632e75",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "missing-evidence",
+                "scenario_type": "evidence",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "missing_or_oversized_evidence",
+                "changed_pixels": 0,
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "modified-evidence",
+                "scenario_type": "evidence",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "invalid_signature_or_untrusted_key",
+                "changed_pixels": 0,
+                "failed_blocks": null,
+                "localisation": null
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "user-supplied-3: dataset unverified",
+        "input_name": "ISIC_0000003.jpg",
+        "input_file_sha256": "198c9d6a1a167b69801e431e6bf53f7324048722b7f6f61490f1f7f56e27c2d5",
+        "input_rgb_sha256": "39c59f35b747d056da64249e2cc3678887f41eaf748a4e793663f7d13dc65251",
+        "trusted_image_id": 4248,
+        "shape": [
+          224,
+          224,
+          3
+        ],
+        "methods": [
+          {
+            "method": "Embedded HMAC",
+            "reference_rgb_sha256": "4f7c0ad1227a7312ac46059b11acb8529361e0668a6347fcb6f475297132e4bd",
+            "mse": 0.5005580357142857,
+            "psnr_db": 51.136259231499245,
+            "maximum_absolute_channel_change": 1,
+            "setup_ms": 5.187970999941172,
+            "sidecar_bytes": 0,
+            "reference_png_bytes": 70818,
+            "embedded_tag_payload_bits": 150528,
+            "trust": "shared secret key plus trusted version ID",
+            "cases": [
+              {
+                "scenario": "intact",
+                "label": "Untouched protected image",
+                "scenario_type": "content",
+                "verdict": "VERIFIED",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 0,
+                "verification_ms": 6.373037000003023,
+                "received_rgb_sha256": "4f7c0ad1227a7312ac46059b11acb8529361e0668a6347fcb6f475297132e4bd",
+                "failed_blocks": 0,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 0,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 784
+                  },
+                  "block_iou": null,
+                  "expanded_block_pixel_iou": null
+                }
+              },
+              {
+                "scenario": "one-pixel",
+                "label": "One pixel: one embedded bit changed",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 1,
+                "verification_ms": 6.360502999996243,
+                "received_rgb_sha256": "1b24b50eaa53376d27f1f831c9e7c035bd3214803e9dda821d2ed6f41600a3c9",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 783
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.015625
+                }
+              },
+              {
+                "scenario": "brightness",
+                "label": "Local brightness change (+12, clipped)",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 64,
+                "verification_ms": 5.374262000032104,
+                "received_rgb_sha256": "5dd8df853b0a53153c6afaff442b3d07b8cad5c10c1f67c4977c5e36e8ee206c",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 783
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 1.0
+                }
+              },
+              {
+                "scenario": "boundary-patch",
+                "label": "15-pixel edit crossing block boundaries",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 15,
+                "verification_ms": 5.38193499994577,
+                "received_rgb_sha256": "1f0df14a597a83dfa6061fdf486e34fec38a5255b67466fecd611e13192390d3",
+                "failed_blocks": 4,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 4,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 780
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.05859375
+                }
+              },
+              {
+                "scenario": "copy-move",
+                "label": "Protected block copied to a different address",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 64,
+                "verification_ms": 5.30470699993657,
+                "received_rgb_sha256": "ae1daab26fa99688a145599946ee61673e0933675f47e3620ecd7d622298a771",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 783
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 1.0
+                }
+              },
+              {
+                "scenario": "jpeg75",
+                "label": "JPEG quality 75: lossless contract violated",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 49215,
+                "verification_ms": 5.404597999927319,
+                "received_rgb_sha256": "01734da5ae8052dd0a1937677a33c23b0248724e1b9f24ea14a2fabacdaff63b",
+                "failed_blocks": 784,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 784,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 0
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.9808474170918368
+                }
+              },
+              {
+                "scenario": "wrong-key",
+                "label": "Unchanged pixels, wrong verification key",
+                "scenario_type": "context",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 0,
+                "verification_ms": 5.4293799998959,
+                "received_rgb_sha256": "4f7c0ad1227a7312ac46059b11acb8529361e0668a6347fcb6f475297132e4bd",
+                "failed_blocks": 784,
+                "localisation": null
+              },
+              {
+                "scenario": "wrong-id",
+                "label": "Unchanged pixels, wrong trusted version identifier",
+                "scenario_type": "context",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 0,
+                "verification_ms": 5.538764999982959,
+                "received_rgb_sha256": "4f7c0ad1227a7312ac46059b11acb8529361e0668a6347fcb6f475297132e4bd",
+                "failed_blocks": 784,
+                "localisation": null
+              }
+            ]
+          },
+          {
+            "method": "Whole-image signature",
+            "reference_rgb_sha256": "39c59f35b747d056da64249e2cc3678887f41eaf748a4e793663f7d13dc65251",
+            "mse": 0.0,
+            "psnr_db": null,
+            "maximum_absolute_channel_change": 0,
+            "setup_ms": 0.2971190000380375,
+            "sidecar_bytes": 338,
+            "reference_png_bytes": 60212,
+            "embedded_tag_payload_bits": 0,
+            "trust": "trusted public key plus trusted version ID and authentic sidecar",
+            "cases": [
+              {
+                "scenario": "intact",
+                "label": "Untouched protected image",
+                "scenario_type": "content",
+                "verdict": "VERIFIED",
+                "reason": "signed_pixels_match",
+                "changed_pixels": 0,
+                "verification_ms": 0.40764699997453135,
+                "received_rgb_sha256": "39c59f35b747d056da64249e2cc3678887f41eaf748a4e793663f7d13dc65251",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "one-pixel",
+                "label": "One pixel: one embedded bit changed",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 1,
+                "verification_ms": 0.27957399993283616,
+                "received_rgb_sha256": "e09dbde5803bb1bbaabc4610656dcf150a5a6cbe0377ca0b0aa457b2c82cf6a0",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "brightness",
+                "label": "Local brightness change (+12, clipped)",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 64,
+                "verification_ms": 0.2694830000109505,
+                "received_rgb_sha256": "5b9f2e4562f80758932cad348f193c47a883be9c41848512d55e131ee5e00ae0",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "boundary-patch",
+                "label": "15-pixel edit crossing block boundaries",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 15,
+                "verification_ms": 0.2624269999387252,
+                "received_rgb_sha256": "f81b12e83c2f5d0fb5f382d43cd3717adaa9af65b4d5e80887c124a4f71a6b27",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "copy-move",
+                "label": "Protected block copied to a different address",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 64,
+                "verification_ms": 0.2562920000173108,
+                "received_rgb_sha256": "ef6842e4d6b0d12ff49bdeed7ab30eae7168e424d0e008a719fffc9e4cd10756",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "jpeg75",
+                "label": "JPEG quality 75: lossless contract violated",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 44628,
+                "verification_ms": 0.29953600005683256,
+                "received_rgb_sha256": "ba6e2917aef09d599bf4246d423c483b323b5b4b5af29c12833b56e6ed78487a",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "wrong-key",
+                "label": "Unchanged pixels, wrong verification key",
+                "scenario_type": "context",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "invalid_signature_or_untrusted_key",
+                "changed_pixels": 0,
+                "verification_ms": 0.20222399996328022,
+                "received_rgb_sha256": "39c59f35b747d056da64249e2cc3678887f41eaf748a4e793663f7d13dc65251",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "wrong-id",
+                "label": "Unchanged pixels, wrong trusted version identifier",
+                "scenario_type": "context",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "identifier_mismatch",
+                "changed_pixels": 0,
+                "verification_ms": 0.030526000045938417,
+                "received_rgb_sha256": "39c59f35b747d056da64249e2cc3678887f41eaf748a4e793663f7d13dc65251",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "missing-evidence",
+                "scenario_type": "evidence",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "missing_or_oversized_evidence",
+                "changed_pixels": 0,
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "modified-evidence",
+                "scenario_type": "evidence",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "invalid_signature_or_untrusted_key",
+                "changed_pixels": 0,
+                "failed_blocks": null,
+                "localisation": null
+              }
+            ]
+          },
+          {
+            "method": "Signed tile manifest",
+            "reference_rgb_sha256": "39c59f35b747d056da64249e2cc3678887f41eaf748a4e793663f7d13dc65251",
+            "mse": 0.0,
+            "psnr_db": null,
+            "maximum_absolute_channel_change": 0,
+            "setup_ms": 2.08479000002626,
+            "sidecar_bytes": 52793,
+            "reference_png_bytes": 60212,
+            "embedded_tag_payload_bits": 0,
+            "trust": "trusted public key plus trusted version ID and authentic sidecar",
+            "cases": [
+              {
+                "scenario": "intact",
+                "label": "Untouched protected image",
+                "scenario_type": "content",
+                "verdict": "VERIFIED",
+                "reason": "signed_pixels_match",
+                "changed_pixels": 0,
+                "verification_ms": 2.6757409999618176,
+                "received_rgb_sha256": "39c59f35b747d056da64249e2cc3678887f41eaf748a4e793663f7d13dc65251",
+                "failed_blocks": 0,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 0,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 784
+                  },
+                  "block_iou": null,
+                  "expanded_block_pixel_iou": null
+                }
+              },
+              {
+                "scenario": "one-pixel",
+                "label": "One pixel: one embedded bit changed",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 1,
+                "verification_ms": 2.599705999955404,
+                "received_rgb_sha256": "e09dbde5803bb1bbaabc4610656dcf150a5a6cbe0377ca0b0aa457b2c82cf6a0",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 783
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.015625
+                }
+              },
+              {
+                "scenario": "brightness",
+                "label": "Local brightness change (+12, clipped)",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 64,
+                "verification_ms": 2.5670229999832372,
+                "received_rgb_sha256": "5b9f2e4562f80758932cad348f193c47a883be9c41848512d55e131ee5e00ae0",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 783
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 1.0
+                }
+              },
+              {
+                "scenario": "boundary-patch",
+                "label": "15-pixel edit crossing block boundaries",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 15,
+                "verification_ms": 2.599321000047894,
+                "received_rgb_sha256": "f81b12e83c2f5d0fb5f382d43cd3717adaa9af65b4d5e80887c124a4f71a6b27",
+                "failed_blocks": 4,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 4,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 780
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.05859375
+                }
+              },
+              {
+                "scenario": "copy-move",
+                "label": "Protected block copied to a different address",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 64,
+                "verification_ms": 2.6218950000611585,
+                "received_rgb_sha256": "ef6842e4d6b0d12ff49bdeed7ab30eae7168e424d0e008a719fffc9e4cd10756",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 783
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 1.0
+                }
+              },
+              {
+                "scenario": "jpeg75",
+                "label": "JPEG quality 75: lossless contract violated",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 44628,
+                "verification_ms": 2.6608289999785484,
+                "received_rgb_sha256": "ba6e2917aef09d599bf4246d423c483b323b5b4b5af29c12833b56e6ed78487a",
+                "failed_blocks": 784,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 784,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 0
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.8894292091836735
+                }
+              },
+              {
+                "scenario": "wrong-key",
+                "label": "Unchanged pixels, wrong verification key",
+                "scenario_type": "context",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "invalid_signature_or_untrusted_key",
+                "changed_pixels": 0,
+                "verification_ms": 0.9758759999840549,
+                "received_rgb_sha256": "39c59f35b747d056da64249e2cc3678887f41eaf748a4e793663f7d13dc65251",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "wrong-id",
+                "label": "Unchanged pixels, wrong trusted version identifier",
+                "scenario_type": "context",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "identifier_mismatch",
+                "changed_pixels": 0,
+                "verification_ms": 0.08790699996552576,
+                "received_rgb_sha256": "39c59f35b747d056da64249e2cc3678887f41eaf748a4e793663f7d13dc65251",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "missing-evidence",
+                "scenario_type": "evidence",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "missing_or_oversized_evidence",
+                "changed_pixels": 0,
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "modified-evidence",
+                "scenario_type": "evidence",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "invalid_signature_or_untrusted_key",
+                "changed_pixels": 0,
+                "failed_blocks": null,
+                "localisation": null
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "synthetic_comparison": {
+    "protocol": "integrity-tradeoffs-v1",
+    "source_sha256": "0f70538dcc0a6f5d50c81702d8bc86bbb84f13d41fc2917d4ee86df9f996268f",
+    "synthetic": true,
+    "usable_as_isic_study": false,
+    "environment": {
+      "python": "3.11.2 (main, Apr  8 2026, 01:58:00) [GCC 12.2.0]",
+      "platform": "Linux-6.1.158+-x86_64-with-glibc2.36",
+      "machine": "x86_64",
+      "numpy": "1.26.4",
+      "Pillow": "13.0.0",
+      "cryptography": "50.0.2",
+      "command": [
+        "scripts/compare_integrity.py",
+        "--synthetic",
+        "--n",
+        "4",
+        "--out",
+        "/tmp/integrity-comparison-final/synthetic.json"
+      ]
+    },
+    "scope": "engineering trade-off comparison; not novelty, DICOM conformance or clinical validation",
+    "pairing": "same source/operator/coordinates; method-specific reference and measured truth; masks are NOT assumed identical",
+    "key_policy": "public deterministic benchmark keys; never production secrets",
+    "limitations": [
+      "Signed digests authenticate decoded RGB, not image file metadata.",
+      "No PKI, revocation, freshness authority or blockchain integration.",
+      "Tile hashes and signatures are standard baselines, not new cryptography.",
+      "Sidecar bytes are this JSON encoding, not an optimised storage lower bound.",
+      "Key distribution, certificates and trusted version-registry overhead are excluded for all methods.",
+      "No learned localisation, clinical fidelity or population accuracy inferred.",
+      "Replay is possible if the receiver accepts an old image and old signed manifest at a reused version ID.",
+      "Timings are single local CPU executions, not statistically stable benchmarks."
+    ],
+    "samples": [
+      {
+        "id": "fixture-0",
+        "input_name": null,
+        "input_file_sha256": null,
+        "input_rgb_sha256": "9f434535969944ce651d42cdfb2c405a22fed04fced11f92830cb5e1f74f1cd8",
+        "trusted_image_id": 4242,
+        "shape": [
+          512,
+          512,
+          3
+        ],
+        "methods": [
+          {
+            "method": "Embedded HMAC",
+            "reference_rgb_sha256": "3af9d6df83773b4064a8a20ad95b77c842f0d9575a39b61dc53484093d501061",
+            "mse": 0.5002721150716146,
+            "psnr_db": 51.138740646765456,
+            "maximum_absolute_channel_change": 1,
+            "setup_ms": 29.27045100000214,
+            "sidecar_bytes": 0,
+            "reference_png_bytes": 354647,
+            "embedded_tag_payload_bits": 786432,
+            "trust": "shared secret key plus trusted version ID",
+            "cases": [
+              {
+                "scenario": "intact",
+                "label": "Untouched protected image",
+                "scenario_type": "content",
+                "verdict": "VERIFIED",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 0,
+                "verification_ms": 34.41836899992268,
+                "received_rgb_sha256": "3af9d6df83773b4064a8a20ad95b77c842f0d9575a39b61dc53484093d501061",
+                "failed_blocks": 0,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 0,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 4096
+                  },
+                  "block_iou": null,
+                  "expanded_block_pixel_iou": null
+                }
+              },
+              {
+                "scenario": "one-pixel",
+                "label": "One pixel: one embedded bit changed",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 1,
+                "verification_ms": 31.542976999958228,
+                "received_rgb_sha256": "dd8618b783e4526892b5c5580627eebc79798d4a93480361a91b0b9be04692e0",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 4095
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.015625
+                }
+              },
+              {
+                "scenario": "brightness",
+                "label": "Local brightness change (+12, clipped)",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 64,
+                "verification_ms": 32.34868499998811,
+                "received_rgb_sha256": "df8a1c3b981182f8ed8252b37d05e0237f18995fb8440285b2f8656c70bfaa5a",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 4095
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 1.0
+                }
+              },
+              {
+                "scenario": "boundary-patch",
+                "label": "15-pixel edit crossing block boundaries",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 15,
+                "verification_ms": 32.99438499993812,
+                "received_rgb_sha256": "c8af4d438401a2796077854eea778e3067f2e8316f8332e5148d276b98e77eb1",
+                "failed_blocks": 4,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 4,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 4092
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.05859375
+                }
+              },
+              {
+                "scenario": "copy-move",
+                "label": "Protected block copied to a different address",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 64,
+                "verification_ms": 33.392007999964335,
+                "received_rgb_sha256": "289d2bef29eba0e63ad2aaccbaa45ad09d92d66b2814ac5a6f8b29ff68f49559",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 4095
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 1.0
+                }
+              },
+              {
+                "scenario": "jpeg75",
+                "label": "JPEG quality 75: lossless contract violated",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 258615,
+                "verification_ms": 31.49362800002109,
+                "received_rgb_sha256": "63c2f0d55c2fd2a9b1afa6fa493c2b4125682e250d8bc9584d34916369166493",
+                "failed_blocks": 4096,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 4096,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 0
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.9865379333496094
+                }
+              },
+              {
+                "scenario": "wrong-key",
+                "label": "Unchanged pixels, wrong verification key",
+                "scenario_type": "context",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 0,
+                "verification_ms": 29.22806499998387,
+                "received_rgb_sha256": "3af9d6df83773b4064a8a20ad95b77c842f0d9575a39b61dc53484093d501061",
+                "failed_blocks": 4096,
+                "localisation": null
+              },
+              {
+                "scenario": "wrong-id",
+                "label": "Unchanged pixels, wrong trusted version identifier",
+                "scenario_type": "context",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 0,
+                "verification_ms": 29.34983000000102,
+                "received_rgb_sha256": "3af9d6df83773b4064a8a20ad95b77c842f0d9575a39b61dc53484093d501061",
+                "failed_blocks": 4096,
+                "localisation": null
+              }
+            ]
+          },
+          {
+            "method": "Whole-image signature",
+            "reference_rgb_sha256": "9f434535969944ce651d42cdfb2c405a22fed04fced11f92830cb5e1f74f1cd8",
+            "mse": 0.0,
+            "psnr_db": null,
+            "maximum_absolute_channel_change": 0,
+            "setup_ms": 1.1103939999657086,
+            "sidecar_bytes": 338,
+            "reference_png_bytes": 261971,
+            "embedded_tag_payload_bits": 0,
+            "trust": "trusted public key plus trusted version ID and authentic sidecar",
+            "cases": [
+              {
+                "scenario": "intact",
+                "label": "Untouched protected image",
+                "scenario_type": "content",
+                "verdict": "VERIFIED",
+                "reason": "signed_pixels_match",
+                "changed_pixels": 0,
+                "verification_ms": 1.286047000007784,
+                "received_rgb_sha256": "9f434535969944ce651d42cdfb2c405a22fed04fced11f92830cb5e1f74f1cd8",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "one-pixel",
+                "label": "One pixel: one embedded bit changed",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 1,
+                "verification_ms": 0.866692999920815,
+                "received_rgb_sha256": "bc2f47c6230753f4d7250f2b8bde6aee1c17b25af669b141e5d1e2124bffcd26",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "brightness",
+                "label": "Local brightness change (+12, clipped)",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 64,
+                "verification_ms": 0.8502949999638076,
+                "received_rgb_sha256": "edd070a4086e79b95152153e33be75528b120953bfe77e7dfcdee0faf86828e4",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "boundary-patch",
+                "label": "15-pixel edit crossing block boundaries",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 15,
+                "verification_ms": 0.8713329999636699,
+                "received_rgb_sha256": "bdbcf7ae4c3f6f14b456f5eaed17bc4462d4e88355e44a8fe68464ddf3cd8027",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "copy-move",
+                "label": "Protected block copied to a different address",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 64,
+                "verification_ms": 0.8778359999723762,
+                "received_rgb_sha256": "279e8f8d36fe5290cffaac29b626fde8e7a54f3c8465a857fd9f82e09a83040b",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "jpeg75",
+                "label": "JPEG quality 75: lossless contract violated",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 250834,
+                "verification_ms": 0.9032220000335656,
+                "received_rgb_sha256": "9d158e3faf70726c055f961f83076b318cfaf5fb993583137b47c40c50ce9679",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "wrong-key",
+                "label": "Unchanged pixels, wrong verification key",
+                "scenario_type": "context",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "invalid_signature_or_untrusted_key",
+                "changed_pixels": 0,
+                "verification_ms": 0.23518299997249414,
+                "received_rgb_sha256": "9f434535969944ce651d42cdfb2c405a22fed04fced11f92830cb5e1f74f1cd8",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "wrong-id",
+                "label": "Unchanged pixels, wrong trusted version identifier",
+                "scenario_type": "context",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "identifier_mismatch",
+                "changed_pixels": 0,
+                "verification_ms": 0.07876300003317738,
+                "received_rgb_sha256": "9f434535969944ce651d42cdfb2c405a22fed04fced11f92830cb5e1f74f1cd8",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "missing-evidence",
+                "scenario_type": "evidence",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "missing_or_oversized_evidence",
+                "changed_pixels": 0,
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "modified-evidence",
+                "scenario_type": "evidence",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "invalid_signature_or_untrusted_key",
+                "changed_pixels": 0,
+                "failed_blocks": null,
+                "localisation": null
+              }
+            ]
+          },
+          {
+            "method": "Signed tile manifest",
+            "reference_rgb_sha256": "9f434535969944ce651d42cdfb2c405a22fed04fced11f92830cb5e1f74f1cd8",
+            "mse": 0.0,
+            "psnr_db": null,
+            "maximum_absolute_channel_change": 0,
+            "setup_ms": 10.824668999930509,
+            "sidecar_bytes": 274697,
+            "reference_png_bytes": 261971,
+            "embedded_tag_payload_bits": 0,
+            "trust": "trusted public key plus trusted version ID and authentic sidecar",
+            "cases": [
+              {
+                "scenario": "intact",
+                "label": "Untouched protected image",
+                "scenario_type": "content",
+                "verdict": "VERIFIED",
+                "reason": "signed_pixels_match",
+                "changed_pixels": 0,
+                "verification_ms": 13.24535600008403,
+                "received_rgb_sha256": "9f434535969944ce651d42cdfb2c405a22fed04fced11f92830cb5e1f74f1cd8",
+                "failed_blocks": 0,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 0,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 4096
+                  },
+                  "block_iou": null,
+                  "expanded_block_pixel_iou": null
+                }
+              },
+              {
+                "scenario": "one-pixel",
+                "label": "One pixel: one embedded bit changed",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 1,
+                "verification_ms": 13.026885000044786,
+                "received_rgb_sha256": "bc2f47c6230753f4d7250f2b8bde6aee1c17b25af669b141e5d1e2124bffcd26",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 4095
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.015625
+                }
+              },
+              {
+                "scenario": "brightness",
+                "label": "Local brightness change (+12, clipped)",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 64,
+                "verification_ms": 13.019912000004297,
+                "received_rgb_sha256": "edd070a4086e79b95152153e33be75528b120953bfe77e7dfcdee0faf86828e4",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 4095
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 1.0
+                }
+              },
+              {
+                "scenario": "boundary-patch",
+                "label": "15-pixel edit crossing block boundaries",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 15,
+                "verification_ms": 12.928370000054201,
+                "received_rgb_sha256": "bdbcf7ae4c3f6f14b456f5eaed17bc4462d4e88355e44a8fe68464ddf3cd8027",
+                "failed_blocks": 4,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 4,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 4092
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.05859375
+                }
+              },
+              {
+                "scenario": "copy-move",
+                "label": "Protected block copied to a different address",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 64,
+                "verification_ms": 13.750028000004022,
+                "received_rgb_sha256": "279e8f8d36fe5290cffaac29b626fde8e7a54f3c8465a857fd9f82e09a83040b",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 4095
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 1.0
+                }
+              },
+              {
+                "scenario": "jpeg75",
+                "label": "JPEG quality 75: lossless contract violated",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 250834,
+                "verification_ms": 13.352625000038643,
+                "received_rgb_sha256": "9d158e3faf70726c055f961f83076b318cfaf5fb993583137b47c40c50ce9679",
+                "failed_blocks": 4096,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 4096,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 0
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.9568557739257812
+                }
+              },
+              {
+                "scenario": "wrong-key",
+                "label": "Unchanged pixels, wrong verification key",
+                "scenario_type": "context",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "invalid_signature_or_untrusted_key",
+                "changed_pixels": 0,
+                "verification_ms": 4.778296999916165,
+                "received_rgb_sha256": "9f434535969944ce651d42cdfb2c405a22fed04fced11f92830cb5e1f74f1cd8",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "wrong-id",
+                "label": "Unchanged pixels, wrong trusted version identifier",
+                "scenario_type": "context",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "identifier_mismatch",
+                "changed_pixels": 0,
+                "verification_ms": 0.39402000004429283,
+                "received_rgb_sha256": "9f434535969944ce651d42cdfb2c405a22fed04fced11f92830cb5e1f74f1cd8",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "missing-evidence",
+                "scenario_type": "evidence",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "missing_or_oversized_evidence",
+                "changed_pixels": 0,
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "modified-evidence",
+                "scenario_type": "evidence",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "invalid_signature_or_untrusted_key",
+                "changed_pixels": 0,
+                "failed_blocks": null,
+                "localisation": null
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "fixture-1",
+        "input_name": null,
+        "input_file_sha256": null,
+        "input_rgb_sha256": "143bc414905810b60e5e1f8d4cb1e249854fff3fdc526aea971f9b0d7476ffc2",
+        "trusted_image_id": 4244,
+        "shape": [
+          512,
+          512,
+          3
+        ],
+        "methods": [
+          {
+            "method": "Embedded HMAC",
+            "reference_rgb_sha256": "ee50124d8535b237560a8c9dc8aef4e4230fca587aefbdb5b0e613c32ca7f67d",
+            "mse": 0.5002326965332031,
+            "psnr_db": 51.139082859087225,
+            "maximum_absolute_channel_change": 1,
+            "setup_ms": 28.07941200001096,
+            "sidecar_bytes": 0,
+            "reference_png_bytes": 354324,
+            "embedded_tag_payload_bits": 786432,
+            "trust": "shared secret key plus trusted version ID",
+            "cases": [
+              {
+                "scenario": "intact",
+                "label": "Untouched protected image",
+                "scenario_type": "content",
+                "verdict": "VERIFIED",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 0,
+                "verification_ms": 29.619621000051666,
+                "received_rgb_sha256": "ee50124d8535b237560a8c9dc8aef4e4230fca587aefbdb5b0e613c32ca7f67d",
+                "failed_blocks": 0,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 0,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 4096
+                  },
+                  "block_iou": null,
+                  "expanded_block_pixel_iou": null
+                }
+              },
+              {
+                "scenario": "one-pixel",
+                "label": "One pixel: one embedded bit changed",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 1,
+                "verification_ms": 29.43876500000897,
+                "received_rgb_sha256": "477d775f47e9b6fc3a2ef46e202104fd0d2eb4523dcd6e94cff815c10ab99db4",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 4095
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.015625
+                }
+              },
+              {
+                "scenario": "brightness",
+                "label": "Local brightness change (+12, clipped)",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 64,
+                "verification_ms": 28.814322000016546,
+                "received_rgb_sha256": "c2c2ab1fa976c1e83ef8e2e8d172bfee8cde4ca673a49e75d2f47d756cc18a20",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 4095
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 1.0
+                }
+              },
+              {
+                "scenario": "boundary-patch",
+                "label": "15-pixel edit crossing block boundaries",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 15,
+                "verification_ms": 28.873667999960162,
+                "received_rgb_sha256": "e2bba1600b73c2208a1528c5f9891b4cb1e4b49d1c8213c3ad2c0e4f538ee463",
+                "failed_blocks": 4,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 4,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 4092
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.05859375
+                }
+              },
+              {
+                "scenario": "copy-move",
+                "label": "Protected block copied to a different address",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 64,
+                "verification_ms": 28.94096600005014,
+                "received_rgb_sha256": "54cf5db37e570d3c1d82fae2b7785b16771fa6682b9b88d20e9a5dfd8a7defba",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 4095
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 1.0
+                }
+              },
+              {
+                "scenario": "jpeg75",
+                "label": "JPEG quality 75: lossless contract violated",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 258551,
+                "verification_ms": 28.98058100004164,
+                "received_rgb_sha256": "b8244626d99d0126c7b7539b4d1152589374e06110a1f431c322514bbee7fbd3",
+                "failed_blocks": 4096,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 4096,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 0
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.9862937927246094
+                }
+              },
+              {
+                "scenario": "wrong-key",
+                "label": "Unchanged pixels, wrong verification key",
+                "scenario_type": "context",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 0,
+                "verification_ms": 28.62086300001465,
+                "received_rgb_sha256": "ee50124d8535b237560a8c9dc8aef4e4230fca587aefbdb5b0e613c32ca7f67d",
+                "failed_blocks": 4096,
+                "localisation": null
+              },
+              {
+                "scenario": "wrong-id",
+                "label": "Unchanged pixels, wrong trusted version identifier",
+                "scenario_type": "context",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 0,
+                "verification_ms": 28.74843300003249,
+                "received_rgb_sha256": "ee50124d8535b237560a8c9dc8aef4e4230fca587aefbdb5b0e613c32ca7f67d",
+                "failed_blocks": 4096,
+                "localisation": null
+              }
+            ]
+          },
+          {
+            "method": "Whole-image signature",
+            "reference_rgb_sha256": "143bc414905810b60e5e1f8d4cb1e249854fff3fdc526aea971f9b0d7476ffc2",
+            "mse": 0.0,
+            "psnr_db": null,
+            "maximum_absolute_channel_change": 0,
+            "setup_ms": 0.9632439999904818,
+            "sidecar_bytes": 338,
+            "reference_png_bytes": 261788,
+            "embedded_tag_payload_bits": 0,
+            "trust": "trusted public key plus trusted version ID and authentic sidecar",
+            "cases": [
+              {
+                "scenario": "intact",
+                "label": "Untouched protected image",
+                "scenario_type": "content",
+                "verdict": "VERIFIED",
+                "reason": "signed_pixels_match",
+                "changed_pixels": 0,
+                "verification_ms": 1.0602950000020428,
+                "received_rgb_sha256": "143bc414905810b60e5e1f8d4cb1e249854fff3fdc526aea971f9b0d7476ffc2",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "one-pixel",
+                "label": "One pixel: one embedded bit changed",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 1,
+                "verification_ms": 0.9041419999675782,
+                "received_rgb_sha256": "76e66f6f2493adce904f0b73f717aaa1b37ac87d7289069fd1abef631acc905a",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "brightness",
+                "label": "Local brightness change (+12, clipped)",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 64,
+                "verification_ms": 0.875726999993276,
+                "received_rgb_sha256": "43588ff7d832be58d087df2483c9b38df453455dbbf587133af76a41882c89b6",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "boundary-patch",
+                "label": "15-pixel edit crossing block boundaries",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 15,
+                "verification_ms": 0.9198039999773755,
+                "received_rgb_sha256": "5e82f5203fcc6acc1db1a6fe5540dc21eca9db2a8d6620446712a68f1ef72cb2",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "copy-move",
+                "label": "Protected block copied to a different address",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 64,
+                "verification_ms": 0.8853150000049936,
+                "received_rgb_sha256": "7becb9a550a412c01ffb10d772cc686004dcdf1dcb14993da884bc4dbc71cf3a",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "jpeg75",
+                "label": "JPEG quality 75: lossless contract violated",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 250882,
+                "verification_ms": 0.85035400002198,
+                "received_rgb_sha256": "3cc5c44ad6330144f58491cf68981f6ef0915b90e9992624e73ed13858933096",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "wrong-key",
+                "label": "Unchanged pixels, wrong verification key",
+                "scenario_type": "context",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "invalid_signature_or_untrusted_key",
+                "changed_pixels": 0,
+                "verification_ms": 0.20672999994530983,
+                "received_rgb_sha256": "143bc414905810b60e5e1f8d4cb1e249854fff3fdc526aea971f9b0d7476ffc2",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "wrong-id",
+                "label": "Unchanged pixels, wrong trusted version identifier",
+                "scenario_type": "context",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "identifier_mismatch",
+                "changed_pixels": 0,
+                "verification_ms": 0.058364999972582154,
+                "received_rgb_sha256": "143bc414905810b60e5e1f8d4cb1e249854fff3fdc526aea971f9b0d7476ffc2",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "missing-evidence",
+                "scenario_type": "evidence",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "missing_or_oversized_evidence",
+                "changed_pixels": 0,
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "modified-evidence",
+                "scenario_type": "evidence",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "invalid_signature_or_untrusted_key",
+                "changed_pixels": 0,
+                "failed_blocks": null,
+                "localisation": null
+              }
+            ]
+          },
+          {
+            "method": "Signed tile manifest",
+            "reference_rgb_sha256": "143bc414905810b60e5e1f8d4cb1e249854fff3fdc526aea971f9b0d7476ffc2",
+            "mse": 0.0,
+            "psnr_db": null,
+            "maximum_absolute_channel_change": 0,
+            "setup_ms": 10.47793499992622,
+            "sidecar_bytes": 274697,
+            "reference_png_bytes": 261788,
+            "embedded_tag_payload_bits": 0,
+            "trust": "trusted public key plus trusted version ID and authentic sidecar",
+            "cases": [
+              {
+                "scenario": "intact",
+                "label": "Untouched protected image",
+                "scenario_type": "content",
+                "verdict": "VERIFIED",
+                "reason": "signed_pixels_match",
+                "changed_pixels": 0,
+                "verification_ms": 14.216470999940611,
+                "received_rgb_sha256": "143bc414905810b60e5e1f8d4cb1e249854fff3fdc526aea971f9b0d7476ffc2",
+                "failed_blocks": 0,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 0,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 4096
+                  },
+                  "block_iou": null,
+                  "expanded_block_pixel_iou": null
+                }
+              },
+              {
+                "scenario": "one-pixel",
+                "label": "One pixel: one embedded bit changed",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 1,
+                "verification_ms": 13.081766000027528,
+                "received_rgb_sha256": "76e66f6f2493adce904f0b73f717aaa1b37ac87d7289069fd1abef631acc905a",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 4095
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.015625
+                }
+              },
+              {
+                "scenario": "brightness",
+                "label": "Local brightness change (+12, clipped)",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 64,
+                "verification_ms": 12.99399300000914,
+                "received_rgb_sha256": "43588ff7d832be58d087df2483c9b38df453455dbbf587133af76a41882c89b6",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 4095
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 1.0
+                }
+              },
+              {
+                "scenario": "boundary-patch",
+                "label": "15-pixel edit crossing block boundaries",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 15,
+                "verification_ms": 13.021002999948905,
+                "received_rgb_sha256": "5e82f5203fcc6acc1db1a6fe5540dc21eca9db2a8d6620446712a68f1ef72cb2",
+                "failed_blocks": 4,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 4,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 4092
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.05859375
+                }
+              },
+              {
+                "scenario": "copy-move",
+                "label": "Protected block copied to a different address",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 64,
+                "verification_ms": 13.153972999930374,
+                "received_rgb_sha256": "7becb9a550a412c01ffb10d772cc686004dcdf1dcb14993da884bc4dbc71cf3a",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 4095
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 1.0
+                }
+              },
+              {
+                "scenario": "jpeg75",
+                "label": "JPEG quality 75: lossless contract violated",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 250882,
+                "verification_ms": 13.041835999956675,
+                "received_rgb_sha256": "3cc5c44ad6330144f58491cf68981f6ef0915b90e9992624e73ed13858933096",
+                "failed_blocks": 4096,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 4096,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 0
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.9570388793945312
+                }
+              },
+              {
+                "scenario": "wrong-key",
+                "label": "Unchanged pixels, wrong verification key",
+                "scenario_type": "context",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "invalid_signature_or_untrusted_key",
+                "changed_pixels": 0,
+                "verification_ms": 4.434806999938701,
+                "received_rgb_sha256": "143bc414905810b60e5e1f8d4cb1e249854fff3fdc526aea971f9b0d7476ffc2",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "wrong-id",
+                "label": "Unchanged pixels, wrong trusted version identifier",
+                "scenario_type": "context",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "identifier_mismatch",
+                "changed_pixels": 0,
+                "verification_ms": 0.3963489999705416,
+                "received_rgb_sha256": "143bc414905810b60e5e1f8d4cb1e249854fff3fdc526aea971f9b0d7476ffc2",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "missing-evidence",
+                "scenario_type": "evidence",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "missing_or_oversized_evidence",
+                "changed_pixels": 0,
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "modified-evidence",
+                "scenario_type": "evidence",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "invalid_signature_or_untrusted_key",
+                "changed_pixels": 0,
+                "failed_blocks": null,
+                "localisation": null
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "fixture-2",
+        "input_name": null,
+        "input_file_sha256": null,
+        "input_rgb_sha256": "58733c54a305fcfe769ad3731232139c67abd1d1b274b5b54c6cf35bee9420eb",
+        "trusted_image_id": 4246,
+        "shape": [
+          512,
+          512,
+          3
+        ],
+        "methods": [
+          {
+            "method": "Embedded HMAC",
+            "reference_rgb_sha256": "825988bd509724a5667490cfd1f3a8fba59bba09b8fa956518f2fcedaf473e8c",
+            "mse": 0.5005060831705729,
+            "psnr_db": 51.136710005883224,
+            "maximum_absolute_channel_change": 1,
+            "setup_ms": 28.162248000057843,
+            "sidecar_bytes": 0,
+            "reference_png_bytes": 354160,
+            "embedded_tag_payload_bits": 786432,
+            "trust": "shared secret key plus trusted version ID",
+            "cases": [
+              {
+                "scenario": "intact",
+                "label": "Untouched protected image",
+                "scenario_type": "content",
+                "verdict": "VERIFIED",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 0,
+                "verification_ms": 29.387843999984398,
+                "received_rgb_sha256": "825988bd509724a5667490cfd1f3a8fba59bba09b8fa956518f2fcedaf473e8c",
+                "failed_blocks": 0,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 0,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 4096
+                  },
+                  "block_iou": null,
+                  "expanded_block_pixel_iou": null
+                }
+              },
+              {
+                "scenario": "one-pixel",
+                "label": "One pixel: one embedded bit changed",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 1,
+                "verification_ms": 30.350821999945765,
+                "received_rgb_sha256": "10faf0b1f426e42f800ab93925886c3b65e7e38ace1afe0420289684572cbef4",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 4095
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.015625
+                }
+              },
+              {
+                "scenario": "brightness",
+                "label": "Local brightness change (+12, clipped)",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 64,
+                "verification_ms": 30.344630999934452,
+                "received_rgb_sha256": "4d075e021c111d6521150a460e4a62606d05c9590239f6782cd9c107feebc5c4",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 4095
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 1.0
+                }
+              },
+              {
+                "scenario": "boundary-patch",
+                "label": "15-pixel edit crossing block boundaries",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 15,
+                "verification_ms": 29.781464000052438,
+                "received_rgb_sha256": "14ce776af9ed6a2c1790d32f1553fb9177ec64be0cee67ebfecf7e28293068a6",
+                "failed_blocks": 4,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 4,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 4092
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.05859375
+                }
+              },
+              {
+                "scenario": "copy-move",
+                "label": "Protected block copied to a different address",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 64,
+                "verification_ms": 30.593436999993173,
+                "received_rgb_sha256": "7d5d27629075bdca3f4f5baa93e2b44cc194d1d63a0c85e6db83b04cc057f9c2",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 4095
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 1.0
+                }
+              },
+              {
+                "scenario": "jpeg75",
+                "label": "JPEG quality 75: lossless contract violated",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 258648,
+                "verification_ms": 29.103609000003416,
+                "received_rgb_sha256": "768616da129736cc5eb4afca62ea1f1bd724aab3ea90e9b23b4fef7203dab65e",
+                "failed_blocks": 4096,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 4096,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 0
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.986663818359375
+                }
+              },
+              {
+                "scenario": "wrong-key",
+                "label": "Unchanged pixels, wrong verification key",
+                "scenario_type": "context",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 0,
+                "verification_ms": 28.663664999953653,
+                "received_rgb_sha256": "825988bd509724a5667490cfd1f3a8fba59bba09b8fa956518f2fcedaf473e8c",
+                "failed_blocks": 4096,
+                "localisation": null
+              },
+              {
+                "scenario": "wrong-id",
+                "label": "Unchanged pixels, wrong trusted version identifier",
+                "scenario_type": "context",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 0,
+                "verification_ms": 28.685201999905985,
+                "received_rgb_sha256": "825988bd509724a5667490cfd1f3a8fba59bba09b8fa956518f2fcedaf473e8c",
+                "failed_blocks": 4096,
+                "localisation": null
+              }
+            ]
+          },
+          {
+            "method": "Whole-image signature",
+            "reference_rgb_sha256": "58733c54a305fcfe769ad3731232139c67abd1d1b274b5b54c6cf35bee9420eb",
+            "mse": 0.0,
+            "psnr_db": null,
+            "maximum_absolute_channel_change": 0,
+            "setup_ms": 0.949783999999454,
+            "sidecar_bytes": 338,
+            "reference_png_bytes": 261445,
+            "embedded_tag_payload_bits": 0,
+            "trust": "trusted public key plus trusted version ID and authentic sidecar",
+            "cases": [
+              {
+                "scenario": "intact",
+                "label": "Untouched protected image",
+                "scenario_type": "content",
+                "verdict": "VERIFIED",
+                "reason": "signed_pixels_match",
+                "changed_pixels": 0,
+                "verification_ms": 1.0471729999608215,
+                "received_rgb_sha256": "58733c54a305fcfe769ad3731232139c67abd1d1b274b5b54c6cf35bee9420eb",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "one-pixel",
+                "label": "One pixel: one embedded bit changed",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 1,
+                "verification_ms": 0.931306999973458,
+                "received_rgb_sha256": "c0e020f392ccdf1e46d8d80a4dd38af70d5de31e310dc5bcacef9556928f0042",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "brightness",
+                "label": "Local brightness change (+12, clipped)",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 64,
+                "verification_ms": 0.8570169999302379,
+                "received_rgb_sha256": "e6244cb9719514c74f1a5199371eaa5b01259e953c8ffd958a2ee4131bd6f5c4",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "boundary-patch",
+                "label": "15-pixel edit crossing block boundaries",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 15,
+                "verification_ms": 0.8900689999791211,
+                "received_rgb_sha256": "5c5c9c5d70dfb38a9d96ebb5ba80b73be1e894f0de450517262a974da03c449b",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "copy-move",
+                "label": "Protected block copied to a different address",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 64,
+                "verification_ms": 0.846342000045297,
+                "received_rgb_sha256": "78e858380a1eab45217f39177b38ef28780a1b82da8de857f5678cf0b0d5ecbc",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "jpeg75",
+                "label": "JPEG quality 75: lossless contract violated",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 250802,
+                "verification_ms": 0.8433510000713795,
+                "received_rgb_sha256": "263c1631ef2701938a4c3f72995b78c383202e9de45b2099a48f9a60b53b8679",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "wrong-key",
+                "label": "Unchanged pixels, wrong verification key",
+                "scenario_type": "context",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "invalid_signature_or_untrusted_key",
+                "changed_pixels": 0,
+                "verification_ms": 0.20744699997976568,
+                "received_rgb_sha256": "58733c54a305fcfe769ad3731232139c67abd1d1b274b5b54c6cf35bee9420eb",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "wrong-id",
+                "label": "Unchanged pixels, wrong trusted version identifier",
+                "scenario_type": "context",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "identifier_mismatch",
+                "changed_pixels": 0,
+                "verification_ms": 0.09496699999544944,
+                "received_rgb_sha256": "58733c54a305fcfe769ad3731232139c67abd1d1b274b5b54c6cf35bee9420eb",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "missing-evidence",
+                "scenario_type": "evidence",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "missing_or_oversized_evidence",
+                "changed_pixels": 0,
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "modified-evidence",
+                "scenario_type": "evidence",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "invalid_signature_or_untrusted_key",
+                "changed_pixels": 0,
+                "failed_blocks": null,
+                "localisation": null
+              }
+            ]
+          },
+          {
+            "method": "Signed tile manifest",
+            "reference_rgb_sha256": "58733c54a305fcfe769ad3731232139c67abd1d1b274b5b54c6cf35bee9420eb",
+            "mse": 0.0,
+            "psnr_db": null,
+            "maximum_absolute_channel_change": 0,
+            "setup_ms": 10.47610699993129,
+            "sidecar_bytes": 274697,
+            "reference_png_bytes": 261445,
+            "embedded_tag_payload_bits": 0,
+            "trust": "trusted public key plus trusted version ID and authentic sidecar",
+            "cases": [
+              {
+                "scenario": "intact",
+                "label": "Untouched protected image",
+                "scenario_type": "content",
+                "verdict": "VERIFIED",
+                "reason": "signed_pixels_match",
+                "changed_pixels": 0,
+                "verification_ms": 13.668800000004921,
+                "received_rgb_sha256": "58733c54a305fcfe769ad3731232139c67abd1d1b274b5b54c6cf35bee9420eb",
+                "failed_blocks": 0,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 0,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 4096
+                  },
+                  "block_iou": null,
+                  "expanded_block_pixel_iou": null
+                }
+              },
+              {
+                "scenario": "one-pixel",
+                "label": "One pixel: one embedded bit changed",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 1,
+                "verification_ms": 13.212891000080162,
+                "received_rgb_sha256": "c0e020f392ccdf1e46d8d80a4dd38af70d5de31e310dc5bcacef9556928f0042",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 4095
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.015625
+                }
+              },
+              {
+                "scenario": "brightness",
+                "label": "Local brightness change (+12, clipped)",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 64,
+                "verification_ms": 12.709191999988434,
+                "received_rgb_sha256": "e6244cb9719514c74f1a5199371eaa5b01259e953c8ffd958a2ee4131bd6f5c4",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 4095
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 1.0
+                }
+              },
+              {
+                "scenario": "boundary-patch",
+                "label": "15-pixel edit crossing block boundaries",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 15,
+                "verification_ms": 12.93292200000451,
+                "received_rgb_sha256": "5c5c9c5d70dfb38a9d96ebb5ba80b73be1e894f0de450517262a974da03c449b",
+                "failed_blocks": 4,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 4,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 4092
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.05859375
+                }
+              },
+              {
+                "scenario": "copy-move",
+                "label": "Protected block copied to a different address",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 64,
+                "verification_ms": 13.022645999967608,
+                "received_rgb_sha256": "78e858380a1eab45217f39177b38ef28780a1b82da8de857f5678cf0b0d5ecbc",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 4095
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 1.0
+                }
+              },
+              {
+                "scenario": "jpeg75",
+                "label": "JPEG quality 75: lossless contract violated",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 250802,
+                "verification_ms": 14.56830600000103,
+                "received_rgb_sha256": "263c1631ef2701938a4c3f72995b78c383202e9de45b2099a48f9a60b53b8679",
+                "failed_blocks": 4096,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 4096,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 0
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.9567337036132812
+                }
+              },
+              {
+                "scenario": "wrong-key",
+                "label": "Unchanged pixels, wrong verification key",
+                "scenario_type": "context",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "invalid_signature_or_untrusted_key",
+                "changed_pixels": 0,
+                "verification_ms": 5.809712999962358,
+                "received_rgb_sha256": "58733c54a305fcfe769ad3731232139c67abd1d1b274b5b54c6cf35bee9420eb",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "wrong-id",
+                "label": "Unchanged pixels, wrong trusted version identifier",
+                "scenario_type": "context",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "identifier_mismatch",
+                "changed_pixels": 0,
+                "verification_ms": 0.39385200000197074,
+                "received_rgb_sha256": "58733c54a305fcfe769ad3731232139c67abd1d1b274b5b54c6cf35bee9420eb",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "missing-evidence",
+                "scenario_type": "evidence",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "missing_or_oversized_evidence",
+                "changed_pixels": 0,
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "modified-evidence",
+                "scenario_type": "evidence",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "invalid_signature_or_untrusted_key",
+                "changed_pixels": 0,
+                "failed_blocks": null,
+                "localisation": null
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "fixture-3",
+        "input_name": null,
+        "input_file_sha256": null,
+        "input_rgb_sha256": "d92fdb43ba1a1bd9d5a46e7a8852dd10ba488776c4e2504da958d2a8613bc972",
+        "trusted_image_id": 4248,
+        "shape": [
+          512,
+          512,
+          3
+        ],
+        "methods": [
+          {
+            "method": "Embedded HMAC",
+            "reference_rgb_sha256": "e4fbe97ae398cb98dbff00faa6efe5e02d710f28cfb77bd6085ac804999e69ec",
+            "mse": 0.49989573160807294,
+            "psnr_db": 51.14200932350917,
+            "maximum_absolute_channel_change": 1,
+            "setup_ms": 28.50309100006143,
+            "sidecar_bytes": 0,
+            "reference_png_bytes": 354412,
+            "embedded_tag_payload_bits": 786432,
+            "trust": "shared secret key plus trusted version ID",
+            "cases": [
+              {
+                "scenario": "intact",
+                "label": "Untouched protected image",
+                "scenario_type": "content",
+                "verdict": "VERIFIED",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 0,
+                "verification_ms": 30.60801700007687,
+                "received_rgb_sha256": "e4fbe97ae398cb98dbff00faa6efe5e02d710f28cfb77bd6085ac804999e69ec",
+                "failed_blocks": 0,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 0,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 4096
+                  },
+                  "block_iou": null,
+                  "expanded_block_pixel_iou": null
+                }
+              },
+              {
+                "scenario": "one-pixel",
+                "label": "One pixel: one embedded bit changed",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 1,
+                "verification_ms": 29.362848000005215,
+                "received_rgb_sha256": "2e76e9e27fa95b380cd2fa662bf7d09677edac8b4e6586f0f58871153b3b7388",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 4095
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.015625
+                }
+              },
+              {
+                "scenario": "brightness",
+                "label": "Local brightness change (+12, clipped)",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 64,
+                "verification_ms": 37.014034999970136,
+                "received_rgb_sha256": "a9324e87b1db1c6eaaffb230911225d094f2bc3854628d26d4b7e1dcfbf23772",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 4095
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 1.0
+                }
+              },
+              {
+                "scenario": "boundary-patch",
+                "label": "15-pixel edit crossing block boundaries",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 15,
+                "verification_ms": 28.91277200001241,
+                "received_rgb_sha256": "b5cf79b40ea86e40b9220ea563a6a70027431b900f6875de2d0b9815c2b2a41d",
+                "failed_blocks": 4,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 4,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 4092
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.05859375
+                }
+              },
+              {
+                "scenario": "copy-move",
+                "label": "Protected block copied to a different address",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 64,
+                "verification_ms": 33.96739599998,
+                "received_rgb_sha256": "20c045a641e3e1f382703d2049fb04e80b37d4145bfd1d274381c4a1d07162ab",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 4095
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 1.0
+                }
+              },
+              {
+                "scenario": "jpeg75",
+                "label": "JPEG quality 75: lossless contract violated",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 258511,
+                "verification_ms": 29.55935500006035,
+                "received_rgb_sha256": "079e8f2b2a136ef3ae76443ed499fe1bba7cb692423a6139aad3a407bc28a8e2",
+                "failed_blocks": 4096,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 4096,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 0
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.9861412048339844
+                }
+              },
+              {
+                "scenario": "wrong-key",
+                "label": "Unchanged pixels, wrong verification key",
+                "scenario_type": "context",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 0,
+                "verification_ms": 30.087763999972594,
+                "received_rgb_sha256": "e4fbe97ae398cb98dbff00faa6efe5e02d710f28cfb77bd6085ac804999e69ec",
+                "failed_blocks": 4096,
+                "localisation": null
+              },
+              {
+                "scenario": "wrong-id",
+                "label": "Unchanged pixels, wrong trusted version identifier",
+                "scenario_type": "context",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 0,
+                "verification_ms": 30.80748100001074,
+                "received_rgb_sha256": "e4fbe97ae398cb98dbff00faa6efe5e02d710f28cfb77bd6085ac804999e69ec",
+                "failed_blocks": 4096,
+                "localisation": null
+              }
+            ]
+          },
+          {
+            "method": "Whole-image signature",
+            "reference_rgb_sha256": "d92fdb43ba1a1bd9d5a46e7a8852dd10ba488776c4e2504da958d2a8613bc972",
+            "mse": 0.0,
+            "psnr_db": null,
+            "maximum_absolute_channel_change": 0,
+            "setup_ms": 0.9266519999755474,
+            "sidecar_bytes": 338,
+            "reference_png_bytes": 261902,
+            "embedded_tag_payload_bits": 0,
+            "trust": "trusted public key plus trusted version ID and authentic sidecar",
+            "cases": [
+              {
+                "scenario": "intact",
+                "label": "Untouched protected image",
+                "scenario_type": "content",
+                "verdict": "VERIFIED",
+                "reason": "signed_pixels_match",
+                "changed_pixels": 0,
+                "verification_ms": 1.0902029999897422,
+                "received_rgb_sha256": "d92fdb43ba1a1bd9d5a46e7a8852dd10ba488776c4e2504da958d2a8613bc972",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "one-pixel",
+                "label": "One pixel: one embedded bit changed",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 1,
+                "verification_ms": 0.8715039999742658,
+                "received_rgb_sha256": "551b04b74c04b282eb3a80858afa44979b8ccf31ee5d3480e4ca1dddc4a9a730",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "brightness",
+                "label": "Local brightness change (+12, clipped)",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 64,
+                "verification_ms": 0.8570219999910478,
+                "received_rgb_sha256": "1c9411c9b76b80d625e3080dd9f009acf003a2315a024f0bde6d5b468c343f4b",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "boundary-patch",
+                "label": "15-pixel edit crossing block boundaries",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 15,
+                "verification_ms": 0.8744680000063454,
+                "received_rgb_sha256": "9ac4c88e77730ddab46389c3b86c64acae32a79bfbeedcd18ddb409ad6b09a17",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "copy-move",
+                "label": "Protected block copied to a different address",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 64,
+                "verification_ms": 0.8244980000426949,
+                "received_rgb_sha256": "5a6d9942565dae4727f2737de71e06f5a3c185bacd6f09e927703a2843e33e7e",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "jpeg75",
+                "label": "JPEG quality 75: lossless contract violated",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 250986,
+                "verification_ms": 0.8433509999576927,
+                "received_rgb_sha256": "5489f4acf29ef0f3366b50b3160ef6f31ce702ba663511761ba57e4ecd8fb902",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "wrong-key",
+                "label": "Unchanged pixels, wrong verification key",
+                "scenario_type": "context",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "invalid_signature_or_untrusted_key",
+                "changed_pixels": 0,
+                "verification_ms": 0.21063099995899393,
+                "received_rgb_sha256": "d92fdb43ba1a1bd9d5a46e7a8852dd10ba488776c4e2504da958d2a8613bc972",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "wrong-id",
+                "label": "Unchanged pixels, wrong trusted version identifier",
+                "scenario_type": "context",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "identifier_mismatch",
+                "changed_pixels": 0,
+                "verification_ms": 0.05970500001239998,
+                "received_rgb_sha256": "d92fdb43ba1a1bd9d5a46e7a8852dd10ba488776c4e2504da958d2a8613bc972",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "missing-evidence",
+                "scenario_type": "evidence",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "missing_or_oversized_evidence",
+                "changed_pixels": 0,
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "modified-evidence",
+                "scenario_type": "evidence",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "invalid_signature_or_untrusted_key",
+                "changed_pixels": 0,
+                "failed_blocks": null,
+                "localisation": null
+              }
+            ]
+          },
+          {
+            "method": "Signed tile manifest",
+            "reference_rgb_sha256": "d92fdb43ba1a1bd9d5a46e7a8852dd10ba488776c4e2504da958d2a8613bc972",
+            "mse": 0.0,
+            "psnr_db": null,
+            "maximum_absolute_channel_change": 0,
+            "setup_ms": 10.575104999929863,
+            "sidecar_bytes": 274697,
+            "reference_png_bytes": 261902,
+            "embedded_tag_payload_bits": 0,
+            "trust": "trusted public key plus trusted version ID and authentic sidecar",
+            "cases": [
+              {
+                "scenario": "intact",
+                "label": "Untouched protected image",
+                "scenario_type": "content",
+                "verdict": "VERIFIED",
+                "reason": "signed_pixels_match",
+                "changed_pixels": 0,
+                "verification_ms": 13.889626000036515,
+                "received_rgb_sha256": "d92fdb43ba1a1bd9d5a46e7a8852dd10ba488776c4e2504da958d2a8613bc972",
+                "failed_blocks": 0,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 0,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 4096
+                  },
+                  "block_iou": null,
+                  "expanded_block_pixel_iou": null
+                }
+              },
+              {
+                "scenario": "one-pixel",
+                "label": "One pixel: one embedded bit changed",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 1,
+                "verification_ms": 13.475703999915822,
+                "received_rgb_sha256": "551b04b74c04b282eb3a80858afa44979b8ccf31ee5d3480e4ca1dddc4a9a730",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 4095
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.015625
+                }
+              },
+              {
+                "scenario": "brightness",
+                "label": "Local brightness change (+12, clipped)",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 64,
+                "verification_ms": 13.44892899999195,
+                "received_rgb_sha256": "1c9411c9b76b80d625e3080dd9f009acf003a2315a024f0bde6d5b468c343f4b",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 4095
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 1.0
+                }
+              },
+              {
+                "scenario": "boundary-patch",
+                "label": "15-pixel edit crossing block boundaries",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 15,
+                "verification_ms": 13.257338000016716,
+                "received_rgb_sha256": "9ac4c88e77730ddab46389c3b86c64acae32a79bfbeedcd18ddb409ad6b09a17",
+                "failed_blocks": 4,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 4,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 4092
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.05859375
+                }
+              },
+              {
+                "scenario": "copy-move",
+                "label": "Protected block copied to a different address",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 64,
+                "verification_ms": 12.804957999946964,
+                "received_rgb_sha256": "5a6d9942565dae4727f2737de71e06f5a3c185bacd6f09e927703a2843e33e7e",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 4095
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 1.0
+                }
+              },
+              {
+                "scenario": "jpeg75",
+                "label": "JPEG quality 75: lossless contract violated",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 250986,
+                "verification_ms": 13.117893999947228,
+                "received_rgb_sha256": "5489f4acf29ef0f3366b50b3160ef6f31ce702ba663511761ba57e4ecd8fb902",
+                "failed_blocks": 4096,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 4096,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 0
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.9574356079101562
+                }
+              },
+              {
+                "scenario": "wrong-key",
+                "label": "Unchanged pixels, wrong verification key",
+                "scenario_type": "context",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "invalid_signature_or_untrusted_key",
+                "changed_pixels": 0,
+                "verification_ms": 4.7057730000688025,
+                "received_rgb_sha256": "d92fdb43ba1a1bd9d5a46e7a8852dd10ba488776c4e2504da958d2a8613bc972",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "wrong-id",
+                "label": "Unchanged pixels, wrong trusted version identifier",
+                "scenario_type": "context",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "identifier_mismatch",
+                "changed_pixels": 0,
+                "verification_ms": 0.4427020001003257,
+                "received_rgb_sha256": "d92fdb43ba1a1bd9d5a46e7a8852dd10ba488776c4e2504da958d2a8613bc972",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "missing-evidence",
+                "scenario_type": "evidence",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "missing_or_oversized_evidence",
+                "changed_pixels": 0,
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "modified-evidence",
+                "scenario_type": "evidence",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "invalid_signature_or_untrusted_key",
+                "changed_pixels": 0,
+                "failed_blocks": null,
+                "localisation": null
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

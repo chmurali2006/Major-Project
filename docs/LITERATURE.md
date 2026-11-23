@@ -34,3 +34,25 @@ presentation, not a new cryptographic construction or proven research novelty.
 A possible research question remains whether verified-block evidence improves
 small-edit pixel localisation over block expansion on matched ISIC splits. It is
 unanswered; the current failed learned results cannot support a superiority claim.
+
+## Standards and strongest non-embedding controls
+
+- DICOM PS3.15, Annex C, Digital Signature Profiles:
+  https://dicom.nema.org/medical/dicom/current/output/html/part15.html
+  The standard already describes signatures for pixel-data integrity. Our RGB
+  Ed25519 sidecars do **not** implement those DICOM profiles.
+- Josefsson and Liusvaara, RFC 8032 (2017), EdDSA:
+  https://www.rfc-editor.org/info/rfc8032/
+  Use the cryptography library rather than implementing curve arithmetic; the
+  regression suite includes RFC test vector 1. This is not a novel primitive.
+- *A Non-Embedding Watermarking Framework Using MSB-Driven Reference Mapping for
+  Distortion-Free Medical Image Authentication*, Electronics, DOI:
+  https://doi.org/10.3390/electronics15010007
+  Related non-embedding medical-image authentication exists. This reference is not
+  evidence for that paper's clinical/compliance claims or a matched score baseline.
+
+The defensible research gap must be established by matched experiments, not the
+assertion that signatures cannot localise or that combining existing modules is
+novel. Digital signatures protect integrity; watermarking is an alternative
+packaging/trust trade-off. An external ledger does not itself supply pixel-level
+localisation. Image-only versus authentication-guided learning remains unevaluated.
