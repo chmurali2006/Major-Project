@@ -90,6 +90,10 @@ def test_diagnostic_cli_decodes_only_selected_train_images(tmp_path):
     with zipfile.ZipFile(ns['archive']) as z:
         assert 'training-only/diagnostic.json' in z.namelist()
         assert 'execution.log' in z.namelist()
+        summary = json.loads(z.read('diagnostic-summary.json'))
+        assert summary['run_complete'] is True
+        assert summary['study_ready'] is False
+        assert len(summary['models']) == 2
         assert not any('/cache/' in n or n.endswith('.jpg') for n in z.namelist())
     out = runs / 'training-only'
     report = json.loads((out / 'diagnostic.json').read_text())

@@ -8,6 +8,10 @@ localisation. We do not assume watermarking or deep learning is the better choic
 
 ## Start here
 
+**Next manual step:** [run the prepared Kaggle diagnostic](RUNNING.md#next-action-one-manual-kaggle-diagnostic).
+The standalone notebook needs no token or local installation. Return the exported
+ZIP; execution completion is not a scientific quality approval.
+
 - [Run locally or on Kaggle](RUNNING.md)
 - [Current method and protocol](PROTOCOL_V2.md)
 - [Open questions](docs/DESIGN_REVIEW.md#5-open-questions)

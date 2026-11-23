@@ -18,6 +18,35 @@ For ISIC training-only diagnostics outside the notebook, replace `--synthetic` w
 `--data <image-root> --metadata <ground-truth.csv>` and use `--device cuda`.
 Use a new output directory. Cached pixels are temporary, not exported.
 
+## Next action: one manual Kaggle diagnostic
+
+All code and source are embedded in `deliverables/keyswm_isic2019.ipynb`.
+No API key, GitHub login, local Python installation or separate source upload is
+required. This completes preparation of the diagnostic, not the research study.
+
+1. Download that notebook and import it into a **new Kaggle notebook**.
+2. Attach exactly **one** complete ISIC2019 mirror with the extracted training
+   images and eight-class ground-truth CSV. Prefer the same input used previously;
+   do not attach both mirrors or previous run outputs. If discovery is ambiguous,
+   set only `DATA` and `METADATA` to the printed candidate paths.
+3. Enable an available T4 GPU accelerator. This runner uses one GPU only.
+4. Keep `STAGE='diagnostic'`, `DIAGNOSTIC_EPOCHS=20`, `RESTORE_FROM=None`, seed 0,
+   and all other defaults. Keep subset permission and full-study acknowledgement
+   **False**. Do not install/upgrade Torch; the notebook preserves Kaggle's stack.
+5. Choose **Save Version → Save & Run All** once. Do not also start an interactive
+   run. No fixed runtime is promised; preparation also consumes session time.
+6. Download **`learning-diagnostic-v2-results.zip`** from saved outputs and return
+   it for analysis. It contains raw diagnostics, per-epoch traces, NPZ counts,
+   automatic `diagnostic-summary.json`, execution log, labels/data audit, source
+   manifest and an archive SHA256 manifest. Cached dataset pixels are not exported.
+7. If training fails, keep the partial ZIP and original error. If failure occurs
+   before the execution/export cell, send that cell's error instead. Do not disable
+   strict determinism, relabel JPEG or alter thresholds to make the run pass.
+
+The summary distinguishes **execution complete** from **study ready**. Even a
+completed diagnostic does not authorise the full study or establish learned
+superiority. No need to interpret or edit the results yourself—return the ZIP.
+
 ## Local setup
 
 Use Python 3.11 and a virtual environment:

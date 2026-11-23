@@ -2,7 +2,7 @@
   "date": "2026-11-03",
   "protocol": "isic-rgb-auth-v2",
   "authentication_scheme": "rgb-lsb-hmac-sha256-192-v1",
-  "readiness": "Learning failure investigation; not submission-ready quality, novelty or clinical evidence.",
+  "readiness": "Manual ISIC TRAIN diagnostic handoff prepared and CPU-tested. Actual Kaggle/CUDA execution, learned benefit and full-study validity remain unverified.",
   "fresh_regression_tests_passed": 169,
   "legacy_v1_failures_preserved": true,
   "v2_brightness_challenge_closed": true,
@@ -94,5 +94,16 @@
     "classical_reference_training_iou": 0.830780724970158,
     "receipt": "verification-evidence/development-audit-v1.json",
     "prior_measurements_relabelled": false
+  },
+  "manual_handoff_revision": {
+    "source_sha256": "3d336edd6e84bd826fde2a215febc8e96c8e4d0e08f750bd8fd9565d5246cb58",
+    "tests_passed": 305,
+    "cuda_only_tests_skipped": 1,
+    "notebook_default": "diagnostic; 20 epochs per model; both models; seed 0; no restore",
+    "cpu_all_notebook_cells_integration": "passed with explicit CPU/subset/one-epoch/display adaptations",
+    "cpu_full_20_epoch_both_model_diagnostic": "completed, negative quality findings preserved",
+    "exported_hashes_verified": true,
+    "receipt": "verification-evidence/manual-handoff-check.json",
+    "no_actual_isic_gpu_claim": true
   }
 }
