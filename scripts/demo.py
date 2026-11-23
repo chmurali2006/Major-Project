@@ -1,5 +1,7 @@
 #!/usr/bin/env python
-"""A live demo, for the review: one image, four questions, one figure.
+"""HISTORICAL METHOD ONLY. For current RGB authentication use scripts/showcase.py.
+
+Retained legacy demo: one image, four questions, one figure.
 
     python scripts/demo.py --data datasets/ph2 --image IMD002
 

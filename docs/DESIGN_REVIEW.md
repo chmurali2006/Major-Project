@@ -42,3 +42,14 @@ paper comparison, adaptive-attack resistance or clinical approval is established
   do not change the frozen decision rule or tune on the seven test images.
 - Authorised complete inputs, patient/lesion identifiers and group independence.
 - Clinical preservation, novelty and literature parity; fidelity alone proves none.
+
+- Whether embedded authentication has an application advantage over signed tile
+  manifests after accounting for zero-distortion alternatives, external-evidence
+  storage and asymmetric versus shared-secret trust; no preferred winner assumed.
+- Whether learning improves sub-block localisation over block expansion and an
+  image-only control. Digital signatures, tile hashing and segmentation are prior
+  art; a new research contribution has not yet been demonstrated.
+
+- Distinguish learned authentication guidance from trivial post-masking: a future
+  revised study needs an image-only network with the same final authentication
+  mask, not only an ungated image-only control. This amendment is not yet run.
