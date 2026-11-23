@@ -31,6 +31,13 @@ protected inputs, measured masks and validation decision objective. The AE is
 pretrained on authentic TRAIN samples then frozen. Abstention is empirical, not
 a clinical guarantee. Corrected code is not yet a full measured ISIC study.
 
+**Manual handoff:** keep the default diagnostic settings, attach exactly one ISIC2019
+mirror with extracted training images and its eight-class labels, enable T4 GPU,
+then Save Version → Save & Run All once. No API key, token, local installation or
+separate source ZIP is needed. Download `learning-diagnostic-v2-results.zip` at the
+end and return it for analysis. If training fails, keep the exported partial ZIP;
+do not disable strict determinism or change thresholds.
+
 **Before running:** attach ISIC 2019 training images and the eight-class ground-truth
 CSV with **Add Input / Add Data**, enable a GPU, and read `RUNNING.md` supplied
 with this notebook. No private GitHub login or API token is required.
@@ -191,6 +198,7 @@ RESUME = RUNS.exists()
 RUNS.mkdir(parents=True, exist_ok=True)
 shutil.copy2('/kaggle/working/dataset_audit.json', RUNS/'dataset_audit.json')
 shutil.copy2(CANONICAL_CSV, RUNS/'ground-truth-used.csv')
+shutil.copy2(PROJECT/'SOURCE_MANIFEST.json', RUNS/'SOURCE_MANIFEST.json')
 print('Resume existing study:', RESUME)
 print('Free space (GiB):', round(shutil.disk_usage('/kaggle/working').free / 2**30, 1))
 '''), cell('markdown', '''## 6. Execute one bounded job; export outputs even if it fails
@@ -265,7 +273,11 @@ finally:
     # prevent exporting raw checkpoints. Do not mask the original study error.
     finalization_errors = []
     try:
-        if not DIAGNOSTIC:
+        if DIAGNOSTIC:
+            subprocess.run([sys.executable, str(PROJECT/'scripts/summarize_diagnostic.py'),
+                            '--input', str(RUNS/'training-only'/'diagnostic.json'),
+                            '--out', str(RUNS/'diagnostic-summary.json')], check=True)
+        else:
             subprocess.run([sys.executable, str(PROJECT/'scripts/summarize_isic_study.py'),
                             '--root', str(RUNS), '--out', str(RUNS/'summary.json')], check=True)
     except BaseException as exc:
@@ -296,13 +308,20 @@ versions and checksummed artifacts. PFF-WM results on other datasets/protocols m
 not be placed beside these numbers as if directly comparable. This assembled
 implementation is not an exact verified reproduction of PFF-WM.
 '''), cell('code', '''if DIAGNOSTIC:
-    diagnostic = json.loads((RUNS/'training-only'/'diagnostic.json').read_text())
-    print('TRAIN-only diagnostic. Not a benchmark result; usable:', diagnostic['usable'])
-    for name, result in diagnostic['models'].items():
-        for phase in ('before', 'after'):
-            row = result[phase]
-            print(name, phase, 'joint-rule TRAIN IoU', row['metrics']['iou_tampered_mean'],
-                  'pixel-only TRAIN IoU', row['pixel_only_training_iou'], 'collapse', row['collapse'])
+    diagnostic = json.loads((RUNS/'diagnostic-summary.json').read_text())
+    print('TRAIN-only execution complete:', diagnostic['run_complete'])
+    print('Full study approved:', diagnostic['study_ready'], '(diagnostic completion is not a quality gate)')
+    print('Classical block-expansion TRAIN IoU:', diagnostic.get('classical_training_iou'))
+    for row in diagnostic['models']:
+        print(row['model'], 'selected epoch', row['selected_epoch'], '/', row['last_completed_epoch'],
+              'shared-rule TRAIN IoU', row['shared_rule_training_iou'],
+              'pixel-only TRAIN IoU', row['pixel_only_training_iou'])
+        print('Intact positive pixels at pixel-only threshold:', row['pixel_only_intact_positive_pixel_counts'])
+        print('Pixel-only TRAIN IoU by family:', row['pixel_only_training_iou_by_family'])
+        for observation in row['observations']:
+            print('  -', observation)
+    for problem in diagnostic['problems']:
+        print('INCOMPLETE:', problem)
 else:
     summary = json.loads((RUNS/'summary.json').read_text())
     for row in summary['runs']:
@@ -316,7 +335,10 @@ else:
     print('Missing full-suite receipts:', len(summary['missing']))
 from IPython.display import FileLink, display
 display(FileLink(str(archive)))
-print('For the next job: configure its stage/seed, attach this saved output, then Save Version -> Save & Run All.')
+if DIAGNOSTIC:
+    print('Send this ZIP for analysis. Do not restore it into a full study or advance stages based on these training scores.')
+else:
+    print('For the next job: configure its stage/seed, attach this saved output, then Save Version -> Save & Run All.')
 print('Do not accidentally pay for an interactive run and a second fresh run of the same job.')
 print('Download the result ZIP; verify saved output files exist before ending the session.')
 ''')]

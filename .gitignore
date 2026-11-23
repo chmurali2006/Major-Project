@@ -14,3 +14,9 @@ Thumbs.db
 data/**/*.png
 data/**/*.jpg
 data/**/*.nii*
+
+# Credentials stay outside chat, source bundles and version control
+.env
+.env.*
+.kaggle/
+kaggle.json

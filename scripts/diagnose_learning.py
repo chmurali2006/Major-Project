@@ -5,6 +5,7 @@ training partition. No validation/test images are decoded. New output required.
 """
 import argparse
 import hashlib
+import platform
 import tempfile
 from pathlib import Path
 import sys
@@ -106,6 +107,13 @@ def main():
               'training_ids': ids,
               'input_sha256': {} if args.synthetic else {paths[i].stem: hashlib.sha256(paths[i].read_bytes()).hexdigest() for i in indices},
               'metadata_sha256': None if args.synthetic else hashlib.sha256(args.metadata.read_bytes()).hexdigest(),
+              'environment': {'python': sys.version, 'platform': platform.platform(), 'numpy': np.__version__,
+                              'torch': torch.__version__, 'cuda_runtime': torch.version.cuda,
+                              'requested_device': args.device,
+                              'selected_device': ('cuda' if torch.cuda.is_available() else 'cpu') if args.device == 'auto' else args.device,
+                              'deterministic_algorithms': torch.are_deterministic_algorithms_enabled(),
+                              'deterministic_warn_only': torch.is_deterministic_algorithms_warn_only_enabled()},
+              'ground_truth': 'Any received RGB change relative to the protected image; any changed pixel makes a block positive. JPEG is an integrity change, not proof of malicious intent.',
               'torch': torch.__version__, 'cuda_runtime': torch.version.cuda,
               'gpu': torch.cuda.get_device_name() if torch.cuda.is_available() else None,
               'determinism': 'strict; unsupported operations raise', 'models': {}}
