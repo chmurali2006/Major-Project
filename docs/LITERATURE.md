@@ -16,3 +16,21 @@ before a formal submission. No cross-paper score table is maintained here.
 The current RGB HMAC fragile carrier is an explicit method amendment. It must not
 be described as an exact PFF-WM reproduction. Compare only matched protocols,
 mask definitions, sampling, model-selection rules and metric granularity.
+
+## Scope check for the simplified demonstration
+
+- Zhang et al., *EditGuard: Versatile Image Watermarking for Tamper Localization
+  and Copyright Protection*, CVPR 2024, pp. 11964–11974.
+  [Proceedings and abstract](https://openaccess.thecvf.com/content/CVPR2024/html/Zhang_EditGuard_Versatile_Image_Watermarking_for_Tamper_Localization_and_Copyright_Protection_CVPR_2024_paper.html).
+  Proactive watermark-based tamper localisation is already prior art.
+- Sander et al., *Watermark Anything With Localized Messages*, ICLR 2025.
+  [Proceedings and abstract](https://proceedings.iclr.cc/paper_files/paper/2025/hash/c5ee1911dffe4886367eee7fca314235-Abstract-Conference.html).
+  Learned localisation of watermarked regions is also prior art, not a novelty
+  established by adding a segmentation network here.
+
+These papers are related work, not matched medical-image benchmark baselines.
+The simplified CPU showcase contributes an inspectable implementation and evidence
+presentation, not a new cryptographic construction or proven research novelty.
+A possible research question remains whether verified-block evidence improves
+small-edit pixel localisation over block expansion on matched ISIC splits. It is
+unanswered; the current failed learned results cannot support a superiority claim.

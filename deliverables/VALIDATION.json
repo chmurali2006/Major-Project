@@ -70,5 +70,15 @@
     "gpu_strict_backward_verified": false,
     "historical_measurements_above_relabelled": false,
     "training_only_portable_notebook_launch_export_test": "passed; unselected/validation/test fixture JPEGs intentionally undecodable"
+  },
+  "showcase_revision": {
+    "source_sha256": "bcf7f1a57c1e435cd4c524196390ec82293a31a6f41ab44f8b3bb575457cc822",
+    "scope": "CPU-only classical RGB verification showcase; synthetic input, not ISIC benchmark results",
+    "tests_passed": 234,
+    "cuda_only_tests_skipped": 1,
+    "notebook_cells_compile": 7,
+    "receipt": "verification-evidence/showcase-cpu.json",
+    "learned_localisation_improvement_claimed": false,
+    "dataset_pixels_added_to_repo": false
   }
 }
