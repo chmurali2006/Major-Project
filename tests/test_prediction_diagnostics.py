@@ -90,14 +90,41 @@ def test_diagnostic_cli_decodes_only_selected_train_images(tmp_path):
     with zipfile.ZipFile(ns['archive']) as z:
         assert 'training-only/diagnostic.json' in z.namelist()
         assert 'execution.log' in z.namelist()
+        summary = json.loads(z.read('diagnostic-summary.json'))
+        assert summary['run_complete'] is True
+        assert summary['study_ready'] is False
+        assert len(summary['models']) == 2
         assert not any('/cache/' in n or n.endswith('.jpg') for n in z.namelist())
     out = runs / 'training-only'
     report = json.loads((out / 'diagnostic.json').read_text())
     assert report['usable'] is False
     assert report['training_ids'] == [f'ISIC_FIXTURE_{i:04d}' for i in training_indices(20, 7)]
     assert len(report['models']) == 2
+    for result in report['models'].values():
+        assert result['selected_epoch'] == result['last_completed_epoch'] == 1
+        assert len(result['epoch_trace']) == 1
+        assert 'operating_points' in result['epoch_trace'][0]
+        assert result['status'] == 'complete'
     assert not (out / 'cache').exists()
     for cid in ('C8', 'C12'):
         with np.load(out / f'{cid}_after.npz', allow_pickle=False) as packet:
             assert packet['pixel_confusion'].shape == (7, 4)
             assert (packet['pixel_confusion'].sum(1) == 512**2).all()
+
+
+def test_operating_point_audit_exposes_head_threshold_disagreement():
+    from scripts.diagnose_learning import operating_point_audit
+    from scripts.run_matrix import Sample
+    truth = np.zeros((8,8), bool)
+    truth[0,0] = True
+    samples = [Sample(np.zeros((13,1,1), np.float16), np.zeros(4, np.float32),
+                      np.zeros((3,8,8), np.uint8), np.array([[cls]], bool),
+                      truth.copy() if cls else np.zeros_like(truth), cls,
+                      'T1' if cls else 'none', 'NV') for cls in (1,0)]
+    pixels = [np.where(truth, .4, .1), np.full((8,8), .1)]
+    audit = operating_point_audit(samples, [np.array([[.9]]), np.array([[.6]])], pixels)
+    assert audit['shared_rule']['balanced_accuracy'] == 1.
+    assert audit['shared_rule']['tampered_pixel_iou'] == 0.
+    assert audit['pixel_only_training_diagnostic']['tampered_pixel_iou'] == 1.
+    assert audit['pixel_only_training_diagnostic']['intact_positive_pixel_counts'] == [0]
+    assert 'TRAIN-only' in audit['warning']

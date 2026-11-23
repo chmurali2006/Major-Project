@@ -18,6 +18,35 @@ For ISIC training-only diagnostics outside the notebook, replace `--synthetic` w
 `--data <image-root> --metadata <ground-truth.csv>` and use `--device cuda`.
 Use a new output directory. Cached pixels are temporary, not exported.
 
+## Next action: one manual Kaggle diagnostic
+
+All code and source are embedded in `deliverables/keyswm_isic2019.ipynb`.
+No API key, GitHub login, local Python installation or separate source upload is
+required. This completes preparation of the diagnostic, not the research study.
+
+1. Download that notebook and import it into a **new Kaggle notebook**.
+2. Attach exactly **one** complete ISIC2019 mirror with the extracted training
+   images and eight-class ground-truth CSV. Prefer the same input used previously;
+   do not attach both mirrors or previous run outputs. If discovery is ambiguous,
+   set only `DATA` and `METADATA` to the printed candidate paths.
+3. Enable an available T4 GPU accelerator. This runner uses one GPU only.
+4. Keep `STAGE='diagnostic'`, `DIAGNOSTIC_EPOCHS=20`, `RESTORE_FROM=None`, seed 0,
+   and all other defaults. Keep subset permission and full-study acknowledgement
+   **False**. Do not install/upgrade Torch; the notebook preserves Kaggle's stack.
+5. Choose **Save Version → Save & Run All** once. Do not also start an interactive
+   run. No fixed runtime is promised; preparation also consumes session time.
+6. Download **`learning-diagnostic-v2-results.zip`** from saved outputs and return
+   it for analysis. It contains raw diagnostics, per-epoch traces, NPZ counts,
+   automatic `diagnostic-summary.json`, execution log, labels/data audit, source
+   manifest and an archive SHA256 manifest. Cached dataset pixels are not exported.
+7. If training fails, keep the partial ZIP and original error. If failure occurs
+   before the execution/export cell, send that cell's error instead. Do not disable
+   strict determinism, relabel JPEG or alter thresholds to make the run pass.
+
+The summary distinguishes **execution complete** from **study ready**. Even a
+completed diagnostic does not authorise the full study or establish learned
+superiority. No need to interpret or edit the results yourself—return the ZIP.
+
 ## Local setup
 
 Use Python 3.11 and a virtual environment:
@@ -99,3 +128,20 @@ python scripts/review_from_source.py --exercise-crash --out /tmp/review.json
 Use another temporary path on Windows. On high-core CPU hosts, limiting
 `OMP_NUM_THREADS` and `MKL_NUM_THREADS` to 2 can reduce diagnostic overhead.
 These commands use synthetic CPU checks, not a completed ISIC/GPU study.
+
+### Inspecting the learning failure
+
+The TRAIN-only diagnostic now records per-epoch component losses, pixel-selection
+threshold/IoU, the selected epoch, the last completed epoch, and a contrast with
+the shared image/count rule. It writes the same `diagnostic.json` atomically after
+each completed observation; partial traces remain visible if later training fails.
+This adds inference on the same TRAIN examples, not validation/test access. The
+pixel-only contrast is not a replacement result or an amended study criterion.
+
+For a bounded CPU investigation of just the main model:
+```sh
+python scripts/diagnose_learning.py --synthetic --model main --epochs 8 --device cpu --out /tmp/keyswm-main-trace
+```
+Synthetic memorisation is not evidence of ISIC performance. Selection can restore
+an earlier epoch, so a final loss decrease does not imply better returned masks.
+Normal study training retains its existing objective and has no epoch observer.

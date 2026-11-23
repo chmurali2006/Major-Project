@@ -101,7 +101,7 @@ def test_finalization_attempts_export_and_preserves_primary_failure(study_rc,sum
     def run(cmd,**kwargs):
         script=Path(cmd[1]).name
         calls.append(script)
-        if (script=='summarize_isic_study.py' and summary_fail) or (script=='export_results.py' and export_fail):
+        if (script in ('summarize_isic_study.py','summarize_diagnostic.py') and summary_fail) or (script=='export_results.py' and export_fail):
             raise subprocess.CalledProcessError(2,cmd)
         return SimpleNamespace(returncode=0)
     child=SimpleNamespace(wait=lambda:study_rc,poll=lambda:study_rc,stdout=['training output\n'])
@@ -110,13 +110,13 @@ def test_finalization_attempts_export_and_preserves_primary_failure(study_rc,sum
             RUNS=tmp_path,CACHE=Path('/fresh/cache'),SEED=0,TRAIN_N=7,VAL_N=7,TEST_N=7,EPOCHS=1,
             AUTHENTIC_EPOCHS=2,WIDTH=4,RESUME=False,SANITY=True,STAGE='check',RUN_NAME='fresh-check',
             shutil=SimpleNamespace(copy2=Mock()),json=json,DIAGNOSTIC=diagnostic,DIAGNOSTIC_EPOCHS=1)
-    if study_rc or export_fail or (summary_fail and not diagnostic):
+    if study_rc or export_fail or summary_fail:
         with pytest.raises(RuntimeError) as exc:
             exec(compile(cell,'<fresh finalization probe>','exec'),ns)
         assert str(exc.value).startswith('Study failed:' if study_rc else 'Finalization failed:')
     else:
         exec(compile(cell,'<fresh finalization probe>','exec'),ns)
-    assert calls == (['export_results.py'] if diagnostic else ['summarize_isic_study.py','export_results.py'])
+    assert calls == (['summarize_diagnostic.py','export_results.py'] if diagnostic else ['summarize_isic_study.py','export_results.py'])
     assert 'training output' in (tmp_path/'execution.log').read_text()
 
 

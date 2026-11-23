@@ -139,3 +139,42 @@ python scripts/validate_notebook.py --execute-wiring --exercise-ablations
 
 Temporary paths may be changed for Windows. These checks do not replace the full
 ISIC three-seed/ablation/heldout study, GPU preflight, or independent security review.
+
+## Separate engineering comparison: integrity-tradeoffs-v1
+
+This profile does **not** change the frozen ISIC learned study, its loss weights,
+thresholds, partitions or existing results. `scripts/compare_integrity.py` compares
+whole-image Ed25519 signing, Ed25519-signed per-tile SHA-256 digests and embedded
+RGB HMAC. Only the embedded method alters the reference pixels. The other two
+are standard non-embedding baselines, not new cryptographic contributions.
+
+All methods bind dimensions and an externally expected version identifier. Tile
+hashes also bind coordinates. The signed envelope authenticates all digests and
+schema fields using a trusted externally supplied public key. An invalid signature,
+wrong identifier/geometry or missing evidence returns `CANNOT_AUTHENTICATE` with
+no localisation. Only valid signed evidence can support a received-pixel integrity
+verdict. Whole-image signatures never manufacture a localisation mask.
+
+Matched operators/coordinates do not imply identical ground truth: each method's
+received RGB is differenced against its own reference. Context/evidence failures
+are reported separately from changed-pixel cases. Empty-union localisation IoU is
+null, not an inflated perfect score. Report block confusion counts and expanded-
+block pixel IoU separately; a one-pixel edit can have perfect block IoU and only
+1/64 pixel IoU. Stratify local edits and global JPEG changes instead of hiding
+small-edit failures inside a pooled accuracy. Single-execution timings, encoded
+sidecar size, PNG size, embedded payload bits and distortion describe engineering
+trade-offs, not a statistically stable runtime or security ranking. JSON sidecar
+size is representation-dependent and is not a storage lower bound.
+
+The baselines authenticate 8-bit decoded RGB only. They do not sign file metadata,
+implement DICOM signatures, PKI, key rotation, freshness, revocation or clinical
+validation. Public benchmark signing seeds are not deployment credentials.
+An old valid image/manifest pair can be replayed if an old expected version ID is
+accepted. Neither this comparison nor a ledger hash alone solves that workflow.
+
+Before a revised learned study: obtain actual ISIC TRAIN-only diagnostic evidence;
+freeze any new localisation operating-point rule before evaluation; compare block
+expansion, image-only and authentication-guided localisation on the same protected
+samples. Do not reuse the seven test images for tuning or silently call the old
+shared-threshold failure a successful result. Medical/lesion relevance, clinical
+fidelity and the candidate contribution remain open questions.

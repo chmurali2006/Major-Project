@@ -40,8 +40,23 @@ def test_epoch_resume_matches_uninterrupted_training(tmp_path,monkeypatch,freeze
     R.train(build(),epochs=2,checkpoint_path=tmp_path/'full.pt',**kw)
     R.train(build(),epochs=1,checkpoint_path=tmp_path/'partial.pt',**kw)
     R.train(build(),epochs=2,checkpoint_path=tmp_path/'partial.pt',resume=True,**kw)
+    observed = []
+    def observe(model, record):
+        observed.append(record)
+        R.predict_maps(model, [s])  # same read-only inference used by the diagnostic
+    R.train(build(),epochs=2,checkpoint_path=tmp_path/'observed.pt',epoch_observer=observe,**kw)
     a,b=load_checkpoint(tmp_path/'full.pt'),load_checkpoint(tmp_path/'partial.pt')
+    c=load_checkpoint(tmp_path/'observed.pt')
+    assert [x['epoch'] for x in observed] == [1, 2]
+    for module in a['model']:
+        for name in a['model'][module]:
+            torch.testing.assert_close(a['model'][module][name],c['model'][module][name],rtol=0,atol=0)
+
     assert b['epoch']==2
+    assert a['training_audit'] == b['training_audit']
+    assert b['training_audit']['selected_epoch'] == 1
+    assert b['training_audit']['last_completed_epoch'] == 2
+    assert len(b['training_audit']['history']) == 2
     for module in a['model']:
         for name in a['model'][module]:
             torch.testing.assert_close(a['model'][module][name],b['model'][module][name],rtol=0,atol=0)

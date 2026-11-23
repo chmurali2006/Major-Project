@@ -115,3 +115,12 @@ def test_cli_blocks_pixel_outputs_in_repository():
 def test_invalid_geometry_not_silently_resized(shape):
     with pytest.raises(ValueError):
         build_report(np.zeros(shape, np.uint8), 'fixture', True)
+
+
+def test_non_aligned_edit_exposes_boundary_expansion(demo):
+    _, (report, *_) = demo
+    row = next(c for c in report['cases'] if c['id'] == 'boundary-patch')
+    assert row['changed_pixels'] == 15
+    assert row['failed_blocks'] == 4
+    assert row['localisation']['block_iou'] == 1.
+    assert row['localisation']['expanded_block_pixel_iou'] == 15/256

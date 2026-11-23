@@ -1,0 +1,1596 @@
+{
+  "scope": "Fresh synthetic CPU development audit; not ISIC results or validation/test evaluation",
+  "source_sha256": "5e87d263e8fac7281e34725e89a80053b9ed22dee89289eda5a957b69f512c74",
+  "restored_controls_from": "3eaf28a (closed PR 7; independently reviewed and retested)",
+  "learning_trace": {
+    "usable": false,
+    "purpose": "TRAIN-only memorisation; not generalisation",
+    "synthetic": true,
+    "source_sha256": "5e87d263e8fac7281e34725e89a80053b9ed22dee89289eda5a957b69f512c74",
+    "settings": {
+      "synthetic": true,
+      "data": null,
+      "metadata": null,
+      "out": "/tmp/keyswm-main-trace-final-v2",
+      "n": 7,
+      "epochs": 8,
+      "width": 4,
+      "model": "main",
+      "seed": 0,
+      "device": "cpu"
+    },
+    "training_ids": [
+      "synthetic-0",
+      "synthetic-1",
+      "synthetic-2",
+      "synthetic-3",
+      "synthetic-4",
+      "synthetic-5",
+      "synthetic-6"
+    ],
+    "input_sha256": {},
+    "metadata_sha256": null,
+    "torch": "2.2.2+cu121",
+    "cuda_runtime": "12.1",
+    "gpu": null,
+    "determinism": "strict; unsupported operations raise",
+    "models": {
+      "Main watermark-verification model": {
+        "status": "complete",
+        "authentic_training": {
+          "epochs": 2,
+          "n_authentic_train": 1,
+          "selection": "cls=0 and empty measured pixel mask, TRAIN partition only",
+          "frozen_during_localisation_training": true
+        },
+        "epoch_trace": [
+          {
+            "epoch": 1,
+            "mean_update_loss": 5.051477602549961,
+            "mean_sample_component_losses": {
+              "block": 2.7125123058046614,
+              "pixel": 1.9776513917105538,
+              "consistency": 0.03621317659105573,
+              "cls": 0.6864145653588432
+            },
+            "selection_tau": 0.05,
+            "selection_tampered_pixel_iou": 0.17767333984375,
+            "selected_this_epoch": true,
+            "selected_epoch_so_far": 1,
+            "operating_points": {
+              "shared_rule": {
+                "tau": 0.05,
+                "k": 0,
+                "balanced_accuracy": 0.5,
+                "tampered_pixel_iou": 0.17767333984375,
+                "collapse": {
+                  "block": {
+                    "n_images": 7,
+                    "all_foreground_images": 7,
+                    "all_background_images": 0
+                  },
+                  "pixel": {
+                    "n_images": 7,
+                    "all_foreground_images": 7,
+                    "all_background_images": 0
+                  }
+                }
+              },
+              "pixel_only_training_diagnostic": {
+                "tau": 0.05,
+                "tampered_pixel_iou": 0.17767333984375,
+                "intact_positive_pixel_counts": [
+                  262144
+                ],
+                "non_jpeg_tampered_pixel_iou": 0.013283538818359374,
+                "tampered_pixel_iou_by_family": {
+                  "B1:jpeg75": 0.9996223449707031,
+                  "T1": 0.0009765625,
+                  "T2": 0.006343841552734375,
+                  "T3": 0.01068878173828125,
+                  "T4": 0.013980865478515625,
+                  "T5": 0.034427642822265625
+                }
+              },
+              "warning": "TRAIN-only operating-point contrast, not alternative benchmark results"
+            }
+          },
+          {
+            "epoch": 2,
+            "mean_update_loss": 4.982806376048496,
+            "mean_sample_component_losses": {
+              "block": 2.6719543763569424,
+              "pixel": 1.9596410138266427,
+              "consistency": 0.038608296641281674,
+              "cls": 0.6638135399137225
+            },
+            "selection_tau": 0.05,
+            "selection_tampered_pixel_iou": 0.17767333984375,
+            "selected_this_epoch": false,
+            "selected_epoch_so_far": 1,
+            "operating_points": {
+              "shared_rule": {
+                "tau": 0.5,
+                "k": 0,
+                "balanced_accuracy": 0.5833333333333334,
+                "tampered_pixel_iou": 0.0,
+                "collapse": {
+                  "block": {
+                    "n_images": 7,
+                    "all_foreground_images": 0,
+                    "all_background_images": 6
+                  },
+                  "pixel": {
+                    "n_images": 7,
+                    "all_foreground_images": 0,
+                    "all_background_images": 7
+                  }
+                }
+              },
+              "pixel_only_training_diagnostic": {
+                "tau": 0.05,
+                "tampered_pixel_iou": 0.17767333984375,
+                "intact_positive_pixel_counts": [
+                  262144
+                ],
+                "non_jpeg_tampered_pixel_iou": 0.013283538818359374,
+                "tampered_pixel_iou_by_family": {
+                  "B1:jpeg75": 0.9996223449707031,
+                  "T1": 0.0009765625,
+                  "T2": 0.006343841552734375,
+                  "T3": 0.01068878173828125,
+                  "T4": 0.013980865478515625,
+                  "T5": 0.034427642822265625
+                }
+              },
+              "warning": "TRAIN-only operating-point contrast, not alternative benchmark results"
+            }
+          },
+          {
+            "epoch": 3,
+            "mean_update_loss": 4.947132349014282,
+            "mean_sample_component_losses": {
+              "block": 2.6574258974620273,
+              "pixel": 1.9468022074018205,
+              "consistency": 0.03950636408158711,
+              "cls": 0.6463020869663784
+            },
+            "selection_tau": 0.05,
+            "selection_tampered_pixel_iou": 0.17767333984375,
+            "selected_this_epoch": false,
+            "selected_epoch_so_far": 1,
+            "operating_points": {
+              "shared_rule": {
+                "tau": 0.5,
+                "k": 0,
+                "balanced_accuracy": 0.8333333333333333,
+                "tampered_pixel_iou": 0.0,
+                "collapse": {
+                  "block": {
+                    "n_images": 7,
+                    "all_foreground_images": 0,
+                    "all_background_images": 3
+                  },
+                  "pixel": {
+                    "n_images": 7,
+                    "all_foreground_images": 0,
+                    "all_background_images": 7
+                  }
+                }
+              },
+              "pixel_only_training_diagnostic": {
+                "tau": 0.05,
+                "tampered_pixel_iou": 0.17767333984375,
+                "intact_positive_pixel_counts": [
+                  262144
+                ],
+                "non_jpeg_tampered_pixel_iou": 0.013283538818359374,
+                "tampered_pixel_iou_by_family": {
+                  "B1:jpeg75": 0.9996223449707031,
+                  "T1": 0.0009765625,
+                  "T2": 0.006343841552734375,
+                  "T3": 0.01068878173828125,
+                  "T4": 0.013980865478515625,
+                  "T5": 0.034427642822265625
+                }
+              },
+              "warning": "TRAIN-only operating-point contrast, not alternative benchmark results"
+            }
+          },
+          {
+            "epoch": 4,
+            "mean_update_loss": 4.895018032618931,
+            "mean_sample_component_losses": {
+              "block": 2.636924045426505,
+              "pixel": 1.923768060547965,
+              "consistency": 0.039498785244567056,
+              "cls": 0.629153175013406
+            },
+            "selection_tau": 0.3,
+            "selection_tampered_pixel_iou": 0.17767360653811728,
+            "selected_this_epoch": true,
+            "selected_epoch_so_far": 4,
+            "operating_points": {
+              "shared_rule": {
+                "tau": 0.5,
+                "k": 2,
+                "balanced_accuracy": 0.8333333333333333,
+                "tampered_pixel_iou": 0.0,
+                "collapse": {
+                  "block": {
+                    "n_images": 7,
+                    "all_foreground_images": 0,
+                    "all_background_images": 1
+                  },
+                  "pixel": {
+                    "n_images": 7,
+                    "all_foreground_images": 0,
+                    "all_background_images": 7
+                  }
+                }
+              },
+              "pixel_only_training_diagnostic": {
+                "tau": 0.3,
+                "tampered_pixel_iou": 0.17767360653811728,
+                "intact_positive_pixel_counts": [
+                  262144
+                ],
+                "non_jpeg_tampered_pixel_iou": 0.013283858851600144,
+                "tampered_pixel_iou_by_family": {
+                  "B1:jpeg75": 0.9996223449707031,
+                  "T1": 0.0009765625,
+                  "T2": 0.006343841552734375,
+                  "T3": 0.01068878173828125,
+                  "T4": 0.013982465644719473,
+                  "T5": 0.034427642822265625
+                }
+              },
+              "warning": "TRAIN-only operating-point contrast, not alternative benchmark results"
+            }
+          },
+          {
+            "epoch": 5,
+            "mean_update_loss": 4.850307771137783,
+            "mean_sample_component_losses": {
+              "block": 2.6207586526870728,
+              "pixel": 1.9022932393210275,
+              "consistency": 0.0399338145341192,
+              "cls": 0.6145779745919364
+            },
+            "selection_tau": 0.35,
+            "selection_tampered_pixel_iou": 0.22628646001435335,
+            "selected_this_epoch": true,
+            "selected_epoch_so_far": 5,
+            "operating_points": {
+              "shared_rule": {
+                "tau": 0.55,
+                "k": 0,
+                "balanced_accuracy": 0.9166666666666667,
+                "tampered_pixel_iou": 0.0,
+                "collapse": {
+                  "block": {
+                    "n_images": 7,
+                    "all_foreground_images": 0,
+                    "all_background_images": 2
+                  },
+                  "pixel": {
+                    "n_images": 7,
+                    "all_foreground_images": 0,
+                    "all_background_images": 7
+                  }
+                }
+              },
+              "pixel_only_training_diagnostic": {
+                "tau": 0.35,
+                "tampered_pixel_iou": 0.22628646001435335,
+                "intact_positive_pixel_counts": [
+                  11
+                ],
+                "non_jpeg_tampered_pixel_iou": 0.2282160660731179,
+                "tampered_pixel_iou_by_family": {
+                  "B1:jpeg75": 0.21663842972053055,
+                  "T1": 0.0,
+                  "T2": 0.0,
+                  "T3": 0.727433628318584,
+                  "T4": 0.4136467020470053,
+                  "T5": 0.0
+                }
+              },
+              "warning": "TRAIN-only operating-point contrast, not alternative benchmark results"
+            }
+          },
+          {
+            "epoch": 6,
+            "mean_update_loss": 4.8196516036987305,
+            "mean_sample_component_losses": {
+              "block": 2.6086070196969167,
+              "pixel": 1.890592302594866,
+              "consistency": 0.04109817956175123,
+              "cls": 0.599806410925729
+            },
+            "selection_tau": 0.35,
+            "selection_tampered_pixel_iou": 0.2541217083869258,
+            "selected_this_epoch": true,
+            "selected_epoch_so_far": 6,
+            "operating_points": {
+              "shared_rule": {
+                "tau": 0.55,
+                "k": 4,
+                "balanced_accuracy": 0.9166666666666667,
+                "tampered_pixel_iou": 0.0,
+                "collapse": {
+                  "block": {
+                    "n_images": 7,
+                    "all_foreground_images": 0,
+                    "all_background_images": 0
+                  },
+                  "pixel": {
+                    "n_images": 7,
+                    "all_foreground_images": 0,
+                    "all_background_images": 7
+                  }
+                }
+              },
+              "pixel_only_training_diagnostic": {
+                "tau": 0.35,
+                "tampered_pixel_iou": 0.2541217083869258,
+                "intact_positive_pixel_counts": [
+                  112
+                ],
+                "non_jpeg_tampered_pixel_iou": 0.23763250218925092,
+                "tampered_pixel_iou_by_family": {
+                  "B1:jpeg75": 0.3365677393753005,
+                  "T1": 0.0,
+                  "T2": 0.0,
+                  "T3": 0.821309285237141,
+                  "T4": 0.3070138241031295,
+                  "T5": 0.05983940160598394
+                }
+              },
+              "warning": "TRAIN-only operating-point contrast, not alternative benchmark results"
+            }
+          },
+          {
+            "epoch": 7,
+            "mean_update_loss": 4.783220563616071,
+            "mean_sample_component_losses": {
+              "block": 2.5919072798320224,
+              "pixel": 1.8798086302621024,
+              "consistency": 0.04127982737762587,
+              "cls": 0.5817292843546186
+            },
+            "selection_tau": 0.35,
+            "selection_tampered_pixel_iou": 0.19280449526656554,
+            "selected_this_epoch": false,
+            "selected_epoch_so_far": 6,
+            "operating_points": {
+              "shared_rule": {
+                "tau": 0.6000000000000001,
+                "k": 4,
+                "balanced_accuracy": 1.0,
+                "tampered_pixel_iou": 0.0,
+                "collapse": {
+                  "block": {
+                    "n_images": 7,
+                    "all_foreground_images": 0,
+                    "all_background_images": 0
+                  },
+                  "pixel": {
+                    "n_images": 7,
+                    "all_foreground_images": 0,
+                    "all_background_images": 7
+                  }
+                }
+              },
+              "pixel_only_training_diagnostic": {
+                "tau": 0.35,
+                "tampered_pixel_iou": 0.19280449526656554,
+                "intact_positive_pixel_counts": [
+                  1926
+                ],
+                "non_jpeg_tampered_pixel_iou": 0.20368112956629641,
+                "tampered_pixel_iou_by_family": {
+                  "B1:jpeg75": 0.1384213237679113,
+                  "T1": 0.0013183915622940012,
+                  "T2": 0.0015868817773075905,
+                  "T3": 0.6784633998790078,
+                  "T4": 0.19303697461287264,
+                  "T5": 0.144
+                }
+              },
+              "warning": "TRAIN-only operating-point contrast, not alternative benchmark results"
+            }
+          },
+          {
+            "epoch": 8,
+            "mean_update_loss": 4.76424469266619,
+            "mean_sample_component_losses": {
+              "block": 2.5838097163609097,
+              "pixel": 1.8760233606610979,
+              "consistency": 0.04144592423524175,
+              "cls": 0.5673773544175285
+            },
+            "selection_tau": 0.25,
+            "selection_tampered_pixel_iou": 0.17768533009471463,
+            "selected_this_epoch": false,
+            "selected_epoch_so_far": 6,
+            "operating_points": {
+              "shared_rule": {
+                "tau": 0.7000000000000001,
+                "k": 0,
+                "balanced_accuracy": 1.0,
+                "tampered_pixel_iou": 0.0,
+                "collapse": {
+                  "block": {
+                    "n_images": 7,
+                    "all_foreground_images": 0,
+                    "all_background_images": 1
+                  },
+                  "pixel": {
+                    "n_images": 7,
+                    "all_foreground_images": 0,
+                    "all_background_images": 7
+                  }
+                }
+              },
+              "pixel_only_training_diagnostic": {
+                "tau": 0.25,
+                "tampered_pixel_iou": 0.17768533009471463,
+                "intact_positive_pixel_counts": [
+                  260919
+                ],
+                "non_jpeg_tampered_pixel_iou": 0.013300215937876303,
+                "tampered_pixel_iou_by_family": {
+                  "B1:jpeg75": 0.9996109008789062,
+                  "T1": 0.0009829104130911382,
+                  "T2": 0.006344822295107122,
+                  "T3": 0.010712155735323352,
+                  "T4": 0.014039336196887896,
+                  "T5": 0.03442185504897201
+                }
+              },
+              "warning": "TRAIN-only operating-point contrast, not alternative benchmark results"
+            }
+          }
+        ],
+        "selected_epoch": 6,
+        "last_completed_epoch": 8,
+        "selection_scope": "TRAIN-only, in-sample localisation epoch selection",
+        "before": {
+          "tau": 0.05,
+          "k": 0,
+          "metrics": {
+            "n": 7,
+            "n_tampered": 6,
+            "n_intact": 1,
+            "iou_mean": 0.15229143415178573,
+            "iou_tampered_mean": 0.17767333984375,
+            "block_acc": 0.15513392857142858,
+            "detection": 0.8571428571428571,
+            "detection_denominator": "6 / 7",
+            "false_claims": 1,
+            "n_intact_denominator": 1,
+            "true_positives": 6,
+            "tpr": 1.0,
+            "fpr": 1.0,
+            "balanced_accuracy": 0.5,
+            "by_family": [
+              {
+                "family": "B1:jpeg75",
+                "n": 1,
+                "n_tampered": 1,
+                "n_intact": 0,
+                "iou_tampered_mean": 0.9996223449707031,
+                "tpr": 1.0,
+                "fpr": null
+              },
+              {
+                "family": "T1",
+                "n": 1,
+                "n_tampered": 1,
+                "n_intact": 0,
+                "iou_tampered_mean": 0.0009765625,
+                "tpr": 1.0,
+                "fpr": null
+              },
+              {
+                "family": "T2",
+                "n": 1,
+                "n_tampered": 1,
+                "n_intact": 0,
+                "iou_tampered_mean": 0.006343841552734375,
+                "tpr": 1.0,
+                "fpr": null
+              },
+              {
+                "family": "T3",
+                "n": 1,
+                "n_tampered": 1,
+                "n_intact": 0,
+                "iou_tampered_mean": 0.01068878173828125,
+                "tpr": 1.0,
+                "fpr": null
+              },
+              {
+                "family": "T4",
+                "n": 1,
+                "n_tampered": 1,
+                "n_intact": 0,
+                "iou_tampered_mean": 0.013980865478515625,
+                "tpr": 1.0,
+                "fpr": null
+              },
+              {
+                "family": "T5",
+                "n": 1,
+                "n_tampered": 1,
+                "n_intact": 0,
+                "iou_tampered_mean": 0.034427642822265625,
+                "tpr": 1.0,
+                "fpr": null
+              },
+              {
+                "family": "none",
+                "n": 1,
+                "n_tampered": 0,
+                "n_intact": 1,
+                "iou_tampered_mean": null,
+                "tpr": null,
+                "fpr": 1.0
+              }
+            ],
+            "by_diagnosis": [
+              {
+                "dx": "dx0",
+                "n": 1,
+                "n_total": 1,
+                "n_intact": 0,
+                "iou": 0.0009765625,
+                "iou_convention": "tampered images only",
+                "small_n": true
+              },
+              {
+                "dx": "dx1",
+                "n": 1,
+                "n_total": 1,
+                "n_intact": 0,
+                "iou": 0.006343841552734375,
+                "iou_convention": "tampered images only",
+                "small_n": true
+              },
+              {
+                "dx": "dx2",
+                "n": 1,
+                "n_total": 1,
+                "n_intact": 0,
+                "iou": 0.01068878173828125,
+                "iou_convention": "tampered images only",
+                "small_n": true
+              },
+              {
+                "dx": "dx3",
+                "n": 1,
+                "n_total": 1,
+                "n_intact": 0,
+                "iou": 0.013980865478515625,
+                "iou_convention": "tampered images only",
+                "small_n": true
+              },
+              {
+                "dx": "dx4",
+                "n": 1,
+                "n_total": 1,
+                "n_intact": 0,
+                "iou": 0.034427642822265625,
+                "iou_convention": "tampered images only",
+                "small_n": true
+              },
+              {
+                "dx": "dx5",
+                "n": 0,
+                "n_total": 1,
+                "n_intact": 1,
+                "iou": null,
+                "iou_convention": "tampered images only",
+                "small_n": true
+              },
+              {
+                "dx": "dx6",
+                "n": 1,
+                "n_total": 1,
+                "n_intact": 0,
+                "iou": 0.9996223449707031,
+                "iou_convention": "tampered images only",
+                "small_n": true
+              }
+            ],
+            "by_area": [
+              {
+                "bucket": "area_0.000-0.005",
+                "n": 1,
+                "median_radius_px": 9.0,
+                "iou": 0.001,
+                "ceiling": 1.0,
+                "ceiling_convention": "exact per-image block oracle, averaged",
+                "any_overlap_block_iou": 1.0,
+                "small_n": true
+              },
+              {
+                "bucket": "area_0.005-0.020",
+                "n": 3,
+                "median_radius_px": 29.9,
+                "iou": 0.0103,
+                "ceiling": 0.7843453900495199,
+                "ceiling_convention": "exact per-image block oracle, averaged",
+                "any_overlap_block_iou": 0.6685956104130445,
+                "small_n": true
+              },
+              {
+                "bucket": "area_0.020-0.050",
+                "n": 1,
+                "median_radius_px": 53.6,
+                "iou": 0.0344,
+                "ceiling": 0.9792751736111112,
+                "ceiling_convention": "exact per-image block oracle, averaged",
+                "any_overlap_block_iou": 0.9792751736111112,
+                "small_n": true
+              },
+              {
+                "bucket": "area_0.200-1.010",
+                "n": 1,
+                "median_radius_px": 288.8,
+                "iou": 0.9996,
+                "ceiling": 0.9996223449707031,
+                "ceiling_convention": "exact per-image block oracle, averaged",
+                "any_overlap_block_iou": 0.9996223449707031,
+                "small_n": true
+              }
+            ]
+          },
+          "collapse": {
+            "block": {
+              "n_images": 7,
+              "all_foreground_images": 7,
+              "all_background_images": 0
+            },
+            "pixel": {
+              "n_images": 7,
+              "all_foreground_images": 7,
+              "all_background_images": 0
+            }
+          },
+          "pixel_only_training_tau": 0.05,
+          "pixel_only_training_iou": 0.17767333984375
+        },
+        "after": {
+          "tau": 0.55,
+          "k": 4,
+          "metrics": {
+            "n": 7,
+            "n_tampered": 6,
+            "n_intact": 1,
+            "iou_mean": 0.14285714285714285,
+            "iou_tampered_mean": 0.0,
+            "block_acc": 0.9779924665178571,
+            "detection": 0.8571428571428571,
+            "detection_denominator": "6 / 7",
+            "false_claims": 0,
+            "n_intact_denominator": 1,
+            "true_positives": 5,
+            "tpr": 0.8333333333333334,
+            "fpr": 0.0,
+            "balanced_accuracy": 0.9166666666666667,
+            "by_family": [
+              {
+                "family": "B1:jpeg75",
+                "n": 1,
+                "n_tampered": 1,
+                "n_intact": 0,
+                "iou_tampered_mean": 0.0,
+                "tpr": 1.0,
+                "fpr": null
+              },
+              {
+                "family": "T1",
+                "n": 1,
+                "n_tampered": 1,
+                "n_intact": 0,
+                "iou_tampered_mean": 0.0,
+                "tpr": 1.0,
+                "fpr": null
+              },
+              {
+                "family": "T2",
+                "n": 1,
+                "n_tampered": 1,
+                "n_intact": 0,
+                "iou_tampered_mean": 0.0,
+                "tpr": 0.0,
+                "fpr": null
+              },
+              {
+                "family": "T3",
+                "n": 1,
+                "n_tampered": 1,
+                "n_intact": 0,
+                "iou_tampered_mean": 0.0,
+                "tpr": 1.0,
+                "fpr": null
+              },
+              {
+                "family": "T4",
+                "n": 1,
+                "n_tampered": 1,
+                "n_intact": 0,
+                "iou_tampered_mean": 0.0,
+                "tpr": 1.0,
+                "fpr": null
+              },
+              {
+                "family": "T5",
+                "n": 1,
+                "n_tampered": 1,
+                "n_intact": 0,
+                "iou_tampered_mean": 0.0,
+                "tpr": 1.0,
+                "fpr": null
+              },
+              {
+                "family": "none",
+                "n": 1,
+                "n_tampered": 0,
+                "n_intact": 1,
+                "iou_tampered_mean": null,
+                "tpr": null,
+                "fpr": 0.0
+              }
+            ],
+            "by_diagnosis": [
+              {
+                "dx": "dx0",
+                "n": 1,
+                "n_total": 1,
+                "n_intact": 0,
+                "iou": 0.0,
+                "iou_convention": "tampered images only",
+                "small_n": true
+              },
+              {
+                "dx": "dx1",
+                "n": 1,
+                "n_total": 1,
+                "n_intact": 0,
+                "iou": 0.0,
+                "iou_convention": "tampered images only",
+                "small_n": true
+              },
+              {
+                "dx": "dx2",
+                "n": 1,
+                "n_total": 1,
+                "n_intact": 0,
+                "iou": 0.0,
+                "iou_convention": "tampered images only",
+                "small_n": true
+              },
+              {
+                "dx": "dx3",
+                "n": 1,
+                "n_total": 1,
+                "n_intact": 0,
+                "iou": 0.0,
+                "iou_convention": "tampered images only",
+                "small_n": true
+              },
+              {
+                "dx": "dx4",
+                "n": 1,
+                "n_total": 1,
+                "n_intact": 0,
+                "iou": 0.0,
+                "iou_convention": "tampered images only",
+                "small_n": true
+              },
+              {
+                "dx": "dx5",
+                "n": 0,
+                "n_total": 1,
+                "n_intact": 1,
+                "iou": null,
+                "iou_convention": "tampered images only",
+                "small_n": true
+              },
+              {
+                "dx": "dx6",
+                "n": 1,
+                "n_total": 1,
+                "n_intact": 0,
+                "iou": 0.0,
+                "iou_convention": "tampered images only",
+                "small_n": true
+              }
+            ],
+            "by_area": [
+              {
+                "bucket": "area_0.000-0.005",
+                "n": 1,
+                "median_radius_px": 9.0,
+                "iou": 0.0,
+                "ceiling": 1.0,
+                "ceiling_convention": "exact per-image block oracle, averaged",
+                "any_overlap_block_iou": 1.0,
+                "small_n": true
+              },
+              {
+                "bucket": "area_0.005-0.020",
+                "n": 3,
+                "median_radius_px": 29.9,
+                "iou": 0.0,
+                "ceiling": 0.7843453900495199,
+                "ceiling_convention": "exact per-image block oracle, averaged",
+                "any_overlap_block_iou": 0.6685956104130445,
+                "small_n": true
+              },
+              {
+                "bucket": "area_0.020-0.050",
+                "n": 1,
+                "median_radius_px": 53.6,
+                "iou": 0.0,
+                "ceiling": 0.9792751736111112,
+                "ceiling_convention": "exact per-image block oracle, averaged",
+                "any_overlap_block_iou": 0.9792751736111112,
+                "small_n": true
+              },
+              {
+                "bucket": "area_0.200-1.010",
+                "n": 1,
+                "median_radius_px": 288.8,
+                "iou": 0.0,
+                "ceiling": 0.9996223449707031,
+                "ceiling_convention": "exact per-image block oracle, averaged",
+                "any_overlap_block_iou": 0.9996223449707031,
+                "small_n": true
+              }
+            ]
+          },
+          "collapse": {
+            "block": {
+              "n_images": 7,
+              "all_foreground_images": 0,
+              "all_background_images": 0
+            },
+            "pixel": {
+              "n_images": 7,
+              "all_foreground_images": 0,
+              "all_background_images": 7
+            }
+          },
+          "pixel_only_training_tau": 0.35,
+          "pixel_only_training_iou": 0.2541217083869258
+        }
+      }
+    },
+    "classical_reference": {
+      "method": "strict failed-block expansion on the same protected TRAIN samples",
+      "metrics": {
+        "n": 7,
+        "n_tampered": 6,
+        "n_intact": 1,
+        "iou_mean": 0.8549549071172783,
+        "iou_tampered_mean": 0.830780724970158,
+        "block_acc": 1.0,
+        "detection": 1.0,
+        "detection_denominator": "7 / 7",
+        "false_claims": 0,
+        "n_intact_denominator": 1,
+        "true_positives": 6,
+        "tpr": 1.0,
+        "fpr": 0.0,
+        "balanced_accuracy": 1.0,
+        "by_family": [
+          {
+            "family": "B1:jpeg75",
+            "n": 1,
+            "n_tampered": 1,
+            "n_intact": 0,
+            "iou_tampered_mean": 0.9996223449707031,
+            "tpr": 1.0,
+            "fpr": null
+          },
+          {
+            "family": "T1",
+            "n": 1,
+            "n_tampered": 1,
+            "n_intact": 0,
+            "iou_tampered_mean": 1.0,
+            "tpr": 1.0,
+            "fpr": null
+          },
+          {
+            "family": "T2",
+            "n": 1,
+            "n_tampered": 1,
+            "n_intact": 0,
+            "iou_tampered_mean": 0.7217881944444444,
+            "tpr": 1.0,
+            "fpr": null
+          },
+          {
+            "family": "T3",
+            "n": 1,
+            "n_tampered": 1,
+            "n_intact": 0,
+            "iou_tampered_mean": 0.7680921052631579,
+            "tpr": 1.0,
+            "fpr": null
+          },
+          {
+            "family": "T4",
+            "n": 1,
+            "n_tampered": 1,
+            "n_intact": 0,
+            "iou_tampered_mean": 0.5159065315315315,
+            "tpr": 1.0,
+            "fpr": null
+          },
+          {
+            "family": "T5",
+            "n": 1,
+            "n_tampered": 1,
+            "n_intact": 0,
+            "iou_tampered_mean": 0.9792751736111112,
+            "tpr": 1.0,
+            "fpr": null
+          },
+          {
+            "family": "none",
+            "n": 1,
+            "n_tampered": 0,
+            "n_intact": 1,
+            "iou_tampered_mean": null,
+            "tpr": null,
+            "fpr": 0.0
+          }
+        ],
+        "by_diagnosis": [
+          {
+            "dx": "dx0",
+            "n": 1,
+            "n_total": 1,
+            "n_intact": 0,
+            "iou": 1.0,
+            "iou_convention": "tampered images only",
+            "small_n": true
+          },
+          {
+            "dx": "dx1",
+            "n": 1,
+            "n_total": 1,
+            "n_intact": 0,
+            "iou": 0.7217881944444444,
+            "iou_convention": "tampered images only",
+            "small_n": true
+          },
+          {
+            "dx": "dx2",
+            "n": 1,
+            "n_total": 1,
+            "n_intact": 0,
+            "iou": 0.7680921052631579,
+            "iou_convention": "tampered images only",
+            "small_n": true
+          },
+          {
+            "dx": "dx3",
+            "n": 1,
+            "n_total": 1,
+            "n_intact": 0,
+            "iou": 0.5159065315315315,
+            "iou_convention": "tampered images only",
+            "small_n": true
+          },
+          {
+            "dx": "dx4",
+            "n": 1,
+            "n_total": 1,
+            "n_intact": 0,
+            "iou": 0.9792751736111112,
+            "iou_convention": "tampered images only",
+            "small_n": true
+          },
+          {
+            "dx": "dx5",
+            "n": 0,
+            "n_total": 1,
+            "n_intact": 1,
+            "iou": null,
+            "iou_convention": "tampered images only",
+            "small_n": true
+          },
+          {
+            "dx": "dx6",
+            "n": 1,
+            "n_total": 1,
+            "n_intact": 0,
+            "iou": 0.9996223449707031,
+            "iou_convention": "tampered images only",
+            "small_n": true
+          }
+        ],
+        "by_area": [
+          {
+            "bucket": "area_0.000-0.005",
+            "n": 1,
+            "median_radius_px": 9.0,
+            "iou": 1.0,
+            "ceiling": 1.0,
+            "ceiling_convention": "exact per-image block oracle, averaged",
+            "any_overlap_block_iou": 1.0,
+            "small_n": true
+          },
+          {
+            "bucket": "area_0.005-0.020",
+            "n": 3,
+            "median_radius_px": 29.9,
+            "iou": 0.6686,
+            "ceiling": 0.7843453900495199,
+            "ceiling_convention": "exact per-image block oracle, averaged",
+            "any_overlap_block_iou": 0.6685956104130445,
+            "small_n": true
+          },
+          {
+            "bucket": "area_0.020-0.050",
+            "n": 1,
+            "median_radius_px": 53.6,
+            "iou": 0.9793,
+            "ceiling": 0.9792751736111112,
+            "ceiling_convention": "exact per-image block oracle, averaged",
+            "any_overlap_block_iou": 0.9792751736111112,
+            "small_n": true
+          },
+          {
+            "bucket": "area_0.200-1.010",
+            "n": 1,
+            "median_radius_px": 288.8,
+            "iou": 0.9996,
+            "ceiling": 0.9996223449707031,
+            "ceiling_convention": "exact per-image block oracle, averaged",
+            "any_overlap_block_iou": 0.9996223449707031,
+            "small_n": true
+          }
+        ]
+      }
+    }
+  },
+  "training_log": "Authentic reconstruction epoch 1/2: loss=0.62053, n=1, elapsed=0.00 min\nAuthentic reconstruction epoch 2/2: loss=0.57733, n=1, elapsed=0.00 min\n    epoch   1  loss 5.0515  TRAIN(in-sample) IoU 0.1523  TRAIN(in-sample) blk-acc 0.1551  @tau 0.05  elapsed 0.04 min  losses block=2.7125 pixel=1.9777 consistency=0.0362 cls=0.6864\n    epoch   2  loss 4.9828  TRAIN(in-sample) IoU 0.1523  TRAIN(in-sample) blk-acc 0.1551  @tau 0.05  elapsed 0.04 min  losses block=2.6720 pixel=1.9596 consistency=0.0386 cls=0.6638\n    epoch   3  loss 4.9471  TRAIN(in-sample) IoU 0.1523  TRAIN(in-sample) blk-acc 0.1551  @tau 0.05  elapsed 0.04 min  losses block=2.6574 pixel=1.9468 consistency=0.0395 cls=0.6463\n    epoch   4  loss 4.8950  TRAIN(in-sample) IoU 0.1523  TRAIN(in-sample) blk-acc 0.1551  @tau 0.30  elapsed 0.04 min  losses block=2.6369 pixel=1.9238 consistency=0.0395 cls=0.6292\n    epoch   5  loss 4.8503  TRAIN(in-sample) IoU 0.1940  TRAIN(in-sample) blk-acc 0.1551  @tau 0.35  elapsed 0.04 min  losses block=2.6208 pixel=1.9023 consistency=0.0399 cls=0.6146\n    epoch   6  loss 4.8197  TRAIN(in-sample) IoU 0.2178  TRAIN(in-sample) blk-acc 0.1551  @tau 0.35  elapsed 0.04 min  losses block=2.6086 pixel=1.8906 consistency=0.0411 cls=0.5998\n    epoch   7  loss 4.7832  TRAIN(in-sample) IoU 0.1653  TRAIN(in-sample) blk-acc 0.1551  @tau 0.35  elapsed 0.04 min  losses block=2.5919 pixel=1.8798 consistency=0.0413 cls=0.5817\n    epoch   8  loss 4.7642  TRAIN(in-sample) IoU 0.1523  TRAIN(in-sample) blk-acc 0.1551  @tau 0.25  elapsed 0.04 min  losses block=2.5838 pixel=1.8760 consistency=0.0414 cls=0.5674\nDiagnostic saved: /tmp/keyswm-main-trace-final-v2/diagnostic.json\n",
+  "integrity_controls_smoke": {
+    "protocol": "integrity-tradeoffs-v1",
+    "source_sha256": "5e87d263e8fac7281e34725e89a80053b9ed22dee89289eda5a957b69f512c74",
+    "synthetic": true,
+    "usable_as_isic_study": false,
+    "environment": {
+      "python": "3.11.2 (main, Apr  8 2026, 01:58:00) [GCC 12.2.0]",
+      "platform": "Linux-6.1.158+-x86_64-with-glibc2.36",
+      "machine": "x86_64",
+      "numpy": "1.26.4",
+      "Pillow": "13.0.0",
+      "cryptography": "50.0.2",
+      "command": [
+        "scripts/compare_integrity.py",
+        "--synthetic",
+        "--n",
+        "1",
+        "--out",
+        "/tmp/recovered-integrity-comparison.json"
+      ]
+    },
+    "scope": "engineering trade-off comparison; not novelty, DICOM conformance or clinical validation",
+    "pairing": "same source/operator/coordinates; method-specific reference and measured truth; masks are NOT assumed identical",
+    "key_policy": "public deterministic benchmark keys; never production secrets",
+    "limitations": [
+      "Signed digests authenticate decoded RGB, not image file metadata.",
+      "No PKI, revocation, freshness authority or blockchain integration.",
+      "Tile hashes and signatures are standard baselines, not new cryptography.",
+      "Sidecar bytes are this JSON encoding, not an optimised storage lower bound.",
+      "Key distribution, certificates and trusted version-registry overhead are excluded for all methods.",
+      "No learned localisation, clinical fidelity or population accuracy inferred.",
+      "Replay is possible if the receiver accepts an old image and old signed manifest at a reused version ID.",
+      "Timings are single local CPU executions, not statistically stable benchmarks."
+    ],
+    "samples": [
+      {
+        "id": "fixture-0",
+        "input_name": null,
+        "input_file_sha256": null,
+        "input_rgb_sha256": "9f434535969944ce651d42cdfb2c405a22fed04fced11f92830cb5e1f74f1cd8",
+        "trusted_image_id": 4242,
+        "shape": [
+          512,
+          512,
+          3
+        ],
+        "methods": [
+          {
+            "method": "Embedded HMAC",
+            "reference_rgb_sha256": "3af9d6df83773b4064a8a20ad95b77c842f0d9575a39b61dc53484093d501061",
+            "mse": 0.5002721150716146,
+            "psnr_db": 51.138740646765456,
+            "maximum_absolute_channel_change": 1,
+            "setup_ms": 27.87664700008463,
+            "sidecar_bytes": 0,
+            "reference_png_bytes": 354647,
+            "embedded_tag_payload_bits": 786432,
+            "trust": "shared secret key plus trusted version ID",
+            "cases": [
+              {
+                "scenario": "intact",
+                "label": "Untouched protected image",
+                "scenario_type": "content",
+                "verdict": "VERIFIED",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 0,
+                "verification_ms": 29.688972000030844,
+                "received_rgb_sha256": "3af9d6df83773b4064a8a20ad95b77c842f0d9575a39b61dc53484093d501061",
+                "failed_blocks": 0,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 0,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 4096
+                  },
+                  "block_iou": null,
+                  "expanded_block_pixel_iou": null
+                }
+              },
+              {
+                "scenario": "one-pixel",
+                "label": "One pixel: one embedded bit changed",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 1,
+                "verification_ms": 29.517263999991883,
+                "received_rgb_sha256": "dd8618b783e4526892b5c5580627eebc79798d4a93480361a91b0b9be04692e0",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 4095
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.015625
+                }
+              },
+              {
+                "scenario": "brightness",
+                "label": "Local brightness change (+12, clipped)",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 64,
+                "verification_ms": 29.93354599993836,
+                "received_rgb_sha256": "df8a1c3b981182f8ed8252b37d05e0237f18995fb8440285b2f8656c70bfaa5a",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 4095
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 1.0
+                }
+              },
+              {
+                "scenario": "boundary-patch",
+                "label": "15-pixel edit crossing block boundaries",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 15,
+                "verification_ms": 30.23037299999487,
+                "received_rgb_sha256": "c8af4d438401a2796077854eea778e3067f2e8316f8332e5148d276b98e77eb1",
+                "failed_blocks": 4,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 4,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 4092
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.05859375
+                }
+              },
+              {
+                "scenario": "copy-move",
+                "label": "Protected block copied to a different address",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 64,
+                "verification_ms": 30.849447999912627,
+                "received_rgb_sha256": "289d2bef29eba0e63ad2aaccbaa45ad09d92d66b2814ac5a6f8b29ff68f49559",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 4095
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 1.0
+                }
+              },
+              {
+                "scenario": "jpeg75",
+                "label": "JPEG quality 75: lossless contract violated",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 258615,
+                "verification_ms": 31.50003400003243,
+                "received_rgb_sha256": "63c2f0d55c2fd2a9b1afa6fa493c2b4125682e250d8bc9584d34916369166493",
+                "failed_blocks": 4096,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 4096,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 0
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.9865379333496094
+                }
+              },
+              {
+                "scenario": "wrong-key",
+                "label": "Unchanged pixels, wrong verification key",
+                "scenario_type": "context",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 0,
+                "verification_ms": 30.07846299999528,
+                "received_rgb_sha256": "3af9d6df83773b4064a8a20ad95b77c842f0d9575a39b61dc53484093d501061",
+                "failed_blocks": 4096,
+                "localisation": null
+              },
+              {
+                "scenario": "wrong-id",
+                "label": "Unchanged pixels, wrong trusted version identifier",
+                "scenario_type": "context",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "cannot distinguish pixel alteration from wrong key/context",
+                "changed_pixels": 0,
+                "verification_ms": 31.05530599998474,
+                "received_rgb_sha256": "3af9d6df83773b4064a8a20ad95b77c842f0d9575a39b61dc53484093d501061",
+                "failed_blocks": 4096,
+                "localisation": null
+              }
+            ]
+          },
+          {
+            "method": "Whole-image signature",
+            "reference_rgb_sha256": "9f434535969944ce651d42cdfb2c405a22fed04fced11f92830cb5e1f74f1cd8",
+            "mse": 0.0,
+            "psnr_db": null,
+            "maximum_absolute_channel_change": 0,
+            "setup_ms": 1.1457169999857797,
+            "sidecar_bytes": 338,
+            "reference_png_bytes": 261971,
+            "embedded_tag_payload_bits": 0,
+            "trust": "trusted public key plus trusted version ID and authentic sidecar",
+            "cases": [
+              {
+                "scenario": "intact",
+                "label": "Untouched protected image",
+                "scenario_type": "content",
+                "verdict": "VERIFIED",
+                "reason": "signed_pixels_match",
+                "changed_pixels": 0,
+                "verification_ms": 1.2632809999786332,
+                "received_rgb_sha256": "9f434535969944ce651d42cdfb2c405a22fed04fced11f92830cb5e1f74f1cd8",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "one-pixel",
+                "label": "One pixel: one embedded bit changed",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 1,
+                "verification_ms": 1.0028880000163554,
+                "received_rgb_sha256": "bc2f47c6230753f4d7250f2b8bde6aee1c17b25af669b141e5d1e2124bffcd26",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "brightness",
+                "label": "Local brightness change (+12, clipped)",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 64,
+                "verification_ms": 0.9610419999717124,
+                "received_rgb_sha256": "edd070a4086e79b95152153e33be75528b120953bfe77e7dfcdee0faf86828e4",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "boundary-patch",
+                "label": "15-pixel edit crossing block boundaries",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 15,
+                "verification_ms": 1.0195270000394885,
+                "received_rgb_sha256": "bdbcf7ae4c3f6f14b456f5eaed17bc4462d4e88355e44a8fe68464ddf3cd8027",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "copy-move",
+                "label": "Protected block copied to a different address",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 64,
+                "verification_ms": 1.0590159999992466,
+                "received_rgb_sha256": "279e8f8d36fe5290cffaac29b626fde8e7a54f3c8465a857fd9f82e09a83040b",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "jpeg75",
+                "label": "JPEG quality 75: lossless contract violated",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 250834,
+                "verification_ms": 1.0041929999715649,
+                "received_rgb_sha256": "9d158e3faf70726c055f961f83076b318cfaf5fb993583137b47c40c50ce9679",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "wrong-key",
+                "label": "Unchanged pixels, wrong verification key",
+                "scenario_type": "context",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "invalid_signature_or_untrusted_key",
+                "changed_pixels": 0,
+                "verification_ms": 0.2618649999703848,
+                "received_rgb_sha256": "9f434535969944ce651d42cdfb2c405a22fed04fced11f92830cb5e1f74f1cd8",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "wrong-id",
+                "label": "Unchanged pixels, wrong trusted version identifier",
+                "scenario_type": "context",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "identifier_mismatch",
+                "changed_pixels": 0,
+                "verification_ms": 0.1143289999845365,
+                "received_rgb_sha256": "9f434535969944ce651d42cdfb2c405a22fed04fced11f92830cb5e1f74f1cd8",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "missing-evidence",
+                "scenario_type": "evidence",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "missing_or_oversized_evidence",
+                "changed_pixels": 0,
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "modified-evidence",
+                "scenario_type": "evidence",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "invalid_signature_or_untrusted_key",
+                "changed_pixels": 0,
+                "failed_blocks": null,
+                "localisation": null
+              }
+            ]
+          },
+          {
+            "method": "Signed tile manifest",
+            "reference_rgb_sha256": "9f434535969944ce651d42cdfb2c405a22fed04fced11f92830cb5e1f74f1cd8",
+            "mse": 0.0,
+            "psnr_db": null,
+            "maximum_absolute_channel_change": 0,
+            "setup_ms": 11.354216999961864,
+            "sidecar_bytes": 274697,
+            "reference_png_bytes": 261971,
+            "embedded_tag_payload_bits": 0,
+            "trust": "trusted public key plus trusted version ID and authentic sidecar",
+            "cases": [
+              {
+                "scenario": "intact",
+                "label": "Untouched protected image",
+                "scenario_type": "content",
+                "verdict": "VERIFIED",
+                "reason": "signed_pixels_match",
+                "changed_pixels": 0,
+                "verification_ms": 13.48978199996509,
+                "received_rgb_sha256": "9f434535969944ce651d42cdfb2c405a22fed04fced11f92830cb5e1f74f1cd8",
+                "failed_blocks": 0,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 0,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 4096
+                  },
+                  "block_iou": null,
+                  "expanded_block_pixel_iou": null
+                }
+              },
+              {
+                "scenario": "one-pixel",
+                "label": "One pixel: one embedded bit changed",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 1,
+                "verification_ms": 13.520985000013752,
+                "received_rgb_sha256": "bc2f47c6230753f4d7250f2b8bde6aee1c17b25af669b141e5d1e2124bffcd26",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 4095
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.015625
+                }
+              },
+              {
+                "scenario": "brightness",
+                "label": "Local brightness change (+12, clipped)",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 64,
+                "verification_ms": 13.036748999979864,
+                "received_rgb_sha256": "edd070a4086e79b95152153e33be75528b120953bfe77e7dfcdee0faf86828e4",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 4095
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 1.0
+                }
+              },
+              {
+                "scenario": "boundary-patch",
+                "label": "15-pixel edit crossing block boundaries",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 15,
+                "verification_ms": 13.230530999976509,
+                "received_rgb_sha256": "bdbcf7ae4c3f6f14b456f5eaed17bc4462d4e88355e44a8fe68464ddf3cd8027",
+                "failed_blocks": 4,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 4,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 4092
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.05859375
+                }
+              },
+              {
+                "scenario": "copy-move",
+                "label": "Protected block copied to a different address",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 64,
+                "verification_ms": 13.297396999973898,
+                "received_rgb_sha256": "279e8f8d36fe5290cffaac29b626fde8e7a54f3c8465a857fd9f82e09a83040b",
+                "failed_blocks": 1,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 1,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 4095
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 1.0
+                }
+              },
+              {
+                "scenario": "jpeg75",
+                "label": "JPEG quality 75: lossless contract violated",
+                "scenario_type": "content",
+                "verdict": "FAILED_INTEGRITY",
+                "reason": "received_pixels_differ",
+                "changed_pixels": 250834,
+                "verification_ms": 13.397445000009611,
+                "received_rgb_sha256": "9d158e3faf70726c055f961f83076b318cfaf5fb993583137b47c40c50ce9679",
+                "failed_blocks": 4096,
+                "localisation": {
+                  "block_confusion": {
+                    "tp": 4096,
+                    "fp": 0,
+                    "fn": 0,
+                    "tn": 0
+                  },
+                  "block_iou": 1.0,
+                  "expanded_block_pixel_iou": 0.9568557739257812
+                }
+              },
+              {
+                "scenario": "wrong-key",
+                "label": "Unchanged pixels, wrong verification key",
+                "scenario_type": "context",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "invalid_signature_or_untrusted_key",
+                "changed_pixels": 0,
+                "verification_ms": 4.654279999954269,
+                "received_rgb_sha256": "9f434535969944ce651d42cdfb2c405a22fed04fced11f92830cb5e1f74f1cd8",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "wrong-id",
+                "label": "Unchanged pixels, wrong trusted version identifier",
+                "scenario_type": "context",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "identifier_mismatch",
+                "changed_pixels": 0,
+                "verification_ms": 0.4971629999772631,
+                "received_rgb_sha256": "9f434535969944ce651d42cdfb2c405a22fed04fced11f92830cb5e1f74f1cd8",
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "missing-evidence",
+                "scenario_type": "evidence",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "missing_or_oversized_evidence",
+                "changed_pixels": 0,
+                "failed_blocks": null,
+                "localisation": null
+              },
+              {
+                "scenario": "modified-evidence",
+                "scenario_type": "evidence",
+                "verdict": "CANNOT_AUTHENTICATE",
+                "reason": "invalid_signature_or_untrusted_key",
+                "changed_pixels": 0,
+                "failed_blocks": null,
+                "localisation": null
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "limitations": [
+    "Only the main model was trained in this bounded 8-epoch audit.",
+    "Pixel-only operating points are TRAIN diagnostics, not replacement benchmark results.",
+    "Actual ISIC learning, external validity, CUDA and novelty are unestablished."
+  ]
+}
