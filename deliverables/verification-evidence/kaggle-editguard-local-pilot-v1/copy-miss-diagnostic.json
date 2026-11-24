@@ -1,0 +1,10 @@
+{
+  "case": "copy64",
+  "image_id": "ISIC_0058884",
+  "edited_pixels": 4096,
+  "max_edit_region_score": 0.0392156862745098,
+  "median_edit_region_score": 0.00784313725490196,
+  "threshold": 0.2,
+  "missed_edited_pixels": 4096,
+  "interpretation": "All target scores are below .04; this observed failure is not a handful of pixels just below .2. No new threshold is selected from these outcomes."
+}

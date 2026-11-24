@@ -1,0 +1,26 @@
+{
+  "scope": "Arithmetic consequences of literal published equations, NOT a PFF-WM reproduction or experimental refutation",
+  "source_url": "https://www.sciencedirect.com/science/article/pii/S2667305326000591",
+  "doi": "10.1016/j.iswa.2026.200684",
+  "spatial_softmax": {
+    "sum": 1,
+    "strict_gate": 0.1,
+    "maximum_locations_above_gate": 9,
+    "uniform_attention_512": 3.814697265625e-06,
+    "uniform_gate_is_empty": true
+  },
+  "payload": {
+    "three_level_grayscale_detail_coefficients": 258048,
+    "stated_64_times_65536_bits": 4194304,
+    "ratio": 16.253968253968253,
+    "issue": "Per-location feature reuse may explain channel count but cannot by itself increase independent embedded payload; tensor construction needs clarification."
+  },
+  "dct_band": {
+    "literal_512_based_lower": 76.8,
+    "literal_512_based_upper": 179.2,
+    "max_8x8_local_index_sum": 14,
+    "selected_local_coefficients": 0,
+    "issue": "Global-index equation cannot be applied literally to local8x8 indices; need actual block-index scaling/selected-index list."
+  },
+  "interpretation": "These implementation ambiguities require code or author clarification; they do not establish that reported experiments are false."
+}

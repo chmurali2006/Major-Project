@@ -1,0 +1,58 @@
+{
+  "schema": "adapted-validation-v1",
+  "cohort_sha256": "c524a43fce2951dbd68514a94d60610a8daa4f88fd40b8b93c53ee1f03f5aa42",
+  "split": "validation",
+  "n": 500,
+  "seed_rule": "2301 + fixed validation index",
+  "operators": {
+    "copy_patch": 32,
+    "jpeg_quality": [
+      70,
+      85,
+      95
+    ],
+    "jpeg_subsampling": 0,
+    "resize_scale": 0.9,
+    "resize_rounding": "round",
+    "resize_interpolation": "Pillow bicubic down and restore",
+    "contrast_factors": [
+      0.9,
+      1.1
+    ],
+    "contrast_operator": "Pillow ImageEnhance.Contrast (mean-grey pivot)",
+    "global_blur_sigma": 0.5,
+    "local_blur_sigma": 2.0,
+    "gaussian_truncate": 4.0,
+    "gaussian_boundary": "reflect",
+    "local_blur_note": "32square Gaussian-blurred surrogate; NOT verified semantic lesion removal"
+  },
+  "pillow": "13.0.0",
+  "numpy": "2.1.3",
+  "embedding_mse": 0,
+  "preparation_sha256": "1dfa06e0ba69f354e1589dfcd0c1fb096d233667e5421c203f9d744353c42e2a",
+  "truth_encoding": "np.packbits row-major 512x512 boolean, bitorder big",
+  "configs": [
+    {
+      "name": "full4",
+      "parameter": 4,
+      "block": 4
+    },
+    {
+      "name": "full8",
+      "parameter": 8,
+      "block": 8
+    },
+    {
+      "name": "bounded289",
+      "parameter": 289,
+      "block": 4
+    }
+  ],
+  "limits": [
+    "Classical controls only; no PFF-WM reproduction or SOTA claim.",
+    "All exact RGB changes are integrity failures, including paper benign operations.",
+    "No patient independence, semantic localisation or clinical utility claim.",
+    "Returned public key is experiment evidence, not independent issuer trust.",
+    "Validation outcomes are development evidence. Evaluation does not access test pixels; optional preparation does."
+  ]
+}

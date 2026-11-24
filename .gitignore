@@ -6,6 +6,8 @@ data/
 datasets/
 *.pt
 *.pth
+# Medical-pixel qualitative outputs are returned for private defense use only.
+deliverables/defense_visuals/
 *.npy
 .pytest_cache/
 
@@ -20,3 +22,6 @@ data/**/*.nii*
 .env.*
 .kaggle/
 kaggle.json
+
+# Returned experiment archives stay local; retain compact derived evidence instead
+/google_drive/*.zip

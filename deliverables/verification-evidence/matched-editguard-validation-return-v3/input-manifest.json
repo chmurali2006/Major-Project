@@ -1,0 +1,33 @@
+{
+  "schema": "matched-editguard-drive-input-manifest-v2",
+  "results_archive": {
+    "sha256": "33ac519371e373081ae60ddd7f44ff8c55168e6fea43458c6a395297764997a9",
+    "size_bytes": 277001270,
+    "zip_entries": 1019,
+    "zip_crc_check": "passed"
+  },
+  "results_parts": [
+    {"name":"matched-editguard-validation-v1-results-part001.bin","drive_file_id":"1ZN8LBIjxcx2DSB2CFHQIUtEL71czkeIa","size_bytes":94371840,"sha256":"a94699c3d0e45034911703d1dd12677c1996b1f3bf8fe52512a4a8b986b8f1e8"},
+    {"name":"matched-editguard-validation-v1-results-part002.bin","drive_file_id":"1sTsEYIqDvB7-dfaUeHg0BkSIM5xHkba2","size_bytes":94371840,"sha256":"7844b498ffa7efc6dd49ffbb340355c6fa210b460b81c778e3a168e8546913cb"},
+    {"name":"matched-editguard-validation-v1-results-part003.bin","drive_file_id":"1LIj9fv5B9TDT-3yRvIF6iIRHMkGv7vGv","size_bytes":88257590,"sha256":"279a323c82dd27aea7aa44a28cf4a35c58f457e33f43500e63fccead33a63584"}
+  ],
+  "notebook": {
+    "name":"matched_editguard_validation_v1.ipynb",
+    "drive_file_id":"1emkEyaC3xhplgOmQWqczLkycKoOT9D4w",
+    "size_bytes":73360,
+    "sha256":"9107ca9bead8b9770a562a9375ba990f432e3b96dfb524696847f318e1193b9e",
+    "embedded_bundle_sha256":"65d382c4097c8b64299425d9103c78cc09ffc37bc603557c36700948caf271b3"
+  },
+  "external_public_key": {
+    "name":"matched-editguard-validation-v1-public-key.bin",
+    "drive_file_id":"1JaoC-cSICk2A5VnUwWOuxUC7TOiS9vQ_",
+    "size_bytes":32,
+    "sha256":"eb896a22b9129d19bb50d4da64073b396265ab512d88b5092b3334e4951bf741",
+    "format":"raw Ed25519 public key"
+  },
+  "review": {
+    "status":"audited_with_external_public_key",
+    "signed_packet_signatures_checked":500,
+    "signed_packet_signatures_passed":500
+  }
+}

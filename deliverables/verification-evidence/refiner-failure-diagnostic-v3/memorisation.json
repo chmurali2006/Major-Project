@@ -1,0 +1,3130 @@
+{
+  "usable": false,
+  "purpose": "TRAIN-only memorisation; not generalisation",
+  "synthetic": true,
+  "source_sha256": "6a88e9503687d99b77c8f0adcafdc26db9d1acbeee57c188fdbbaba93f26e710",
+  "settings": {
+    "synthetic": true,
+    "data": null,
+    "metadata": null,
+    "out": ".cache/refiner-memorisation-v3",
+    "n": 7,
+    "epochs": 20,
+    "width": 4,
+    "model": "both",
+    "seed": 0,
+    "device": "cpu"
+  },
+  "training_ids": [
+    "synthetic-0",
+    "synthetic-1",
+    "synthetic-2",
+    "synthetic-3",
+    "synthetic-4",
+    "synthetic-5",
+    "synthetic-6"
+  ],
+  "input_sha256": {},
+  "metadata_sha256": null,
+  "environment": {
+    "python": "3.11.2 (main, Apr  8 2026, 01:58:00) [GCC 12.2.0]",
+    "platform": "Linux-6.1.158+-x86_64-with-glibc2.36",
+    "numpy": "1.26.4",
+    "torch": "2.2.2+cu121",
+    "cuda_runtime": "12.1",
+    "requested_device": "cpu",
+    "selected_device": "cpu",
+    "deterministic_algorithms": true,
+    "deterministic_warn_only": false
+  },
+  "ground_truth": "Any received RGB change relative to the protected image; any changed pixel makes a block positive. JPEG is an integrity change, not proof of malicious intent.",
+  "torch": "2.2.2+cu121",
+  "cuda_runtime": "12.1",
+  "gpu": null,
+  "determinism": "strict; unsupported operations raise",
+  "models": {
+    "Main watermark-verification model": {
+      "status": "complete",
+      "authentic_training": {
+        "epochs": 2,
+        "n_authentic_train": 1,
+        "selection": "cls=0 and empty measured pixel mask, TRAIN partition only",
+        "frozen_during_localisation_training": true
+      },
+      "epoch_trace": [
+        {
+          "epoch": 1,
+          "mean_update_loss": 5.051477602549961,
+          "mean_sample_component_losses": {
+            "block": 2.7125123058046614,
+            "pixel": 1.9776513917105538,
+            "consistency": 0.03621317659105573,
+            "cls": 0.6864145653588432
+          },
+          "selection_tau": 0.05,
+          "selection_tampered_pixel_iou": 0.17767333984375,
+          "selected_this_epoch": true,
+          "selected_epoch_so_far": 1,
+          "operating_points": {
+            "shared_rule": {
+              "tau": 0.05,
+              "k": 0,
+              "balanced_accuracy": 0.5,
+              "tampered_pixel_iou": 0.17767333984375,
+              "collapse": {
+                "block": {
+                  "n_images": 7,
+                  "all_foreground_images": 7,
+                  "all_background_images": 0
+                },
+                "pixel": {
+                  "n_images": 7,
+                  "all_foreground_images": 7,
+                  "all_background_images": 0
+                }
+              }
+            },
+            "pixel_only_training_diagnostic": {
+              "tau": 0.05,
+              "tampered_pixel_iou": 0.17767333984375,
+              "intact_positive_pixel_counts": [
+                262144
+              ],
+              "non_jpeg_tampered_pixel_iou": 0.013283538818359374,
+              "tampered_pixel_iou_by_family": {
+                "B1:jpeg75": 0.9996223449707031,
+                "T1": 0.0009765625,
+                "T2": 0.006343841552734375,
+                "T3": 0.01068878173828125,
+                "T4": 0.013980865478515625,
+                "T5": 0.034427642822265625
+              }
+            },
+            "warning": "TRAIN-only operating-point contrast, not alternative benchmark results"
+          }
+        },
+        {
+          "epoch": 2,
+          "mean_update_loss": 4.982806376048496,
+          "mean_sample_component_losses": {
+            "block": 2.6719543763569424,
+            "pixel": 1.9596410138266427,
+            "consistency": 0.038608296641281674,
+            "cls": 0.6638135399137225
+          },
+          "selection_tau": 0.05,
+          "selection_tampered_pixel_iou": 0.17767333984375,
+          "selected_this_epoch": false,
+          "selected_epoch_so_far": 1,
+          "operating_points": {
+            "shared_rule": {
+              "tau": 0.5,
+              "k": 0,
+              "balanced_accuracy": 0.5833333333333334,
+              "tampered_pixel_iou": 0.0,
+              "collapse": {
+                "block": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 6
+                },
+                "pixel": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 7
+                }
+              }
+            },
+            "pixel_only_training_diagnostic": {
+              "tau": 0.05,
+              "tampered_pixel_iou": 0.17767333984375,
+              "intact_positive_pixel_counts": [
+                262144
+              ],
+              "non_jpeg_tampered_pixel_iou": 0.013283538818359374,
+              "tampered_pixel_iou_by_family": {
+                "B1:jpeg75": 0.9996223449707031,
+                "T1": 0.0009765625,
+                "T2": 0.006343841552734375,
+                "T3": 0.01068878173828125,
+                "T4": 0.013980865478515625,
+                "T5": 0.034427642822265625
+              }
+            },
+            "warning": "TRAIN-only operating-point contrast, not alternative benchmark results"
+          }
+        },
+        {
+          "epoch": 3,
+          "mean_update_loss": 4.947132349014282,
+          "mean_sample_component_losses": {
+            "block": 2.6574258974620273,
+            "pixel": 1.9468022074018205,
+            "consistency": 0.03950636408158711,
+            "cls": 0.6463020869663784
+          },
+          "selection_tau": 0.05,
+          "selection_tampered_pixel_iou": 0.17767333984375,
+          "selected_this_epoch": false,
+          "selected_epoch_so_far": 1,
+          "operating_points": {
+            "shared_rule": {
+              "tau": 0.5,
+              "k": 0,
+              "balanced_accuracy": 0.8333333333333333,
+              "tampered_pixel_iou": 0.0,
+              "collapse": {
+                "block": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 3
+                },
+                "pixel": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 7
+                }
+              }
+            },
+            "pixel_only_training_diagnostic": {
+              "tau": 0.05,
+              "tampered_pixel_iou": 0.17767333984375,
+              "intact_positive_pixel_counts": [
+                262144
+              ],
+              "non_jpeg_tampered_pixel_iou": 0.013283538818359374,
+              "tampered_pixel_iou_by_family": {
+                "B1:jpeg75": 0.9996223449707031,
+                "T1": 0.0009765625,
+                "T2": 0.006343841552734375,
+                "T3": 0.01068878173828125,
+                "T4": 0.013980865478515625,
+                "T5": 0.034427642822265625
+              }
+            },
+            "warning": "TRAIN-only operating-point contrast, not alternative benchmark results"
+          }
+        },
+        {
+          "epoch": 4,
+          "mean_update_loss": 4.895018032618931,
+          "mean_sample_component_losses": {
+            "block": 2.636924045426505,
+            "pixel": 1.923768060547965,
+            "consistency": 0.039498785244567056,
+            "cls": 0.629153175013406
+          },
+          "selection_tau": 0.3,
+          "selection_tampered_pixel_iou": 0.17767360653811728,
+          "selected_this_epoch": true,
+          "selected_epoch_so_far": 4,
+          "operating_points": {
+            "shared_rule": {
+              "tau": 0.5,
+              "k": 2,
+              "balanced_accuracy": 0.8333333333333333,
+              "tampered_pixel_iou": 0.0,
+              "collapse": {
+                "block": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 1
+                },
+                "pixel": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 7
+                }
+              }
+            },
+            "pixel_only_training_diagnostic": {
+              "tau": 0.3,
+              "tampered_pixel_iou": 0.17767360653811728,
+              "intact_positive_pixel_counts": [
+                262144
+              ],
+              "non_jpeg_tampered_pixel_iou": 0.013283858851600144,
+              "tampered_pixel_iou_by_family": {
+                "B1:jpeg75": 0.9996223449707031,
+                "T1": 0.0009765625,
+                "T2": 0.006343841552734375,
+                "T3": 0.01068878173828125,
+                "T4": 0.013982465644719473,
+                "T5": 0.034427642822265625
+              }
+            },
+            "warning": "TRAIN-only operating-point contrast, not alternative benchmark results"
+          }
+        },
+        {
+          "epoch": 5,
+          "mean_update_loss": 4.850307771137783,
+          "mean_sample_component_losses": {
+            "block": 2.6207586526870728,
+            "pixel": 1.9022932393210275,
+            "consistency": 0.0399338145341192,
+            "cls": 0.6145779745919364
+          },
+          "selection_tau": 0.35,
+          "selection_tampered_pixel_iou": 0.22628646001435335,
+          "selected_this_epoch": true,
+          "selected_epoch_so_far": 5,
+          "operating_points": {
+            "shared_rule": {
+              "tau": 0.55,
+              "k": 0,
+              "balanced_accuracy": 0.9166666666666667,
+              "tampered_pixel_iou": 0.0,
+              "collapse": {
+                "block": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 2
+                },
+                "pixel": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 7
+                }
+              }
+            },
+            "pixel_only_training_diagnostic": {
+              "tau": 0.35,
+              "tampered_pixel_iou": 0.22628646001435335,
+              "intact_positive_pixel_counts": [
+                11
+              ],
+              "non_jpeg_tampered_pixel_iou": 0.2282160660731179,
+              "tampered_pixel_iou_by_family": {
+                "B1:jpeg75": 0.21663842972053055,
+                "T1": 0.0,
+                "T2": 0.0,
+                "T3": 0.727433628318584,
+                "T4": 0.4136467020470053,
+                "T5": 0.0
+              }
+            },
+            "warning": "TRAIN-only operating-point contrast, not alternative benchmark results"
+          }
+        },
+        {
+          "epoch": 6,
+          "mean_update_loss": 4.8196516036987305,
+          "mean_sample_component_losses": {
+            "block": 2.6086070196969167,
+            "pixel": 1.890592302594866,
+            "consistency": 0.04109817956175123,
+            "cls": 0.599806410925729
+          },
+          "selection_tau": 0.35,
+          "selection_tampered_pixel_iou": 0.2541217083869258,
+          "selected_this_epoch": true,
+          "selected_epoch_so_far": 6,
+          "operating_points": {
+            "shared_rule": {
+              "tau": 0.55,
+              "k": 4,
+              "balanced_accuracy": 0.9166666666666667,
+              "tampered_pixel_iou": 0.0,
+              "collapse": {
+                "block": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 0
+                },
+                "pixel": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 7
+                }
+              }
+            },
+            "pixel_only_training_diagnostic": {
+              "tau": 0.35,
+              "tampered_pixel_iou": 0.2541217083869258,
+              "intact_positive_pixel_counts": [
+                112
+              ],
+              "non_jpeg_tampered_pixel_iou": 0.23763250218925092,
+              "tampered_pixel_iou_by_family": {
+                "B1:jpeg75": 0.3365677393753005,
+                "T1": 0.0,
+                "T2": 0.0,
+                "T3": 0.821309285237141,
+                "T4": 0.3070138241031295,
+                "T5": 0.05983940160598394
+              }
+            },
+            "warning": "TRAIN-only operating-point contrast, not alternative benchmark results"
+          }
+        },
+        {
+          "epoch": 7,
+          "mean_update_loss": 4.783220563616071,
+          "mean_sample_component_losses": {
+            "block": 2.5919072798320224,
+            "pixel": 1.8798086302621024,
+            "consistency": 0.04127982737762587,
+            "cls": 0.5817292843546186
+          },
+          "selection_tau": 0.35,
+          "selection_tampered_pixel_iou": 0.19280449526656554,
+          "selected_this_epoch": false,
+          "selected_epoch_so_far": 6,
+          "operating_points": {
+            "shared_rule": {
+              "tau": 0.6000000000000001,
+              "k": 4,
+              "balanced_accuracy": 1.0,
+              "tampered_pixel_iou": 0.0,
+              "collapse": {
+                "block": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 0
+                },
+                "pixel": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 7
+                }
+              }
+            },
+            "pixel_only_training_diagnostic": {
+              "tau": 0.35,
+              "tampered_pixel_iou": 0.19280449526656554,
+              "intact_positive_pixel_counts": [
+                1926
+              ],
+              "non_jpeg_tampered_pixel_iou": 0.20368112956629641,
+              "tampered_pixel_iou_by_family": {
+                "B1:jpeg75": 0.1384213237679113,
+                "T1": 0.0013183915622940012,
+                "T2": 0.0015868817773075905,
+                "T3": 0.6784633998790078,
+                "T4": 0.19303697461287264,
+                "T5": 0.144
+              }
+            },
+            "warning": "TRAIN-only operating-point contrast, not alternative benchmark results"
+          }
+        },
+        {
+          "epoch": 8,
+          "mean_update_loss": 4.76424469266619,
+          "mean_sample_component_losses": {
+            "block": 2.5838097163609097,
+            "pixel": 1.8760233606610979,
+            "consistency": 0.04144592423524175,
+            "cls": 0.5673773544175285
+          },
+          "selection_tau": 0.25,
+          "selection_tampered_pixel_iou": 0.17768533009471463,
+          "selected_this_epoch": false,
+          "selected_epoch_so_far": 6,
+          "operating_points": {
+            "shared_rule": {
+              "tau": 0.7000000000000001,
+              "k": 0,
+              "balanced_accuracy": 1.0,
+              "tampered_pixel_iou": 0.0,
+              "collapse": {
+                "block": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 1
+                },
+                "pixel": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 7
+                }
+              }
+            },
+            "pixel_only_training_diagnostic": {
+              "tau": 0.25,
+              "tampered_pixel_iou": 0.17768533009471463,
+              "intact_positive_pixel_counts": [
+                260919
+              ],
+              "non_jpeg_tampered_pixel_iou": 0.013300215937876303,
+              "tampered_pixel_iou_by_family": {
+                "B1:jpeg75": 0.9996109008789062,
+                "T1": 0.0009829104130911382,
+                "T2": 0.006344822295107122,
+                "T3": 0.010712155735323352,
+                "T4": 0.014039336196887896,
+                "T5": 0.03442185504897201
+              }
+            },
+            "warning": "TRAIN-only operating-point contrast, not alternative benchmark results"
+          }
+        },
+        {
+          "epoch": 9,
+          "mean_update_loss": 4.73913175719125,
+          "mean_sample_component_losses": {
+            "block": 2.5712789637701854,
+            "pixel": 1.8685455662863595,
+            "consistency": 0.04192328825592995,
+            "cls": 0.5566911697387695
+          },
+          "selection_tau": 0.25,
+          "selection_tampered_pixel_iou": 0.17770177042519686,
+          "selected_this_epoch": false,
+          "selected_epoch_so_far": 6,
+          "operating_points": {
+            "shared_rule": {
+              "tau": 0.7000000000000001,
+              "k": 8,
+              "balanced_accuracy": 1.0,
+              "tampered_pixel_iou": 0.0,
+              "collapse": {
+                "block": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 0
+                },
+                "pixel": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 7
+                }
+              }
+            },
+            "pixel_only_training_diagnostic": {
+              "tau": 0.25,
+              "tampered_pixel_iou": 0.17770177042519686,
+              "intact_positive_pixel_counts": [
+                260541
+              ],
+              "non_jpeg_tampered_pixel_iou": 0.013329862547345594,
+              "tampered_pixel_iou_by_family": {
+                "B1:jpeg75": 0.9995613098144531,
+                "T1": 0.000985202717004368,
+                "T2": 0.006387527976680332,
+                "T3": 0.010727288737112515,
+                "T4": 0.014067855813114389,
+                "T5": 0.03448143749281637
+              }
+            },
+            "warning": "TRAIN-only operating-point contrast, not alternative benchmark results"
+          }
+        },
+        {
+          "epoch": 10,
+          "mean_update_loss": 4.71678672518049,
+          "mean_sample_component_losses": {
+            "block": 2.5595466920307706,
+            "pixel": 1.8634500673839025,
+            "consistency": 0.04303804146392005,
+            "cls": 0.5445418315274375
+          },
+          "selection_tau": 0.2,
+          "selection_tampered_pixel_iou": 0.1776859095498723,
+          "selected_this_epoch": false,
+          "selected_epoch_so_far": 6,
+          "operating_points": {
+            "shared_rule": {
+              "tau": 0.7500000000000001,
+              "k": 4,
+              "balanced_accuracy": 1.0,
+              "tampered_pixel_iou": 0.0,
+              "collapse": {
+                "block": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 0
+                },
+                "pixel": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 7
+                }
+              }
+            },
+            "pixel_only_training_diagnostic": {
+              "tau": 0.2,
+              "tampered_pixel_iou": 0.1776859095498723,
+              "intact_positive_pixel_counts": [
+                261703
+              ],
+              "non_jpeg_tampered_pixel_iou": 0.013298622465706128,
+              "tampered_pixel_iou_by_family": {
+                "B1:jpeg75": 0.9996223449707031,
+                "T1": 0.0009794356767097083,
+                "T2": 0.006354143184102033,
+                "T3": 0.010690902431207362,
+                "T4": 0.014014438887104422,
+                "T5": 0.03445419214940712
+              }
+            },
+            "warning": "TRAIN-only operating-point contrast, not alternative benchmark results"
+          }
+        },
+        {
+          "epoch": 11,
+          "mean_update_loss": 4.699721234185355,
+          "mean_sample_component_losses": {
+            "block": 2.550032206944057,
+            "pixel": 1.8591481617518835,
+            "consistency": 0.04417766204902104,
+            "cls": 0.5369041562080383
+          },
+          "selection_tau": 0.2,
+          "selection_tampered_pixel_iou": 0.1776859900227463,
+          "selected_this_epoch": false,
+          "selected_epoch_so_far": 6,
+          "operating_points": {
+            "shared_rule": {
+              "tau": 0.8500000000000001,
+              "k": 2,
+              "balanced_accuracy": 1.0,
+              "tampered_pixel_iou": 0.0,
+              "collapse": {
+                "block": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 0
+                },
+                "pixel": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 7
+                }
+              }
+            },
+            "pixel_only_training_diagnostic": {
+              "tau": 0.2,
+              "tampered_pixel_iou": 0.1776859900227463,
+              "intact_positive_pixel_counts": [
+                261591
+              ],
+              "non_jpeg_tampered_pixel_iou": 0.01330024491206116,
+              "tampered_pixel_iou_by_family": {
+                "B1:jpeg75": 0.9996147155761719,
+                "T1": 0.0009796343208761603,
+                "T2": 0.006355041615395786,
+                "T3": 0.010691636713294718,
+                "T4": 0.014018351992594944,
+                "T5": 0.0344565599181442
+              }
+            },
+            "warning": "TRAIN-only operating-point contrast, not alternative benchmark results"
+          }
+        },
+        {
+          "epoch": 12,
+          "mean_update_loss": 4.6830339431762695,
+          "mean_sample_component_losses": {
+            "block": 2.540060911859785,
+            "pixel": 1.8586493049349104,
+            "consistency": 0.044557567685842514,
+            "cls": 0.5240900261061532
+          },
+          "selection_tau": 0.2,
+          "selection_tampered_pixel_iou": 0.17769021079425262,
+          "selected_this_epoch": false,
+          "selected_epoch_so_far": 6,
+          "operating_points": {
+            "shared_rule": {
+              "tau": 0.8500000000000001,
+              "k": 16,
+              "balanced_accuracy": 1.0,
+              "tampered_pixel_iou": 0.0,
+              "collapse": {
+                "block": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 0
+                },
+                "pixel": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 7
+                }
+              }
+            },
+            "pixel_only_training_diagnostic": {
+              "tau": 0.2,
+              "tampered_pixel_iou": 0.17769021079425262,
+              "intact_positive_pixel_counts": [
+                261515
+              ],
+              "non_jpeg_tampered_pixel_iou": 0.013304546898415653,
+              "tampered_pixel_iou_by_family": {
+                "B1:jpeg75": 0.9996185302734375,
+                "T1": 0.0009800618664053168,
+                "T2": 0.006356110350942906,
+                "T3": 0.010692167090868157,
+                "T4": 0.014022964757018178,
+                "T5": 0.03447143042684371
+              }
+            },
+            "warning": "TRAIN-only operating-point contrast, not alternative benchmark results"
+          }
+        },
+        {
+          "epoch": 13,
+          "mean_update_loss": 4.659355436052595,
+          "mean_sample_component_losses": {
+            "block": 2.5294993264334544,
+            "pixel": 1.84981335912432,
+            "consistency": 0.044757020260606496,
+            "cls": 0.5153286329337529
+          },
+          "selection_tau": 0.2,
+          "selection_tampered_pixel_iou": 0.1776925794740066,
+          "selected_this_epoch": false,
+          "selected_epoch_so_far": 6,
+          "operating_points": {
+            "shared_rule": {
+              "tau": 0.7500000000000001,
+              "k": 32,
+              "balanced_accuracy": 1.0,
+              "tampered_pixel_iou": 0.0,
+              "collapse": {
+                "block": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 0
+                },
+                "pixel": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 7
+                }
+              }
+            },
+            "pixel_only_training_diagnostic": {
+              "tau": 0.2,
+              "tampered_pixel_iou": 0.1776925794740066,
+              "intact_positive_pixel_counts": [
+                261479
+              ],
+              "non_jpeg_tampered_pixel_iou": 0.013307389314120418,
+              "tampered_pixel_iou_by_family": {
+                "B1:jpeg75": 0.9996185302734375,
+                "T1": 0.000979938064851995,
+                "T2": 0.0063574224723224665,
+                "T3": 0.010694248311133163,
+                "T4": 0.014026399482573204,
+                "T5": 0.034478938239721264
+              }
+            },
+            "warning": "TRAIN-only operating-point contrast, not alternative benchmark results"
+          }
+        },
+        {
+          "epoch": 14,
+          "mean_update_loss": 4.648909398487636,
+          "mean_sample_component_losses": {
+            "block": 2.523569260324751,
+            "pixel": 1.8483217103140694,
+            "consistency": 0.04522765055298805,
+            "cls": 0.5088090513433728
+          },
+          "selection_tau": 0.2,
+          "selection_tampered_pixel_iou": 0.1776922821166549,
+          "selected_this_epoch": false,
+          "selected_epoch_so_far": 6,
+          "operating_points": {
+            "shared_rule": {
+              "tau": 0.8,
+              "k": 16,
+              "balanced_accuracy": 1.0,
+              "tampered_pixel_iou": 0.0,
+              "collapse": {
+                "block": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 0
+                },
+                "pixel": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 7
+                }
+              }
+            },
+            "pixel_only_training_diagnostic": {
+              "tau": 0.2,
+              "tampered_pixel_iou": 0.1776922821166549,
+              "intact_positive_pixel_counts": [
+                261494
+              ],
+              "non_jpeg_tampered_pixel_iou": 0.013308558364204592,
+              "tampered_pixel_iou_by_family": {
+                "B1:jpeg75": 0.9996109008789062,
+                "T1": 0.000980163181854729,
+                "T2": 0.006359683507271761,
+                "T3": 0.010693064772800995,
+                "T4": 0.01402554064345277,
+                "T5": 0.03448433971564271
+              }
+            },
+            "warning": "TRAIN-only operating-point contrast, not alternative benchmark results"
+          }
+        },
+        {
+          "epoch": 15,
+          "mean_update_loss": 4.637226445334298,
+          "mean_sample_component_losses": {
+            "block": 2.517088396208627,
+            "pixel": 1.8461681604385376,
+            "consistency": 0.046367076358624866,
+            "cls": 0.501572425876345
+          },
+          "selection_tau": 0.2,
+          "selection_tampered_pixel_iou": 0.17769047223821233,
+          "selected_this_epoch": false,
+          "selected_epoch_so_far": 6,
+          "operating_points": {
+            "shared_rule": {
+              "tau": 0.8500000000000001,
+              "k": 16,
+              "balanced_accuracy": 1.0,
+              "tampered_pixel_iou": 0.0,
+              "collapse": {
+                "block": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 0
+                },
+                "pixel": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 7
+                }
+              }
+            },
+            "pixel_only_training_diagnostic": {
+              "tau": 0.2,
+              "tampered_pixel_iou": 0.17769047223821233,
+              "intact_positive_pixel_counts": [
+                261482
+              ],
+              "non_jpeg_tampered_pixel_iou": 0.01330638651007356,
+              "tampered_pixel_iou_by_family": {
+                "B1:jpeg75": 0.9996109008789062,
+                "T1": 0.0009804935406157959,
+                "T2": 0.0063588567058598605,
+                "T3": 0.01069384016487291,
+                "T4": 0.014024413576703785,
+                "T5": 0.03447432856231545
+              }
+            },
+            "warning": "TRAIN-only operating-point contrast, not alternative benchmark results"
+          }
+        },
+        {
+          "epoch": 16,
+          "mean_update_loss": 4.6215808391571045,
+          "mean_sample_component_losses": {
+            "block": 2.5073825120925903,
+            "pixel": 1.8437803132193429,
+            "consistency": 0.04742754889386041,
+            "cls": 0.49340878214154926
+          },
+          "selection_tau": 0.2,
+          "selection_tampered_pixel_iou": 0.17768660495572985,
+          "selected_this_epoch": false,
+          "selected_epoch_so_far": 6,
+          "operating_points": {
+            "shared_rule": {
+              "tau": 0.8500000000000001,
+              "k": 16,
+              "balanced_accuracy": 1.0,
+              "tampered_pixel_iou": 0.0,
+              "collapse": {
+                "block": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 0
+                },
+                "pixel": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 7
+                }
+              }
+            },
+            "pixel_only_training_diagnostic": {
+              "tau": 0.2,
+              "tampered_pixel_iou": 0.17768660495572985,
+              "intact_positive_pixel_counts": [
+                261537
+              ],
+              "non_jpeg_tampered_pixel_iou": 0.013301745771094558,
+              "tampered_pixel_iou_by_family": {
+                "B1:jpeg75": 0.9996109008789062,
+                "T1": 0.0009804071753550146,
+                "T2": 0.0063555516488892115,
+                "T3": 0.010691473530780912,
+                "T4": 0.014020657995409334,
+                "T5": 0.03446063850503832
+              }
+            },
+            "warning": "TRAIN-only operating-point contrast, not alternative benchmark results"
+          }
+        },
+        {
+          "epoch": 17,
+          "mean_update_loss": 4.606476988111224,
+          "mean_sample_component_losses": {
+            "block": 2.498282722064427,
+            "pixel": 1.8421946253095354,
+            "consistency": 0.04623454489878246,
+            "cls": 0.4857650739806039
+          },
+          "selection_tau": 0.2,
+          "selection_tampered_pixel_iou": 0.17768418896659063,
+          "selected_this_epoch": false,
+          "selected_epoch_so_far": 6,
+          "operating_points": {
+            "shared_rule": {
+              "tau": 0.6500000000000001,
+              "k": 128,
+              "balanced_accuracy": 1.0,
+              "tampered_pixel_iou": 0.0,
+              "collapse": {
+                "block": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 0
+                },
+                "pixel": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 7
+                }
+              }
+            },
+            "pixel_only_training_diagnostic": {
+              "tau": 0.2,
+              "tampered_pixel_iou": 0.17768418896659063,
+              "intact_positive_pixel_counts": [
+                261580
+              ],
+              "non_jpeg_tampered_pixel_iou": 0.013298846584127489,
+              "tampered_pixel_iou_by_family": {
+                "B1:jpeg75": 0.9996109008789062,
+                "T1": 0.0009800581143835014,
+                "T2": 0.006353487732381775,
+                "T3": 0.010690331392642671,
+                "T4": 0.014015242771538159,
+                "T5": 0.03445511290969133
+              }
+            },
+            "warning": "TRAIN-only operating-point contrast, not alternative benchmark results"
+          }
+        },
+        {
+          "epoch": 18,
+          "mean_update_loss": 4.592763594218662,
+          "mean_sample_component_losses": {
+            "block": 2.4893597194126675,
+            "pixel": 1.8378792319978987,
+            "consistency": 0.047604912625891824,
+            "cls": 0.4834443245615278
+          },
+          "selection_tau": 0.2,
+          "selection_tampered_pixel_iou": 0.17768309888647624,
+          "selected_this_epoch": false,
+          "selected_epoch_so_far": 6,
+          "operating_points": {
+            "shared_rule": {
+              "tau": 0.8,
+              "k": 8,
+              "balanced_accuracy": 1.0,
+              "tampered_pixel_iou": 0.0,
+              "collapse": {
+                "block": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 0
+                },
+                "pixel": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 7
+                }
+              }
+            },
+            "pixel_only_training_diagnostic": {
+              "tau": 0.2,
+              "tampered_pixel_iou": 0.17768309888647624,
+              "intact_positive_pixel_counts": [
+                261589
+              ],
+              "non_jpeg_tampered_pixel_iou": 0.013297538487990247,
+              "tampered_pixel_iou_by_family": {
+                "B1:jpeg75": 0.9996109008789062,
+                "T1": 0.0009799155588389532,
+                "T2": 0.0063521044449452455,
+                "T3": 0.010690943222010675,
+                "T4": 0.01401395660070739,
+                "T5": 0.03445077261344897
+              }
+            },
+            "warning": "TRAIN-only operating-point contrast, not alternative benchmark results"
+          }
+        },
+        {
+          "epoch": 19,
+          "mean_update_loss": 4.577208178383963,
+          "mean_sample_component_losses": {
+            "block": 2.481258358274187,
+            "pixel": 1.8343550988606043,
+            "consistency": 0.047391055950096676,
+            "cls": 0.4757983216217586
+          },
+          "selection_tau": 0.2,
+          "selection_tampered_pixel_iou": 0.1776821130298375,
+          "selected_this_epoch": false,
+          "selected_epoch_so_far": 6,
+          "operating_points": {
+            "shared_rule": {
+              "tau": 0.8,
+              "k": 16,
+              "balanced_accuracy": 1.0,
+              "tampered_pixel_iou": 0.0,
+              "collapse": {
+                "block": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 0
+                },
+                "pixel": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 7
+                }
+              }
+            },
+            "pixel_only_training_diagnostic": {
+              "tau": 0.2,
+              "tampered_pixel_iou": 0.1776821130298375,
+              "intact_positive_pixel_counts": [
+                261612
+              ],
+              "non_jpeg_tampered_pixel_iou": 0.013297881338929975,
+              "tampered_pixel_iou_by_family": {
+                "B1:jpeg75": 0.999603271484375,
+                "T1": 0.000979874300499889,
+                "T2": 0.00635222576184692,
+                "T3": 0.010691759103449066,
+                "T4": 0.014012670665917284,
+                "T5": 0.03445287686293672
+              }
+            },
+            "warning": "TRAIN-only operating-point contrast, not alternative benchmark results"
+          }
+        },
+        {
+          "epoch": 20,
+          "mean_update_loss": 4.563669749668667,
+          "mean_sample_component_losses": {
+            "block": 2.473826084818159,
+            "pixel": 1.8298490388052804,
+            "consistency": 0.04730630825672831,
+            "cls": 0.4726828507014683
+          },
+          "selection_tau": 0.2,
+          "selection_tampered_pixel_iou": 0.17768111446543022,
+          "selected_this_epoch": false,
+          "selected_epoch_so_far": 6,
+          "operating_points": {
+            "shared_rule": {
+              "tau": 0.8500000000000001,
+              "k": 8,
+              "balanced_accuracy": 1.0,
+              "tampered_pixel_iou": 0.0,
+              "collapse": {
+                "block": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 0
+                },
+                "pixel": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 7
+                }
+              }
+            },
+            "pixel_only_training_diagnostic": {
+              "tau": 0.2,
+              "tampered_pixel_iou": 0.17768111446543022,
+              "intact_positive_pixel_counts": [
+                261578
+              ],
+              "non_jpeg_tampered_pixel_iou": 0.01329973481945378,
+              "tampered_pixel_iou_by_family": {
+                "B1:jpeg75": 0.9995880126953125,
+                "T1": 0.0009802307371258564,
+                "T2": 0.006353099380353145,
+                "T3": 0.010691840698442014,
+                "T4": 0.014014706838335672,
+                "T5": 0.03445879644301222
+              }
+            },
+            "warning": "TRAIN-only operating-point contrast, not alternative benchmark results"
+          }
+        }
+      ],
+      "selected_epoch": 6,
+      "last_completed_epoch": 20,
+      "selection_scope": "TRAIN-only, in-sample localisation epoch selection",
+      "before": {
+        "tau": 0.05,
+        "k": 0,
+        "metrics": {
+          "n": 7,
+          "n_tampered": 6,
+          "n_intact": 1,
+          "iou_mean": 0.15229143415178573,
+          "iou_tampered_mean": 0.17767333984375,
+          "block_acc": 0.15513392857142858,
+          "detection": 0.8571428571428571,
+          "detection_denominator": "6 / 7",
+          "false_claims": 1,
+          "n_intact_denominator": 1,
+          "true_positives": 6,
+          "tpr": 1.0,
+          "fpr": 1.0,
+          "balanced_accuracy": 0.5,
+          "by_family": [
+            {
+              "family": "B1:jpeg75",
+              "n": 1,
+              "n_tampered": 1,
+              "n_intact": 0,
+              "iou_tampered_mean": 0.9996223449707031,
+              "tpr": 1.0,
+              "fpr": null
+            },
+            {
+              "family": "T1",
+              "n": 1,
+              "n_tampered": 1,
+              "n_intact": 0,
+              "iou_tampered_mean": 0.0009765625,
+              "tpr": 1.0,
+              "fpr": null
+            },
+            {
+              "family": "T2",
+              "n": 1,
+              "n_tampered": 1,
+              "n_intact": 0,
+              "iou_tampered_mean": 0.006343841552734375,
+              "tpr": 1.0,
+              "fpr": null
+            },
+            {
+              "family": "T3",
+              "n": 1,
+              "n_tampered": 1,
+              "n_intact": 0,
+              "iou_tampered_mean": 0.01068878173828125,
+              "tpr": 1.0,
+              "fpr": null
+            },
+            {
+              "family": "T4",
+              "n": 1,
+              "n_tampered": 1,
+              "n_intact": 0,
+              "iou_tampered_mean": 0.013980865478515625,
+              "tpr": 1.0,
+              "fpr": null
+            },
+            {
+              "family": "T5",
+              "n": 1,
+              "n_tampered": 1,
+              "n_intact": 0,
+              "iou_tampered_mean": 0.034427642822265625,
+              "tpr": 1.0,
+              "fpr": null
+            },
+            {
+              "family": "none",
+              "n": 1,
+              "n_tampered": 0,
+              "n_intact": 1,
+              "iou_tampered_mean": null,
+              "tpr": null,
+              "fpr": 1.0
+            }
+          ],
+          "by_diagnosis": [
+            {
+              "dx": "dx0",
+              "n": 1,
+              "n_total": 1,
+              "n_intact": 0,
+              "iou": 0.0009765625,
+              "iou_convention": "tampered images only",
+              "small_n": true
+            },
+            {
+              "dx": "dx1",
+              "n": 1,
+              "n_total": 1,
+              "n_intact": 0,
+              "iou": 0.006343841552734375,
+              "iou_convention": "tampered images only",
+              "small_n": true
+            },
+            {
+              "dx": "dx2",
+              "n": 1,
+              "n_total": 1,
+              "n_intact": 0,
+              "iou": 0.01068878173828125,
+              "iou_convention": "tampered images only",
+              "small_n": true
+            },
+            {
+              "dx": "dx3",
+              "n": 1,
+              "n_total": 1,
+              "n_intact": 0,
+              "iou": 0.013980865478515625,
+              "iou_convention": "tampered images only",
+              "small_n": true
+            },
+            {
+              "dx": "dx4",
+              "n": 1,
+              "n_total": 1,
+              "n_intact": 0,
+              "iou": 0.034427642822265625,
+              "iou_convention": "tampered images only",
+              "small_n": true
+            },
+            {
+              "dx": "dx5",
+              "n": 0,
+              "n_total": 1,
+              "n_intact": 1,
+              "iou": null,
+              "iou_convention": "tampered images only",
+              "small_n": true
+            },
+            {
+              "dx": "dx6",
+              "n": 1,
+              "n_total": 1,
+              "n_intact": 0,
+              "iou": 0.9996223449707031,
+              "iou_convention": "tampered images only",
+              "small_n": true
+            }
+          ],
+          "by_area": [
+            {
+              "bucket": "area_0.000-0.005",
+              "n": 1,
+              "median_radius_px": 9.0,
+              "iou": 0.001,
+              "ceiling": 1.0,
+              "ceiling_convention": "exact per-image block oracle, averaged",
+              "any_overlap_block_iou": 1.0,
+              "small_n": true
+            },
+            {
+              "bucket": "area_0.005-0.020",
+              "n": 3,
+              "median_radius_px": 29.9,
+              "iou": 0.0103,
+              "ceiling": 0.7843453900495199,
+              "ceiling_convention": "exact per-image block oracle, averaged",
+              "any_overlap_block_iou": 0.6685956104130445,
+              "small_n": true
+            },
+            {
+              "bucket": "area_0.020-0.050",
+              "n": 1,
+              "median_radius_px": 53.6,
+              "iou": 0.0344,
+              "ceiling": 0.9792751736111112,
+              "ceiling_convention": "exact per-image block oracle, averaged",
+              "any_overlap_block_iou": 0.9792751736111112,
+              "small_n": true
+            },
+            {
+              "bucket": "area_0.200-1.010",
+              "n": 1,
+              "median_radius_px": 288.8,
+              "iou": 0.9996,
+              "ceiling": 0.9996223449707031,
+              "ceiling_convention": "exact per-image block oracle, averaged",
+              "any_overlap_block_iou": 0.9996223449707031,
+              "small_n": true
+            }
+          ]
+        },
+        "collapse": {
+          "block": {
+            "n_images": 7,
+            "all_foreground_images": 7,
+            "all_background_images": 0
+          },
+          "pixel": {
+            "n_images": 7,
+            "all_foreground_images": 7,
+            "all_background_images": 0
+          }
+        },
+        "pixel_only_training_tau": 0.05,
+        "pixel_only_training_iou": 0.17767333984375
+      },
+      "after": {
+        "tau": 0.55,
+        "k": 4,
+        "metrics": {
+          "n": 7,
+          "n_tampered": 6,
+          "n_intact": 1,
+          "iou_mean": 0.14285714285714285,
+          "iou_tampered_mean": 0.0,
+          "block_acc": 0.9779924665178571,
+          "detection": 0.8571428571428571,
+          "detection_denominator": "6 / 7",
+          "false_claims": 0,
+          "n_intact_denominator": 1,
+          "true_positives": 5,
+          "tpr": 0.8333333333333334,
+          "fpr": 0.0,
+          "balanced_accuracy": 0.9166666666666667,
+          "by_family": [
+            {
+              "family": "B1:jpeg75",
+              "n": 1,
+              "n_tampered": 1,
+              "n_intact": 0,
+              "iou_tampered_mean": 0.0,
+              "tpr": 1.0,
+              "fpr": null
+            },
+            {
+              "family": "T1",
+              "n": 1,
+              "n_tampered": 1,
+              "n_intact": 0,
+              "iou_tampered_mean": 0.0,
+              "tpr": 1.0,
+              "fpr": null
+            },
+            {
+              "family": "T2",
+              "n": 1,
+              "n_tampered": 1,
+              "n_intact": 0,
+              "iou_tampered_mean": 0.0,
+              "tpr": 0.0,
+              "fpr": null
+            },
+            {
+              "family": "T3",
+              "n": 1,
+              "n_tampered": 1,
+              "n_intact": 0,
+              "iou_tampered_mean": 0.0,
+              "tpr": 1.0,
+              "fpr": null
+            },
+            {
+              "family": "T4",
+              "n": 1,
+              "n_tampered": 1,
+              "n_intact": 0,
+              "iou_tampered_mean": 0.0,
+              "tpr": 1.0,
+              "fpr": null
+            },
+            {
+              "family": "T5",
+              "n": 1,
+              "n_tampered": 1,
+              "n_intact": 0,
+              "iou_tampered_mean": 0.0,
+              "tpr": 1.0,
+              "fpr": null
+            },
+            {
+              "family": "none",
+              "n": 1,
+              "n_tampered": 0,
+              "n_intact": 1,
+              "iou_tampered_mean": null,
+              "tpr": null,
+              "fpr": 0.0
+            }
+          ],
+          "by_diagnosis": [
+            {
+              "dx": "dx0",
+              "n": 1,
+              "n_total": 1,
+              "n_intact": 0,
+              "iou": 0.0,
+              "iou_convention": "tampered images only",
+              "small_n": true
+            },
+            {
+              "dx": "dx1",
+              "n": 1,
+              "n_total": 1,
+              "n_intact": 0,
+              "iou": 0.0,
+              "iou_convention": "tampered images only",
+              "small_n": true
+            },
+            {
+              "dx": "dx2",
+              "n": 1,
+              "n_total": 1,
+              "n_intact": 0,
+              "iou": 0.0,
+              "iou_convention": "tampered images only",
+              "small_n": true
+            },
+            {
+              "dx": "dx3",
+              "n": 1,
+              "n_total": 1,
+              "n_intact": 0,
+              "iou": 0.0,
+              "iou_convention": "tampered images only",
+              "small_n": true
+            },
+            {
+              "dx": "dx4",
+              "n": 1,
+              "n_total": 1,
+              "n_intact": 0,
+              "iou": 0.0,
+              "iou_convention": "tampered images only",
+              "small_n": true
+            },
+            {
+              "dx": "dx5",
+              "n": 0,
+              "n_total": 1,
+              "n_intact": 1,
+              "iou": null,
+              "iou_convention": "tampered images only",
+              "small_n": true
+            },
+            {
+              "dx": "dx6",
+              "n": 1,
+              "n_total": 1,
+              "n_intact": 0,
+              "iou": 0.0,
+              "iou_convention": "tampered images only",
+              "small_n": true
+            }
+          ],
+          "by_area": [
+            {
+              "bucket": "area_0.000-0.005",
+              "n": 1,
+              "median_radius_px": 9.0,
+              "iou": 0.0,
+              "ceiling": 1.0,
+              "ceiling_convention": "exact per-image block oracle, averaged",
+              "any_overlap_block_iou": 1.0,
+              "small_n": true
+            },
+            {
+              "bucket": "area_0.005-0.020",
+              "n": 3,
+              "median_radius_px": 29.9,
+              "iou": 0.0,
+              "ceiling": 0.7843453900495199,
+              "ceiling_convention": "exact per-image block oracle, averaged",
+              "any_overlap_block_iou": 0.6685956104130445,
+              "small_n": true
+            },
+            {
+              "bucket": "area_0.020-0.050",
+              "n": 1,
+              "median_radius_px": 53.6,
+              "iou": 0.0,
+              "ceiling": 0.9792751736111112,
+              "ceiling_convention": "exact per-image block oracle, averaged",
+              "any_overlap_block_iou": 0.9792751736111112,
+              "small_n": true
+            },
+            {
+              "bucket": "area_0.200-1.010",
+              "n": 1,
+              "median_radius_px": 288.8,
+              "iou": 0.0,
+              "ceiling": 0.9996223449707031,
+              "ceiling_convention": "exact per-image block oracle, averaged",
+              "any_overlap_block_iou": 0.9996223449707031,
+              "small_n": true
+            }
+          ]
+        },
+        "collapse": {
+          "block": {
+            "n_images": 7,
+            "all_foreground_images": 0,
+            "all_background_images": 0
+          },
+          "pixel": {
+            "n_images": 7,
+            "all_foreground_images": 0,
+            "all_background_images": 7
+          }
+        },
+        "pixel_only_training_tau": 0.35,
+        "pixel_only_training_iou": 0.2541217083869258
+      }
+    },
+    "Attention-enhanced model": {
+      "status": "complete",
+      "authentic_training": {
+        "epochs": 2,
+        "n_authentic_train": 1,
+        "selection": "cls=0 and empty measured pixel mask, TRAIN partition only",
+        "frozen_during_localisation_training": true
+      },
+      "epoch_trace": [
+        {
+          "epoch": 1,
+          "mean_update_loss": 5.150597061429705,
+          "mean_sample_component_losses": {
+            "block": 2.8026714495250156,
+            "pixel": 1.9910213606698173,
+            "consistency": 0.014770999284727233,
+            "cls": 0.6990375518798828
+          },
+          "selection_tau": 0.05,
+          "selection_tampered_pixel_iou": 0.17767333984375,
+          "selected_this_epoch": true,
+          "selected_epoch_so_far": 1,
+          "operating_points": {
+            "shared_rule": {
+              "tau": 0.05,
+              "k": 0,
+              "balanced_accuracy": 0.5,
+              "tampered_pixel_iou": 0.17767333984375,
+              "collapse": {
+                "block": {
+                  "n_images": 7,
+                  "all_foreground_images": 7,
+                  "all_background_images": 0
+                },
+                "pixel": {
+                  "n_images": 7,
+                  "all_foreground_images": 7,
+                  "all_background_images": 0
+                }
+              }
+            },
+            "pixel_only_training_diagnostic": {
+              "tau": 0.05,
+              "tampered_pixel_iou": 0.17767333984375,
+              "intact_positive_pixel_counts": [
+                262144
+              ],
+              "non_jpeg_tampered_pixel_iou": 0.013283538818359374,
+              "tampered_pixel_iou_by_family": {
+                "B1:jpeg75": 0.9996223449707031,
+                "T1": 0.0009765625,
+                "T2": 0.006343841552734375,
+                "T3": 0.01068878173828125,
+                "T4": 0.013980865478515625,
+                "T5": 0.034427642822265625
+              }
+            },
+            "warning": "TRAIN-only operating-point contrast, not alternative benchmark results"
+          }
+        },
+        {
+          "epoch": 2,
+          "mean_update_loss": 5.101598024368286,
+          "mean_sample_component_losses": {
+            "block": 2.7891346556799754,
+            "pixel": 1.9591831479753767,
+            "consistency": 0.01776320380823953,
+            "cls": 0.6887970311301095
+          },
+          "selection_tau": 0.05,
+          "selection_tampered_pixel_iou": 0.17767333984375,
+          "selected_this_epoch": false,
+          "selected_epoch_so_far": 1,
+          "operating_points": {
+            "shared_rule": {
+              "tau": 0.05,
+              "k": 0,
+              "balanced_accuracy": 0.5,
+              "tampered_pixel_iou": 0.17767333984375,
+              "collapse": {
+                "block": {
+                  "n_images": 7,
+                  "all_foreground_images": 7,
+                  "all_background_images": 0
+                },
+                "pixel": {
+                  "n_images": 7,
+                  "all_foreground_images": 7,
+                  "all_background_images": 0
+                }
+              }
+            },
+            "pixel_only_training_diagnostic": {
+              "tau": 0.05,
+              "tampered_pixel_iou": 0.17767333984375,
+              "intact_positive_pixel_counts": [
+                262144
+              ],
+              "non_jpeg_tampered_pixel_iou": 0.013283538818359374,
+              "tampered_pixel_iou_by_family": {
+                "B1:jpeg75": 0.9996223449707031,
+                "T1": 0.0009765625,
+                "T2": 0.006343841552734375,
+                "T3": 0.01068878173828125,
+                "T4": 0.013980865478515625,
+                "T5": 0.034427642822265625
+              }
+            },
+            "warning": "TRAIN-only operating-point contrast, not alternative benchmark results"
+          }
+        },
+        {
+          "epoch": 3,
+          "mean_update_loss": 5.07998936516898,
+          "mean_sample_component_losses": {
+            "block": 2.780622959136963,
+            "pixel": 1.9492449590138026,
+            "consistency": 0.01956674429987158,
+            "cls": 0.6806761963026864
+          },
+          "selection_tau": 0.05,
+          "selection_tampered_pixel_iou": 0.17767333984375,
+          "selected_this_epoch": false,
+          "selected_epoch_so_far": 1,
+          "operating_points": {
+            "shared_rule": {
+              "tau": 0.05,
+              "k": 0,
+              "balanced_accuracy": 0.5,
+              "tampered_pixel_iou": 0.17767333984375,
+              "collapse": {
+                "block": {
+                  "n_images": 7,
+                  "all_foreground_images": 7,
+                  "all_background_images": 0
+                },
+                "pixel": {
+                  "n_images": 7,
+                  "all_foreground_images": 7,
+                  "all_background_images": 0
+                }
+              }
+            },
+            "pixel_only_training_diagnostic": {
+              "tau": 0.05,
+              "tampered_pixel_iou": 0.17767333984375,
+              "intact_positive_pixel_counts": [
+                262144
+              ],
+              "non_jpeg_tampered_pixel_iou": 0.013283538818359374,
+              "tampered_pixel_iou_by_family": {
+                "B1:jpeg75": 0.9996223449707031,
+                "T1": 0.0009765625,
+                "T2": 0.006343841552734375,
+                "T3": 0.01068878173828125,
+                "T4": 0.013980865478515625,
+                "T5": 0.034427642822265625
+              }
+            },
+            "warning": "TRAIN-only operating-point contrast, not alternative benchmark results"
+          }
+        },
+        {
+          "epoch": 4,
+          "mean_update_loss": 5.039154018674578,
+          "mean_sample_component_losses": {
+            "block": 2.7634143148149763,
+            "pixel": 1.9294756991522652,
+            "consistency": 0.020492044676627432,
+            "cls": 0.6720359666006905
+          },
+          "selection_tau": 0.3,
+          "selection_tampered_pixel_iou": 0.17767334873257878,
+          "selected_this_epoch": true,
+          "selected_epoch_so_far": 4,
+          "operating_points": {
+            "shared_rule": {
+              "tau": 0.5,
+              "k": 0,
+              "balanced_accuracy": 0.5833333333333334,
+              "tampered_pixel_iou": 0.0,
+              "collapse": {
+                "block": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 6
+                },
+                "pixel": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 7
+                }
+              }
+            },
+            "pixel_only_training_diagnostic": {
+              "tau": 0.3,
+              "tampered_pixel_iou": 0.17767334873257878,
+              "intact_positive_pixel_counts": [
+                262144
+              ],
+              "non_jpeg_tampered_pixel_iou": 0.013283549484953926,
+              "tampered_pixel_iou_by_family": {
+                "B1:jpeg75": 0.9996223449707031,
+                "T1": 0.0009765625,
+                "T2": 0.006343841552734375,
+                "T3": 0.01068878173828125,
+                "T4": 0.013980918811488385,
+                "T5": 0.034427642822265625
+              }
+            },
+            "warning": "TRAIN-only operating-point contrast, not alternative benchmark results"
+          }
+        },
+        {
+          "epoch": 5,
+          "mean_update_loss": 5.000289780753,
+          "mean_sample_component_losses": {
+            "block": 2.745553357260568,
+            "pixel": 1.9119136503764562,
+            "consistency": 0.021366558969020844,
+            "cls": 0.6642790266445705
+          },
+          "selection_tau": 0.05,
+          "selection_tampered_pixel_iou": 0.17767333984375,
+          "selected_this_epoch": false,
+          "selected_epoch_so_far": 4,
+          "operating_points": {
+            "shared_rule": {
+              "tau": 0.5,
+              "k": 0,
+              "balanced_accuracy": 0.8333333333333333,
+              "tampered_pixel_iou": 0.0,
+              "collapse": {
+                "block": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 3
+                },
+                "pixel": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 7
+                }
+              }
+            },
+            "pixel_only_training_diagnostic": {
+              "tau": 0.05,
+              "tampered_pixel_iou": 0.17767333984375,
+              "intact_positive_pixel_counts": [
+                262144
+              ],
+              "non_jpeg_tampered_pixel_iou": 0.013283538818359374,
+              "tampered_pixel_iou_by_family": {
+                "B1:jpeg75": 0.9996223449707031,
+                "T1": 0.0009765625,
+                "T2": 0.006343841552734375,
+                "T3": 0.01068878173828125,
+                "T4": 0.013980865478515625,
+                "T5": 0.034427642822265625
+              }
+            },
+            "warning": "TRAIN-only operating-point contrast, not alternative benchmark results"
+          }
+        },
+        {
+          "epoch": 6,
+          "mean_update_loss": 4.969808374132429,
+          "mean_sample_component_losses": {
+            "block": 2.7325498717171803,
+            "pixel": 1.8981008529663086,
+            "consistency": 0.02212219499051571,
+            "cls": 0.65619295835495
+          },
+          "selection_tau": 0.35,
+          "selection_tampered_pixel_iou": 0.3446713905848679,
+          "selected_this_epoch": true,
+          "selected_epoch_so_far": 6,
+          "operating_points": {
+            "shared_rule": {
+              "tau": 0.5,
+              "k": 0,
+              "balanced_accuracy": 0.9166666666666667,
+              "tampered_pixel_iou": 0.0,
+              "collapse": {
+                "block": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 2
+                },
+                "pixel": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 7
+                }
+              }
+            },
+            "pixel_only_training_diagnostic": {
+              "tau": 0.35,
+              "tampered_pixel_iou": 0.3446713905848679,
+              "intact_positive_pixel_counts": [
+                496
+              ],
+              "non_jpeg_tampered_pixel_iou": 0.24350220621843666,
+              "tampered_pixel_iou_by_family": {
+                "B1:jpeg75": 0.850517312417024,
+                "T1": 0.0,
+                "T2": 0.0,
+                "T3": 0.825563909774436,
+                "T4": 0.22959265818708743,
+                "T5": 0.16235446313065977
+              }
+            },
+            "warning": "TRAIN-only operating-point contrast, not alternative benchmark results"
+          }
+        },
+        {
+          "epoch": 7,
+          "mean_update_loss": 4.934136833463397,
+          "mean_sample_component_losses": {
+            "block": 2.713611228125436,
+            "pixel": 1.8867888620921545,
+            "consistency": 0.022542464147721018,
+            "cls": 0.6449311035020011
+          },
+          "selection_tau": 0.35,
+          "selection_tampered_pixel_iou": 0.38927057614245636,
+          "selected_this_epoch": true,
+          "selected_epoch_so_far": 7,
+          "operating_points": {
+            "shared_rule": {
+              "tau": 0.5,
+              "k": 8,
+              "balanced_accuracy": 1.0,
+              "tampered_pixel_iou": 0.0,
+              "collapse": {
+                "block": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 0
+                },
+                "pixel": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 7
+                }
+              }
+            },
+            "pixel_only_training_diagnostic": {
+              "tau": 0.35,
+              "tampered_pixel_iou": 0.38927057614245636,
+              "intact_positive_pixel_counts": [
+                1157
+              ],
+              "non_jpeg_tampered_pixel_iou": 0.2838315413549251,
+              "tampered_pixel_iou_by_family": {
+                "B1:jpeg75": 0.9164657500801123,
+                "T1": 0.0,
+                "T2": 0.01997780244173141,
+                "T3": 0.7056145675265554,
+                "T4": 0.28948329377396387,
+                "T5": 0.4040820430323748
+              }
+            },
+            "warning": "TRAIN-only operating-point contrast, not alternative benchmark results"
+          }
+        },
+        {
+          "epoch": 8,
+          "mean_update_loss": 4.8997251987457275,
+          "mean_sample_component_losses": {
+            "block": 2.6887408665248325,
+            "pixel": 1.8817732163837977,
+            "consistency": 0.02269719833774226,
+            "cls": 0.6357251746313912
+          },
+          "selection_tau": 0.35,
+          "selection_tampered_pixel_iou": 0.36455312359462505,
+          "selected_this_epoch": false,
+          "selected_epoch_so_far": 7,
+          "operating_points": {
+            "shared_rule": {
+              "tau": 0.55,
+              "k": 0,
+              "balanced_accuracy": 0.9166666666666667,
+              "tampered_pixel_iou": 0.0,
+              "collapse": {
+                "block": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 2
+                },
+                "pixel": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 7
+                }
+              }
+            },
+            "pixel_only_training_diagnostic": {
+              "tau": 0.35,
+              "tampered_pixel_iou": 0.36455312359462505,
+              "intact_positive_pixel_counts": [
+                2915
+              ],
+              "non_jpeg_tampered_pixel_iou": 0.2579206954125196,
+              "tampered_pixel_iou_by_family": {
+                "B1:jpeg75": 0.897715264505152,
+                "T1": 0.0,
+                "T2": 0.03438975050573163,
+                "T3": 0.5688185140073082,
+                "T4": 0.20322908434007,
+                "T5": 0.4831661282094882
+              }
+            },
+            "warning": "TRAIN-only operating-point contrast, not alternative benchmark results"
+          }
+        },
+        {
+          "epoch": 9,
+          "mean_update_loss": 4.860332693372454,
+          "mean_sample_component_losses": {
+            "block": 2.6629892076764787,
+            "pixel": 1.8722477640424455,
+            "consistency": 0.02291411640388625,
+            "cls": 0.6272772976330349
+          },
+          "selection_tau": 0.35,
+          "selection_tampered_pixel_iou": 0.29653427691684686,
+          "selected_this_epoch": false,
+          "selected_epoch_so_far": 7,
+          "operating_points": {
+            "shared_rule": {
+              "tau": 0.6500000000000001,
+              "k": 2,
+              "balanced_accuracy": 1.0,
+              "tampered_pixel_iou": 0.0,
+              "collapse": {
+                "block": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 0
+                },
+                "pixel": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 7
+                }
+              }
+            },
+            "pixel_only_training_diagnostic": {
+              "tau": 0.35,
+              "tampered_pixel_iou": 0.29653427691684686,
+              "intact_positive_pixel_counts": [
+                5746
+              ],
+              "non_jpeg_tampered_pixel_iou": 0.17210914789529358,
+              "tampered_pixel_iou_by_family": {
+                "B1:jpeg75": 0.9186599220246133,
+                "T1": 0.0,
+                "T2": 0.005541628183137617,
+                "T3": 0.3919527293190771,
+                "T4": 0.06186802613143368,
+                "T5": 0.4011833558428195
+              }
+            },
+            "warning": "TRAIN-only operating-point contrast, not alternative benchmark results"
+          }
+        },
+        {
+          "epoch": 10,
+          "mean_update_loss": 4.829298904963902,
+          "mean_sample_component_losses": {
+            "block": 2.6442549909864153,
+            "pixel": 1.864451425416129,
+            "consistency": 0.023874401514019285,
+            "cls": 0.6173104643821716
+          },
+          "selection_tau": 0.35,
+          "selection_tampered_pixel_iou": 0.26107426563733843,
+          "selected_this_epoch": false,
+          "selected_epoch_so_far": 7,
+          "operating_points": {
+            "shared_rule": {
+              "tau": 0.6000000000000001,
+              "k": 32,
+              "balanced_accuracy": 1.0,
+              "tampered_pixel_iou": 0.0,
+              "collapse": {
+                "block": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 0
+                },
+                "pixel": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 7
+                }
+              }
+            },
+            "pixel_only_training_diagnostic": {
+              "tau": 0.35,
+              "tampered_pixel_iou": 0.26107426563733843,
+              "intact_positive_pixel_counts": [
+                9926
+              ],
+              "non_jpeg_tampered_pixel_iou": 0.13592486994549996,
+              "tampered_pixel_iou_by_family": {
+                "B1:jpeg75": 0.8868212440965307,
+                "T1": 0.0,
+                "T2": 0.025011300286273918,
+                "T3": 0.24699492476181997,
+                "T4": 0.042715617715617715,
+                "T5": 0.3649025069637883
+              }
+            },
+            "warning": "TRAIN-only operating-point contrast, not alternative benchmark results"
+          }
+        },
+        {
+          "epoch": 11,
+          "mean_update_loss": 4.786552769797189,
+          "mean_sample_component_losses": {
+            "block": 2.611699938774109,
+            "pixel": 1.8572281088147844,
+            "consistency": 0.024797308391758373,
+            "cls": 0.6104523369244167
+          },
+          "selection_tau": 0.35,
+          "selection_tampered_pixel_iou": 0.2285006696013443,
+          "selected_this_epoch": false,
+          "selected_epoch_so_far": 7,
+          "operating_points": {
+            "shared_rule": {
+              "tau": 0.7000000000000001,
+              "k": 8,
+              "balanced_accuracy": 1.0,
+              "tampered_pixel_iou": 0.0,
+              "collapse": {
+                "block": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 0
+                },
+                "pixel": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 7
+                }
+              }
+            },
+            "pixel_only_training_diagnostic": {
+              "tau": 0.35,
+              "tampered_pixel_iou": 0.2285006696013443,
+              "intact_positive_pixel_counts": [
+                18081
+              ],
+              "non_jpeg_tampered_pixel_iou": 0.10099625928088134,
+              "tampered_pixel_iou_by_family": {
+                "B1:jpeg75": 0.8660227212036592,
+                "T1": 0.0001248647298759677,
+                "T2": 0.016701362604087812,
+                "T3": 0.1763956967343561,
+                "T4": 0.031207956538769392,
+                "T5": 0.28055141579731746
+              }
+            },
+            "warning": "TRAIN-only operating-point contrast, not alternative benchmark results"
+          }
+        },
+        {
+          "epoch": 12,
+          "mean_update_loss": 4.756514889853341,
+          "mean_sample_component_losses": {
+            "block": 2.5917008944920132,
+            "pixel": 1.8526791334152222,
+            "consistency": 0.02464390386428152,
+            "cls": 0.5996255789484296
+          },
+          "selection_tau": 0.2,
+          "selection_tampered_pixel_iou": 0.17768440090691406,
+          "selected_this_epoch": false,
+          "selected_epoch_so_far": 7,
+          "operating_points": {
+            "shared_rule": {
+              "tau": 0.9000000000000001,
+              "k": 8,
+              "balanced_accuracy": 0.8333333333333333,
+              "tampered_pixel_iou": 0.0,
+              "collapse": {
+                "block": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 0
+                },
+                "pixel": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 7
+                }
+              }
+            },
+            "pixel_only_training_diagnostic": {
+              "tau": 0.2,
+              "tampered_pixel_iou": 0.17768440090691406,
+              "intact_positive_pixel_counts": [
+                261917
+              ],
+              "non_jpeg_tampered_pixel_iou": 0.013297575033609389,
+              "tampered_pixel_iou_by_family": {
+                "B1:jpeg75": 0.9996185302734375,
+                "T1": 0.0009793120332966092,
+                "T2": 0.006349970025697714,
+                "T3": 0.010694901409955953,
+                "T4": 0.014013313603811315,
+                "T5": 0.03445037809528535
+              }
+            },
+            "warning": "TRAIN-only operating-point contrast, not alternative benchmark results"
+          }
+        },
+        {
+          "epoch": 13,
+          "mean_update_loss": 4.738317217145648,
+          "mean_sample_component_losses": {
+            "block": 2.5875312089920044,
+            "pixel": 1.8428300789424352,
+            "consistency": 0.026048709505370686,
+            "cls": 0.5898630023002625
+          },
+          "selection_tau": 0.2,
+          "selection_tampered_pixel_iou": 0.17768170348032616,
+          "selected_this_epoch": false,
+          "selected_epoch_so_far": 7,
+          "operating_points": {
+            "shared_rule": {
+              "tau": 0.7000000000000001,
+              "k": 128,
+              "balanced_accuracy": 0.8333333333333333,
+              "tampered_pixel_iou": 0.0,
+              "collapse": {
+                "block": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 0
+                },
+                "pixel": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 7
+                }
+              }
+            },
+            "pixel_only_training_diagnostic": {
+              "tau": 0.2,
+              "tampered_pixel_iou": 0.17768170348032616,
+              "intact_positive_pixel_counts": [
+                261944
+              ],
+              "non_jpeg_tampered_pixel_iou": 0.013293575182250768,
+              "tampered_pixel_iou_by_family": {
+                "B1:jpeg75": 0.9996223449707031,
+                "T1": 0.0009791135197983638,
+                "T2": 0.006349121507601384,
+                "T3": 0.010694329944123844,
+                "T4": 0.013998220144450938,
+                "T5": 0.034447090795279314
+              }
+            },
+            "warning": "TRAIN-only operating-point contrast, not alternative benchmark results"
+          }
+        },
+        {
+          "epoch": 14,
+          "mean_update_loss": 4.718021597181048,
+          "mean_sample_component_losses": {
+            "block": 2.5734177316938127,
+            "pixel": 1.8396315744944982,
+            "consistency": 0.026758617322359766,
+            "cls": 0.5831858430589948
+          },
+          "selection_tau": 0.2,
+          "selection_tampered_pixel_iou": 0.17767737968970856,
+          "selected_this_epoch": false,
+          "selected_epoch_so_far": 7,
+          "operating_points": {
+            "shared_rule": {
+              "tau": 0.9000000000000001,
+              "k": 32,
+              "balanced_accuracy": 0.9166666666666667,
+              "tampered_pixel_iou": 0.0,
+              "collapse": {
+                "block": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 0
+                },
+                "pixel": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 7
+                }
+              }
+            },
+            "pixel_only_training_diagnostic": {
+              "tau": 0.2,
+              "tampered_pixel_iou": 0.17767737968970856,
+              "intact_positive_pixel_counts": [
+                261890
+              ],
+              "non_jpeg_tampered_pixel_iou": 0.013294490149134678,
+              "tampered_pixel_iou_by_family": {
+                "B1:jpeg75": 0.9995918273925781,
+                "T1": 0.0009786344227012604,
+                "T2": 0.0063492427105883075,
+                "T3": 0.010692615912993704,
+                "T4": 0.014005655762763681,
+                "T5": 0.034446301936626435
+              }
+            },
+            "warning": "TRAIN-only operating-point contrast, not alternative benchmark results"
+          }
+        },
+        {
+          "epoch": 15,
+          "mean_update_loss": 4.693449020385742,
+          "mean_sample_component_losses": {
+            "block": 2.561140469142369,
+            "pixel": 1.8312038694109236,
+            "consistency": 0.027332644377435957,
+            "cls": 0.5748765553746905
+          },
+          "selection_tau": 0.2,
+          "selection_tampered_pixel_iou": 0.17767851591641382,
+          "selected_this_epoch": false,
+          "selected_epoch_so_far": 7,
+          "operating_points": {
+            "shared_rule": {
+              "tau": 0.7500000000000001,
+              "k": 16,
+              "balanced_accuracy": 1.0,
+              "tampered_pixel_iou": 0.0,
+              "collapse": {
+                "block": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 0
+                },
+                "pixel": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 7
+                }
+              }
+            },
+            "pixel_only_training_diagnostic": {
+              "tau": 0.2,
+              "tampered_pixel_iou": 0.17767851591641382,
+              "intact_positive_pixel_counts": [
+                261959
+              ],
+              "non_jpeg_tampered_pixel_iou": 0.0132966165606341,
+              "tampered_pixel_iou_by_family": {
+                "B1:jpeg75": 0.9995880126953125,
+                "T1": 0.0009786119765286033,
+                "T2": 0.0063479581943246275,
+                "T3": 0.010695513762553488,
+                "T4": 0.014009831729115222,
+                "T5": 0.03445116714064856
+              }
+            },
+            "warning": "TRAIN-only operating-point contrast, not alternative benchmark results"
+          }
+        },
+        {
+          "epoch": 16,
+          "mean_update_loss": 4.663557495389666,
+          "mean_sample_component_losses": {
+            "block": 2.5448835577283586,
+            "pixel": 1.8224013362612044,
+            "consistency": 0.028501128777861595,
+            "cls": 0.5640442413943154
+          },
+          "selection_tau": 0.25,
+          "selection_tampered_pixel_iou": 0.17769041288283074,
+          "selected_this_epoch": false,
+          "selected_epoch_so_far": 7,
+          "operating_points": {
+            "shared_rule": {
+              "tau": 0.9500000000000001,
+              "k": 2,
+              "balanced_accuracy": 0.9166666666666667,
+              "tampered_pixel_iou": 0.0,
+              "collapse": {
+                "block": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 1
+                },
+                "pixel": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 7
+                }
+              }
+            },
+            "pixel_only_training_diagnostic": {
+              "tau": 0.25,
+              "tampered_pixel_iou": 0.17769041288283074,
+              "intact_positive_pixel_counts": [
+                259774
+              ],
+              "non_jpeg_tampered_pixel_iou": 0.0133986309574438,
+              "tampered_pixel_iou_by_family": {
+                "B1:jpeg75": 0.9991493225097656,
+                "T1": 0.0009186706295595785,
+                "T2": 0.006385622125505448,
+                "T3": 0.010792821733553658,
+                "T4": 0.0141552476105045,
+                "T5": 0.03474079268809581
+              }
+            },
+            "warning": "TRAIN-only operating-point contrast, not alternative benchmark results"
+          }
+        },
+        {
+          "epoch": 17,
+          "mean_update_loss": 4.6368319647652765,
+          "mean_sample_component_losses": {
+            "block": 2.5294014556067332,
+            "pixel": 1.8161102192742484,
+            "consistency": 0.028881261657391275,
+            "cls": 0.5537594684532711
+          },
+          "selection_tau": 0.25,
+          "selection_tampered_pixel_iou": 0.1777252944584429,
+          "selected_this_epoch": false,
+          "selected_epoch_so_far": 7,
+          "operating_points": {
+            "shared_rule": {
+              "tau": 0.7500000000000001,
+              "k": 128,
+              "balanced_accuracy": 0.75,
+              "tampered_pixel_iou": 0.0,
+              "collapse": {
+                "block": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 0
+                },
+                "pixel": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 7
+                }
+              }
+            },
+            "pixel_only_training_diagnostic": {
+              "tau": 0.25,
+              "tampered_pixel_iou": 0.1777252944584429,
+              "intact_positive_pixel_counts": [
+                260583
+              ],
+              "non_jpeg_tampered_pixel_iou": 0.013383268389194,
+              "tampered_pixel_iou_by_family": {
+                "B1:jpeg75": 0.9994354248046875,
+                "T1": 0.0009846721926264977,
+                "T2": 0.006395243753773501,
+                "T3": 0.010754710463389078,
+                "T4": 0.014112763483176353,
+                "T5": 0.03466895205300457
+              }
+            },
+            "warning": "TRAIN-only operating-point contrast, not alternative benchmark results"
+          }
+        },
+        {
+          "epoch": 18,
+          "mean_update_loss": 4.617015600204468,
+          "mean_sample_component_losses": {
+            "block": 2.517252104622977,
+            "pixel": 1.8107638018471854,
+            "consistency": 0.02926447881119592,
+            "cls": 0.5487351502690997
+          },
+          "selection_tau": 0.25,
+          "selection_tampered_pixel_iou": 0.17772677556573227,
+          "selected_this_epoch": false,
+          "selected_epoch_so_far": 7,
+          "operating_points": {
+            "shared_rule": {
+              "tau": 0.6500000000000001,
+              "k": 256,
+              "balanced_accuracy": 0.75,
+              "tampered_pixel_iou": 0.0,
+              "collapse": {
+                "block": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 0
+                },
+                "pixel": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 7
+                }
+              }
+            },
+            "pixel_only_training_diagnostic": {
+              "tau": 0.25,
+              "tampered_pixel_iou": 0.17772677556573227,
+              "intact_positive_pixel_counts": [
+                260184
+              ],
+              "non_jpeg_tampered_pixel_iou": 0.01340945978044122,
+              "tampered_pixel_iou_by_family": {
+                "B1:jpeg75": 0.9993133544921875,
+                "T1": 0.000985893253948387,
+                "T2": 0.006400450073792065,
+                "T3": 0.010786631044863455,
+                "T4": 0.014133389892601662,
+                "T5": 0.03474093463700054
+              }
+            },
+            "warning": "TRAIN-only operating-point contrast, not alternative benchmark results"
+          }
+        },
+        {
+          "epoch": 19,
+          "mean_update_loss": 4.591890573501587,
+          "mean_sample_component_losses": {
+            "block": 2.5023464475359236,
+            "pixel": 1.8055260522024972,
+            "consistency": 0.02999882080725261,
+            "cls": 0.5380371255534036
+          },
+          "selection_tau": 0.25,
+          "selection_tampered_pixel_iou": 0.17776471350933962,
+          "selected_this_epoch": false,
+          "selected_epoch_so_far": 7,
+          "operating_points": {
+            "shared_rule": {
+              "tau": 0.9500000000000001,
+              "k": 8,
+              "balanced_accuracy": 0.9166666666666667,
+              "tampered_pixel_iou": 0.0,
+              "collapse": {
+                "block": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 1
+                },
+                "pixel": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 7
+                }
+              }
+            },
+            "pixel_only_training_diagnostic": {
+              "tau": 0.25,
+              "tampered_pixel_iou": 0.17776471350933962,
+              "intact_positive_pixel_counts": [
+                259823
+              ],
+              "non_jpeg_tampered_pixel_iou": 0.013426756553004408,
+              "tampered_pixel_iou_by_family": {
+                "B1:jpeg75": 0.9994544982910156,
+                "T1": 0.0009879935626044437,
+                "T2": 0.006407138942281713,
+                "T3": 0.010802016993322951,
+                "T4": 0.014160092108211694,
+                "T5": 0.03477654115860123
+              }
+            },
+            "warning": "TRAIN-only operating-point contrast, not alternative benchmark results"
+          }
+        },
+        {
+          "epoch": 20,
+          "mean_update_loss": 4.569537128720965,
+          "mean_sample_component_losses": {
+            "block": 2.487865447998047,
+            "pixel": 1.8008171319961548,
+            "consistency": 0.030428119003772736,
+            "cls": 0.5312809348106384
+          },
+          "selection_tau": 0.25,
+          "selection_tampered_pixel_iou": 0.17778008115391988,
+          "selected_this_epoch": false,
+          "selected_epoch_so_far": 7,
+          "operating_points": {
+            "shared_rule": {
+              "tau": 0.7500000000000001,
+              "k": 128,
+              "balanced_accuracy": 0.75,
+              "tampered_pixel_iou": 0.0,
+              "collapse": {
+                "block": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 0
+                },
+                "pixel": {
+                  "n_images": 7,
+                  "all_foreground_images": 0,
+                  "all_background_images": 7
+                }
+              }
+            },
+            "pixel_only_training_diagnostic": {
+              "tau": 0.25,
+              "tampered_pixel_iou": 0.17778008115391988,
+              "intact_positive_pixel_counts": [
+                259429
+              ],
+              "non_jpeg_tampered_pixel_iou": 0.013436805392516382,
+              "tampered_pixel_iou_by_family": {
+                "B1:jpeg75": 0.9994964599609375,
+                "T1": 0.0009779100554664398,
+                "T2": 0.006426789891920109,
+                "T3": 0.010803099818791687,
+                "T4": 0.014167919809187307,
+                "T5": 0.034808307387216374
+              }
+            },
+            "warning": "TRAIN-only operating-point contrast, not alternative benchmark results"
+          }
+        }
+      ],
+      "selected_epoch": 7,
+      "last_completed_epoch": 20,
+      "selection_scope": "TRAIN-only, in-sample localisation epoch selection",
+      "before": {
+        "tau": 0.05,
+        "k": 0,
+        "metrics": {
+          "n": 7,
+          "n_tampered": 6,
+          "n_intact": 1,
+          "iou_mean": 0.15229143415178573,
+          "iou_tampered_mean": 0.17767333984375,
+          "block_acc": 0.15513392857142858,
+          "detection": 0.8571428571428571,
+          "detection_denominator": "6 / 7",
+          "false_claims": 1,
+          "n_intact_denominator": 1,
+          "true_positives": 6,
+          "tpr": 1.0,
+          "fpr": 1.0,
+          "balanced_accuracy": 0.5,
+          "by_family": [
+            {
+              "family": "B1:jpeg75",
+              "n": 1,
+              "n_tampered": 1,
+              "n_intact": 0,
+              "iou_tampered_mean": 0.9996223449707031,
+              "tpr": 1.0,
+              "fpr": null
+            },
+            {
+              "family": "T1",
+              "n": 1,
+              "n_tampered": 1,
+              "n_intact": 0,
+              "iou_tampered_mean": 0.0009765625,
+              "tpr": 1.0,
+              "fpr": null
+            },
+            {
+              "family": "T2",
+              "n": 1,
+              "n_tampered": 1,
+              "n_intact": 0,
+              "iou_tampered_mean": 0.006343841552734375,
+              "tpr": 1.0,
+              "fpr": null
+            },
+            {
+              "family": "T3",
+              "n": 1,
+              "n_tampered": 1,
+              "n_intact": 0,
+              "iou_tampered_mean": 0.01068878173828125,
+              "tpr": 1.0,
+              "fpr": null
+            },
+            {
+              "family": "T4",
+              "n": 1,
+              "n_tampered": 1,
+              "n_intact": 0,
+              "iou_tampered_mean": 0.013980865478515625,
+              "tpr": 1.0,
+              "fpr": null
+            },
+            {
+              "family": "T5",
+              "n": 1,
+              "n_tampered": 1,
+              "n_intact": 0,
+              "iou_tampered_mean": 0.034427642822265625,
+              "tpr": 1.0,
+              "fpr": null
+            },
+            {
+              "family": "none",
+              "n": 1,
+              "n_tampered": 0,
+              "n_intact": 1,
+              "iou_tampered_mean": null,
+              "tpr": null,
+              "fpr": 1.0
+            }
+          ],
+          "by_diagnosis": [
+            {
+              "dx": "dx0",
+              "n": 1,
+              "n_total": 1,
+              "n_intact": 0,
+              "iou": 0.0009765625,
+              "iou_convention": "tampered images only",
+              "small_n": true
+            },
+            {
+              "dx": "dx1",
+              "n": 1,
+              "n_total": 1,
+              "n_intact": 0,
+              "iou": 0.006343841552734375,
+              "iou_convention": "tampered images only",
+              "small_n": true
+            },
+            {
+              "dx": "dx2",
+              "n": 1,
+              "n_total": 1,
+              "n_intact": 0,
+              "iou": 0.01068878173828125,
+              "iou_convention": "tampered images only",
+              "small_n": true
+            },
+            {
+              "dx": "dx3",
+              "n": 1,
+              "n_total": 1,
+              "n_intact": 0,
+              "iou": 0.013980865478515625,
+              "iou_convention": "tampered images only",
+              "small_n": true
+            },
+            {
+              "dx": "dx4",
+              "n": 1,
+              "n_total": 1,
+              "n_intact": 0,
+              "iou": 0.034427642822265625,
+              "iou_convention": "tampered images only",
+              "small_n": true
+            },
+            {
+              "dx": "dx5",
+              "n": 0,
+              "n_total": 1,
+              "n_intact": 1,
+              "iou": null,
+              "iou_convention": "tampered images only",
+              "small_n": true
+            },
+            {
+              "dx": "dx6",
+              "n": 1,
+              "n_total": 1,
+              "n_intact": 0,
+              "iou": 0.9996223449707031,
+              "iou_convention": "tampered images only",
+              "small_n": true
+            }
+          ],
+          "by_area": [
+            {
+              "bucket": "area_0.000-0.005",
+              "n": 1,
+              "median_radius_px": 9.0,
+              "iou": 0.001,
+              "ceiling": 1.0,
+              "ceiling_convention": "exact per-image block oracle, averaged",
+              "any_overlap_block_iou": 1.0,
+              "small_n": true
+            },
+            {
+              "bucket": "area_0.005-0.020",
+              "n": 3,
+              "median_radius_px": 29.9,
+              "iou": 0.0103,
+              "ceiling": 0.7843453900495199,
+              "ceiling_convention": "exact per-image block oracle, averaged",
+              "any_overlap_block_iou": 0.6685956104130445,
+              "small_n": true
+            },
+            {
+              "bucket": "area_0.020-0.050",
+              "n": 1,
+              "median_radius_px": 53.6,
+              "iou": 0.0344,
+              "ceiling": 0.9792751736111112,
+              "ceiling_convention": "exact per-image block oracle, averaged",
+              "any_overlap_block_iou": 0.9792751736111112,
+              "small_n": true
+            },
+            {
+              "bucket": "area_0.200-1.010",
+              "n": 1,
+              "median_radius_px": 288.8,
+              "iou": 0.9996,
+              "ceiling": 0.9996223449707031,
+              "ceiling_convention": "exact per-image block oracle, averaged",
+              "any_overlap_block_iou": 0.9996223449707031,
+              "small_n": true
+            }
+          ]
+        },
+        "collapse": {
+          "block": {
+            "n_images": 7,
+            "all_foreground_images": 7,
+            "all_background_images": 0
+          },
+          "pixel": {
+            "n_images": 7,
+            "all_foreground_images": 7,
+            "all_background_images": 0
+          }
+        },
+        "pixel_only_training_tau": 0.05,
+        "pixel_only_training_iou": 0.17767333984375
+      },
+      "after": {
+        "tau": 0.5,
+        "k": 8,
+        "metrics": {
+          "n": 7,
+          "n_tampered": 6,
+          "n_intact": 1,
+          "iou_mean": 0.14285714285714285,
+          "iou_tampered_mean": 0.0,
+          "block_acc": 0.9496721540178571,
+          "detection": 1.0,
+          "detection_denominator": "7 / 7",
+          "false_claims": 0,
+          "n_intact_denominator": 1,
+          "true_positives": 6,
+          "tpr": 1.0,
+          "fpr": 0.0,
+          "balanced_accuracy": 1.0,
+          "by_family": [
+            {
+              "family": "B1:jpeg75",
+              "n": 1,
+              "n_tampered": 1,
+              "n_intact": 0,
+              "iou_tampered_mean": 0.0,
+              "tpr": 1.0,
+              "fpr": null
+            },
+            {
+              "family": "T1",
+              "n": 1,
+              "n_tampered": 1,
+              "n_intact": 0,
+              "iou_tampered_mean": 0.0,
+              "tpr": 1.0,
+              "fpr": null
+            },
+            {
+              "family": "T2",
+              "n": 1,
+              "n_tampered": 1,
+              "n_intact": 0,
+              "iou_tampered_mean": 0.0,
+              "tpr": 1.0,
+              "fpr": null
+            },
+            {
+              "family": "T3",
+              "n": 1,
+              "n_tampered": 1,
+              "n_intact": 0,
+              "iou_tampered_mean": 0.0,
+              "tpr": 1.0,
+              "fpr": null
+            },
+            {
+              "family": "T4",
+              "n": 1,
+              "n_tampered": 1,
+              "n_intact": 0,
+              "iou_tampered_mean": 0.0,
+              "tpr": 1.0,
+              "fpr": null
+            },
+            {
+              "family": "T5",
+              "n": 1,
+              "n_tampered": 1,
+              "n_intact": 0,
+              "iou_tampered_mean": 0.0,
+              "tpr": 1.0,
+              "fpr": null
+            },
+            {
+              "family": "none",
+              "n": 1,
+              "n_tampered": 0,
+              "n_intact": 1,
+              "iou_tampered_mean": null,
+              "tpr": null,
+              "fpr": 0.0
+            }
+          ],
+          "by_diagnosis": [
+            {
+              "dx": "dx0",
+              "n": 1,
+              "n_total": 1,
+              "n_intact": 0,
+              "iou": 0.0,
+              "iou_convention": "tampered images only",
+              "small_n": true
+            },
+            {
+              "dx": "dx1",
+              "n": 1,
+              "n_total": 1,
+              "n_intact": 0,
+              "iou": 0.0,
+              "iou_convention": "tampered images only",
+              "small_n": true
+            },
+            {
+              "dx": "dx2",
+              "n": 1,
+              "n_total": 1,
+              "n_intact": 0,
+              "iou": 0.0,
+              "iou_convention": "tampered images only",
+              "small_n": true
+            },
+            {
+              "dx": "dx3",
+              "n": 1,
+              "n_total": 1,
+              "n_intact": 0,
+              "iou": 0.0,
+              "iou_convention": "tampered images only",
+              "small_n": true
+            },
+            {
+              "dx": "dx4",
+              "n": 1,
+              "n_total": 1,
+              "n_intact": 0,
+              "iou": 0.0,
+              "iou_convention": "tampered images only",
+              "small_n": true
+            },
+            {
+              "dx": "dx5",
+              "n": 0,
+              "n_total": 1,
+              "n_intact": 1,
+              "iou": null,
+              "iou_convention": "tampered images only",
+              "small_n": true
+            },
+            {
+              "dx": "dx6",
+              "n": 1,
+              "n_total": 1,
+              "n_intact": 0,
+              "iou": 0.0,
+              "iou_convention": "tampered images only",
+              "small_n": true
+            }
+          ],
+          "by_area": [
+            {
+              "bucket": "area_0.000-0.005",
+              "n": 1,
+              "median_radius_px": 9.0,
+              "iou": 0.0,
+              "ceiling": 1.0,
+              "ceiling_convention": "exact per-image block oracle, averaged",
+              "any_overlap_block_iou": 1.0,
+              "small_n": true
+            },
+            {
+              "bucket": "area_0.005-0.020",
+              "n": 3,
+              "median_radius_px": 29.9,
+              "iou": 0.0,
+              "ceiling": 0.7843453900495199,
+              "ceiling_convention": "exact per-image block oracle, averaged",
+              "any_overlap_block_iou": 0.6685956104130445,
+              "small_n": true
+            },
+            {
+              "bucket": "area_0.020-0.050",
+              "n": 1,
+              "median_radius_px": 53.6,
+              "iou": 0.0,
+              "ceiling": 0.9792751736111112,
+              "ceiling_convention": "exact per-image block oracle, averaged",
+              "any_overlap_block_iou": 0.9792751736111112,
+              "small_n": true
+            },
+            {
+              "bucket": "area_0.200-1.010",
+              "n": 1,
+              "median_radius_px": 288.8,
+              "iou": 0.0,
+              "ceiling": 0.9996223449707031,
+              "ceiling_convention": "exact per-image block oracle, averaged",
+              "any_overlap_block_iou": 0.9996223449707031,
+              "small_n": true
+            }
+          ]
+        },
+        "collapse": {
+          "block": {
+            "n_images": 7,
+            "all_foreground_images": 0,
+            "all_background_images": 0
+          },
+          "pixel": {
+            "n_images": 7,
+            "all_foreground_images": 0,
+            "all_background_images": 7
+          }
+        },
+        "pixel_only_training_tau": 0.35,
+        "pixel_only_training_iou": 0.38927057614245636
+      }
+    }
+  },
+  "classical_reference": {
+    "method": "strict failed-block expansion on the same protected TRAIN samples",
+    "metrics": {
+      "n": 7,
+      "n_tampered": 6,
+      "n_intact": 1,
+      "iou_mean": 0.8549549071172783,
+      "iou_tampered_mean": 0.830780724970158,
+      "block_acc": 1.0,
+      "detection": 1.0,
+      "detection_denominator": "7 / 7",
+      "false_claims": 0,
+      "n_intact_denominator": 1,
+      "true_positives": 6,
+      "tpr": 1.0,
+      "fpr": 0.0,
+      "balanced_accuracy": 1.0,
+      "by_family": [
+        {
+          "family": "B1:jpeg75",
+          "n": 1,
+          "n_tampered": 1,
+          "n_intact": 0,
+          "iou_tampered_mean": 0.9996223449707031,
+          "tpr": 1.0,
+          "fpr": null
+        },
+        {
+          "family": "T1",
+          "n": 1,
+          "n_tampered": 1,
+          "n_intact": 0,
+          "iou_tampered_mean": 1.0,
+          "tpr": 1.0,
+          "fpr": null
+        },
+        {
+          "family": "T2",
+          "n": 1,
+          "n_tampered": 1,
+          "n_intact": 0,
+          "iou_tampered_mean": 0.7217881944444444,
+          "tpr": 1.0,
+          "fpr": null
+        },
+        {
+          "family": "T3",
+          "n": 1,
+          "n_tampered": 1,
+          "n_intact": 0,
+          "iou_tampered_mean": 0.7680921052631579,
+          "tpr": 1.0,
+          "fpr": null
+        },
+        {
+          "family": "T4",
+          "n": 1,
+          "n_tampered": 1,
+          "n_intact": 0,
+          "iou_tampered_mean": 0.5159065315315315,
+          "tpr": 1.0,
+          "fpr": null
+        },
+        {
+          "family": "T5",
+          "n": 1,
+          "n_tampered": 1,
+          "n_intact": 0,
+          "iou_tampered_mean": 0.9792751736111112,
+          "tpr": 1.0,
+          "fpr": null
+        },
+        {
+          "family": "none",
+          "n": 1,
+          "n_tampered": 0,
+          "n_intact": 1,
+          "iou_tampered_mean": null,
+          "tpr": null,
+          "fpr": 0.0
+        }
+      ],
+      "by_diagnosis": [
+        {
+          "dx": "dx0",
+          "n": 1,
+          "n_total": 1,
+          "n_intact": 0,
+          "iou": 1.0,
+          "iou_convention": "tampered images only",
+          "small_n": true
+        },
+        {
+          "dx": "dx1",
+          "n": 1,
+          "n_total": 1,
+          "n_intact": 0,
+          "iou": 0.7217881944444444,
+          "iou_convention": "tampered images only",
+          "small_n": true
+        },
+        {
+          "dx": "dx2",
+          "n": 1,
+          "n_total": 1,
+          "n_intact": 0,
+          "iou": 0.7680921052631579,
+          "iou_convention": "tampered images only",
+          "small_n": true
+        },
+        {
+          "dx": "dx3",
+          "n": 1,
+          "n_total": 1,
+          "n_intact": 0,
+          "iou": 0.5159065315315315,
+          "iou_convention": "tampered images only",
+          "small_n": true
+        },
+        {
+          "dx": "dx4",
+          "n": 1,
+          "n_total": 1,
+          "n_intact": 0,
+          "iou": 0.9792751736111112,
+          "iou_convention": "tampered images only",
+          "small_n": true
+        },
+        {
+          "dx": "dx5",
+          "n": 0,
+          "n_total": 1,
+          "n_intact": 1,
+          "iou": null,
+          "iou_convention": "tampered images only",
+          "small_n": true
+        },
+        {
+          "dx": "dx6",
+          "n": 1,
+          "n_total": 1,
+          "n_intact": 0,
+          "iou": 0.9996223449707031,
+          "iou_convention": "tampered images only",
+          "small_n": true
+        }
+      ],
+      "by_area": [
+        {
+          "bucket": "area_0.000-0.005",
+          "n": 1,
+          "median_radius_px": 9.0,
+          "iou": 1.0,
+          "ceiling": 1.0,
+          "ceiling_convention": "exact per-image block oracle, averaged",
+          "any_overlap_block_iou": 1.0,
+          "small_n": true
+        },
+        {
+          "bucket": "area_0.005-0.020",
+          "n": 3,
+          "median_radius_px": 29.9,
+          "iou": 0.6686,
+          "ceiling": 0.7843453900495199,
+          "ceiling_convention": "exact per-image block oracle, averaged",
+          "any_overlap_block_iou": 0.6685956104130445,
+          "small_n": true
+        },
+        {
+          "bucket": "area_0.020-0.050",
+          "n": 1,
+          "median_radius_px": 53.6,
+          "iou": 0.9793,
+          "ceiling": 0.9792751736111112,
+          "ceiling_convention": "exact per-image block oracle, averaged",
+          "any_overlap_block_iou": 0.9792751736111112,
+          "small_n": true
+        },
+        {
+          "bucket": "area_0.200-1.010",
+          "n": 1,
+          "median_radius_px": 288.8,
+          "iou": 0.9996,
+          "ceiling": 0.9996223449707031,
+          "ceiling_convention": "exact per-image block oracle, averaged",
+          "any_overlap_block_iou": 0.9996223449707031,
+          "small_n": true
+        }
+      ]
+    }
+  }
+}

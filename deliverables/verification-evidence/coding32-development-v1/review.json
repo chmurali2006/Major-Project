@@ -1,0 +1,255 @@
+{
+  "schema": "coding32-return-review-v1",
+  "zip_sha256": "17c2c9518d9426d0d889a6d040717858589c83a7c8251f06c57fc6ced4bb506f",
+  "zip_bytes": 18636900,
+  "signatures_checked": 128,
+  "available_maps_checked": 544,
+  "summary": [
+    {
+      "method": "bounded289",
+      "case": "intact",
+      "trials": 32,
+      "fine_maps": 32,
+      "sidecar_bytes": 18620,
+      "mean_verify_seconds": 0.04765555484373074,
+      "median_verify_seconds": 0.04606393849991264,
+      "mean_available_iou": null
+    },
+    {
+      "method": "bounded289",
+      "case": "one-bit",
+      "trials": 32,
+      "fine_maps": 32,
+      "sidecar_bytes": 18620,
+      "mean_verify_seconds": 1.0815199761562493,
+      "median_verify_seconds": 1.0735149800000272,
+      "mean_available_iou": 0.0625
+    },
+    {
+      "method": "bounded289",
+      "case": "brightness32",
+      "trials": 32,
+      "fine_maps": 32,
+      "sidecar_bytes": 18620,
+      "mean_verify_seconds": 1.8141949479687476,
+      "median_verify_seconds": 1.8133546484999954,
+      "mean_available_iou": 0.8472222222222222
+    },
+    {
+      "method": "bounded289",
+      "case": "replace64",
+      "trials": 32,
+      "fine_maps": 32,
+      "sidecar_bytes": 18620,
+      "mean_verify_seconds": 3.9801170334375016,
+      "median_verify_seconds": 4.017098123499977,
+      "mean_available_iou": 0.9173875432525952
+    },
+    {
+      "method": "bounded289",
+      "case": "copy64",
+      "trials": 32,
+      "fine_maps": 32,
+      "sidecar_bytes": 18620,
+      "mean_verify_seconds": 3.974162825437503,
+      "median_verify_seconds": 4.002511628999969,
+      "mean_available_iou": 0.9172840580395761
+    },
+    {
+      "method": "bounded289",
+      "case": "jpeg75",
+      "trials": 32,
+      "fine_maps": 0,
+      "sidecar_bytes": 18620,
+      "mean_verify_seconds": 1.2948472803437419,
+      "median_verify_seconds": 1.2879448004999858,
+      "mean_available_iou": null
+    },
+    {
+      "method": "index288",
+      "case": "intact",
+      "trials": 32,
+      "fine_maps": 32,
+      "sidecar_bytes": 18558,
+      "mean_verify_seconds": 0.046784644500011296,
+      "median_verify_seconds": 0.04614199399998142,
+      "mean_available_iou": null
+    },
+    {
+      "method": "index288",
+      "case": "one-bit",
+      "trials": 32,
+      "fine_maps": 32,
+      "sidecar_bytes": 18558,
+      "mean_verify_seconds": 0.12811411681249396,
+      "median_verify_seconds": 0.12572148000000993,
+      "mean_available_iou": 0.0625
+    },
+    {
+      "method": "index288",
+      "case": "brightness32",
+      "trials": 32,
+      "fine_maps": 32,
+      "sidecar_bytes": 18558,
+      "mean_verify_seconds": 0.13540693428124229,
+      "median_verify_seconds": 0.13406800849998035,
+      "mean_available_iou": 0.8472222222222222
+    },
+    {
+      "method": "index288",
+      "case": "replace64",
+      "trials": 32,
+      "fine_maps": 0,
+      "sidecar_bytes": 18558,
+      "mean_verify_seconds": 0.13157444006250252,
+      "median_verify_seconds": 0.13026011900001322,
+      "mean_available_iou": null
+    },
+    {
+      "method": "index288",
+      "case": "copy64",
+      "trials": 32,
+      "fine_maps": 0,
+      "sidecar_bytes": 18558,
+      "mean_verify_seconds": 0.13255106756250257,
+      "median_verify_seconds": 0.130907427000011,
+      "mean_available_iou": null
+    },
+    {
+      "method": "index288",
+      "case": "jpeg75",
+      "trials": 32,
+      "fine_maps": 0,
+      "sidecar_bytes": 18558,
+      "mean_verify_seconds": 0.1285466800937396,
+      "median_verify_seconds": 0.12677201949998107,
+      "mean_available_iou": null
+    },
+    {
+      "method": "set330",
+      "case": "intact",
+      "trials": 32,
+      "fine_maps": 32,
+      "sidecar_bytes": 18606,
+      "mean_verify_seconds": 0.04660090640624226,
+      "median_verify_seconds": 0.04598458649996928,
+      "mean_available_iou": null
+    },
+    {
+      "method": "set330",
+      "case": "one-bit",
+      "trials": 32,
+      "fine_maps": 32,
+      "sidecar_bytes": 18606,
+      "mean_verify_seconds": 0.14730094478125189,
+      "median_verify_seconds": 0.1453647229999433,
+      "mean_available_iou": 0.0625
+    },
+    {
+      "method": "set330",
+      "case": "brightness32",
+      "trials": 32,
+      "fine_maps": 32,
+      "sidecar_bytes": 18606,
+      "mean_verify_seconds": 0.15068946024999263,
+      "median_verify_seconds": 0.1474598454999807,
+      "mean_available_iou": 0.8472222222222222
+    },
+    {
+      "method": "set330",
+      "case": "replace64",
+      "trials": 32,
+      "fine_maps": 0,
+      "sidecar_bytes": 18606,
+      "mean_verify_seconds": 0.14373782678124591,
+      "median_verify_seconds": 0.14330018299995118,
+      "mean_available_iou": null
+    },
+    {
+      "method": "set330",
+      "case": "copy64",
+      "trials": 32,
+      "fine_maps": 0,
+      "sidecar_bytes": 18606,
+      "mean_verify_seconds": 0.14361477656250088,
+      "median_verify_seconds": 0.14313864099997886,
+      "mean_available_iou": null
+    },
+    {
+      "method": "set330",
+      "case": "jpeg75",
+      "trials": 32,
+      "fine_maps": 0,
+      "sidecar_bytes": 18606,
+      "mean_verify_seconds": 0.14454725893749476,
+      "median_verify_seconds": 0.1435244069999726,
+      "mean_available_iou": null
+    },
+    {
+      "method": "full4",
+      "case": "intact",
+      "trials": 32,
+      "fine_maps": 32,
+      "sidecar_bytes": 524378,
+      "mean_verify_seconds": 0.05161354709373889,
+      "median_verify_seconds": 0.05138717950001137,
+      "mean_available_iou": null
+    },
+    {
+      "method": "full4",
+      "case": "one-bit",
+      "trials": 32,
+      "fine_maps": 32,
+      "sidecar_bytes": 524378,
+      "mean_verify_seconds": 0.051463255156239285,
+      "median_verify_seconds": 0.05122801749996597,
+      "mean_available_iou": 0.0625
+    },
+    {
+      "method": "full4",
+      "case": "brightness32",
+      "trials": 32,
+      "fine_maps": 32,
+      "sidecar_bytes": 524378,
+      "mean_verify_seconds": 0.051253630781236126,
+      "median_verify_seconds": 0.05082642950000604,
+      "mean_available_iou": 0.8472222222222222
+    },
+    {
+      "method": "full4",
+      "case": "replace64",
+      "trials": 32,
+      "fine_maps": 32,
+      "sidecar_bytes": 524378,
+      "mean_verify_seconds": 0.05245660006249686,
+      "median_verify_seconds": 0.05145000150002943,
+      "mean_available_iou": 0.9173875432525952
+    },
+    {
+      "method": "full4",
+      "case": "copy64",
+      "trials": 32,
+      "fine_maps": 32,
+      "sidecar_bytes": 524378,
+      "mean_verify_seconds": 0.051428172593748656,
+      "median_verify_seconds": 0.051370522500008065,
+      "mean_available_iou": 0.9172840580395761
+    },
+    {
+      "method": "full4",
+      "case": "jpeg75",
+      "trials": 32,
+      "fine_maps": 32,
+      "sidecar_bytes": 524378,
+      "mean_verify_seconds": 0.05250721962499583,
+      "median_verify_seconds": 0.050768451500005085,
+      "mean_available_iou": 0.9046738794506568
+    }
+  ],
+  "limits": [
+    "Signatures checked against returned run key, not external issuer provenance.",
+    "Saved maps compared with saved truth; source pixels absent, cannot independently reconstruct truth or rerun decoding.",
+    "Exact32 development selection and packaged source digest checked; no heldout/patient-independence claim.",
+    "Same-run timing one measurement per case; not guaranteed latency or SOTA ranking."
+  ]
+}

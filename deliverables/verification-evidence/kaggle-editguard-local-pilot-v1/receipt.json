@@ -1,0 +1,76 @@
+{
+  "scope": "actual Kaggle image-level ISIC-labelled pilot, not grouped held-out or clinical validation",
+  "drive_file_id": "1epY0i3Y7lBMuzpneNuWb5C1UCVUfupt5",
+  "downloaded_zip": "google_drive/editguard-local-pilot-results.zip",
+  "zip_sha256": "b34616f872aa4565dc56374cef51f41e9b985e5228fb5b38bda012d4ad24be6f",
+  "zip_bytes": 6793697,
+  "zip_crc_passed": true,
+  "zip_members": 27,
+  "report_complete": true,
+  "independently_recomputed_cases": 144,
+  "input_labels": 25331,
+  "evaluated_images": 8,
+  "grouping": "image only; patient/lesion dependence unknown",
+  "preprocessing": "explicit nearest-neighbour square512 before method-specific embedding",
+  "source_dimensions": [
+    [
+      1024,
+      1024
+    ],
+    [
+      600,
+      450
+    ],
+    [
+      1024,
+      1024
+    ],
+    [
+      1024,
+      1024
+    ],
+    [
+      1024,
+      1024
+    ],
+    [
+      600,
+      450
+    ],
+    [
+      600,
+      450
+    ],
+    [
+      1024,
+      1024
+    ]
+  ],
+  "environment": {
+    "python": "3.13.18 (main, Oct 26 2026, 15:28:15) [GCC 13.3.0]",
+    "platform": "Linux-6.18.55+-x86_64-with-glibc2.39",
+    "torch": "2.11.0+cpu",
+    "threads": 2
+  },
+  "threshold": {
+    "value": 0.2,
+    "origin": "official README clean checkpoint, not selected on pilot outcomes"
+  },
+  "checkpoint_sha256": "b967b91b94a464ab73f82db63a57ee818e6fc5d99d7ae6aa094a1777cac977d5",
+  "interpretation": [
+    "Comparison against a published baseline now executed on actual attached images, not the GitHub pixel mirror.",
+    "Only eight images, one per class; no class-wise or population superiority claim.",
+    "Classical missed no changed pixels in tested edits, but highlights whole blocks.",
+    "EditGuard replacement mean IoU .8488137 exceeds classical .8024691, with 962 missed pixels.",
+    "EditGuard copy mean IoU .7707485 is below classical .8024691, including one total 4096-pixel miss.",
+    "EditGuard has 38 intact false-highlight pixels across 6 of 8 inputs; this is not a calibrated paper image-detection assessment.",
+    "JPEG case measures altered RGB relative to each protected reference, not benign-tolerance success. High JPEG changed-pixel IoU must not be advertised as robustness.",
+    "Data identity and patient/lesion independence remain unverified. Full label count is not sample size."
+  ],
+  "next_gate": "No automatic larger training run; retain classical reference and investigate catastrophic localisation misses before proposing another learned mechanism.",
+  "regression_validation": {
+    "passed": 358,
+    "cuda_only_skipped": 1,
+    "seconds": 45.99
+  }
+}

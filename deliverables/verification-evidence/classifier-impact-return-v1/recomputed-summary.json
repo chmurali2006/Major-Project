@@ -1,0 +1,1306 @@
+{
+  "completed": true,
+  "images": 500,
+  "rows": 6000,
+  "test_evaluated": false,
+  "cases": {
+    "intact": {
+      "schema": "paired-diagnostic-impact-v1",
+      "class_names": [
+        "nonMEL",
+        "MEL"
+      ],
+      "n": 500,
+      "clean": {
+        "confusion_matrix": [
+          [
+            399,
+            45
+          ],
+          [
+            23,
+            33
+          ]
+        ],
+        "support": [
+          444,
+          56
+        ],
+        "accuracy": 0.864,
+        "balanced_accuracy": 0.7439671814671815,
+        "macro_f1": 0.7070076867395125,
+        "per_class_sensitivity": [
+          0.8986486486486487,
+          0.5892857142857143
+        ],
+        "binary_roc_auc": 0.8453989703989704
+      },
+      "received": {
+        "confusion_matrix": [
+          [
+            399,
+            45
+          ],
+          [
+            23,
+            33
+          ]
+        ],
+        "support": [
+          444,
+          56
+        ],
+        "accuracy": 0.864,
+        "balanced_accuracy": 0.7439671814671815,
+        "macro_f1": 0.7070076867395125,
+        "per_class_sensitivity": [
+          0.8986486486486487,
+          0.5892857142857143
+        ],
+        "binary_roc_auc": 0.8453989703989704
+      },
+      "paired_differences": {
+        "accuracy": {
+          "received_minus_clean": 0.0,
+          "paired_percentile95": [
+            0.0,
+            0.0
+          ]
+        },
+        "balanced_accuracy": {
+          "received_minus_clean": 0.0,
+          "paired_percentile95": [
+            0.0,
+            0.0
+          ]
+        },
+        "macro_f1": {
+          "received_minus_clean": 0.0,
+          "paired_percentile95": [
+            0.0,
+            0.0
+          ]
+        },
+        "binary_roc_auc": {
+          "received_minus_clean": 0.0,
+          "paired_percentile95": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "prediction_flips": 0,
+      "flip_rate": 0.0,
+      "flip_rate_percentile95": [
+        0.0,
+        0.0
+      ],
+      "correct_to_wrong": 0,
+      "wrong_to_correct": 0,
+      "mean_probability_l1_shift": 0.0,
+      "mean_true_class_probability_shift": 0.0,
+      "bootstrap": {
+        "unit": "paired image within true class, NOT patient",
+        "repetitions": 2000,
+        "seed": 3101
+      },
+      "limits": [
+        "Classifier identity, training provenance, split independence and calibration must be established externally.",
+        "Image bootstrap does not establish patient independence; small classes yield unstable intervals.",
+        "Intervals descriptive, conditional on class counts; no multiplicity correction or clinical safety claim.",
+        "Ties use first declared class. Agreement or small probability shift alone is not diagnostic utility."
+      ]
+    },
+    "copy32": {
+      "schema": "paired-diagnostic-impact-v1",
+      "class_names": [
+        "nonMEL",
+        "MEL"
+      ],
+      "n": 500,
+      "clean": {
+        "confusion_matrix": [
+          [
+            399,
+            45
+          ],
+          [
+            23,
+            33
+          ]
+        ],
+        "support": [
+          444,
+          56
+        ],
+        "accuracy": 0.864,
+        "balanced_accuracy": 0.7439671814671815,
+        "macro_f1": 0.7070076867395125,
+        "per_class_sensitivity": [
+          0.8986486486486487,
+          0.5892857142857143
+        ],
+        "binary_roc_auc": 0.8453989703989704
+      },
+      "received": {
+        "confusion_matrix": [
+          [
+            397,
+            47
+          ],
+          [
+            23,
+            33
+          ]
+        ],
+        "support": [
+          444,
+          56
+        ],
+        "accuracy": 0.86,
+        "balanced_accuracy": 0.7417149292149292,
+        "macro_f1": 0.7021377995642701,
+        "per_class_sensitivity": [
+          0.8941441441441441,
+          0.5892857142857143
+        ],
+        "binary_roc_auc": 0.8434684684684685
+      },
+      "paired_differences": {
+        "accuracy": {
+          "received_minus_clean": -0.0040000000000000036,
+          "paired_percentile95": [
+            -0.01200000000000001,
+            0.0040000000000000036
+          ]
+        },
+        "balanced_accuracy": {
+          "received_minus_clean": -0.0022522522522523403,
+          "paired_percentile95": [
+            -0.006756756756756799,
+            0.0022522522522522292
+          ]
+        },
+        "macro_f1": {
+          "received_minus_clean": -0.004869887175242393,
+          "paired_percentile95": [
+            -0.014360710705827649,
+            0.004627815661946772
+          ]
+        },
+        "binary_roc_auc": {
+          "received_minus_clean": -0.0019305019305019266,
+          "paired_percentile95": [
+            -0.005671854890604966,
+            0.0019315074002573902
+          ]
+        }
+      },
+      "prediction_flips": 4,
+      "flip_rate": 0.008,
+      "flip_rate_percentile95": [
+        0.002,
+        0.016
+      ],
+      "correct_to_wrong": 3,
+      "wrong_to_correct": 1,
+      "mean_probability_l1_shift": 0.013748657673597335,
+      "mean_true_class_probability_shift": -0.002184858500957489,
+      "bootstrap": {
+        "unit": "paired image within true class, NOT patient",
+        "repetitions": 2000,
+        "seed": 3101
+      },
+      "limits": [
+        "Classifier identity, training provenance, split independence and calibration must be established externally.",
+        "Image bootstrap does not establish patient independence; small classes yield unstable intervals.",
+        "Intervals descriptive, conditional on class counts; no multiplicity correction or clinical safety claim.",
+        "Ties use first declared class. Agreement or small probability shift alone is not diagnostic utility."
+      ]
+    },
+    "local_blur32_surrogate": {
+      "schema": "paired-diagnostic-impact-v1",
+      "class_names": [
+        "nonMEL",
+        "MEL"
+      ],
+      "n": 500,
+      "clean": {
+        "confusion_matrix": [
+          [
+            399,
+            45
+          ],
+          [
+            23,
+            33
+          ]
+        ],
+        "support": [
+          444,
+          56
+        ],
+        "accuracy": 0.864,
+        "balanced_accuracy": 0.7439671814671815,
+        "macro_f1": 0.7070076867395125,
+        "per_class_sensitivity": [
+          0.8986486486486487,
+          0.5892857142857143
+        ],
+        "binary_roc_auc": 0.8453989703989704
+      },
+      "received": {
+        "confusion_matrix": [
+          [
+            400,
+            44
+          ],
+          [
+            23,
+            33
+          ]
+        ],
+        "support": [
+          444,
+          56
+        ],
+        "accuracy": 0.866,
+        "balanced_accuracy": 0.7450933075933076,
+        "macro_f1": 0.7094813157461126,
+        "per_class_sensitivity": [
+          0.9009009009009009,
+          0.5892857142857143
+        ],
+        "binary_roc_auc": 0.8447956885456885
+      },
+      "paired_differences": {
+        "accuracy": {
+          "received_minus_clean": 0.0020000000000000018,
+          "paired_percentile95": [
+            0.0,
+            0.006000000000000005
+          ]
+        },
+        "balanced_accuracy": {
+          "received_minus_clean": 0.0011261261261260591,
+          "paired_percentile95": [
+            0.0,
+            0.0033783783783785104
+          ]
+        },
+        "macro_f1": {
+          "received_minus_clean": 0.0024736290066000866,
+          "paired_percentile95": [
+            0.0,
+            0.007931192834731093
+          ]
+        },
+        "binary_roc_auc": {
+          "received_minus_clean": -0.0006032818532818451,
+          "paired_percentile95": [
+            -0.002655445624195632,
+            0.0013272200772200815
+          ]
+        }
+      },
+      "prediction_flips": 1,
+      "flip_rate": 0.002,
+      "flip_rate_percentile95": [
+        0.0,
+        0.006
+      ],
+      "correct_to_wrong": 0,
+      "wrong_to_correct": 1,
+      "mean_probability_l1_shift": 0.007134747669100761,
+      "mean_true_class_probability_shift": -0.0011833308041095734,
+      "bootstrap": {
+        "unit": "paired image within true class, NOT patient",
+        "repetitions": 2000,
+        "seed": 3101
+      },
+      "limits": [
+        "Classifier identity, training provenance, split independence and calibration must be established externally.",
+        "Image bootstrap does not establish patient independence; small classes yield unstable intervals.",
+        "Intervals descriptive, conditional on class counts; no multiplicity correction or clinical safety claim.",
+        "Ties use first declared class. Agreement or small probability shift alone is not diagnostic utility."
+      ]
+    },
+    "jpeg70": {
+      "schema": "paired-diagnostic-impact-v1",
+      "class_names": [
+        "nonMEL",
+        "MEL"
+      ],
+      "n": 500,
+      "clean": {
+        "confusion_matrix": [
+          [
+            399,
+            45
+          ],
+          [
+            23,
+            33
+          ]
+        ],
+        "support": [
+          444,
+          56
+        ],
+        "accuracy": 0.864,
+        "balanced_accuracy": 0.7439671814671815,
+        "macro_f1": 0.7070076867395125,
+        "per_class_sensitivity": [
+          0.8986486486486487,
+          0.5892857142857143
+        ],
+        "binary_roc_auc": 0.8453989703989704
+      },
+      "received": {
+        "confusion_matrix": [
+          [
+            424,
+            20
+          ],
+          [
+            34,
+            22
+          ]
+        ],
+        "support": [
+          444,
+          56
+        ],
+        "accuracy": 0.892,
+        "balanced_accuracy": 0.6739060489060489,
+        "macro_f1": 0.694556314765374,
+        "per_class_sensitivity": [
+          0.954954954954955,
+          0.39285714285714285
+        ],
+        "binary_roc_auc": 0.804456241956242
+      },
+      "paired_differences": {
+        "accuracy": {
+          "received_minus_clean": 0.028000000000000025,
+          "paired_percentile95": [
+            0.0040000000000000036,
+            0.05400000000000005
+          ]
+        },
+        "balanced_accuracy": {
+          "received_minus_clean": -0.07006113256113267,
+          "paired_percentile95": [
+            -0.13143500643500639,
+            -0.01311132561132577
+          ]
+        },
+        "macro_f1": {
+          "received_minus_clean": -0.012451371974138481,
+          "paired_percentile95": [
+            -0.06879349816285044,
+            0.040402938968477055
+          ]
+        },
+        "binary_roc_auc": {
+          "received_minus_clean": -0.04094272844272839,
+          "paired_percentile95": [
+            -0.07139539092664092,
+            -0.014756274131274083
+          ]
+        }
+      },
+      "prediction_flips": 42,
+      "flip_rate": 0.084,
+      "flip_rate_percentile95": [
+        0.062,
+        0.11
+      ],
+      "correct_to_wrong": 14,
+      "wrong_to_correct": 28,
+      "mean_probability_l1_shift": 0.13160420324653388,
+      "mean_true_class_probability_shift": 0.022255809530615806,
+      "bootstrap": {
+        "unit": "paired image within true class, NOT patient",
+        "repetitions": 2000,
+        "seed": 3101
+      },
+      "limits": [
+        "Classifier identity, training provenance, split independence and calibration must be established externally.",
+        "Image bootstrap does not establish patient independence; small classes yield unstable intervals.",
+        "Intervals descriptive, conditional on class counts; no multiplicity correction or clinical safety claim.",
+        "Ties use first declared class. Agreement or small probability shift alone is not diagnostic utility."
+      ]
+    },
+    "jpeg85": {
+      "schema": "paired-diagnostic-impact-v1",
+      "class_names": [
+        "nonMEL",
+        "MEL"
+      ],
+      "n": 500,
+      "clean": {
+        "confusion_matrix": [
+          [
+            399,
+            45
+          ],
+          [
+            23,
+            33
+          ]
+        ],
+        "support": [
+          444,
+          56
+        ],
+        "accuracy": 0.864,
+        "balanced_accuracy": 0.7439671814671815,
+        "macro_f1": 0.7070076867395125,
+        "per_class_sensitivity": [
+          0.8986486486486487,
+          0.5892857142857143
+        ],
+        "binary_roc_auc": 0.8453989703989704
+      },
+      "received": {
+        "confusion_matrix": [
+          [
+            412,
+            32
+          ],
+          [
+            26,
+            30
+          ]
+        ],
+        "support": [
+          444,
+          56
+        ],
+        "accuracy": 0.884,
+        "balanced_accuracy": 0.7318211068211068,
+        "macro_f1": 0.7213574695414888,
+        "per_class_sensitivity": [
+          0.9279279279279279,
+          0.5357142857142857
+        ],
+        "binary_roc_auc": 0.8205839768339769
+      },
+      "paired_differences": {
+        "accuracy": {
+          "received_minus_clean": 0.020000000000000018,
+          "paired_percentile95": [
+            0.0040000000000000036,
+            0.038000000000000034
+          ]
+        },
+        "balanced_accuracy": {
+          "received_minus_clean": -0.012146074646074756,
+          "paired_percentile95": [
+            -0.0557432432432432,
+            0.025820463320463283
+          ]
+        },
+        "macro_f1": {
+          "received_minus_clean": 0.014349782801976296,
+          "paired_percentile95": [
+            -0.02219946117385747,
+            0.04709619083147389
+          ]
+        },
+        "binary_roc_auc": {
+          "received_minus_clean": -0.024814993564993504,
+          "paired_percentile95": [
+            -0.049188585907335894,
+            -0.004380831724581785
+          ]
+        }
+      },
+      "prediction_flips": 20,
+      "flip_rate": 0.04,
+      "flip_rate_percentile95": [
+        0.024,
+        0.058
+      ],
+      "correct_to_wrong": 5,
+      "wrong_to_correct": 15,
+      "mean_probability_l1_shift": 0.08714976615086198,
+      "mean_true_class_probability_shift": 0.015176847219467163,
+      "bootstrap": {
+        "unit": "paired image within true class, NOT patient",
+        "repetitions": 2000,
+        "seed": 3101
+      },
+      "limits": [
+        "Classifier identity, training provenance, split independence and calibration must be established externally.",
+        "Image bootstrap does not establish patient independence; small classes yield unstable intervals.",
+        "Intervals descriptive, conditional on class counts; no multiplicity correction or clinical safety claim.",
+        "Ties use first declared class. Agreement or small probability shift alone is not diagnostic utility."
+      ]
+    },
+    "jpeg95": {
+      "schema": "paired-diagnostic-impact-v1",
+      "class_names": [
+        "nonMEL",
+        "MEL"
+      ],
+      "n": 500,
+      "clean": {
+        "confusion_matrix": [
+          [
+            399,
+            45
+          ],
+          [
+            23,
+            33
+          ]
+        ],
+        "support": [
+          444,
+          56
+        ],
+        "accuracy": 0.864,
+        "balanced_accuracy": 0.7439671814671815,
+        "macro_f1": 0.7070076867395125,
+        "per_class_sensitivity": [
+          0.8986486486486487,
+          0.5892857142857143
+        ],
+        "binary_roc_auc": 0.8453989703989704
+      },
+      "received": {
+        "confusion_matrix": [
+          [
+            401,
+            43
+          ],
+          [
+            22,
+            34
+          ]
+        ],
+        "support": [
+          444,
+          56
+        ],
+        "accuracy": 0.87,
+        "balanced_accuracy": 0.7551480051480051,
+        "macro_f1": 0.7181535152760794,
+        "per_class_sensitivity": [
+          0.9031531531531531,
+          0.6071428571428571
+        ],
+        "binary_roc_auc": 0.8444739382239382
+      },
+      "paired_differences": {
+        "accuracy": {
+          "received_minus_clean": 0.006000000000000005,
+          "paired_percentile95": [
+            -0.0040000000000000036,
+            0.016000000000000014
+          ]
+        },
+        "balanced_accuracy": {
+          "received_minus_clean": 0.011180823680823515,
+          "paired_percentile95": [
+            -0.0011261261261261701,
+            0.03129021879021887
+          ]
+        },
+        "macro_f1": {
+          "received_minus_clean": 0.01114582853656687,
+          "paired_percentile95": [
+            -0.004074836633126316,
+            0.029358124023791895
+          ]
+        },
+        "binary_roc_auc": {
+          "received_minus_clean": -0.0009250321750321477,
+          "paired_percentile95": [
+            -0.00933075933075933,
+            0.0071187258687258614
+          ]
+        }
+      },
+      "prediction_flips": 7,
+      "flip_rate": 0.014,
+      "flip_rate_percentile95": [
+        0.006,
+        0.024
+      ],
+      "correct_to_wrong": 2,
+      "wrong_to_correct": 5,
+      "mean_probability_l1_shift": 0.03774159412831068,
+      "mean_true_class_probability_shift": 0.005326560944318772,
+      "bootstrap": {
+        "unit": "paired image within true class, NOT patient",
+        "repetitions": 2000,
+        "seed": 3101
+      },
+      "limits": [
+        "Classifier identity, training provenance, split independence and calibration must be established externally.",
+        "Image bootstrap does not establish patient independence; small classes yield unstable intervals.",
+        "Intervals descriptive, conditional on class counts; no multiplicity correction or clinical safety claim.",
+        "Ties use first declared class. Agreement or small probability shift alone is not diagnostic utility."
+      ]
+    },
+    "resize90_restore": {
+      "schema": "paired-diagnostic-impact-v1",
+      "class_names": [
+        "nonMEL",
+        "MEL"
+      ],
+      "n": 500,
+      "clean": {
+        "confusion_matrix": [
+          [
+            399,
+            45
+          ],
+          [
+            23,
+            33
+          ]
+        ],
+        "support": [
+          444,
+          56
+        ],
+        "accuracy": 0.864,
+        "balanced_accuracy": 0.7439671814671815,
+        "macro_f1": 0.7070076867395125,
+        "per_class_sensitivity": [
+          0.8986486486486487,
+          0.5892857142857143
+        ],
+        "binary_roc_auc": 0.8453989703989704
+      },
+      "received": {
+        "confusion_matrix": [
+          [
+            415,
+            29
+          ],
+          [
+            27,
+            29
+          ]
+        ],
+        "support": [
+          444,
+          56
+        ],
+        "accuracy": 0.888,
+        "balanced_accuracy": 0.7262709137709138,
+        "macro_f1": 0.722783256108669,
+        "per_class_sensitivity": [
+          0.9346846846846847,
+          0.5178571428571429
+        ],
+        "binary_roc_auc": 0.8339366151866152
+      },
+      "paired_differences": {
+        "accuracy": {
+          "received_minus_clean": 0.02400000000000002,
+          "paired_percentile95": [
+            0.008000000000000007,
+            0.04200000000000004
+          ]
+        },
+        "balanced_accuracy": {
+          "received_minus_clean": -0.017696267696267753,
+          "paired_percentile95": [
+            -0.055688947876447896,
+            0.012467824967825059
+          ]
+        },
+        "macro_f1": {
+          "received_minus_clean": 0.015775569369156472,
+          "paired_percentile95": [
+            -0.01850581710364261,
+            0.0486307503651842
+          ]
+        },
+        "binary_roc_auc": {
+          "received_minus_clean": -0.011462355212355169,
+          "paired_percentile95": [
+            -0.023729086229086205,
+            -0.0004001769626770067
+          ]
+        }
+      },
+      "prediction_flips": 22,
+      "flip_rate": 0.044,
+      "flip_rate_percentile95": [
+        0.028,
+        0.064
+      ],
+      "correct_to_wrong": 5,
+      "wrong_to_correct": 17,
+      "mean_probability_l1_shift": 0.07032042632624506,
+      "mean_true_class_probability_shift": 0.019846209093928337,
+      "bootstrap": {
+        "unit": "paired image within true class, NOT patient",
+        "repetitions": 2000,
+        "seed": 3101
+      },
+      "limits": [
+        "Classifier identity, training provenance, split independence and calibration must be established externally.",
+        "Image bootstrap does not establish patient independence; small classes yield unstable intervals.",
+        "Intervals descriptive, conditional on class counts; no multiplicity correction or clinical safety claim.",
+        "Ties use first declared class. Agreement or small probability shift alone is not diagnostic utility."
+      ]
+    },
+    "contrast90": {
+      "schema": "paired-diagnostic-impact-v1",
+      "class_names": [
+        "nonMEL",
+        "MEL"
+      ],
+      "n": 500,
+      "clean": {
+        "confusion_matrix": [
+          [
+            399,
+            45
+          ],
+          [
+            23,
+            33
+          ]
+        ],
+        "support": [
+          444,
+          56
+        ],
+        "accuracy": 0.864,
+        "balanced_accuracy": 0.7439671814671815,
+        "macro_f1": 0.7070076867395125,
+        "per_class_sensitivity": [
+          0.8986486486486487,
+          0.5892857142857143
+        ],
+        "binary_roc_auc": 0.8453989703989704
+      },
+      "received": {
+        "confusion_matrix": [
+          [
+            403,
+            41
+          ],
+          [
+            23,
+            33
+          ]
+        ],
+        "support": [
+          444,
+          56
+        ],
+        "accuracy": 0.872,
+        "balanced_accuracy": 0.748471685971686,
+        "macro_f1": 0.7170645446507515,
+        "per_class_sensitivity": [
+          0.9076576576576577,
+          0.5892857142857143
+        ],
+        "binary_roc_auc": 0.8423423423423423
+      },
+      "paired_differences": {
+        "accuracy": {
+          "received_minus_clean": 0.008000000000000007,
+          "paired_percentile95": [
+            0.0,
+            0.018000000000000016
+          ]
+        },
+        "balanced_accuracy": {
+          "received_minus_clean": 0.0045045045045044585,
+          "paired_percentile95": [
+            0.0,
+            0.010135135135135198
+          ]
+        },
+        "macro_f1": {
+          "received_minus_clean": 0.010056857911239003,
+          "paired_percentile95": [
+            0.0,
+            0.023025496192112898
+          ]
+        },
+        "binary_roc_auc": {
+          "received_minus_clean": -0.0030566280566280968,
+          "paired_percentile95": [
+            -0.010217583655083656,
+            0.0034588159588159195
+          ]
+        }
+      },
+      "prediction_flips": 6,
+      "flip_rate": 0.012,
+      "flip_rate_percentile95": [
+        0.004,
+        0.022
+      ],
+      "correct_to_wrong": 1,
+      "wrong_to_correct": 5,
+      "mean_probability_l1_shift": 0.03639820072799921,
+      "mean_true_class_probability_shift": 0.01025803741812706,
+      "bootstrap": {
+        "unit": "paired image within true class, NOT patient",
+        "repetitions": 2000,
+        "seed": 3101
+      },
+      "limits": [
+        "Classifier identity, training provenance, split independence and calibration must be established externally.",
+        "Image bootstrap does not establish patient independence; small classes yield unstable intervals.",
+        "Intervals descriptive, conditional on class counts; no multiplicity correction or clinical safety claim.",
+        "Ties use first declared class. Agreement or small probability shift alone is not diagnostic utility."
+      ]
+    },
+    "contrast110": {
+      "schema": "paired-diagnostic-impact-v1",
+      "class_names": [
+        "nonMEL",
+        "MEL"
+      ],
+      "n": 500,
+      "clean": {
+        "confusion_matrix": [
+          [
+            399,
+            45
+          ],
+          [
+            23,
+            33
+          ]
+        ],
+        "support": [
+          444,
+          56
+        ],
+        "accuracy": 0.864,
+        "balanced_accuracy": 0.7439671814671815,
+        "macro_f1": 0.7070076867395125,
+        "per_class_sensitivity": [
+          0.8986486486486487,
+          0.5892857142857143
+        ],
+        "binary_roc_auc": 0.8453989703989704
+      },
+      "received": {
+        "confusion_matrix": [
+          [
+            389,
+            55
+          ],
+          [
+            21,
+            35
+          ]
+        ],
+        "support": [
+          444,
+          56
+        ],
+        "accuracy": 0.848,
+        "balanced_accuracy": 0.7505630630630631,
+        "macro_f1": 0.6952295402778224,
+        "per_class_sensitivity": [
+          0.8761261261261262,
+          0.625
+        ],
+        "binary_roc_auc": 0.8425434362934363
+      },
+      "paired_differences": {
+        "accuracy": {
+          "received_minus_clean": -0.016000000000000014,
+          "paired_percentile95": [
+            -0.030000000000000027,
+            -0.0020000000000000018
+          ]
+        },
+        "balanced_accuracy": {
+          "received_minus_clean": 0.0065958815958815364,
+          "paired_percentile95": [
+            -0.013515524453024536,
+            0.03450772200772201
+          ]
+        },
+        "macro_f1": {
+          "received_minus_clean": -0.011778146461690175,
+          "paired_percentile95": [
+            -0.03282951811323055,
+            0.011423484618094646
+          ]
+        },
+        "binary_roc_auc": {
+          "received_minus_clean": -0.0028555341055340744,
+          "paired_percentile95": [
+            -0.01283180501930506,
+            0.007038288288288233
+          ]
+        }
+      },
+      "prediction_flips": 14,
+      "flip_rate": 0.028,
+      "flip_rate_percentile95": [
+        0.014,
+        0.042049999999999726
+      ],
+      "correct_to_wrong": 11,
+      "wrong_to_correct": 3,
+      "mean_probability_l1_shift": 0.04074988432973623,
+      "mean_true_class_probability_shift": -0.007160336434841156,
+      "bootstrap": {
+        "unit": "paired image within true class, NOT patient",
+        "repetitions": 2000,
+        "seed": 3101
+      },
+      "limits": [
+        "Classifier identity, training provenance, split independence and calibration must be established externally.",
+        "Image bootstrap does not establish patient independence; small classes yield unstable intervals.",
+        "Intervals descriptive, conditional on class counts; no multiplicity correction or clinical safety claim.",
+        "Ties use first declared class. Agreement or small probability shift alone is not diagnostic utility."
+      ]
+    },
+    "gaussian05": {
+      "schema": "paired-diagnostic-impact-v1",
+      "class_names": [
+        "nonMEL",
+        "MEL"
+      ],
+      "n": 500,
+      "clean": {
+        "confusion_matrix": [
+          [
+            399,
+            45
+          ],
+          [
+            23,
+            33
+          ]
+        ],
+        "support": [
+          444,
+          56
+        ],
+        "accuracy": 0.864,
+        "balanced_accuracy": 0.7439671814671815,
+        "macro_f1": 0.7070076867395125,
+        "per_class_sensitivity": [
+          0.8986486486486487,
+          0.5892857142857143
+        ],
+        "binary_roc_auc": 0.8453989703989704
+      },
+      "received": {
+        "confusion_matrix": [
+          [
+            420,
+            24
+          ],
+          [
+            28,
+            28
+          ]
+        ],
+        "support": [
+          444,
+          56
+        ],
+        "accuracy": 0.896,
+        "balanced_accuracy": 0.722972972972973,
+        "macro_f1": 0.7301112771964791,
+        "per_class_sensitivity": [
+          0.9459459459459459,
+          0.5
+        ],
+        "binary_roc_auc": 0.8356258043758044
+      },
+      "paired_differences": {
+        "accuracy": {
+          "received_minus_clean": 0.03200000000000003,
+          "paired_percentile95": [
+            0.014000000000000012,
+            0.052000000000000046
+          ]
+        },
+        "balanced_accuracy": {
+          "received_minus_clean": -0.02099420849420852,
+          "paired_percentile95": [
+            -0.06121299871299879,
+            0.01359395109395101
+          ]
+        },
+        "macro_f1": {
+          "received_minus_clean": 0.023103590456966527,
+          "paired_percentile95": [
+            -0.014216666069534077,
+            0.05709464516095173
+          ]
+        },
+        "binary_roc_auc": {
+          "received_minus_clean": -0.009773166023166024,
+          "paired_percentile95": [
+            -0.02200370012870018,
+            0.0016097570785070876
+          ]
+        }
+      },
+      "prediction_flips": 26,
+      "flip_rate": 0.052,
+      "flip_rate_percentile95": [
+        0.034,
+        0.072
+      ],
+      "correct_to_wrong": 5,
+      "wrong_to_correct": 21,
+      "mean_probability_l1_shift": 0.08124082044884562,
+      "mean_true_class_probability_shift": 0.02292943415045738,
+      "bootstrap": {
+        "unit": "paired image within true class, NOT patient",
+        "repetitions": 2000,
+        "seed": 3101
+      },
+      "limits": [
+        "Classifier identity, training provenance, split independence and calibration must be established externally.",
+        "Image bootstrap does not establish patient independence; small classes yield unstable intervals.",
+        "Intervals descriptive, conditional on class counts; no multiplicity correction or clinical safety claim.",
+        "Ties use first declared class. Agreement or small probability shift alone is not diagnostic utility."
+      ]
+    },
+    "fgsm4_adapted": {
+      "schema": "paired-diagnostic-impact-v1",
+      "class_names": [
+        "nonMEL",
+        "MEL"
+      ],
+      "n": 500,
+      "clean": {
+        "confusion_matrix": [
+          [
+            399,
+            45
+          ],
+          [
+            23,
+            33
+          ]
+        ],
+        "support": [
+          444,
+          56
+        ],
+        "accuracy": 0.864,
+        "balanced_accuracy": 0.7439671814671815,
+        "macro_f1": 0.7070076867395125,
+        "per_class_sensitivity": [
+          0.8986486486486487,
+          0.5892857142857143
+        ],
+        "binary_roc_auc": 0.8453989703989704
+      },
+      "received": {
+        "confusion_matrix": [
+          [
+            361,
+            83
+          ],
+          [
+            55,
+            1
+          ]
+        ],
+        "support": [
+          444,
+          56
+        ],
+        "accuracy": 0.724,
+        "balanced_accuracy": 0.415460102960103,
+        "macro_f1": 0.4269102990033222,
+        "per_class_sensitivity": [
+          0.8130630630630631,
+          0.017857142857142856
+        ],
+        "binary_roc_auc": 0.3401705276705277
+      },
+      "paired_differences": {
+        "accuracy": {
+          "received_minus_clean": -0.14,
+          "paired_percentile95": [
+            -0.17400000000000004,
+            -0.10799999999999998
+          ]
+        },
+        "balanced_accuracy": {
+          "received_minus_clean": -0.32850707850707855,
+          "paired_percentile95": [
+            -0.39666385135135135,
+            -0.25925032175032175
+          ]
+        },
+        "macro_f1": {
+          "received_minus_clean": -0.2800973877361903,
+          "paired_percentile95": [
+            -0.3354248712252636,
+            -0.2247151285611112
+          ]
+        },
+        "binary_roc_auc": {
+          "received_minus_clean": -0.5052284427284427,
+          "paired_percentile95": [
+            -0.5506817084942085,
+            -0.45961530727155725
+          ]
+        }
+      },
+      "prediction_flips": 90,
+      "flip_rate": 0.18,
+      "flip_rate_percentile95": [
+        0.148,
+        0.212
+      ],
+      "correct_to_wrong": 80,
+      "wrong_to_correct": 10,
+      "mean_probability_l1_shift": 0.25867598788440227,
+      "mean_true_class_probability_shift": -0.10895532085001469,
+      "bootstrap": {
+        "unit": "paired image within true class, NOT patient",
+        "repetitions": 2000,
+        "seed": 3101
+      },
+      "limits": [
+        "Classifier identity, training provenance, split independence and calibration must be established externally.",
+        "Image bootstrap does not establish patient independence; small classes yield unstable intervals.",
+        "Intervals descriptive, conditional on class counts; no multiplicity correction or clinical safety claim.",
+        "Ties use first declared class. Agreement or small probability shift alone is not diagnostic utility."
+      ],
+      "untargeted_success": {
+        "all_images_numerator": 138,
+        "all_images_denominator": 500,
+        "clean_correct_numerator": 80,
+        "clean_correct_denominator": 432,
+        "clean_correct_rate": 0.18518518518518517
+      }
+    },
+    "pgd4_adapted": {
+      "schema": "paired-diagnostic-impact-v1",
+      "class_names": [
+        "nonMEL",
+        "MEL"
+      ],
+      "n": 500,
+      "clean": {
+        "confusion_matrix": [
+          [
+            399,
+            45
+          ],
+          [
+            23,
+            33
+          ]
+        ],
+        "support": [
+          444,
+          56
+        ],
+        "accuracy": 0.864,
+        "balanced_accuracy": 0.7439671814671815,
+        "macro_f1": 0.7070076867395125,
+        "per_class_sensitivity": [
+          0.8986486486486487,
+          0.5892857142857143
+        ],
+        "binary_roc_auc": 0.8453989703989704
+      },
+      "received": {
+        "confusion_matrix": [
+          [
+            2,
+            442
+          ],
+          [
+            56,
+            0
+          ]
+        ],
+        "support": [
+          444,
+          56
+        ],
+        "accuracy": 0.004,
+        "balanced_accuracy": 0.0022522522522522522,
+        "macro_f1": 0.00398406374501992,
+        "per_class_sensitivity": [
+          0.0045045045045045045,
+          0.0
+        ],
+        "binary_roc_auc": 0.0
+      },
+      "paired_differences": {
+        "accuracy": {
+          "received_minus_clean": -0.86,
+          "paired_percentile95": [
+            -0.888,
+            -0.828
+          ]
+        },
+        "balanced_accuracy": {
+          "received_minus_clean": -0.7417149292149293,
+          "paired_percentile95": [
+            -0.809871702059202,
+            -0.6737411518661519
+          ]
+        },
+        "macro_f1": {
+          "received_minus_clean": -0.7030236229944926,
+          "paired_percentile95": [
+            -0.7587262299417832,
+            -0.6449320246404794
+          ]
+        },
+        "binary_roc_auc": {
+          "received_minus_clean": -0.8453989703989704,
+          "paired_percentile95": [
+            -0.8949927606177607,
+            -0.7895340653153153
+          ]
+        }
+      },
+      "prediction_flips": 430,
+      "flip_rate": 0.86,
+      "flip_rate_percentile95": [
+        0.828,
+        0.888
+      ],
+      "correct_to_wrong": 430,
+      "wrong_to_correct": 0,
+      "mean_probability_l1_shift": 1.2499609841610073,
+      "mean_true_class_probability_shift": -0.6249804917554138,
+      "bootstrap": {
+        "unit": "paired image within true class, NOT patient",
+        "repetitions": 2000,
+        "seed": 3101
+      },
+      "limits": [
+        "Classifier identity, training provenance, split independence and calibration must be established externally.",
+        "Image bootstrap does not establish patient independence; small classes yield unstable intervals.",
+        "Intervals descriptive, conditional on class counts; no multiplicity correction or clinical safety claim.",
+        "Ties use first declared class. Agreement or small probability shift alone is not diagnostic utility."
+      ],
+      "untargeted_success": {
+        "all_images_numerator": 498,
+        "all_images_denominator": 500,
+        "clean_correct_numerator": 430,
+        "clean_correct_denominator": 432,
+        "clean_correct_rate": 0.9953703703703703
+      }
+    }
+  }
+}

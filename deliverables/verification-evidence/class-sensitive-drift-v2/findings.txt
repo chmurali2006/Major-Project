@@ -1,0 +1,20 @@
+CLASS-SENSITIVE PROBABILITY DRIFT — EXPLORATORY VALIDATION ANALYSIS
+Post-hoc descriptive validation analysis after seeing original results; not an independently preregistered clinical operating point.
+Specificity is targeted only on intact validation, not re-fitted on each operation. Actual received specificity is reported.
+Probability drift/AUC do not establish feature destruction, calibration error or causal mechanism.
+Paired image intervals conditional on class support, not patient-level; no multiplicity correction.
+
+Fixed clean-derived threshold: 0.506985545158
+Case | mean dP(MEL), true nonMEL | mean dP(MEL), true MEL | sensitivity at frozen threshold | actual specificity at frozen threshold
+intact | +0.000000 | +0.000000 | 0.589286 | 0.900901
+copy32 | +0.002533 | +0.000575 | 0.589286 | 0.898649
+local_blur32_surrogate | +0.001239 | -0.000740 | 0.589286 | 0.900901
+jpeg70 | -0.039391 | -0.113600 | 0.392857 | 0.954955
+jpeg85 | -0.025381 | -0.065728 | 0.517857 | 0.932432
+jpeg95 | -0.007440 | -0.011427 | 0.571429 | 0.905405
+resize90_restore | -0.029705 | -0.058317 | 0.500000 | 0.939189
+contrast90 | -0.014664 | -0.024673 | 0.589286 | 0.914414
+contrast110 | +0.010112 | +0.016244 | 0.625000 | 0.885135
+gaussian05 | -0.034609 | -0.069672 | 0.482143 | 0.948198
+fgsm4_adapted | +0.084215 | -0.305114 | 0.017857 | 0.815315
+pgd4_adapted | +0.639527 | -0.509645 | 0.000000 | 0.004505

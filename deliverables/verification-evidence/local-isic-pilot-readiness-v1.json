@@ -1,0 +1,23 @@
+{
+  "scope": "local-data execution readiness, not a new medical/SOTA experiment",
+  "notebook_sha256": "84b4483ac3ecd3c6e419b790bd33ff2dafe072493fef4b22d24e5912128826f2",
+  "embedded_archive_sha256": "ef53bcbe81f5256b37e57af44f22118b676332ae62a178867197ffc324c3c31e",
+  "source_sha256": "ac8c591ded7599c226cc2c816482a9f1f0825a893b3e2bf790fd7526a3afff6b",
+  "full_suite": {
+    "passed": 329,
+    "cuda_skipped": 1,
+    "seconds": 34.63
+  },
+  "checks": [
+    "all Python notebook cells syntax parsed",
+    "embedded own source files/hash verified",
+    "local prepare-only subprocess passed",
+    "supplied group coverage and group exclusion regressions passed"
+  ],
+  "kaggle_execution_tested": false,
+  "new_native_image_experiment_executed": false,
+  "frozen_study_notebook_modified": false,
+  "third_party_code_or_weights_embedded": false,
+  "gpu_used": false,
+  "input_pixels_embedded": false
+}

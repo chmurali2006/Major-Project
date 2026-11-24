@@ -1,0 +1,856 @@
+{
+  "schema": "refiner-objective-gradient-probe-v1",
+  "synthetic": true,
+  "usable_as_study_result": false,
+  "source_sha256": "351dfe9d96566db1a2c3cf8d7dc317686ced48d524e43ebcb51cd172715da518",
+  "width": 4,
+  "seed": 0,
+  "parameter_subset": "refine.stem (image/saliency/degradation shared stem)",
+  "scope": "initial refiner, train mode; identical state restored before each sample; no localization training",
+  "models": {
+    "Main watermark-verification model": [
+      {
+        "loss_values": {
+          "block": 1.7879629135131836,
+          "pixel": 1.3768280744552612,
+          "weighted_consistency": 0.01871701329946518,
+          "weighted_classification": 0.3481430411338806
+        },
+        "gradient_l2_norms": {
+          "block": 0.14309517523714366,
+          "pixel": 0.3986331227419352,
+          "weighted_consistency": 0.043816707003899204,
+          "weighted_classification": 0.03970589562956167
+        },
+        "pairs": [
+          {
+            "left": "block",
+            "right": "pixel",
+            "dot": -0.014249450309855981,
+            "cosine": -0.24980420154697908
+          },
+          {
+            "left": "block",
+            "right": "weighted_consistency",
+            "dot": 0.0005851865307967931,
+            "cosine": 0.09333178997510556
+          },
+          {
+            "left": "block",
+            "right": "weighted_classification",
+            "dot": -0.0023883271284297226,
+            "cosine": -0.42035268344909504
+          },
+          {
+            "left": "pixel",
+            "right": "weighted_consistency",
+            "dot": 0.003956001821983319,
+            "cosine": 0.2264870450783287
+          },
+          {
+            "left": "pixel",
+            "right": "weighted_classification",
+            "dot": 0.0027478237849962103,
+            "cosine": 0.17360430880706265
+          },
+          {
+            "left": "weighted_consistency",
+            "right": "weighted_classification",
+            "dot": 0.0009192232928958662,
+            "cosine": 0.5283555680035151
+          }
+        ],
+        "limits": [
+          "Local gradient conflict is not proof of a training failure cause or a generalization result.",
+          "Cosines depend on the specified shared parameter subset and model state.",
+          "No objective/weight modification is made by this diagnostic."
+        ],
+        "family": "T1",
+        "changed_pixels": 256,
+        "changed_blocks": 4
+      },
+      {
+        "loss_values": {
+          "block": 1.8206801414489746,
+          "pixel": 1.3925197124481201,
+          "weighted_consistency": 0.018708176910877228,
+          "weighted_classification": 0.34787794947624207
+        },
+        "gradient_l2_norms": {
+          "block": 0.5605686528017928,
+          "pixel": 0.4910696378201014,
+          "weighted_consistency": 0.04031255356949941,
+          "weighted_classification": 0.03540179761484986
+        },
+        "pairs": [
+          {
+            "left": "block",
+            "right": "pixel",
+            "dot": -0.007510272671460837,
+            "cosine": -0.027282478000208304
+          },
+          {
+            "left": "block",
+            "right": "weighted_consistency",
+            "dot": 0.0013716501650028088,
+            "cosine": 0.060697980639460344
+          },
+          {
+            "left": "block",
+            "right": "weighted_classification",
+            "dot": 0.0054893324639520204,
+            "cosine": 0.27660842999108537
+          },
+          {
+            "left": "pixel",
+            "right": "weighted_consistency",
+            "dot": -0.008235314110498639,
+            "cosine": -0.4160033006626211
+          },
+          {
+            "left": "pixel",
+            "right": "weighted_classification",
+            "dot": 0.0030313958025548053,
+            "cosine": 0.17437099544119095
+          },
+          {
+            "left": "weighted_consistency",
+            "right": "weighted_classification",
+            "dot": -0.0006328512510641161,
+            "cosine": -0.4434411776178004
+          }
+        ],
+        "limits": [
+          "Local gradient conflict is not proof of a training failure cause or a generalization result.",
+          "Cosines depend on the specified shared parameter subset and model state.",
+          "No objective/weight modification is made by this diagnostic."
+        ],
+        "family": "T2",
+        "changed_pixels": 1663,
+        "changed_blocks": 36
+      },
+      {
+        "loss_values": {
+          "block": 1.8487235307693481,
+          "pixel": 1.4013924598693848,
+          "weighted_consistency": 0.019160671159625053,
+          "weighted_classification": 0.3496533930301666
+        },
+        "gradient_l2_norms": {
+          "block": 0.3953375126129494,
+          "pixel": 0.601555643164701,
+          "weighted_consistency": 0.031034801259080792,
+          "weighted_classification": 0.034295661889687114
+        },
+        "pairs": [
+          {
+            "left": "block",
+            "right": "pixel",
+            "dot": 0.11141461205640174,
+            "cosine": 0.4684878387441912
+          },
+          {
+            "left": "block",
+            "right": "weighted_consistency",
+            "dot": 0.002531806685497397,
+            "cosine": 0.20635431196521667
+          },
+          {
+            "left": "block",
+            "right": "weighted_classification",
+            "dot": -0.006580681898831935,
+            "cosine": -0.4853596667122404
+          },
+          {
+            "left": "pixel",
+            "right": "weighted_consistency",
+            "dot": 3.695188831621206e-05,
+            "cosine": 0.00197930108526267
+          },
+          {
+            "left": "pixel",
+            "right": "weighted_classification",
+            "dot": -0.0032312810128148723,
+            "cosine": -0.15662451330789673
+          },
+          {
+            "left": "weighted_consistency",
+            "right": "weighted_classification",
+            "dot": -0.00014736197928266566,
+            "cosine": -0.13845137989157608
+          }
+        ],
+        "limits": [
+          "Local gradient conflict is not proof of a training failure cause or a generalization result.",
+          "Cosines depend on the specified shared parameter subset and model state.",
+          "No objective/weight modification is made by this diagnostic."
+        ],
+        "family": "T3",
+        "changed_pixels": 2802,
+        "changed_blocks": 57
+      },
+      {
+        "loss_values": {
+          "block": 1.717731237411499,
+          "pixel": 1.4059867858886719,
+          "weighted_consistency": 0.01758236438035965,
+          "weighted_classification": 0.34861090779304504
+        },
+        "gradient_l2_norms": {
+          "block": 2.3889510433397554,
+          "pixel": 0.9715193717572276,
+          "weighted_consistency": 0.06460598883509902,
+          "weighted_classification": 0.04457891806303829
+        },
+        "pairs": [
+          {
+            "left": "block",
+            "right": "pixel",
+            "dot": 1.8573658086165223,
+            "cosine": 0.8002740453449952
+          },
+          {
+            "left": "block",
+            "right": "weighted_consistency",
+            "dot": 0.11674690640410265,
+            "cosine": 0.7564240934391959
+          },
+          {
+            "left": "block",
+            "right": "weighted_classification",
+            "dot": -0.03783687236096413,
+            "cosine": -0.35528629588472055
+          },
+          {
+            "left": "pixel",
+            "right": "weighted_consistency",
+            "dot": 0.04041212043718943,
+            "cosine": 0.6438539966818482
+          },
+          {
+            "left": "pixel",
+            "right": "weighted_classification",
+            "dot": -0.015942571713050115,
+            "cosine": -0.36810980934658677
+          },
+          {
+            "left": "weighted_consistency",
+            "right": "weighted_classification",
+            "dot": -0.0005283811956322349,
+            "cosine": -0.18346154703697246
+          }
+        ],
+        "limits": [
+          "Local gradient conflict is not proof of a training failure cause or a generalization result.",
+          "Cosines depend on the specified shared parameter subset and model state.",
+          "No objective/weight modification is made by this diagnostic."
+        ],
+        "family": "T4",
+        "changed_pixels": 3665,
+        "changed_blocks": 111
+      },
+      {
+        "loss_values": {
+          "block": 1.9093266725540161,
+          "pixel": 1.4673315286636353,
+          "weighted_consistency": 0.018719453364610672,
+          "weighted_classification": 0.34861651062965393
+        },
+        "gradient_l2_norms": {
+          "block": 0.4707487042540286,
+          "pixel": 0.4737738580406922,
+          "weighted_consistency": 0.04126647924048302,
+          "weighted_classification": 0.05437769889264549
+        },
+        "pairs": [
+          {
+            "left": "block",
+            "right": "pixel",
+            "dot": -0.046674466656976665,
+            "cosine": -0.20927586094104864
+          },
+          {
+            "left": "block",
+            "right": "weighted_consistency",
+            "dot": 0.0031207951179759944,
+            "cosine": 0.16064925177432995
+          },
+          {
+            "left": "block",
+            "right": "weighted_classification",
+            "dot": -0.011522938089617234,
+            "cosine": -0.45014586973847837
+          },
+          {
+            "left": "pixel",
+            "right": "weighted_consistency",
+            "dot": -0.013305277520982931,
+            "cosine": -0.6805427732405323
+          },
+          {
+            "left": "pixel",
+            "right": "weighted_classification",
+            "dot": 0.01019696231150547,
+            "cosine": 0.3958028299960403
+          },
+          {
+            "left": "weighted_consistency",
+            "right": "weighted_classification",
+            "dot": -0.0011746676119739636,
+            "cosine": -0.523475971418739
+          }
+        ],
+        "limits": [
+          "Local gradient conflict is not proof of a training failure cause or a generalization result.",
+          "Cosines depend on the specified shared parameter subset and model state.",
+          "No objective/weight modification is made by this diagnostic."
+        ],
+        "family": "T5",
+        "changed_pixels": 9025,
+        "changed_blocks": 144
+      },
+      {
+        "loss_values": {
+          "block": 1.781928300857544,
+          "pixel": 1.3657150268554688,
+          "weighted_consistency": 0.018967578187584877,
+          "weighted_classification": 0.3442935347557068
+        },
+        "gradient_l2_norms": {
+          "block": 0.1745003838202762,
+          "pixel": 0.30565521979239657,
+          "weighted_consistency": 0.03463745719321446,
+          "weighted_classification": 0.05474006226747101
+        },
+        "pairs": [
+          {
+            "left": "block",
+            "right": "pixel",
+            "dot": -0.023792747887309708,
+            "cosine": -0.44608374631519304
+          },
+          {
+            "left": "block",
+            "right": "weighted_consistency",
+            "dot": 0.0028523279690697294,
+            "cosine": 0.47190770893609807
+          },
+          {
+            "left": "block",
+            "right": "weighted_classification",
+            "dot": 0.004605933010079955,
+            "cosine": 0.4821874953399866
+          },
+          {
+            "left": "pixel",
+            "right": "weighted_consistency",
+            "dot": -0.0005750632719100564,
+            "cosine": -0.05431725474933902
+          },
+          {
+            "left": "pixel",
+            "right": "weighted_classification",
+            "dot": -0.008522554019869736,
+            "cosine": -0.5093691739788414
+          },
+          {
+            "left": "weighted_consistency",
+            "right": "weighted_classification",
+            "dot": 8.175523039170839e-05,
+            "cosine": 0.04311856089299423
+          }
+        ],
+        "limits": [
+          "Local gradient conflict is not proof of a training failure cause or a generalization result.",
+          "Cosines depend on the specified shared parameter subset and model state.",
+          "No objective/weight modification is made by this diagnostic."
+        ],
+        "family": "none",
+        "changed_pixels": 0,
+        "changed_blocks": 0
+      },
+      {
+        "loss_values": {
+          "block": 8.141529083251953,
+          "pixel": 5.38908052444458,
+          "weighted_consistency": 0.01966879330575466,
+          "weighted_classification": 0.3484117388725281
+        },
+        "gradient_l2_norms": {
+          "block": 2.8889708548649677,
+          "pixel": 1.8512809211284489,
+          "weighted_consistency": 0.07960401808269298,
+          "weighted_classification": 0.022136264112247298
+        },
+        "pairs": [
+          {
+            "left": "block",
+            "right": "pixel",
+            "dot": 1.264023162963674,
+            "cosine": 0.2363412599410492
+          },
+          {
+            "left": "block",
+            "right": "weighted_consistency",
+            "dot": 0.09441026865897428,
+            "cosine": 0.4105263928661102
+          },
+          {
+            "left": "block",
+            "right": "weighted_classification",
+            "dot": -0.03124963070644256,
+            "cosine": -0.4886494351391097
+          },
+          {
+            "left": "pixel",
+            "right": "weighted_consistency",
+            "dot": 0.1328534978612414,
+            "cosine": 0.9014998902884229
+          },
+          {
+            "left": "pixel",
+            "right": "weighted_classification",
+            "dot": -0.019708661321503233,
+            "cosine": -0.4809284546144685
+          },
+          {
+            "left": "weighted_consistency",
+            "right": "weighted_classification",
+            "dot": -0.0008452295518233594,
+            "cosine": -0.47966204578635385
+          }
+        ],
+        "limits": [
+          "Local gradient conflict is not proof of a training failure cause or a generalization result.",
+          "Cosines depend on the specified shared parameter subset and model state.",
+          "No objective/weight modification is made by this diagnostic."
+        ],
+        "family": "B1:jpeg75",
+        "changed_pixels": 262045,
+        "changed_blocks": 4096
+      }
+    ],
+    "Attention-enhanced model": [
+      {
+        "loss_values": {
+          "block": 1.6558860540390015,
+          "pixel": 1.3761054277420044,
+          "weighted_consistency": 0.007202336564660072,
+          "weighted_classification": 0.3536609709262848
+        },
+        "gradient_l2_norms": {
+          "block": 0.04804077496930753,
+          "pixel": 0.1937778219454476,
+          "weighted_consistency": 0.039333301766919,
+          "weighted_classification": 0.05000320039390692
+        },
+        "pairs": [
+          {
+            "left": "block",
+            "right": "pixel",
+            "dot": 0.0015888608258348021,
+            "cosine": 0.1706757353508904
+          },
+          {
+            "left": "block",
+            "right": "weighted_consistency",
+            "dot": 0.0013605188859575092,
+            "cosine": 0.7200027681426553
+          },
+          {
+            "left": "block",
+            "right": "weighted_classification",
+            "dot": -0.0014041057197522284,
+            "cosine": -0.5845100761066793
+          },
+          {
+            "left": "pixel",
+            "right": "weighted_consistency",
+            "dot": 0.00045903758135975876,
+            "cosine": 0.060225965141506306
+          },
+          {
+            "left": "pixel",
+            "right": "weighted_classification",
+            "dot": -0.004595122059126704,
+            "cosine": -0.47423672201584544
+          },
+          {
+            "left": "weighted_consistency",
+            "right": "weighted_classification",
+            "dot": -0.0009326505349819752,
+            "cosine": -0.47419911369117146
+          }
+        ],
+        "limits": [
+          "Local gradient conflict is not proof of a training failure cause or a generalization result.",
+          "Cosines depend on the specified shared parameter subset and model state.",
+          "No objective/weight modification is made by this diagnostic."
+        ],
+        "family": "T1",
+        "changed_pixels": 256,
+        "changed_blocks": 4
+      },
+      {
+        "loss_values": {
+          "block": 1.7034152746200562,
+          "pixel": 1.3842136859893799,
+          "weighted_consistency": 0.007415044587105513,
+          "weighted_classification": 0.3539067506790161
+        },
+        "gradient_l2_norms": {
+          "block": 0.3361844551232486,
+          "pixel": 0.4763386626822695,
+          "weighted_consistency": 0.0327907006698725,
+          "weighted_classification": 0.024096850141373284
+        },
+        "pairs": [
+          {
+            "left": "block",
+            "right": "pixel",
+            "dot": 0.05088869113014867,
+            "cosine": 0.3177809211809832
+          },
+          {
+            "left": "block",
+            "right": "weighted_consistency",
+            "dot": 0.00267639265334444,
+            "cosine": 0.24278480599854957
+          },
+          {
+            "left": "block",
+            "right": "weighted_classification",
+            "dot": 0.00384889097526138,
+            "cosine": 0.47511386497938396
+          },
+          {
+            "left": "pixel",
+            "right": "weighted_consistency",
+            "dot": 0.009074164444223936,
+            "cosine": 0.5809518186556443
+          },
+          {
+            "left": "pixel",
+            "right": "weighted_classification",
+            "dot": 0.004501911878352698,
+            "cosine": 0.392212002564226
+          },
+          {
+            "left": "weighted_consistency",
+            "right": "weighted_classification",
+            "dot": 0.0003736898868083498,
+            "cosine": 0.4729338190800616
+          }
+        ],
+        "limits": [
+          "Local gradient conflict is not proof of a training failure cause or a generalization result.",
+          "Cosines depend on the specified shared parameter subset and model state.",
+          "No objective/weight modification is made by this diagnostic."
+        ],
+        "family": "T2",
+        "changed_pixels": 1663,
+        "changed_blocks": 36
+      },
+      {
+        "loss_values": {
+          "block": 1.7318708896636963,
+          "pixel": 1.3945025205612183,
+          "weighted_consistency": 0.00756149273365736,
+          "weighted_classification": 0.3540777266025543
+        },
+        "gradient_l2_norms": {
+          "block": 0.2859622354250568,
+          "pixel": 0.5739591937912224,
+          "weighted_consistency": 0.031196070545001262,
+          "weighted_classification": 0.02745192816361888
+        },
+        "pairs": [
+          {
+            "left": "block",
+            "right": "pixel",
+            "dot": 0.05073914447052115,
+            "cosine": 0.3091387452816904
+          },
+          {
+            "left": "block",
+            "right": "weighted_consistency",
+            "dot": -0.0025787691449425444,
+            "cosine": -0.2890705761734444
+          },
+          {
+            "left": "block",
+            "right": "weighted_classification",
+            "dot": -0.003212572050037087,
+            "cosine": -0.40923365215330143
+          },
+          {
+            "left": "pixel",
+            "right": "weighted_consistency",
+            "dot": 0.004684033597685748,
+            "cosine": 0.26160081391819284
+          },
+          {
+            "left": "pixel",
+            "right": "weighted_classification",
+            "dot": 0.002878550523154421,
+            "cosine": 0.1826921916389719
+          },
+          {
+            "left": "weighted_consistency",
+            "right": "weighted_classification",
+            "dot": 0.00028689696296633354,
+            "cosine": 0.33500647673297135
+          }
+        ],
+        "limits": [
+          "Local gradient conflict is not proof of a training failure cause or a generalization result.",
+          "Cosines depend on the specified shared parameter subset and model state.",
+          "No objective/weight modification is made by this diagnostic."
+        ],
+        "family": "T3",
+        "changed_pixels": 2802,
+        "changed_blocks": 57
+      },
+      {
+        "loss_values": {
+          "block": 1.7411694526672363,
+          "pixel": 1.4431207180023193,
+          "weighted_consistency": 0.007109243888407946,
+          "weighted_classification": 0.35248374938964844
+        },
+        "gradient_l2_norms": {
+          "block": 1.8232250906116996,
+          "pixel": 1.5939614531613824,
+          "weighted_consistency": 0.024846151685340222,
+          "weighted_classification": 0.05189678144889999
+        },
+        "pairs": [
+          {
+            "left": "block",
+            "right": "pixel",
+            "dot": -2.3089775261055654,
+            "cosine": -0.7945140880659058
+          },
+          {
+            "left": "block",
+            "right": "weighted_consistency",
+            "dot": -0.01812602262609283,
+            "cosine": -0.4001318266266546
+          },
+          {
+            "left": "block",
+            "right": "weighted_classification",
+            "dot": 0.07373477112347251,
+            "cosine": 0.779276577947834
+          },
+          {
+            "left": "pixel",
+            "right": "weighted_consistency",
+            "dot": 0.0027024062358217086,
+            "cosine": 0.06823601994773444
+          },
+          {
+            "left": "pixel",
+            "right": "weighted_classification",
+            "dot": -0.07306388960836517,
+            "cosine": -0.8832518370272027
+          },
+          {
+            "left": "weighted_consistency",
+            "right": "weighted_classification",
+            "dot": -0.00011902494468951755,
+            "cosine": -0.0923078066291344
+          }
+        ],
+        "limits": [
+          "Local gradient conflict is not proof of a training failure cause or a generalization result.",
+          "Cosines depend on the specified shared parameter subset and model state.",
+          "No objective/weight modification is made by this diagnostic."
+        ],
+        "family": "T4",
+        "changed_pixels": 3665,
+        "changed_blocks": 111
+      },
+      {
+        "loss_values": {
+          "block": 1.8639180660247803,
+          "pixel": 1.4627920389175415,
+          "weighted_consistency": 0.007508574053645134,
+          "weighted_classification": 0.35375821590423584
+        },
+        "gradient_l2_norms": {
+          "block": 0.21037571048923664,
+          "pixel": 0.8185557570196874,
+          "weighted_consistency": 0.02322337299456856,
+          "weighted_classification": 0.023968472381657176
+        },
+        "pairs": [
+          {
+            "left": "block",
+            "right": "pixel",
+            "dot": -0.11226394927023872,
+            "cosine": -0.6519232245980919
+          },
+          {
+            "left": "block",
+            "right": "weighted_consistency",
+            "dot": -0.0006899029699524411,
+            "cosine": -0.14121054244502357
+          },
+          {
+            "left": "block",
+            "right": "weighted_classification",
+            "dot": -0.00220587457592721,
+            "cosine": -0.4374665630461639
+          },
+          {
+            "left": "pixel",
+            "right": "weighted_consistency",
+            "dot": -0.006865487189900536,
+            "cosine": -0.36115846318748673
+          },
+          {
+            "left": "pixel",
+            "right": "weighted_classification",
+            "dot": 0.008208549404261816,
+            "cosine": 0.4183866261258695
+          },
+          {
+            "left": "weighted_consistency",
+            "right": "weighted_classification",
+            "dot": -7.410725721928512e-05,
+            "cosine": -0.13313587196763405
+          }
+        ],
+        "limits": [
+          "Local gradient conflict is not proof of a training failure cause or a generalization result.",
+          "Cosines depend on the specified shared parameter subset and model state.",
+          "No objective/weight modification is made by this diagnostic."
+        ],
+        "family": "T5",
+        "changed_pixels": 9025,
+        "changed_blocks": 144
+      },
+      {
+        "loss_values": {
+          "block": 1.6490726470947266,
+          "pixel": 1.3656338453292847,
+          "weighted_consistency": 0.007286633364856243,
+          "weighted_classification": 0.3394053280353546
+        },
+        "gradient_l2_norms": {
+          "block": 0.08916935340331555,
+          "pixel": 0.2996303635609842,
+          "weighted_consistency": 0.039773767777036444,
+          "weighted_classification": 0.02530262224480576
+        },
+        "pairs": [
+          {
+            "left": "block",
+            "right": "pixel",
+            "dot": -0.00483668720760996,
+            "cosine": -0.18102833767607981
+          },
+          {
+            "left": "block",
+            "right": "weighted_consistency",
+            "dot": 0.0007146151673223086,
+            "cosine": 0.20149296074533588
+          },
+          {
+            "left": "block",
+            "right": "weighted_classification",
+            "dot": 0.001428340144355552,
+            "cosine": 0.6330681919889718
+          },
+          {
+            "left": "pixel",
+            "right": "weighted_consistency",
+            "dot": -0.00593330921533202,
+            "cosine": -0.49786824529457596
+          },
+          {
+            "left": "pixel",
+            "right": "weighted_classification",
+            "dot": -0.0007665665412258551,
+            "cosine": -0.10111102346979607
+          },
+          {
+            "left": "weighted_consistency",
+            "right": "weighted_classification",
+            "dot": -0.0001519137032560763,
+            "cosine": -0.15095054499119748
+          }
+        ],
+        "limits": [
+          "Local gradient conflict is not proof of a training failure cause or a generalization result.",
+          "Cosines depend on the specified shared parameter subset and model state.",
+          "No objective/weight modification is made by this diagnostic."
+        ],
+        "family": "none",
+        "changed_pixels": 0,
+        "changed_blocks": 0
+      },
+      {
+        "loss_values": {
+          "block": 9.257537841796875,
+          "pixel": 5.353523254394531,
+          "weighted_consistency": 0.007604554761201143,
+          "weighted_classification": 0.35384243726730347
+        },
+        "gradient_l2_norms": {
+          "block": 1.491629714563359,
+          "pixel": 2.5517284331140986,
+          "weighted_consistency": 0.06507994515838725,
+          "weighted_classification": 0.031872069685674444
+        },
+        "pairs": [
+          {
+            "left": "block",
+            "right": "pixel",
+            "dot": -0.29828284833096064,
+            "cosine": -0.07836692434307548
+          },
+          {
+            "left": "block",
+            "right": "weighted_consistency",
+            "dot": -0.036259218792090334,
+            "cosine": -0.3735168843824859
+          },
+          {
+            "left": "block",
+            "right": "weighted_classification",
+            "dot": 0.006824847728071153,
+            "cosine": 0.14355610733790208
+          },
+          {
+            "left": "pixel",
+            "right": "weighted_consistency",
+            "dot": 0.098258032659169,
+            "cosine": 0.5916793783823991
+          },
+          {
+            "left": "pixel",
+            "right": "weighted_classification",
+            "dot": -0.02095367436298503,
+            "cosine": -0.2576412936809811
+          },
+          {
+            "left": "weighted_consistency",
+            "right": "weighted_classification",
+            "dot": -0.0016322848423285523,
+            "cosine": -0.7869343504950506
+          }
+        ],
+        "limits": [
+          "Local gradient conflict is not proof of a training failure cause or a generalization result.",
+          "Cosines depend on the specified shared parameter subset and model state.",
+          "No objective/weight modification is made by this diagnostic."
+        ],
+        "family": "B1:jpeg75",
+        "changed_pixels": 262045,
+        "changed_blocks": 4096
+      }
+    ]
+  }
+}

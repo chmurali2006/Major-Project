@@ -1,0 +1,17 @@
+{
+  "schema": "bounded289-cprofile-synthetic-v1",
+  "synthetic": true,
+  "source_sha256": "7981eba25e532b5e4f6f198d24b0ebaa5a5d01e2f966b2bfca9ceecba4d1f26e",
+  "packet_bytes": 18620,
+  "changed_tiles": 256,
+  "calls_each": 10,
+  "sign_mean_seconds": 0.6575010900000506,
+  "verify_mean_seconds": 3.297122852700022,
+  "cprofile_top30": "         62626140 function calls in 39.542 seconds\n\n   Ordered by: cumulative time\n   List reduced from 79 to 30 due to restriction <30>\n\n   ncalls  tottime  percall  cumtime  percall filename:lineno(function)\n       10    0.010    0.001   32.969    3.297 bounded_syndrome.py:92(verify)\n       10    0.076    0.008   26.679    2.668 bounded_acceleration.py:25(recover_fast)\n      160   13.228    0.083   24.587    0.154 bounded_syndrome.py:39(locator)\n       20    9.423    0.471   12.033    0.602 bounded_acceleration.py:12(moments_fast)\n 60580000   11.318    0.000   11.318    0.000 bounded_syndrome.py:22(multiply)\n       10    0.003    0.000    6.573    0.657 bounded_syndrome.py:81(sign)\n    11720    2.609    0.000    2.609    0.000 {method 'reduce' of 'numpy.ufunc' objects}\n    10250    1.809    0.000    1.977    0.000 index_syndrome.py:29(mul)\n       20    0.000    0.000    0.772    0.039 sparse_refinement.py:23(leaves)\n       20    0.394    0.020    0.771    0.039 sparse_refinement.py:25(<listcomp>)\n    10250    0.022    0.000    0.142    0.000 stride_tricks.py:480(broadcast_arrays)\n   330250    0.132    0.000    0.132    0.000 {method 'tobytes' of 'numpy.ndarray' objects}\n   327710    0.091    0.000    0.091    0.000 {method 'digest' of '_hashlib.HASH' objects}\n   327710    0.091    0.000    0.091    0.000 {built-in method _hashlib.openssl_sha256}\n     5120    0.005    0.000    0.080    0.000 stride_tricks.py:546(<listcomp>)\n    10240    0.054    0.000    0.075    0.000 stride_tricks.py:340(_broadcast_to)\n    84480    0.044    0.000    0.044    0.000 bounded_syndrome.py:24(inverse)\n   327700    0.039    0.000    0.039    0.000 sparse_refinement.py:26(<genexpr>)\n       30    0.002    0.000    0.036    0.001 sparse_refinement.py:54(root)\n   327700    0.035    0.000    0.035    0.000 {built-in method _struct.pack}\n       50    0.030    0.001    0.030    0.001 {method 'join' of 'bytes' objects}\n     2570    0.006    0.000    0.025    0.000 numeric.py:615(flatnonzero)\n    15410    0.021    0.000    0.021    0.000 {method 'astype' of 'numpy.ndarray' objects}\n    10250    0.015    0.000    0.017    0.000 stride_tricks.py:416(_broadcast_shape)\n    10250    0.007    0.000    0.011    0.000 stride_tricks.py:538(<listcomp>)\n    10250    0.004    0.000    0.010    0.000 {built-in method builtins.all}\n     2570    0.002    0.000    0.009    0.000 fromnumeric.py:1881(nonzero)\n    10260    0.005    0.000    0.009    0.000 {built-in method builtins.any}\n     2570    0.004    0.000    0.009    0.000 fromnumeric.py:1768(ravel)\n     2570    0.004    0.000    0.008    0.000 fromnumeric.py:53(_wrapfunc)\n\n\n",
+  "limitations": [
+    "Seeded synthetic RGB and clustered patch; not medical images.",
+    "Single environment CPU timing only; no deployment throughput claim.",
+    "cProfile attributes Python call costs and may not expose internal native-library cost separately.",
+    "No test split access."
+  ]
+}

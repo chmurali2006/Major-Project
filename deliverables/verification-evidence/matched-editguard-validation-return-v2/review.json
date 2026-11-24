@@ -1,0 +1,21 @@
+{
+  "schema": "matched-editguard-validation-review-v1",
+  "archive_sha256": "33ac519371e373081ae60ddd7f44ff8c55168e6fea43458c6a395297764997a9",
+  "notebook_sha256": "9107ca9bead8b9770a562a9375ba990f432e3b96dfb524696847f318e1193b9e",
+  "notebook_bundle_sha256": "65d382c4097c8b64299425d9103c78cc09ffc37bc603557c36700948caf271b3",
+  "images": 500,
+  "localisation_rows": 10000,
+  "diagnostic_rows": 5000,
+  "recovery_maps_checked": 10000,
+  "signed_packet_signatures_checked": 0,
+  "status": "audited_with_missing_public_key",
+  "public_key_present": false,
+  "limits": [
+    "Returned pixels absent: no independent EditGuard re-execution, operation replay, source/marked MSE verification, or classifier re-inference.",
+    "Map confusion and metrics recomputed from returned packed masks/probabilities; receipts may still be self-generated.",
+    "No signed-packet signatures verified because the return archive omits public-key.bin; packet hashes/header structure alone are not signature authentication.",
+    "Validation was used for classifier selection: development evidence only.",
+    "Signed4 adds full 524378-byte sidecar per image to EditGuard and is not equal-cost end-to-end comparison.",
+    "One frozen adapted DenseNet is not a clinical model; no patient-level inference."
+  ]
+}

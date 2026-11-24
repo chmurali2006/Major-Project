@@ -1,0 +1,3005 @@
+{
+  "schema": "comparison-results-independent-audit-v1",
+  "input_report_sha256": "9bf59cdae5b31e1f69d13002c297c64e35b046d2e9639fe237d1afd36c60986b",
+  "verified_cases": 144,
+  "sample_count": 8,
+  "synthetic": false,
+  "summary": [
+    {
+      "method": "EditGuard clean",
+      "case": "intact",
+      "family": "intact",
+      "n": 8,
+      "defined_iou_cases": 6,
+      "mean_iou_defined_cases": 0.0,
+      "missed_pixels": 0,
+      "extra_pixels": 38,
+      "any_highlight_images": 6
+    },
+    {
+      "method": "EditGuard clean",
+      "case": "one-bit",
+      "family": "edit",
+      "n": 8,
+      "defined_iou_cases": 8,
+      "mean_iou_defined_cases": 0.0,
+      "missed_pixels": 8,
+      "extra_pixels": 38,
+      "any_highlight_images": 6
+    },
+    {
+      "method": "EditGuard clean",
+      "case": "brightness32",
+      "family": "edit",
+      "n": 8,
+      "defined_iou_cases": 8,
+      "mean_iou_defined_cases": 0.0,
+      "missed_pixels": 8192,
+      "extra_pixels": 38,
+      "any_highlight_images": 6
+    },
+    {
+      "method": "EditGuard clean",
+      "case": "replace64",
+      "family": "edit",
+      "n": 8,
+      "defined_iou_cases": 8,
+      "mean_iou_defined_cases": 0.8488137008203616,
+      "missed_pixels": 962,
+      "extra_pixels": 4793,
+      "any_highlight_images": 8
+    },
+    {
+      "method": "EditGuard clean",
+      "case": "copy64",
+      "family": "edit",
+      "n": 8,
+      "defined_iou_cases": 8,
+      "mean_iou_defined_cases": 0.77074849724212,
+      "missed_pixels": 4145,
+      "extra_pixels": 3862,
+      "any_highlight_images": 8
+    },
+    {
+      "method": "EditGuard clean",
+      "case": "jpeg75",
+      "family": "benign-lossy",
+      "n": 8,
+      "defined_iou_cases": 8,
+      "mean_iou_defined_cases": 0.9989089965820312,
+      "missed_pixels": 0,
+      "extra_pixels": 2288,
+      "any_highlight_images": 8
+    },
+    {
+      "method": "Classical baseline",
+      "case": "intact",
+      "family": "intact",
+      "n": 8,
+      "defined_iou_cases": 0,
+      "mean_iou_defined_cases": null,
+      "missed_pixels": 0,
+      "extra_pixels": 0,
+      "any_highlight_images": 0
+    },
+    {
+      "method": "Classical baseline",
+      "case": "one-bit",
+      "family": "edit",
+      "n": 8,
+      "defined_iou_cases": 8,
+      "mean_iou_defined_cases": 0.015625,
+      "missed_pixels": 0,
+      "extra_pixels": 504,
+      "any_highlight_images": 8
+    },
+    {
+      "method": "Classical baseline",
+      "case": "brightness32",
+      "family": "edit",
+      "n": 8,
+      "defined_iou_cases": 8,
+      "mean_iou_defined_cases": 0.6599999999999999,
+      "missed_pixels": 0,
+      "extra_pixels": 4288,
+      "any_highlight_images": 8
+    },
+    {
+      "method": "Classical baseline",
+      "case": "replace64",
+      "family": "edit",
+      "n": 8,
+      "defined_iou_cases": 8,
+      "mean_iou_defined_cases": 0.8024691358024691,
+      "missed_pixels": 0,
+      "extra_pixels": 8128,
+      "any_highlight_images": 8
+    },
+    {
+      "method": "Classical baseline",
+      "case": "copy64",
+      "family": "edit",
+      "n": 8,
+      "defined_iou_cases": 8,
+      "mean_iou_defined_cases": 0.8024691358024691,
+      "missed_pixels": 0,
+      "extra_pixels": 8128,
+      "any_highlight_images": 8
+    },
+    {
+      "method": "Classical baseline",
+      "case": "jpeg75",
+      "family": "benign-lossy",
+      "n": 8,
+      "defined_iou_cases": 8,
+      "mean_iou_defined_cases": 0.9858450889587402,
+      "missed_pixels": 0,
+      "extra_pixels": 29685,
+      "any_highlight_images": 8
+    },
+    {
+      "method": "Signed grid 8",
+      "case": "intact",
+      "family": "intact",
+      "n": 8,
+      "defined_iou_cases": 0,
+      "mean_iou_defined_cases": null,
+      "missed_pixels": 0,
+      "extra_pixels": 0,
+      "any_highlight_images": 0
+    },
+    {
+      "method": "Signed grid 8",
+      "case": "one-bit",
+      "family": "edit",
+      "n": 8,
+      "defined_iou_cases": 8,
+      "mean_iou_defined_cases": 0.015625,
+      "missed_pixels": 0,
+      "extra_pixels": 504,
+      "any_highlight_images": 8
+    },
+    {
+      "method": "Signed grid 8",
+      "case": "brightness32",
+      "family": "edit",
+      "n": 8,
+      "defined_iou_cases": 8,
+      "mean_iou_defined_cases": 0.6599999999999999,
+      "missed_pixels": 0,
+      "extra_pixels": 4288,
+      "any_highlight_images": 8
+    },
+    {
+      "method": "Signed grid 8",
+      "case": "replace64",
+      "family": "edit",
+      "n": 8,
+      "defined_iou_cases": 8,
+      "mean_iou_defined_cases": 0.8024691358024691,
+      "missed_pixels": 0,
+      "extra_pixels": 8128,
+      "any_highlight_images": 8
+    },
+    {
+      "method": "Signed grid 8",
+      "case": "copy64",
+      "family": "edit",
+      "n": 8,
+      "defined_iou_cases": 8,
+      "mean_iou_defined_cases": 0.8024450231481481,
+      "missed_pixels": 0,
+      "extra_pixels": 8129,
+      "any_highlight_images": 8
+    },
+    {
+      "method": "Signed grid 8",
+      "case": "jpeg75",
+      "family": "benign-lossy",
+      "n": 8,
+      "defined_iou_cases": 8,
+      "mean_iou_defined_cases": 0.926579475402832,
+      "missed_pixels": 0,
+      "extra_pixels": 153974,
+      "any_highlight_images": 8
+    }
+  ],
+  "paired_iou_differences": [
+    {
+      "case": "intact",
+      "defined_pairs": 0,
+      "mean_editguard_minus_classical_iou": null,
+      "editguard_higher_pairs": 0,
+      "classical_higher_pairs": 0,
+      "tied_pairs": 0
+    },
+    {
+      "case": "one-bit",
+      "defined_pairs": 8,
+      "mean_editguard_minus_classical_iou": -0.015625,
+      "editguard_higher_pairs": 0,
+      "classical_higher_pairs": 8,
+      "tied_pairs": 0
+    },
+    {
+      "case": "brightness32",
+      "defined_pairs": 8,
+      "mean_editguard_minus_classical_iou": -0.6599999999999999,
+      "editguard_higher_pairs": 0,
+      "classical_higher_pairs": 8,
+      "tied_pairs": 0
+    },
+    {
+      "case": "replace64",
+      "defined_pairs": 8,
+      "mean_editguard_minus_classical_iou": 0.0463445650178925,
+      "editguard_higher_pairs": 7,
+      "classical_higher_pairs": 1,
+      "tied_pairs": 0
+    },
+    {
+      "case": "copy64",
+      "defined_pairs": 8,
+      "mean_editguard_minus_classical_iou": -0.031720638560349054,
+      "editguard_higher_pairs": 7,
+      "classical_higher_pairs": 1,
+      "tied_pairs": 0
+    },
+    {
+      "case": "jpeg75",
+      "defined_pairs": 8,
+      "mean_editguard_minus_classical_iou": 0.013063907623291016,
+      "editguard_higher_pairs": 8,
+      "classical_higher_pairs": 0,
+      "tied_pairs": 0
+    }
+  ],
+  "all_case_metrics": [
+    {
+      "sample": 0,
+      "source": "ISIC_0055438.png",
+      "method": "EditGuard clean",
+      "case": "intact",
+      "family": "intact",
+      "confusion": {
+        "tp": 0,
+        "fp": 3,
+        "fn": 0,
+        "tn": 262141
+      },
+      "changed_pixels": 0,
+      "highlighted_pixels": 3,
+      "pixel_iou": 0.0,
+      "pixel_f1": 0.0,
+      "missed_edit_fraction": null,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 0,
+      "source": "ISIC_0055438.png",
+      "method": "EditGuard clean",
+      "case": "one-bit",
+      "family": "edit",
+      "confusion": {
+        "tp": 0,
+        "fp": 3,
+        "fn": 1,
+        "tn": 262140
+      },
+      "changed_pixels": 1,
+      "highlighted_pixels": 3,
+      "pixel_iou": 0.0,
+      "pixel_f1": 0.0,
+      "missed_edit_fraction": 1.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 0,
+      "source": "ISIC_0055438.png",
+      "method": "EditGuard clean",
+      "case": "brightness32",
+      "family": "edit",
+      "confusion": {
+        "tp": 0,
+        "fp": 3,
+        "fn": 1024,
+        "tn": 261117
+      },
+      "changed_pixels": 1024,
+      "highlighted_pixels": 3,
+      "pixel_iou": 0.0,
+      "pixel_f1": 0.0,
+      "missed_edit_fraction": 1.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 0,
+      "source": "ISIC_0055438.png",
+      "method": "EditGuard clean",
+      "case": "replace64",
+      "family": "edit",
+      "confusion": {
+        "tp": 3973,
+        "fp": 854,
+        "fn": 123,
+        "tn": 257194
+      },
+      "changed_pixels": 4096,
+      "highlighted_pixels": 4827,
+      "pixel_iou": 0.8026262626262626,
+      "pixel_f1": 0.8905076767903172,
+      "missed_edit_fraction": 0.030029296875,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 0,
+      "source": "ISIC_0055438.png",
+      "method": "EditGuard clean",
+      "case": "copy64",
+      "family": "edit",
+      "confusion": {
+        "tp": 4093,
+        "fp": 563,
+        "fn": 3,
+        "tn": 257485
+      },
+      "changed_pixels": 4096,
+      "highlighted_pixels": 4656,
+      "pixel_iou": 0.8785147027259068,
+      "pixel_f1": 0.9353290676416819,
+      "missed_edit_fraction": 0.000732421875,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 0,
+      "source": "ISIC_0055438.png",
+      "method": "EditGuard clean",
+      "case": "jpeg75",
+      "family": "benign-lossy",
+      "confusion": {
+        "tp": 261746,
+        "fp": 398,
+        "fn": 0,
+        "tn": 0
+      },
+      "changed_pixels": 261746,
+      "highlighted_pixels": 262144,
+      "pixel_iou": 0.9984817504882812,
+      "pixel_f1": 0.9992402985359522,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 0,
+      "source": "ISIC_0055438.png",
+      "method": "Classical baseline",
+      "case": "intact",
+      "family": "intact",
+      "confusion": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "tn": 262144
+      },
+      "changed_pixels": 0,
+      "highlighted_pixels": 0,
+      "pixel_iou": null,
+      "pixel_f1": null,
+      "missed_edit_fraction": null,
+      "predicted_image_positive": false
+    },
+    {
+      "sample": 0,
+      "source": "ISIC_0055438.png",
+      "method": "Classical baseline",
+      "case": "one-bit",
+      "family": "edit",
+      "confusion": {
+        "tp": 1,
+        "fp": 63,
+        "fn": 0,
+        "tn": 262080
+      },
+      "changed_pixels": 1,
+      "highlighted_pixels": 64,
+      "pixel_iou": 0.015625,
+      "pixel_f1": 0.03076923076923077,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 0,
+      "source": "ISIC_0055438.png",
+      "method": "Classical baseline",
+      "case": "brightness32",
+      "family": "edit",
+      "confusion": {
+        "tp": 1024,
+        "fp": 576,
+        "fn": 0,
+        "tn": 260544
+      },
+      "changed_pixels": 1024,
+      "highlighted_pixels": 1600,
+      "pixel_iou": 0.64,
+      "pixel_f1": 0.7804878048780488,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 0,
+      "source": "ISIC_0055438.png",
+      "method": "Classical baseline",
+      "case": "replace64",
+      "family": "edit",
+      "confusion": {
+        "tp": 4096,
+        "fp": 1088,
+        "fn": 0,
+        "tn": 256960
+      },
+      "changed_pixels": 4096,
+      "highlighted_pixels": 5184,
+      "pixel_iou": 0.7901234567901234,
+      "pixel_f1": 0.8827586206896552,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 0,
+      "source": "ISIC_0055438.png",
+      "method": "Classical baseline",
+      "case": "copy64",
+      "family": "edit",
+      "confusion": {
+        "tp": 4096,
+        "fp": 1088,
+        "fn": 0,
+        "tn": 256960
+      },
+      "changed_pixels": 4096,
+      "highlighted_pixels": 5184,
+      "pixel_iou": 0.7901234567901234,
+      "pixel_f1": 0.8827586206896552,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 0,
+      "source": "ISIC_0055438.png",
+      "method": "Classical baseline",
+      "case": "jpeg75",
+      "family": "benign-lossy",
+      "confusion": {
+        "tp": 255421,
+        "fp": 6723,
+        "fn": 0,
+        "tn": 0
+      },
+      "changed_pixels": 255421,
+      "highlighted_pixels": 262144,
+      "pixel_iou": 0.9743537902832031,
+      "pixel_f1": 0.9870103272052786,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 0,
+      "source": "ISIC_0055438.png",
+      "method": "Signed grid 8",
+      "case": "intact",
+      "family": "intact",
+      "confusion": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "tn": 262144
+      },
+      "changed_pixels": 0,
+      "highlighted_pixels": 0,
+      "pixel_iou": null,
+      "pixel_f1": null,
+      "missed_edit_fraction": null,
+      "predicted_image_positive": false
+    },
+    {
+      "sample": 0,
+      "source": "ISIC_0055438.png",
+      "method": "Signed grid 8",
+      "case": "one-bit",
+      "family": "edit",
+      "confusion": {
+        "tp": 1,
+        "fp": 63,
+        "fn": 0,
+        "tn": 262080
+      },
+      "changed_pixels": 1,
+      "highlighted_pixels": 64,
+      "pixel_iou": 0.015625,
+      "pixel_f1": 0.03076923076923077,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 0,
+      "source": "ISIC_0055438.png",
+      "method": "Signed grid 8",
+      "case": "brightness32",
+      "family": "edit",
+      "confusion": {
+        "tp": 1024,
+        "fp": 576,
+        "fn": 0,
+        "tn": 260544
+      },
+      "changed_pixels": 1024,
+      "highlighted_pixels": 1600,
+      "pixel_iou": 0.64,
+      "pixel_f1": 0.7804878048780488,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 0,
+      "source": "ISIC_0055438.png",
+      "method": "Signed grid 8",
+      "case": "replace64",
+      "family": "edit",
+      "confusion": {
+        "tp": 4096,
+        "fp": 1088,
+        "fn": 0,
+        "tn": 256960
+      },
+      "changed_pixels": 4096,
+      "highlighted_pixels": 5184,
+      "pixel_iou": 0.7901234567901234,
+      "pixel_f1": 0.8827586206896552,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 0,
+      "source": "ISIC_0055438.png",
+      "method": "Signed grid 8",
+      "case": "copy64",
+      "family": "edit",
+      "confusion": {
+        "tp": 4096,
+        "fp": 1088,
+        "fn": 0,
+        "tn": 256960
+      },
+      "changed_pixels": 4096,
+      "highlighted_pixels": 5184,
+      "pixel_iou": 0.7901234567901234,
+      "pixel_f1": 0.8827586206896552,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 0,
+      "source": "ISIC_0055438.png",
+      "method": "Signed grid 8",
+      "case": "jpeg75",
+      "family": "benign-lossy",
+      "confusion": {
+        "tp": 223299,
+        "fp": 38845,
+        "fn": 0,
+        "tn": 0
+      },
+      "changed_pixels": 223299,
+      "highlighted_pixels": 262144,
+      "pixel_iou": 0.8518180847167969,
+      "pixel_f1": 0.9199803066477423,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 1,
+      "source": "ISIC_0031864.png",
+      "method": "EditGuard clean",
+      "case": "intact",
+      "family": "intact",
+      "confusion": {
+        "tp": 0,
+        "fp": 2,
+        "fn": 0,
+        "tn": 262142
+      },
+      "changed_pixels": 0,
+      "highlighted_pixels": 2,
+      "pixel_iou": 0.0,
+      "pixel_f1": 0.0,
+      "missed_edit_fraction": null,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 1,
+      "source": "ISIC_0031864.png",
+      "method": "EditGuard clean",
+      "case": "one-bit",
+      "family": "edit",
+      "confusion": {
+        "tp": 0,
+        "fp": 2,
+        "fn": 1,
+        "tn": 262141
+      },
+      "changed_pixels": 1,
+      "highlighted_pixels": 2,
+      "pixel_iou": 0.0,
+      "pixel_f1": 0.0,
+      "missed_edit_fraction": 1.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 1,
+      "source": "ISIC_0031864.png",
+      "method": "EditGuard clean",
+      "case": "brightness32",
+      "family": "edit",
+      "confusion": {
+        "tp": 0,
+        "fp": 2,
+        "fn": 1024,
+        "tn": 261118
+      },
+      "changed_pixels": 1024,
+      "highlighted_pixels": 2,
+      "pixel_iou": 0.0,
+      "pixel_f1": 0.0,
+      "missed_edit_fraction": 1.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 1,
+      "source": "ISIC_0031864.png",
+      "method": "EditGuard clean",
+      "case": "replace64",
+      "family": "edit",
+      "confusion": {
+        "tp": 4065,
+        "fp": 794,
+        "fn": 31,
+        "tn": 257254
+      },
+      "changed_pixels": 4096,
+      "highlighted_pixels": 4859,
+      "pixel_iou": 0.8312883435582822,
+      "pixel_f1": 0.9078726968174204,
+      "missed_edit_fraction": 0.007568359375,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 1,
+      "source": "ISIC_0031864.png",
+      "method": "EditGuard clean",
+      "case": "copy64",
+      "family": "edit",
+      "confusion": {
+        "tp": 4053,
+        "fp": 496,
+        "fn": 43,
+        "tn": 257552
+      },
+      "changed_pixels": 4096,
+      "highlighted_pixels": 4549,
+      "pixel_iou": 0.8826219512195121,
+      "pixel_f1": 0.9376518218623482,
+      "missed_edit_fraction": 0.010498046875,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 1,
+      "source": "ISIC_0031864.png",
+      "method": "EditGuard clean",
+      "case": "jpeg75",
+      "family": "benign-lossy",
+      "confusion": {
+        "tp": 261901,
+        "fp": 243,
+        "fn": 0,
+        "tn": 0
+      },
+      "changed_pixels": 261901,
+      "highlighted_pixels": 262144,
+      "pixel_iou": 0.9990730285644531,
+      "pixel_f1": 0.9995362993636042,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 1,
+      "source": "ISIC_0031864.png",
+      "method": "Classical baseline",
+      "case": "intact",
+      "family": "intact",
+      "confusion": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "tn": 262144
+      },
+      "changed_pixels": 0,
+      "highlighted_pixels": 0,
+      "pixel_iou": null,
+      "pixel_f1": null,
+      "missed_edit_fraction": null,
+      "predicted_image_positive": false
+    },
+    {
+      "sample": 1,
+      "source": "ISIC_0031864.png",
+      "method": "Classical baseline",
+      "case": "one-bit",
+      "family": "edit",
+      "confusion": {
+        "tp": 1,
+        "fp": 63,
+        "fn": 0,
+        "tn": 262080
+      },
+      "changed_pixels": 1,
+      "highlighted_pixels": 64,
+      "pixel_iou": 0.015625,
+      "pixel_f1": 0.03076923076923077,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 1,
+      "source": "ISIC_0031864.png",
+      "method": "Classical baseline",
+      "case": "brightness32",
+      "family": "edit",
+      "confusion": {
+        "tp": 1024,
+        "fp": 576,
+        "fn": 0,
+        "tn": 260544
+      },
+      "changed_pixels": 1024,
+      "highlighted_pixels": 1600,
+      "pixel_iou": 0.64,
+      "pixel_f1": 0.7804878048780488,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 1,
+      "source": "ISIC_0031864.png",
+      "method": "Classical baseline",
+      "case": "replace64",
+      "family": "edit",
+      "confusion": {
+        "tp": 4096,
+        "fp": 1088,
+        "fn": 0,
+        "tn": 256960
+      },
+      "changed_pixels": 4096,
+      "highlighted_pixels": 5184,
+      "pixel_iou": 0.7901234567901234,
+      "pixel_f1": 0.8827586206896552,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 1,
+      "source": "ISIC_0031864.png",
+      "method": "Classical baseline",
+      "case": "copy64",
+      "family": "edit",
+      "confusion": {
+        "tp": 4096,
+        "fp": 1088,
+        "fn": 0,
+        "tn": 256960
+      },
+      "changed_pixels": 4096,
+      "highlighted_pixels": 5184,
+      "pixel_iou": 0.7901234567901234,
+      "pixel_f1": 0.8827586206896552,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 1,
+      "source": "ISIC_0031864.png",
+      "method": "Classical baseline",
+      "case": "jpeg75",
+      "family": "benign-lossy",
+      "confusion": {
+        "tp": 260540,
+        "fp": 1604,
+        "fn": 0,
+        "tn": 0
+      },
+      "changed_pixels": 260540,
+      "highlighted_pixels": 262144,
+      "pixel_iou": 0.9938812255859375,
+      "pixel_f1": 0.996931224219605,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 1,
+      "source": "ISIC_0031864.png",
+      "method": "Signed grid 8",
+      "case": "intact",
+      "family": "intact",
+      "confusion": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "tn": 262144
+      },
+      "changed_pixels": 0,
+      "highlighted_pixels": 0,
+      "pixel_iou": null,
+      "pixel_f1": null,
+      "missed_edit_fraction": null,
+      "predicted_image_positive": false
+    },
+    {
+      "sample": 1,
+      "source": "ISIC_0031864.png",
+      "method": "Signed grid 8",
+      "case": "one-bit",
+      "family": "edit",
+      "confusion": {
+        "tp": 1,
+        "fp": 63,
+        "fn": 0,
+        "tn": 262080
+      },
+      "changed_pixels": 1,
+      "highlighted_pixels": 64,
+      "pixel_iou": 0.015625,
+      "pixel_f1": 0.03076923076923077,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 1,
+      "source": "ISIC_0031864.png",
+      "method": "Signed grid 8",
+      "case": "brightness32",
+      "family": "edit",
+      "confusion": {
+        "tp": 1024,
+        "fp": 576,
+        "fn": 0,
+        "tn": 260544
+      },
+      "changed_pixels": 1024,
+      "highlighted_pixels": 1600,
+      "pixel_iou": 0.64,
+      "pixel_f1": 0.7804878048780488,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 1,
+      "source": "ISIC_0031864.png",
+      "method": "Signed grid 8",
+      "case": "replace64",
+      "family": "edit",
+      "confusion": {
+        "tp": 4096,
+        "fp": 1088,
+        "fn": 0,
+        "tn": 256960
+      },
+      "changed_pixels": 4096,
+      "highlighted_pixels": 5184,
+      "pixel_iou": 0.7901234567901234,
+      "pixel_f1": 0.8827586206896552,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 1,
+      "source": "ISIC_0031864.png",
+      "method": "Signed grid 8",
+      "case": "copy64",
+      "family": "edit",
+      "confusion": {
+        "tp": 4096,
+        "fp": 1088,
+        "fn": 0,
+        "tn": 256960
+      },
+      "changed_pixels": 4096,
+      "highlighted_pixels": 5184,
+      "pixel_iou": 0.7901234567901234,
+      "pixel_f1": 0.8827586206896552,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 1,
+      "source": "ISIC_0031864.png",
+      "method": "Signed grid 8",
+      "case": "jpeg75",
+      "family": "benign-lossy",
+      "confusion": {
+        "tp": 255231,
+        "fp": 6913,
+        "fn": 0,
+        "tn": 0
+      },
+      "changed_pixels": 255231,
+      "highlighted_pixels": 262144,
+      "pixel_iou": 0.9736289978027344,
+      "pixel_f1": 0.9866383184344044,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 2,
+      "source": "ISIC_0066051.png",
+      "method": "EditGuard clean",
+      "case": "intact",
+      "family": "intact",
+      "confusion": {
+        "tp": 0,
+        "fp": 28,
+        "fn": 0,
+        "tn": 262116
+      },
+      "changed_pixels": 0,
+      "highlighted_pixels": 28,
+      "pixel_iou": 0.0,
+      "pixel_f1": 0.0,
+      "missed_edit_fraction": null,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 2,
+      "source": "ISIC_0066051.png",
+      "method": "EditGuard clean",
+      "case": "one-bit",
+      "family": "edit",
+      "confusion": {
+        "tp": 0,
+        "fp": 28,
+        "fn": 1,
+        "tn": 262115
+      },
+      "changed_pixels": 1,
+      "highlighted_pixels": 28,
+      "pixel_iou": 0.0,
+      "pixel_f1": 0.0,
+      "missed_edit_fraction": 1.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 2,
+      "source": "ISIC_0066051.png",
+      "method": "EditGuard clean",
+      "case": "brightness32",
+      "family": "edit",
+      "confusion": {
+        "tp": 0,
+        "fp": 28,
+        "fn": 1024,
+        "tn": 261092
+      },
+      "changed_pixels": 1024,
+      "highlighted_pixels": 28,
+      "pixel_iou": 0.0,
+      "pixel_f1": 0.0,
+      "missed_edit_fraction": 1.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 2,
+      "source": "ISIC_0066051.png",
+      "method": "EditGuard clean",
+      "case": "replace64",
+      "family": "edit",
+      "confusion": {
+        "tp": 4091,
+        "fp": 895,
+        "fn": 5,
+        "tn": 257153
+      },
+      "changed_pixels": 4096,
+      "highlighted_pixels": 4986,
+      "pixel_iou": 0.819675415748347,
+      "pixel_f1": 0.9009028848271305,
+      "missed_edit_fraction": 0.001220703125,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 2,
+      "source": "ISIC_0066051.png",
+      "method": "EditGuard clean",
+      "case": "copy64",
+      "family": "edit",
+      "confusion": {
+        "tp": 4096,
+        "fp": 913,
+        "fn": 0,
+        "tn": 257135
+      },
+      "changed_pixels": 4096,
+      "highlighted_pixels": 5009,
+      "pixel_iou": 0.8177280894390098,
+      "pixel_f1": 0.899725425590335,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 2,
+      "source": "ISIC_0066051.png",
+      "method": "EditGuard clean",
+      "case": "jpeg75",
+      "family": "benign-lossy",
+      "confusion": {
+        "tp": 261641,
+        "fp": 503,
+        "fn": 0,
+        "tn": 0
+      },
+      "changed_pixels": 261641,
+      "highlighted_pixels": 262144,
+      "pixel_iou": 0.9980812072753906,
+      "pixel_f1": 0.9990396823123991,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 2,
+      "source": "ISIC_0066051.png",
+      "method": "Classical baseline",
+      "case": "intact",
+      "family": "intact",
+      "confusion": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "tn": 262144
+      },
+      "changed_pixels": 0,
+      "highlighted_pixels": 0,
+      "pixel_iou": null,
+      "pixel_f1": null,
+      "missed_edit_fraction": null,
+      "predicted_image_positive": false
+    },
+    {
+      "sample": 2,
+      "source": "ISIC_0066051.png",
+      "method": "Classical baseline",
+      "case": "one-bit",
+      "family": "edit",
+      "confusion": {
+        "tp": 1,
+        "fp": 63,
+        "fn": 0,
+        "tn": 262080
+      },
+      "changed_pixels": 1,
+      "highlighted_pixels": 64,
+      "pixel_iou": 0.015625,
+      "pixel_f1": 0.03076923076923077,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 2,
+      "source": "ISIC_0066051.png",
+      "method": "Classical baseline",
+      "case": "brightness32",
+      "family": "edit",
+      "confusion": {
+        "tp": 1024,
+        "fp": 576,
+        "fn": 0,
+        "tn": 260544
+      },
+      "changed_pixels": 1024,
+      "highlighted_pixels": 1600,
+      "pixel_iou": 0.64,
+      "pixel_f1": 0.7804878048780488,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 2,
+      "source": "ISIC_0066051.png",
+      "method": "Classical baseline",
+      "case": "replace64",
+      "family": "edit",
+      "confusion": {
+        "tp": 4096,
+        "fp": 1088,
+        "fn": 0,
+        "tn": 256960
+      },
+      "changed_pixels": 4096,
+      "highlighted_pixels": 5184,
+      "pixel_iou": 0.7901234567901234,
+      "pixel_f1": 0.8827586206896552,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 2,
+      "source": "ISIC_0066051.png",
+      "method": "Classical baseline",
+      "case": "copy64",
+      "family": "edit",
+      "confusion": {
+        "tp": 4096,
+        "fp": 1088,
+        "fn": 0,
+        "tn": 256960
+      },
+      "changed_pixels": 4096,
+      "highlighted_pixels": 5184,
+      "pixel_iou": 0.7901234567901234,
+      "pixel_f1": 0.8827586206896552,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 2,
+      "source": "ISIC_0066051.png",
+      "method": "Classical baseline",
+      "case": "jpeg75",
+      "family": "benign-lossy",
+      "confusion": {
+        "tp": 251639,
+        "fp": 10505,
+        "fn": 0,
+        "tn": 0
+      },
+      "changed_pixels": 251639,
+      "highlighted_pixels": 262144,
+      "pixel_iou": 0.9599266052246094,
+      "pixel_f1": 0.9795536247793329,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 2,
+      "source": "ISIC_0066051.png",
+      "method": "Signed grid 8",
+      "case": "intact",
+      "family": "intact",
+      "confusion": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "tn": 262144
+      },
+      "changed_pixels": 0,
+      "highlighted_pixels": 0,
+      "pixel_iou": null,
+      "pixel_f1": null,
+      "missed_edit_fraction": null,
+      "predicted_image_positive": false
+    },
+    {
+      "sample": 2,
+      "source": "ISIC_0066051.png",
+      "method": "Signed grid 8",
+      "case": "one-bit",
+      "family": "edit",
+      "confusion": {
+        "tp": 1,
+        "fp": 63,
+        "fn": 0,
+        "tn": 262080
+      },
+      "changed_pixels": 1,
+      "highlighted_pixels": 64,
+      "pixel_iou": 0.015625,
+      "pixel_f1": 0.03076923076923077,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 2,
+      "source": "ISIC_0066051.png",
+      "method": "Signed grid 8",
+      "case": "brightness32",
+      "family": "edit",
+      "confusion": {
+        "tp": 1024,
+        "fp": 576,
+        "fn": 0,
+        "tn": 260544
+      },
+      "changed_pixels": 1024,
+      "highlighted_pixels": 1600,
+      "pixel_iou": 0.64,
+      "pixel_f1": 0.7804878048780488,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 2,
+      "source": "ISIC_0066051.png",
+      "method": "Signed grid 8",
+      "case": "replace64",
+      "family": "edit",
+      "confusion": {
+        "tp": 4096,
+        "fp": 1088,
+        "fn": 0,
+        "tn": 256960
+      },
+      "changed_pixels": 4096,
+      "highlighted_pixels": 5184,
+      "pixel_iou": 0.7901234567901234,
+      "pixel_f1": 0.8827586206896552,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 2,
+      "source": "ISIC_0066051.png",
+      "method": "Signed grid 8",
+      "case": "copy64",
+      "family": "edit",
+      "confusion": {
+        "tp": 4096,
+        "fp": 1088,
+        "fn": 0,
+        "tn": 256960
+      },
+      "changed_pixels": 4096,
+      "highlighted_pixels": 5184,
+      "pixel_iou": 0.7901234567901234,
+      "pixel_f1": 0.8827586206896552,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 2,
+      "source": "ISIC_0066051.png",
+      "method": "Signed grid 8",
+      "case": "jpeg75",
+      "family": "benign-lossy",
+      "confusion": {
+        "tp": 204982,
+        "fp": 57162,
+        "fn": 0,
+        "tn": 0
+      },
+      "changed_pixels": 204982,
+      "highlighted_pixels": 262144,
+      "pixel_iou": 0.7819442749023438,
+      "pixel_f1": 0.8776304466032719,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 3,
+      "source": "ISIC_0058884.png",
+      "method": "EditGuard clean",
+      "case": "intact",
+      "family": "intact",
+      "confusion": {
+        "tp": 0,
+        "fp": 2,
+        "fn": 0,
+        "tn": 262142
+      },
+      "changed_pixels": 0,
+      "highlighted_pixels": 2,
+      "pixel_iou": 0.0,
+      "pixel_f1": 0.0,
+      "missed_edit_fraction": null,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 3,
+      "source": "ISIC_0058884.png",
+      "method": "EditGuard clean",
+      "case": "one-bit",
+      "family": "edit",
+      "confusion": {
+        "tp": 0,
+        "fp": 2,
+        "fn": 1,
+        "tn": 262141
+      },
+      "changed_pixels": 1,
+      "highlighted_pixels": 2,
+      "pixel_iou": 0.0,
+      "pixel_f1": 0.0,
+      "missed_edit_fraction": 1.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 3,
+      "source": "ISIC_0058884.png",
+      "method": "EditGuard clean",
+      "case": "brightness32",
+      "family": "edit",
+      "confusion": {
+        "tp": 0,
+        "fp": 2,
+        "fn": 1024,
+        "tn": 261118
+      },
+      "changed_pixels": 1024,
+      "highlighted_pixels": 2,
+      "pixel_iou": 0.0,
+      "pixel_f1": 0.0,
+      "missed_edit_fraction": 1.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 3,
+      "source": "ISIC_0058884.png",
+      "method": "EditGuard clean",
+      "case": "replace64",
+      "family": "edit",
+      "confusion": {
+        "tp": 3717,
+        "fp": 111,
+        "fn": 379,
+        "tn": 257937
+      },
+      "changed_pixels": 4096,
+      "highlighted_pixels": 3828,
+      "pixel_iou": 0.8835274542429284,
+      "pixel_f1": 0.9381625441696113,
+      "missed_edit_fraction": 0.092529296875,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 3,
+      "source": "ISIC_0058884.png",
+      "method": "EditGuard clean",
+      "case": "copy64",
+      "family": "edit",
+      "confusion": {
+        "tp": 0,
+        "fp": 2,
+        "fn": 4096,
+        "tn": 258046
+      },
+      "changed_pixels": 4096,
+      "highlighted_pixels": 2,
+      "pixel_iou": 0.0,
+      "pixel_f1": 0.0,
+      "missed_edit_fraction": 1.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 3,
+      "source": "ISIC_0058884.png",
+      "method": "EditGuard clean",
+      "case": "jpeg75",
+      "family": "benign-lossy",
+      "confusion": {
+        "tp": 261958,
+        "fp": 186,
+        "fn": 0,
+        "tn": 0
+      },
+      "changed_pixels": 261958,
+      "highlighted_pixels": 262144,
+      "pixel_iou": 0.9992904663085938,
+      "pixel_f1": 0.9996451072501155,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 3,
+      "source": "ISIC_0058884.png",
+      "method": "Classical baseline",
+      "case": "intact",
+      "family": "intact",
+      "confusion": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "tn": 262144
+      },
+      "changed_pixels": 0,
+      "highlighted_pixels": 0,
+      "pixel_iou": null,
+      "pixel_f1": null,
+      "missed_edit_fraction": null,
+      "predicted_image_positive": false
+    },
+    {
+      "sample": 3,
+      "source": "ISIC_0058884.png",
+      "method": "Classical baseline",
+      "case": "one-bit",
+      "family": "edit",
+      "confusion": {
+        "tp": 1,
+        "fp": 63,
+        "fn": 0,
+        "tn": 262080
+      },
+      "changed_pixels": 1,
+      "highlighted_pixels": 64,
+      "pixel_iou": 0.015625,
+      "pixel_f1": 0.03076923076923077,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 3,
+      "source": "ISIC_0058884.png",
+      "method": "Classical baseline",
+      "case": "brightness32",
+      "family": "edit",
+      "confusion": {
+        "tp": 1024,
+        "fp": 256,
+        "fn": 0,
+        "tn": 260864
+      },
+      "changed_pixels": 1024,
+      "highlighted_pixels": 1280,
+      "pixel_iou": 0.8,
+      "pixel_f1": 0.8888888888888888,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 3,
+      "source": "ISIC_0058884.png",
+      "method": "Classical baseline",
+      "case": "replace64",
+      "family": "edit",
+      "confusion": {
+        "tp": 4096,
+        "fp": 512,
+        "fn": 0,
+        "tn": 257536
+      },
+      "changed_pixels": 4096,
+      "highlighted_pixels": 4608,
+      "pixel_iou": 0.8888888888888888,
+      "pixel_f1": 0.9411764705882353,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 3,
+      "source": "ISIC_0058884.png",
+      "method": "Classical baseline",
+      "case": "copy64",
+      "family": "edit",
+      "confusion": {
+        "tp": 4096,
+        "fp": 512,
+        "fn": 0,
+        "tn": 257536
+      },
+      "changed_pixels": 4096,
+      "highlighted_pixels": 4608,
+      "pixel_iou": 0.8888888888888888,
+      "pixel_f1": 0.9411764705882353,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 3,
+      "source": "ISIC_0058884.png",
+      "method": "Classical baseline",
+      "case": "jpeg75",
+      "family": "benign-lossy",
+      "confusion": {
+        "tp": 258062,
+        "fp": 4082,
+        "fn": 0,
+        "tn": 0
+      },
+      "changed_pixels": 258062,
+      "highlighted_pixels": 262144,
+      "pixel_iou": 0.9844284057617188,
+      "pixel_f1": 0.9921531085762179,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 3,
+      "source": "ISIC_0058884.png",
+      "method": "Signed grid 8",
+      "case": "intact",
+      "family": "intact",
+      "confusion": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "tn": 262144
+      },
+      "changed_pixels": 0,
+      "highlighted_pixels": 0,
+      "pixel_iou": null,
+      "pixel_f1": null,
+      "missed_edit_fraction": null,
+      "predicted_image_positive": false
+    },
+    {
+      "sample": 3,
+      "source": "ISIC_0058884.png",
+      "method": "Signed grid 8",
+      "case": "one-bit",
+      "family": "edit",
+      "confusion": {
+        "tp": 1,
+        "fp": 63,
+        "fn": 0,
+        "tn": 262080
+      },
+      "changed_pixels": 1,
+      "highlighted_pixels": 64,
+      "pixel_iou": 0.015625,
+      "pixel_f1": 0.03076923076923077,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 3,
+      "source": "ISIC_0058884.png",
+      "method": "Signed grid 8",
+      "case": "brightness32",
+      "family": "edit",
+      "confusion": {
+        "tp": 1024,
+        "fp": 256,
+        "fn": 0,
+        "tn": 260864
+      },
+      "changed_pixels": 1024,
+      "highlighted_pixels": 1280,
+      "pixel_iou": 0.8,
+      "pixel_f1": 0.8888888888888888,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 3,
+      "source": "ISIC_0058884.png",
+      "method": "Signed grid 8",
+      "case": "replace64",
+      "family": "edit",
+      "confusion": {
+        "tp": 4096,
+        "fp": 512,
+        "fn": 0,
+        "tn": 257536
+      },
+      "changed_pixels": 4096,
+      "highlighted_pixels": 4608,
+      "pixel_iou": 0.8888888888888888,
+      "pixel_f1": 0.9411764705882353,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 3,
+      "source": "ISIC_0058884.png",
+      "method": "Signed grid 8",
+      "case": "copy64",
+      "family": "edit",
+      "confusion": {
+        "tp": 4096,
+        "fp": 512,
+        "fn": 0,
+        "tn": 257536
+      },
+      "changed_pixels": 4096,
+      "highlighted_pixels": 4608,
+      "pixel_iou": 0.8888888888888888,
+      "pixel_f1": 0.9411764705882353,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 3,
+      "source": "ISIC_0058884.png",
+      "method": "Signed grid 8",
+      "case": "jpeg75",
+      "family": "benign-lossy",
+      "confusion": {
+        "tp": 240982,
+        "fp": 21162,
+        "fn": 0,
+        "tn": 0
+      },
+      "changed_pixels": 240982,
+      "highlighted_pixels": 262144,
+      "pixel_iou": 0.9192733764648438,
+      "pixel_f1": 0.9579389655871492,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 4,
+      "source": "ISIC_0072752.png",
+      "method": "EditGuard clean",
+      "case": "intact",
+      "family": "intact",
+      "confusion": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "tn": 262144
+      },
+      "changed_pixels": 0,
+      "highlighted_pixels": 0,
+      "pixel_iou": null,
+      "pixel_f1": null,
+      "missed_edit_fraction": null,
+      "predicted_image_positive": false
+    },
+    {
+      "sample": 4,
+      "source": "ISIC_0072752.png",
+      "method": "EditGuard clean",
+      "case": "one-bit",
+      "family": "edit",
+      "confusion": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 1,
+        "tn": 262143
+      },
+      "changed_pixels": 1,
+      "highlighted_pixels": 0,
+      "pixel_iou": 0.0,
+      "pixel_f1": 0.0,
+      "missed_edit_fraction": 1.0,
+      "predicted_image_positive": false
+    },
+    {
+      "sample": 4,
+      "source": "ISIC_0072752.png",
+      "method": "EditGuard clean",
+      "case": "brightness32",
+      "family": "edit",
+      "confusion": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 1024,
+        "tn": 261120
+      },
+      "changed_pixels": 1024,
+      "highlighted_pixels": 0,
+      "pixel_iou": 0.0,
+      "pixel_f1": 0.0,
+      "missed_edit_fraction": 1.0,
+      "predicted_image_positive": false
+    },
+    {
+      "sample": 4,
+      "source": "ISIC_0072752.png",
+      "method": "EditGuard clean",
+      "case": "replace64",
+      "family": "edit",
+      "confusion": {
+        "tp": 4086,
+        "fp": 551,
+        "fn": 10,
+        "tn": 257497
+      },
+      "changed_pixels": 4096,
+      "highlighted_pixels": 4637,
+      "pixel_iou": 0.8792769528728211,
+      "pixel_f1": 0.9357609069048437,
+      "missed_edit_fraction": 0.00244140625,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 4,
+      "source": "ISIC_0072752.png",
+      "method": "EditGuard clean",
+      "case": "copy64",
+      "family": "edit",
+      "confusion": {
+        "tp": 4096,
+        "fp": 449,
+        "fn": 0,
+        "tn": 257599
+      },
+      "changed_pixels": 4096,
+      "highlighted_pixels": 4545,
+      "pixel_iou": 0.9012101210121012,
+      "pixel_f1": 0.9480384214789955,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 4,
+      "source": "ISIC_0072752.png",
+      "method": "EditGuard clean",
+      "case": "jpeg75",
+      "family": "benign-lossy",
+      "confusion": {
+        "tp": 261711,
+        "fp": 433,
+        "fn": 0,
+        "tn": 0
+      },
+      "changed_pixels": 261711,
+      "highlighted_pixels": 262144,
+      "pixel_iou": 0.9983482360839844,
+      "pixel_f1": 0.9991734353971996,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 4,
+      "source": "ISIC_0072752.png",
+      "method": "Classical baseline",
+      "case": "intact",
+      "family": "intact",
+      "confusion": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "tn": 262144
+      },
+      "changed_pixels": 0,
+      "highlighted_pixels": 0,
+      "pixel_iou": null,
+      "pixel_f1": null,
+      "missed_edit_fraction": null,
+      "predicted_image_positive": false
+    },
+    {
+      "sample": 4,
+      "source": "ISIC_0072752.png",
+      "method": "Classical baseline",
+      "case": "one-bit",
+      "family": "edit",
+      "confusion": {
+        "tp": 1,
+        "fp": 63,
+        "fn": 0,
+        "tn": 262080
+      },
+      "changed_pixels": 1,
+      "highlighted_pixels": 64,
+      "pixel_iou": 0.015625,
+      "pixel_f1": 0.03076923076923077,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 4,
+      "source": "ISIC_0072752.png",
+      "method": "Classical baseline",
+      "case": "brightness32",
+      "family": "edit",
+      "confusion": {
+        "tp": 1024,
+        "fp": 576,
+        "fn": 0,
+        "tn": 260544
+      },
+      "changed_pixels": 1024,
+      "highlighted_pixels": 1600,
+      "pixel_iou": 0.64,
+      "pixel_f1": 0.7804878048780488,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 4,
+      "source": "ISIC_0072752.png",
+      "method": "Classical baseline",
+      "case": "replace64",
+      "family": "edit",
+      "confusion": {
+        "tp": 4096,
+        "fp": 1088,
+        "fn": 0,
+        "tn": 256960
+      },
+      "changed_pixels": 4096,
+      "highlighted_pixels": 5184,
+      "pixel_iou": 0.7901234567901234,
+      "pixel_f1": 0.8827586206896552,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 4,
+      "source": "ISIC_0072752.png",
+      "method": "Classical baseline",
+      "case": "copy64",
+      "family": "edit",
+      "confusion": {
+        "tp": 4096,
+        "fp": 1088,
+        "fn": 0,
+        "tn": 256960
+      },
+      "changed_pixels": 4096,
+      "highlighted_pixels": 5184,
+      "pixel_iou": 0.7901234567901234,
+      "pixel_f1": 0.8827586206896552,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 4,
+      "source": "ISIC_0072752.png",
+      "method": "Classical baseline",
+      "case": "jpeg75",
+      "family": "benign-lossy",
+      "confusion": {
+        "tp": 259306,
+        "fp": 2838,
+        "fn": 0,
+        "tn": 0
+      },
+      "changed_pixels": 259306,
+      "highlighted_pixels": 262144,
+      "pixel_iou": 0.9891738891601562,
+      "pixel_f1": 0.9945574839390162,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 4,
+      "source": "ISIC_0072752.png",
+      "method": "Signed grid 8",
+      "case": "intact",
+      "family": "intact",
+      "confusion": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "tn": 262144
+      },
+      "changed_pixels": 0,
+      "highlighted_pixels": 0,
+      "pixel_iou": null,
+      "pixel_f1": null,
+      "missed_edit_fraction": null,
+      "predicted_image_positive": false
+    },
+    {
+      "sample": 4,
+      "source": "ISIC_0072752.png",
+      "method": "Signed grid 8",
+      "case": "one-bit",
+      "family": "edit",
+      "confusion": {
+        "tp": 1,
+        "fp": 63,
+        "fn": 0,
+        "tn": 262080
+      },
+      "changed_pixels": 1,
+      "highlighted_pixels": 64,
+      "pixel_iou": 0.015625,
+      "pixel_f1": 0.03076923076923077,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 4,
+      "source": "ISIC_0072752.png",
+      "method": "Signed grid 8",
+      "case": "brightness32",
+      "family": "edit",
+      "confusion": {
+        "tp": 1024,
+        "fp": 576,
+        "fn": 0,
+        "tn": 260544
+      },
+      "changed_pixels": 1024,
+      "highlighted_pixels": 1600,
+      "pixel_iou": 0.64,
+      "pixel_f1": 0.7804878048780488,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 4,
+      "source": "ISIC_0072752.png",
+      "method": "Signed grid 8",
+      "case": "replace64",
+      "family": "edit",
+      "confusion": {
+        "tp": 4096,
+        "fp": 1088,
+        "fn": 0,
+        "tn": 256960
+      },
+      "changed_pixels": 4096,
+      "highlighted_pixels": 5184,
+      "pixel_iou": 0.7901234567901234,
+      "pixel_f1": 0.8827586206896552,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 4,
+      "source": "ISIC_0072752.png",
+      "method": "Signed grid 8",
+      "case": "copy64",
+      "family": "edit",
+      "confusion": {
+        "tp": 4096,
+        "fp": 1088,
+        "fn": 0,
+        "tn": 256960
+      },
+      "changed_pixels": 4096,
+      "highlighted_pixels": 5184,
+      "pixel_iou": 0.7901234567901234,
+      "pixel_f1": 0.8827586206896552,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 4,
+      "source": "ISIC_0072752.png",
+      "method": "Signed grid 8",
+      "case": "jpeg75",
+      "family": "benign-lossy",
+      "confusion": {
+        "tp": 248435,
+        "fp": 13709,
+        "fn": 0,
+        "tn": 0
+      },
+      "changed_pixels": 248435,
+      "highlighted_pixels": 262144,
+      "pixel_iou": 0.9477043151855469,
+      "pixel_f1": 0.9731500903875796,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 5,
+      "source": "ISIC_0029052.png",
+      "method": "EditGuard clean",
+      "case": "intact",
+      "family": "intact",
+      "confusion": {
+        "tp": 0,
+        "fp": 2,
+        "fn": 0,
+        "tn": 262142
+      },
+      "changed_pixels": 0,
+      "highlighted_pixels": 2,
+      "pixel_iou": 0.0,
+      "pixel_f1": 0.0,
+      "missed_edit_fraction": null,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 5,
+      "source": "ISIC_0029052.png",
+      "method": "EditGuard clean",
+      "case": "one-bit",
+      "family": "edit",
+      "confusion": {
+        "tp": 0,
+        "fp": 2,
+        "fn": 1,
+        "tn": 262141
+      },
+      "changed_pixels": 1,
+      "highlighted_pixels": 2,
+      "pixel_iou": 0.0,
+      "pixel_f1": 0.0,
+      "missed_edit_fraction": 1.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 5,
+      "source": "ISIC_0029052.png",
+      "method": "EditGuard clean",
+      "case": "brightness32",
+      "family": "edit",
+      "confusion": {
+        "tp": 0,
+        "fp": 2,
+        "fn": 1024,
+        "tn": 261118
+      },
+      "changed_pixels": 1024,
+      "highlighted_pixels": 2,
+      "pixel_iou": 0.0,
+      "pixel_f1": 0.0,
+      "missed_edit_fraction": 1.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 5,
+      "source": "ISIC_0029052.png",
+      "method": "EditGuard clean",
+      "case": "replace64",
+      "family": "edit",
+      "confusion": {
+        "tp": 3852,
+        "fp": 298,
+        "fn": 244,
+        "tn": 257750
+      },
+      "changed_pixels": 4096,
+      "highlighted_pixels": 4150,
+      "pixel_iou": 0.8766499772416932,
+      "pixel_f1": 0.9342711617754063,
+      "missed_edit_fraction": 0.0595703125,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 5,
+      "source": "ISIC_0029052.png",
+      "method": "EditGuard clean",
+      "case": "copy64",
+      "family": "edit",
+      "confusion": {
+        "tp": 4095,
+        "fp": 406,
+        "fn": 1,
+        "tn": 257642
+      },
+      "changed_pixels": 4096,
+      "highlighted_pixels": 4501,
+      "pixel_iou": 0.9095957352287872,
+      "pixel_f1": 0.9526579039199721,
+      "missed_edit_fraction": 0.000244140625,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 5,
+      "source": "ISIC_0029052.png",
+      "method": "EditGuard clean",
+      "case": "jpeg75",
+      "family": "benign-lossy",
+      "confusion": {
+        "tp": 262028,
+        "fp": 116,
+        "fn": 0,
+        "tn": 0
+      },
+      "changed_pixels": 262028,
+      "highlighted_pixels": 262144,
+      "pixel_iou": 0.9995574951171875,
+      "pixel_f1": 0.9997786985951176,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 5,
+      "source": "ISIC_0029052.png",
+      "method": "Classical baseline",
+      "case": "intact",
+      "family": "intact",
+      "confusion": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "tn": 262144
+      },
+      "changed_pixels": 0,
+      "highlighted_pixels": 0,
+      "pixel_iou": null,
+      "pixel_f1": null,
+      "missed_edit_fraction": null,
+      "predicted_image_positive": false
+    },
+    {
+      "sample": 5,
+      "source": "ISIC_0029052.png",
+      "method": "Classical baseline",
+      "case": "one-bit",
+      "family": "edit",
+      "confusion": {
+        "tp": 1,
+        "fp": 63,
+        "fn": 0,
+        "tn": 262080
+      },
+      "changed_pixels": 1,
+      "highlighted_pixels": 64,
+      "pixel_iou": 0.015625,
+      "pixel_f1": 0.03076923076923077,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 5,
+      "source": "ISIC_0029052.png",
+      "method": "Classical baseline",
+      "case": "brightness32",
+      "family": "edit",
+      "confusion": {
+        "tp": 1024,
+        "fp": 576,
+        "fn": 0,
+        "tn": 260544
+      },
+      "changed_pixels": 1024,
+      "highlighted_pixels": 1600,
+      "pixel_iou": 0.64,
+      "pixel_f1": 0.7804878048780488,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 5,
+      "source": "ISIC_0029052.png",
+      "method": "Classical baseline",
+      "case": "replace64",
+      "family": "edit",
+      "confusion": {
+        "tp": 4096,
+        "fp": 1088,
+        "fn": 0,
+        "tn": 256960
+      },
+      "changed_pixels": 4096,
+      "highlighted_pixels": 5184,
+      "pixel_iou": 0.7901234567901234,
+      "pixel_f1": 0.8827586206896552,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 5,
+      "source": "ISIC_0029052.png",
+      "method": "Classical baseline",
+      "case": "copy64",
+      "family": "edit",
+      "confusion": {
+        "tp": 4096,
+        "fp": 1088,
+        "fn": 0,
+        "tn": 256960
+      },
+      "changed_pixels": 4096,
+      "highlighted_pixels": 5184,
+      "pixel_iou": 0.7901234567901234,
+      "pixel_f1": 0.8827586206896552,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 5,
+      "source": "ISIC_0029052.png",
+      "method": "Classical baseline",
+      "case": "jpeg75",
+      "family": "benign-lossy",
+      "confusion": {
+        "tp": 261186,
+        "fp": 958,
+        "fn": 0,
+        "tn": 0
+      },
+      "changed_pixels": 261186,
+      "highlighted_pixels": 262144,
+      "pixel_iou": 0.9963455200195312,
+      "pixel_f1": 0.9981694150918159,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 5,
+      "source": "ISIC_0029052.png",
+      "method": "Signed grid 8",
+      "case": "intact",
+      "family": "intact",
+      "confusion": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "tn": 262144
+      },
+      "changed_pixels": 0,
+      "highlighted_pixels": 0,
+      "pixel_iou": null,
+      "pixel_f1": null,
+      "missed_edit_fraction": null,
+      "predicted_image_positive": false
+    },
+    {
+      "sample": 5,
+      "source": "ISIC_0029052.png",
+      "method": "Signed grid 8",
+      "case": "one-bit",
+      "family": "edit",
+      "confusion": {
+        "tp": 1,
+        "fp": 63,
+        "fn": 0,
+        "tn": 262080
+      },
+      "changed_pixels": 1,
+      "highlighted_pixels": 64,
+      "pixel_iou": 0.015625,
+      "pixel_f1": 0.03076923076923077,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 5,
+      "source": "ISIC_0029052.png",
+      "method": "Signed grid 8",
+      "case": "brightness32",
+      "family": "edit",
+      "confusion": {
+        "tp": 1024,
+        "fp": 576,
+        "fn": 0,
+        "tn": 260544
+      },
+      "changed_pixels": 1024,
+      "highlighted_pixels": 1600,
+      "pixel_iou": 0.64,
+      "pixel_f1": 0.7804878048780488,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 5,
+      "source": "ISIC_0029052.png",
+      "method": "Signed grid 8",
+      "case": "replace64",
+      "family": "edit",
+      "confusion": {
+        "tp": 4096,
+        "fp": 1088,
+        "fn": 0,
+        "tn": 256960
+      },
+      "changed_pixels": 4096,
+      "highlighted_pixels": 5184,
+      "pixel_iou": 0.7901234567901234,
+      "pixel_f1": 0.8827586206896552,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 5,
+      "source": "ISIC_0029052.png",
+      "method": "Signed grid 8",
+      "case": "copy64",
+      "family": "edit",
+      "confusion": {
+        "tp": 4096,
+        "fp": 1088,
+        "fn": 0,
+        "tn": 256960
+      },
+      "changed_pixels": 4096,
+      "highlighted_pixels": 5184,
+      "pixel_iou": 0.7901234567901234,
+      "pixel_f1": 0.8827586206896552,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 5,
+      "source": "ISIC_0029052.png",
+      "method": "Signed grid 8",
+      "case": "jpeg75",
+      "family": "benign-lossy",
+      "confusion": {
+        "tp": 258486,
+        "fp": 3658,
+        "fn": 0,
+        "tn": 0
+      },
+      "changed_pixels": 258486,
+      "highlighted_pixels": 262144,
+      "pixel_iou": 0.9860458374023438,
+      "pixel_f1": 0.9929738970093924,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 6,
+      "source": "ISIC_0026713.png",
+      "method": "EditGuard clean",
+      "case": "intact",
+      "family": "intact",
+      "confusion": {
+        "tp": 0,
+        "fp": 1,
+        "fn": 0,
+        "tn": 262143
+      },
+      "changed_pixels": 0,
+      "highlighted_pixels": 1,
+      "pixel_iou": 0.0,
+      "pixel_f1": 0.0,
+      "missed_edit_fraction": null,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 6,
+      "source": "ISIC_0026713.png",
+      "method": "EditGuard clean",
+      "case": "one-bit",
+      "family": "edit",
+      "confusion": {
+        "tp": 0,
+        "fp": 1,
+        "fn": 1,
+        "tn": 262142
+      },
+      "changed_pixels": 1,
+      "highlighted_pixels": 1,
+      "pixel_iou": 0.0,
+      "pixel_f1": 0.0,
+      "missed_edit_fraction": 1.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 6,
+      "source": "ISIC_0026713.png",
+      "method": "EditGuard clean",
+      "case": "brightness32",
+      "family": "edit",
+      "confusion": {
+        "tp": 0,
+        "fp": 1,
+        "fn": 1024,
+        "tn": 261119
+      },
+      "changed_pixels": 1024,
+      "highlighted_pixels": 1,
+      "pixel_iou": 0.0,
+      "pixel_f1": 0.0,
+      "missed_edit_fraction": 1.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 6,
+      "source": "ISIC_0026713.png",
+      "method": "EditGuard clean",
+      "case": "replace64",
+      "family": "edit",
+      "confusion": {
+        "tp": 4021,
+        "fp": 383,
+        "fn": 75,
+        "tn": 257665
+      },
+      "changed_pixels": 4096,
+      "highlighted_pixels": 4404,
+      "pixel_iou": 0.8977450323732976,
+      "pixel_f1": 0.9461176470588235,
+      "missed_edit_fraction": 0.018310546875,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 6,
+      "source": "ISIC_0026713.png",
+      "method": "EditGuard clean",
+      "case": "copy64",
+      "family": "edit",
+      "confusion": {
+        "tp": 4096,
+        "fp": 425,
+        "fn": 0,
+        "tn": 257623
+      },
+      "changed_pixels": 4096,
+      "highlighted_pixels": 4521,
+      "pixel_iou": 0.9059942490599425,
+      "pixel_f1": 0.9506788905651619,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 6,
+      "source": "ISIC_0026713.png",
+      "method": "EditGuard clean",
+      "case": "jpeg75",
+      "family": "benign-lossy",
+      "confusion": {
+        "tp": 261960,
+        "fp": 184,
+        "fn": 0,
+        "tn": 0
+      },
+      "changed_pixels": 261960,
+      "highlighted_pixels": 262144,
+      "pixel_iou": 0.999298095703125,
+      "pixel_f1": 0.9996489246409109,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 6,
+      "source": "ISIC_0026713.png",
+      "method": "Classical baseline",
+      "case": "intact",
+      "family": "intact",
+      "confusion": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "tn": 262144
+      },
+      "changed_pixels": 0,
+      "highlighted_pixels": 0,
+      "pixel_iou": null,
+      "pixel_f1": null,
+      "missed_edit_fraction": null,
+      "predicted_image_positive": false
+    },
+    {
+      "sample": 6,
+      "source": "ISIC_0026713.png",
+      "method": "Classical baseline",
+      "case": "one-bit",
+      "family": "edit",
+      "confusion": {
+        "tp": 1,
+        "fp": 63,
+        "fn": 0,
+        "tn": 262080
+      },
+      "changed_pixels": 1,
+      "highlighted_pixels": 64,
+      "pixel_iou": 0.015625,
+      "pixel_f1": 0.03076923076923077,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 6,
+      "source": "ISIC_0026713.png",
+      "method": "Classical baseline",
+      "case": "brightness32",
+      "family": "edit",
+      "confusion": {
+        "tp": 1024,
+        "fp": 576,
+        "fn": 0,
+        "tn": 260544
+      },
+      "changed_pixels": 1024,
+      "highlighted_pixels": 1600,
+      "pixel_iou": 0.64,
+      "pixel_f1": 0.7804878048780488,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 6,
+      "source": "ISIC_0026713.png",
+      "method": "Classical baseline",
+      "case": "replace64",
+      "family": "edit",
+      "confusion": {
+        "tp": 4096,
+        "fp": 1088,
+        "fn": 0,
+        "tn": 256960
+      },
+      "changed_pixels": 4096,
+      "highlighted_pixels": 5184,
+      "pixel_iou": 0.7901234567901234,
+      "pixel_f1": 0.8827586206896552,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 6,
+      "source": "ISIC_0026713.png",
+      "method": "Classical baseline",
+      "case": "copy64",
+      "family": "edit",
+      "confusion": {
+        "tp": 4096,
+        "fp": 1088,
+        "fn": 0,
+        "tn": 256960
+      },
+      "changed_pixels": 4096,
+      "highlighted_pixels": 5184,
+      "pixel_iou": 0.7901234567901234,
+      "pixel_f1": 0.8827586206896552,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 6,
+      "source": "ISIC_0026713.png",
+      "method": "Classical baseline",
+      "case": "jpeg75",
+      "family": "benign-lossy",
+      "confusion": {
+        "tp": 261114,
+        "fp": 1030,
+        "fn": 0,
+        "tn": 0
+      },
+      "changed_pixels": 261114,
+      "highlighted_pixels": 262144,
+      "pixel_iou": 0.9960708618164062,
+      "pixel_f1": 0.9980315637792446,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 6,
+      "source": "ISIC_0026713.png",
+      "method": "Signed grid 8",
+      "case": "intact",
+      "family": "intact",
+      "confusion": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "tn": 262144
+      },
+      "changed_pixels": 0,
+      "highlighted_pixels": 0,
+      "pixel_iou": null,
+      "pixel_f1": null,
+      "missed_edit_fraction": null,
+      "predicted_image_positive": false
+    },
+    {
+      "sample": 6,
+      "source": "ISIC_0026713.png",
+      "method": "Signed grid 8",
+      "case": "one-bit",
+      "family": "edit",
+      "confusion": {
+        "tp": 1,
+        "fp": 63,
+        "fn": 0,
+        "tn": 262080
+      },
+      "changed_pixels": 1,
+      "highlighted_pixels": 64,
+      "pixel_iou": 0.015625,
+      "pixel_f1": 0.03076923076923077,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 6,
+      "source": "ISIC_0026713.png",
+      "method": "Signed grid 8",
+      "case": "brightness32",
+      "family": "edit",
+      "confusion": {
+        "tp": 1024,
+        "fp": 576,
+        "fn": 0,
+        "tn": 260544
+      },
+      "changed_pixels": 1024,
+      "highlighted_pixels": 1600,
+      "pixel_iou": 0.64,
+      "pixel_f1": 0.7804878048780488,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 6,
+      "source": "ISIC_0026713.png",
+      "method": "Signed grid 8",
+      "case": "replace64",
+      "family": "edit",
+      "confusion": {
+        "tp": 4096,
+        "fp": 1088,
+        "fn": 0,
+        "tn": 256960
+      },
+      "changed_pixels": 4096,
+      "highlighted_pixels": 5184,
+      "pixel_iou": 0.7901234567901234,
+      "pixel_f1": 0.8827586206896552,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 6,
+      "source": "ISIC_0026713.png",
+      "method": "Signed grid 8",
+      "case": "copy64",
+      "family": "edit",
+      "confusion": {
+        "tp": 4095,
+        "fp": 1089,
+        "fn": 0,
+        "tn": 256960
+      },
+      "changed_pixels": 4095,
+      "highlighted_pixels": 5184,
+      "pixel_iou": 0.7899305555555556,
+      "pixel_f1": 0.8826382153249273,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 6,
+      "source": "ISIC_0026713.png",
+      "method": "Signed grid 8",
+      "case": "jpeg75",
+      "family": "benign-lossy",
+      "confusion": {
+        "tp": 258045,
+        "fp": 4099,
+        "fn": 0,
+        "tn": 0
+      },
+      "changed_pixels": 258045,
+      "highlighted_pixels": 262144,
+      "pixel_iou": 0.9843635559082031,
+      "pixel_f1": 0.992120171706822,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 7,
+      "source": "ISIC_0065472.png",
+      "method": "EditGuard clean",
+      "case": "intact",
+      "family": "intact",
+      "confusion": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "tn": 262144
+      },
+      "changed_pixels": 0,
+      "highlighted_pixels": 0,
+      "pixel_iou": null,
+      "pixel_f1": null,
+      "missed_edit_fraction": null,
+      "predicted_image_positive": false
+    },
+    {
+      "sample": 7,
+      "source": "ISIC_0065472.png",
+      "method": "EditGuard clean",
+      "case": "one-bit",
+      "family": "edit",
+      "confusion": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 1,
+        "tn": 262143
+      },
+      "changed_pixels": 1,
+      "highlighted_pixels": 0,
+      "pixel_iou": 0.0,
+      "pixel_f1": 0.0,
+      "missed_edit_fraction": 1.0,
+      "predicted_image_positive": false
+    },
+    {
+      "sample": 7,
+      "source": "ISIC_0065472.png",
+      "method": "EditGuard clean",
+      "case": "brightness32",
+      "family": "edit",
+      "confusion": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 1024,
+        "tn": 261120
+      },
+      "changed_pixels": 1024,
+      "highlighted_pixels": 0,
+      "pixel_iou": 0.0,
+      "pixel_f1": 0.0,
+      "missed_edit_fraction": 1.0,
+      "predicted_image_positive": false
+    },
+    {
+      "sample": 7,
+      "source": "ISIC_0065472.png",
+      "method": "EditGuard clean",
+      "case": "replace64",
+      "family": "edit",
+      "confusion": {
+        "tp": 4001,
+        "fp": 907,
+        "fn": 95,
+        "tn": 257141
+      },
+      "changed_pixels": 4096,
+      "highlighted_pixels": 4908,
+      "pixel_iou": 0.7997201678992605,
+      "pixel_f1": 0.8887161261661484,
+      "missed_edit_fraction": 0.023193359375,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 7,
+      "source": "ISIC_0065472.png",
+      "method": "EditGuard clean",
+      "case": "copy64",
+      "family": "edit",
+      "confusion": {
+        "tp": 4094,
+        "fp": 608,
+        "fn": 2,
+        "tn": 257440
+      },
+      "changed_pixels": 4096,
+      "highlighted_pixels": 4702,
+      "pixel_iou": 0.8703231292517006,
+      "pixel_f1": 0.9306660604682883,
+      "missed_edit_fraction": 0.00048828125,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 7,
+      "source": "ISIC_0065472.png",
+      "method": "EditGuard clean",
+      "case": "jpeg75",
+      "family": "benign-lossy",
+      "confusion": {
+        "tp": 261919,
+        "fp": 225,
+        "fn": 0,
+        "tn": 0
+      },
+      "changed_pixels": 261919,
+      "highlighted_pixels": 262144,
+      "pixel_iou": 0.9991416931152344,
+      "pixel_f1": 0.9995706623058678,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 7,
+      "source": "ISIC_0065472.png",
+      "method": "Classical baseline",
+      "case": "intact",
+      "family": "intact",
+      "confusion": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "tn": 262144
+      },
+      "changed_pixels": 0,
+      "highlighted_pixels": 0,
+      "pixel_iou": null,
+      "pixel_f1": null,
+      "missed_edit_fraction": null,
+      "predicted_image_positive": false
+    },
+    {
+      "sample": 7,
+      "source": "ISIC_0065472.png",
+      "method": "Classical baseline",
+      "case": "one-bit",
+      "family": "edit",
+      "confusion": {
+        "tp": 1,
+        "fp": 63,
+        "fn": 0,
+        "tn": 262080
+      },
+      "changed_pixels": 1,
+      "highlighted_pixels": 64,
+      "pixel_iou": 0.015625,
+      "pixel_f1": 0.03076923076923077,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 7,
+      "source": "ISIC_0065472.png",
+      "method": "Classical baseline",
+      "case": "brightness32",
+      "family": "edit",
+      "confusion": {
+        "tp": 1024,
+        "fp": 576,
+        "fn": 0,
+        "tn": 260544
+      },
+      "changed_pixels": 1024,
+      "highlighted_pixels": 1600,
+      "pixel_iou": 0.64,
+      "pixel_f1": 0.7804878048780488,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 7,
+      "source": "ISIC_0065472.png",
+      "method": "Classical baseline",
+      "case": "replace64",
+      "family": "edit",
+      "confusion": {
+        "tp": 4096,
+        "fp": 1088,
+        "fn": 0,
+        "tn": 256960
+      },
+      "changed_pixels": 4096,
+      "highlighted_pixels": 5184,
+      "pixel_iou": 0.7901234567901234,
+      "pixel_f1": 0.8827586206896552,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 7,
+      "source": "ISIC_0065472.png",
+      "method": "Classical baseline",
+      "case": "copy64",
+      "family": "edit",
+      "confusion": {
+        "tp": 4096,
+        "fp": 1088,
+        "fn": 0,
+        "tn": 256960
+      },
+      "changed_pixels": 4096,
+      "highlighted_pixels": 5184,
+      "pixel_iou": 0.7901234567901234,
+      "pixel_f1": 0.8827586206896552,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 7,
+      "source": "ISIC_0065472.png",
+      "method": "Classical baseline",
+      "case": "jpeg75",
+      "family": "benign-lossy",
+      "confusion": {
+        "tp": 260199,
+        "fp": 1945,
+        "fn": 0,
+        "tn": 0
+      },
+      "changed_pixels": 260199,
+      "highlighted_pixels": 262144,
+      "pixel_iou": 0.9925804138183594,
+      "pixel_f1": 0.9962763930980219,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 7,
+      "source": "ISIC_0065472.png",
+      "method": "Signed grid 8",
+      "case": "intact",
+      "family": "intact",
+      "confusion": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "tn": 262144
+      },
+      "changed_pixels": 0,
+      "highlighted_pixels": 0,
+      "pixel_iou": null,
+      "pixel_f1": null,
+      "missed_edit_fraction": null,
+      "predicted_image_positive": false
+    },
+    {
+      "sample": 7,
+      "source": "ISIC_0065472.png",
+      "method": "Signed grid 8",
+      "case": "one-bit",
+      "family": "edit",
+      "confusion": {
+        "tp": 1,
+        "fp": 63,
+        "fn": 0,
+        "tn": 262080
+      },
+      "changed_pixels": 1,
+      "highlighted_pixels": 64,
+      "pixel_iou": 0.015625,
+      "pixel_f1": 0.03076923076923077,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 7,
+      "source": "ISIC_0065472.png",
+      "method": "Signed grid 8",
+      "case": "brightness32",
+      "family": "edit",
+      "confusion": {
+        "tp": 1024,
+        "fp": 576,
+        "fn": 0,
+        "tn": 260544
+      },
+      "changed_pixels": 1024,
+      "highlighted_pixels": 1600,
+      "pixel_iou": 0.64,
+      "pixel_f1": 0.7804878048780488,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 7,
+      "source": "ISIC_0065472.png",
+      "method": "Signed grid 8",
+      "case": "replace64",
+      "family": "edit",
+      "confusion": {
+        "tp": 4096,
+        "fp": 1088,
+        "fn": 0,
+        "tn": 256960
+      },
+      "changed_pixels": 4096,
+      "highlighted_pixels": 5184,
+      "pixel_iou": 0.7901234567901234,
+      "pixel_f1": 0.8827586206896552,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 7,
+      "source": "ISIC_0065472.png",
+      "method": "Signed grid 8",
+      "case": "copy64",
+      "family": "edit",
+      "confusion": {
+        "tp": 4096,
+        "fp": 1088,
+        "fn": 0,
+        "tn": 256960
+      },
+      "changed_pixels": 4096,
+      "highlighted_pixels": 5184,
+      "pixel_iou": 0.7901234567901234,
+      "pixel_f1": 0.8827586206896552,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    },
+    {
+      "sample": 7,
+      "source": "ISIC_0065472.png",
+      "method": "Signed grid 8",
+      "case": "jpeg75",
+      "family": "benign-lossy",
+      "confusion": {
+        "tp": 253718,
+        "fp": 8426,
+        "fn": 0,
+        "tn": 0
+      },
+      "changed_pixels": 253718,
+      "highlighted_pixels": 262144,
+      "pixel_iou": 0.9678573608398438,
+      "pixel_f1": 0.9836661742869217,
+      "missed_edit_fraction": 0.0,
+      "predicted_image_positive": true
+    }
+  ],
+  "safety_or_superiority_established": false,
+  "limitations": [
+    "Internal consistency only: no source pixels/weights included, so truth correctness and actual model execution cannot be independently proved.",
+    "No population confidence intervals without verified independent sampling/groups.",
+    "Empty-union IoU remains undefined; paired comparisons omit undefined pairs and disclose counts.",
+    "Any-highlight positivity is not a calibrated published image-level detection rule.",
+    "JPEG remains separate from edits; method-specific protected references/truth differ.",
+    "A checksum does not establish authorship, provenance, native-original identity or clinical safety."
+  ],
+  "audit_source_sha256": "36e67b1a0c54310cf792e2d06badec4f35d996b8dde66b8b8f025e5c431d8dda"
+}

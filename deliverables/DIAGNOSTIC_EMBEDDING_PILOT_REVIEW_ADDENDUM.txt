@@ -1,0 +1,445 @@
+DIAGNOSTIC EMBEDDING TRAIN12 V2 — REVIEW ADDENDUM
+Read with PROJECT_INDEPENDENT_REVIEW_SNAPSHOT.txt (v1). This addendum supersedes only its pending TRAIN-pilot status. Earlier conclusions are not retroactively rewritten.
+
+1. STATUS AND CHECKS
+The actual 12-image TRAIN pilot has now completed and its returned receipts were reviewed. There are 10 nonMEL and 2 MEL images, fixed first12 training rows, not selected for favourable outcomes. Those images belong to the guide classifier's TRAIN set, so this is not independent evaluation.
+
+Checks passed: ZIP CRC and exact member set; exact bundled Python source against the sent notebook; original cohort and preparation receipt identity; reviewed checkpoint/protocol and settings; first12 TRAIN identity/order; 72 unique rows and 720 recovery entries; deterministic payload seed/hash; probability validity; intact recovery and declared integrity outcomes; carrier equality claims; matched-energy/query receipts; strict gate returning fixed outputs; 72 Ed25519 packet signatures, lengths and headers; all aggregate diagnostic metrics and 1,000-draw bootstrap intervals recomputed from stored probabilities.
+
+Limits: no original/received pixels were returned. MSE, carrier equality, bit recovery, image hashes and operator outputs cannot be independently replayed from this ZIP. Packet signatures validate against the returned key, not an independently authenticated issuer, and do not verify the association with unavailable image bytes. No clinical safety, independent-model transfer, generalisation, robustness or novelty result follows.
+
+2. MAIN RESULT — DO NOT SCALE THE UNCHANGED METHOD
+Guided correction returns the fixed output on11/12 images; guide KL improves on only1/12. Every variant preserves all12 predicted classes. Original and received class metrics are all perfect on this tiny guide-TRAIN subset; there is no class-decision improvement available to demonstrate here. This does not contradict the earlier weaker500-image validation baseline; it is a different, training-selected subset.
+
+Guided mean MSE is about8.18 times fixed, concentrated in one changed image. On ISIC_0061070 (MEL), fixed MSE .0764401754 rises to5.8180987040 under correction (about76.1 times); original MEL probability .6242184, fixed .6472858, guided .6140608. All three predict MEL correctly. This is guide-probability adjustment, not a clinical/classification rescue.
+
+The distortion gate accepts11 no-op outputs and rejects the one nonzero correction, leaving fixed output on all12. Do not advertise11 accepted cases as11 successful useful corrections.
+
+Query-matched random search also reduces mean guide KL, but at substantially greater distortion; it matches forward-query counts, not gradient cost or energy. Weaker QIM has lower mean distortion AND lower mean guide KL than guided here, but reduces decoding margin. Therefore this is not a matched-robustness superiority result for weaker QIM either.
+
+3. AGGREGATE RESULTS
+KL below is recomputed after normalising tiny softmax-sum roundoff; it may differ slightly from torch trace KL. MSE uses RGB level units squared, not normalised[0,1] units. Values are image means over12, not a clinical endpoint.
+Variant | Mean MSE | Mean guide KL | Label flips | Outputs identical to fixed
+fixed_qim | 0.066599422031 | 0.000544013379 | 0 | 12/12
+uniform_weaker_qim | 0.016389105055 | 0.000046981210 | 0 | 0/12
+energy_matched_random | 0.545070966085 | 0.001223473681 | 0 | 11/12
+diagnostic_correction | 0.545070966085 | 0.000466016444 | 0 | 11/12
+query_matched_random | 2.768288188510 | 0.000407102085 | 0 | 7/12
+distortion_gated_correction | 0.066599422031 | 0.000544013379 | 0 | 12/12
+
+4. PAYLOAD RECOVERY AND AUTHENTICATION ARE DIFFERENT
+All72 clean outputs report zero bit errors and VERIFIED signed-RGB status. Across manipulated outputs, signed integrity failures are consistent with recorded changed-pixel counts. This is receipt consistency, not independent operator/pixel replay.
+
+JPEG70 payload bit-error fractions are approximately50% for all six variants. Thus clean payload preservation must NOT be described as robust message recovery under JPEG. Signed-RGB checking detects a content change independently of the fragile payload reader; it does not repair the payload.
+
+Per-case payload errors below use denominator49,152 bits per variant/case (12x4096). These aggregate correlated bits are descriptive, not independent statistical observations.
+
+fixed_qim
+  intact: 0/49152 (0.0000%)
+  copy32: 100/49152 (0.2035%)
+  local_blur32_surrogate: 95/49152 (0.1933%)
+  jpeg70: 24621/49152 (50.0916%)
+  jpeg85: 24295/49152 (49.4283%)
+  jpeg95: 22855/49152 (46.4986%)
+  resize90_restore: 16601/49152 (33.7748%)
+  contrast90: 33/49152 (0.0671%)
+  contrast110: 1593/49152 (3.2410%)
+  gaussian05: 13613/49152 (27.6957%)
+
+uniform_weaker_qim
+  intact: 0/49152 (0.0000%)
+  copy32: 101/49152 (0.2055%)
+  local_blur32_surrogate: 99/49152 (0.2014%)
+  jpeg70: 24613/49152 (50.0753%)
+  jpeg85: 24463/49152 (49.7701%)
+  jpeg95: 23558/49152 (47.9289%)
+  resize90_restore: 16508/49152 (33.5856%)
+  contrast90: 233/49152 (0.4740%)
+  contrast110: 1800/49152 (3.6621%)
+  gaussian05: 16967/49152 (34.5194%)
+
+energy_matched_random
+  intact: 0/49152 (0.0000%)
+  copy32: 99/49152 (0.2014%)
+  local_blur32_surrogate: 95/49152 (0.1933%)
+  jpeg70: 24609/49152 (50.0671%)
+  jpeg85: 24261/49152 (49.3591%)
+  jpeg95: 22652/49152 (46.0856%)
+  resize90_restore: 16588/49152 (33.7484%)
+  contrast90: 33/49152 (0.0671%)
+  contrast110: 1593/49152 (3.2410%)
+  gaussian05: 13477/49152 (27.4190%)
+
+diagnostic_correction
+  intact: 0/49152 (0.0000%)
+  copy32: 96/49152 (0.1953%)
+  local_blur32_surrogate: 95/49152 (0.1933%)
+  jpeg70: 24587/49152 (50.0224%)
+  jpeg85: 24276/49152 (49.3896%)
+  jpeg95: 22742/49152 (46.2687%)
+  resize90_restore: 16597/49152 (33.7667%)
+  contrast90: 33/49152 (0.0671%)
+  contrast110: 1593/49152 (3.2410%)
+  gaussian05: 13470/49152 (27.4048%)
+
+query_matched_random
+  intact: 0/49152 (0.0000%)
+  copy32: 96/49152 (0.1953%)
+  local_blur32_surrogate: 95/49152 (0.1933%)
+  jpeg70: 24589/49152 (50.0264%)
+  jpeg85: 24259/49152 (49.3551%)
+  jpeg95: 21854/49152 (44.4621%)
+  resize90_restore: 16440/49152 (33.4473%)
+  contrast90: 33/49152 (0.0671%)
+  contrast110: 1593/49152 (3.2410%)
+  gaussian05: 13116/49152 (26.6846%)
+
+distortion_gated_correction
+  intact: 0/49152 (0.0000%)
+  copy32: 100/49152 (0.2035%)
+  local_blur32_surrogate: 95/49152 (0.1933%)
+  jpeg70: 24621/49152 (50.0916%)
+  jpeg85: 24295/49152 (49.4283%)
+  jpeg95: 22855/49152 (46.4986%)
+  resize90_restore: 16601/49152 (33.7748%)
+  contrast90: 33/49152 (0.0671%)
+  contrast110: 1593/49152 (3.2410%)
+  gaussian05: 13613/49152 (27.6957%)
+
+Recorded signed verdict counts: {"VERIFIED": 72, "FAILED_INTEGRITY": 648}.
+
+5. WHAT THIS ADDS TO THE PROJECT
+A medical-image numerical feasibility run now exists, with retained negative outcomes and fairer controls. The candidate does not yet demonstrate a useful diagnostic advantage. It should be shown as an evaluated experimental extension, not a successful novel medical watermark.
+
+The distortion identity remains valid: fixed carrier values plus changes only to previously untouched non-carrier samples necessarily add squared distortion. This pilot cannot overturn that constraint. A lower-KL search on TRAIN alone does not justify a larger unchanged study.
+
+Recommended next decision: stop unchanged-candidate scaling; obtain the independent review; prioritise the already-pending matched baseline validation. If a separately versioned carrier-flexible or other redesign is proposed, review its prior-art overlap, exact payload/margin constraints and decisive controls BEFORE further GPU work. Such a redesign is not implemented or validated in this addendum. An independent evaluator remains necessary for any future transfer-preservation claim, but is not by itself a remedy for weak current utility.
+
+No request to rerun this notebook. **Status correction (2026-11-24):** an earlier ISIC-study-v2 run evaluated 1,000 test images; their IDs are unrecoverable from available retained evidence, and overlap with the later 500-image cohort is unknown. The later cohort is non-confirmatory development evidence; do not call it untouched or inspect it for additional outcomes. This addendum is a historical record of the pilot review, not evidence about split independence. See `deliverables/TEST_SPLIT_RECOVERY_DECISION.md`.
+
+6. TRACEABILITY
+Returned ZIP: diagnostic-embedding-train12-v2-results.zip
+SHA256: 2ac8e65a9f1703ec186a2acbf744f5d0290c7bb5da5a5d11b51ed254fa81ae71
+Original return: https://drive.google.com/file/d/1_kcVRTcVcjjOC7QXZS9_naPTs0IW3F2I/view
+Sent notebook SHA256: 2165b4e1fcde1498129e3f4fea50d00a8ccfbae1323d98b4a472afd222936973
+Evidence directory: deliverables/verification-evidence/diagnostic-embedding-train12-return-v1/
+Reviewer: scripts/review_diagnostic_embedding_return.py
+Total signed packet bytes: 37755216 (72x524378); no private key exported.
+
+APPENDIX — EXACT INTERNAL REVIEW RECEIPT
+{
+  "schema": "diagnostic-embedding-train12-return-review-v1",
+  "zip_sha256": "2ac8e65a9f1703ec186a2acbf744f5d0290c7bb5da5a5d11b51ed254fa81ae71",
+  "sent_notebook_sha256": "2165b4e1fcde1498129e3f4fea50d00a8ccfbae1323d98b4a472afd222936973",
+  "images": 12,
+  "class_counts": {
+    "0": 10,
+    "1": 2
+  },
+  "rows": 72,
+  "recovery_entries": 720,
+  "packet_signatures_checked": 72,
+  "total_packet_bytes": 37755216,
+  "results": {
+    "fixed_qim": {
+      "mean_mse": 0.06659942203097872,
+      "mean_guide_kl_recomputed_normalized": 0.0005440133785267295,
+      "guide_label_flips": 0,
+      "outputs_identical_to_fixed": 12,
+      "recovery": {
+        "intact": {
+          "bit_errors": 0,
+          "total_bits": 49152
+        },
+        "copy32": {
+          "bit_errors": 100,
+          "total_bits": 49152
+        },
+        "local_blur32_surrogate": {
+          "bit_errors": 95,
+          "total_bits": 49152
+        },
+        "jpeg70": {
+          "bit_errors": 24621,
+          "total_bits": 49152
+        },
+        "jpeg85": {
+          "bit_errors": 24295,
+          "total_bits": 49152
+        },
+        "jpeg95": {
+          "bit_errors": 22855,
+          "total_bits": 49152
+        },
+        "resize90_restore": {
+          "bit_errors": 16601,
+          "total_bits": 49152
+        },
+        "contrast90": {
+          "bit_errors": 33,
+          "total_bits": 49152
+        },
+        "contrast110": {
+          "bit_errors": 1593,
+          "total_bits": 49152
+        },
+        "gaussian05": {
+          "bit_errors": 13613,
+          "total_bits": 49152
+        }
+      }
+    },
+    "uniform_weaker_qim": {
+      "mean_mse": 0.016389105055067275,
+      "mean_guide_kl_recomputed_normalized": 4.698120989436998e-05,
+      "guide_label_flips": 0,
+      "outputs_identical_to_fixed": 0,
+      "recovery": {
+        "intact": {
+          "bit_errors": 0,
+          "total_bits": 49152
+        },
+        "copy32": {
+          "bit_errors": 101,
+          "total_bits": 49152
+        },
+        "local_blur32_surrogate": {
+          "bit_errors": 99,
+          "total_bits": 49152
+        },
+        "jpeg70": {
+          "bit_errors": 24613,
+          "total_bits": 49152
+        },
+        "jpeg85": {
+          "bit_errors": 24463,
+          "total_bits": 49152
+        },
+        "jpeg95": {
+          "bit_errors": 23558,
+          "total_bits": 49152
+        },
+        "resize90_restore": {
+          "bit_errors": 16508,
+          "total_bits": 49152
+        },
+        "contrast90": {
+          "bit_errors": 233,
+          "total_bits": 49152
+        },
+        "contrast110": {
+          "bit_errors": 1800,
+          "total_bits": 49152
+        },
+        "gaussian05": {
+          "bit_errors": 16967,
+          "total_bits": 49152
+        }
+      }
+    },
+    "energy_matched_random": {
+      "mean_mse": 0.5450709660847982,
+      "mean_guide_kl_recomputed_normalized": 0.0012234736809098496,
+      "guide_label_flips": 0,
+      "outputs_identical_to_fixed": 11,
+      "recovery": {
+        "intact": {
+          "bit_errors": 0,
+          "total_bits": 49152
+        },
+        "copy32": {
+          "bit_errors": 99,
+          "total_bits": 49152
+        },
+        "local_blur32_surrogate": {
+          "bit_errors": 95,
+          "total_bits": 49152
+        },
+        "jpeg70": {
+          "bit_errors": 24609,
+          "total_bits": 49152
+        },
+        "jpeg85": {
+          "bit_errors": 24261,
+          "total_bits": 49152
+        },
+        "jpeg95": {
+          "bit_errors": 22652,
+          "total_bits": 49152
+        },
+        "resize90_restore": {
+          "bit_errors": 16588,
+          "total_bits": 49152
+        },
+        "contrast90": {
+          "bit_errors": 33,
+          "total_bits": 49152
+        },
+        "contrast110": {
+          "bit_errors": 1593,
+          "total_bits": 49152
+        },
+        "gaussian05": {
+          "bit_errors": 13477,
+          "total_bits": 49152
+        }
+      }
+    },
+    "diagnostic_correction": {
+      "mean_mse": 0.5450709660847982,
+      "mean_guide_kl_recomputed_normalized": 0.0004660164437856219,
+      "guide_label_flips": 0,
+      "outputs_identical_to_fixed": 11,
+      "recovery": {
+        "intact": {
+          "bit_errors": 0,
+          "total_bits": 49152
+        },
+        "copy32": {
+          "bit_errors": 96,
+          "total_bits": 49152
+        },
+        "local_blur32_surrogate": {
+          "bit_errors": 95,
+          "total_bits": 49152
+        },
+        "jpeg70": {
+          "bit_errors": 24587,
+          "total_bits": 49152
+        },
+        "jpeg85": {
+          "bit_errors": 24276,
+          "total_bits": 49152
+        },
+        "jpeg95": {
+          "bit_errors": 22742,
+          "total_bits": 49152
+        },
+        "resize90_restore": {
+          "bit_errors": 16597,
+          "total_bits": 49152
+        },
+        "contrast90": {
+          "bit_errors": 33,
+          "total_bits": 49152
+        },
+        "contrast110": {
+          "bit_errors": 1593,
+          "total_bits": 49152
+        },
+        "gaussian05": {
+          "bit_errors": 13470,
+          "total_bits": 49152
+        }
+      }
+    },
+    "query_matched_random": {
+      "mean_mse": 2.768288188510471,
+      "mean_guide_kl_recomputed_normalized": 0.00040710208468702747,
+      "guide_label_flips": 0,
+      "outputs_identical_to_fixed": 7,
+      "recovery": {
+        "intact": {
+          "bit_errors": 0,
+          "total_bits": 49152
+        },
+        "copy32": {
+          "bit_errors": 96,
+          "total_bits": 49152
+        },
+        "local_blur32_surrogate": {
+          "bit_errors": 95,
+          "total_bits": 49152
+        },
+        "jpeg70": {
+          "bit_errors": 24589,
+          "total_bits": 49152
+        },
+        "jpeg85": {
+          "bit_errors": 24259,
+          "total_bits": 49152
+        },
+        "jpeg95": {
+          "bit_errors": 21854,
+          "total_bits": 49152
+        },
+        "resize90_restore": {
+          "bit_errors": 16440,
+          "total_bits": 49152
+        },
+        "contrast90": {
+          "bit_errors": 33,
+          "total_bits": 49152
+        },
+        "contrast110": {
+          "bit_errors": 1593,
+          "total_bits": 49152
+        },
+        "gaussian05": {
+          "bit_errors": 13116,
+          "total_bits": 49152
+        }
+      }
+    },
+    "distortion_gated_correction": {
+      "mean_mse": 0.06659942203097872,
+      "mean_guide_kl_recomputed_normalized": 0.0005440133785267295,
+      "guide_label_flips": 0,
+      "outputs_identical_to_fixed": 12,
+      "recovery": {
+        "intact": {
+          "bit_errors": 0,
+          "total_bits": 49152
+        },
+        "copy32": {
+          "bit_errors": 100,
+          "total_bits": 49152
+        },
+        "local_blur32_surrogate": {
+          "bit_errors": 95,
+          "total_bits": 49152
+        },
+        "jpeg70": {
+          "bit_errors": 24621,
+          "total_bits": 49152
+        },
+        "jpeg85": {
+          "bit_errors": 24295,
+          "total_bits": 49152
+        },
+        "jpeg95": {
+          "bit_errors": 22855,
+          "total_bits": 49152
+        },
+        "resize90_restore": {
+          "bit_errors": 16601,
+          "total_bits": 49152
+        },
+        "contrast90": {
+          "bit_errors": 33,
+          "total_bits": 49152
+        },
+        "contrast110": {
+          "bit_errors": 1593,
+          "total_bits": 49152
+        },
+        "gaussian05": {
+          "bit_errors": 13613,
+          "total_bits": 49152
+        }
+      }
+    }
+  },
+  "guided_improves_kl_over_fixed_count": 1,
+  "distortion_gate_rejections": 1,
+  "decision": "Do not scale this unchanged candidate to validation/test. Guide-only changes on TRAIN do not demonstrate useful medical benefit.",
+  "limits": [
+    "No source or received image pixels returned: carrier lock, MSE, bit recovery and operator outputs are receipt checks, not independent pixel replay.",
+    "72 packet signatures checked against the returned key, not an independently trusted issuer identity; no independent binding to unavailable image bytes.",
+    "12 classifier TRAIN images, only2 melanoma; no unseen-model evaluation, no clinical/generalization claim.",
+    "Guide KL selection is not an independent endpoint; random search is forward-query, not gradient-compute or energy matched.",
+    "Strict fixed-carrier non-carrier correction necessarily adds squared error for any nonzero change."
+  ]
+}
+
+Software verification after return reviewer addition: 531 passed, 1 CUDA-dependent test skipped in73.41 seconds. Nine targeted receipt-review tests pass. Test counts do not establish efficacy.

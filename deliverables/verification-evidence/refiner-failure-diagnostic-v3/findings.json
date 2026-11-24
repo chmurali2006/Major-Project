@@ -1,0 +1,62 @@
+{
+  "schema": "refiner-failure-findings-v3",
+  "synthetic": true,
+  "usable_as_study_result": false,
+  "models": [
+    {
+      "model": "Main watermark-verification model",
+      "selected_epoch": 6,
+      "shared_rule_pixel_iou": 0.0,
+      "shared_rule_all_background_pixel_maps": 7,
+      "pixel_only_train_diagnostic": {
+        "tau": 0.35,
+        "tampered_pixel_iou": 0.2541217083869258,
+        "intact_positive_pixel_counts": [
+          112
+        ],
+        "non_jpeg_tampered_pixel_iou": 0.23763250218925092,
+        "tampered_pixel_iou_by_family": {
+          "B1:jpeg75": 0.3365677393753005,
+          "T1": 0.0,
+          "T2": 0.0,
+          "T3": 0.821309285237141,
+          "T4": 0.3070138241031295,
+          "T5": 0.05983940160598394
+        }
+      },
+      "block_pixel_initial_gradient_conflicts": 4,
+      "gradient_probe_samples": 7
+    },
+    {
+      "model": "Attention-enhanced model",
+      "selected_epoch": 7,
+      "shared_rule_pixel_iou": 0.0,
+      "shared_rule_all_background_pixel_maps": 7,
+      "pixel_only_train_diagnostic": {
+        "tau": 0.35,
+        "tampered_pixel_iou": 0.38927057614245636,
+        "intact_positive_pixel_counts": [
+          1157
+        ],
+        "non_jpeg_tampered_pixel_iou": 0.2838315413549251,
+        "tampered_pixel_iou_by_family": {
+          "B1:jpeg75": 0.9164657500801123,
+          "T1": 0.0,
+          "T2": 0.01997780244173141,
+          "T3": 0.7056145675265554,
+          "T4": 0.28948329377396387,
+          "T5": 0.4040820430323748
+        }
+      },
+      "block_pixel_initial_gradient_conflicts": 4,
+      "gradient_probe_samples": 7
+    }
+  ],
+  "findings": [
+    "Shared detection/localisation threshold suppresses every pixel map in these selected synthetic checkpoints.",
+    "A lower pixel-only diagnostic threshold recovers some overlap, but fails some local edits and creates intact false positives. This is not an acceptable fix.",
+    "Block/pixel gradients conflict on some inputs in both models. Initial shared-stem gradient conflict alone does not establish the cause of training failure.",
+    "No frozen rule, loss, study configuration, test split or active classifier run was modified. No additional large learned-model training is justified by these fixtures."
+  ],
+  "next_decision": "Preserve failed learned-model status; do not promote alternative threshold as passing. Continue frozen classifier impact and matched evidence before any revised learned-method experiment."
+}

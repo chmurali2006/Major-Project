@@ -1,0 +1,115 @@
+{
+  "synthetic": true,
+  "medical_data": false,
+  "source_sha256": "fa7b78cc215df21d7ce54d8c3c6637c326dab95c10fbc12263101365973f4268",
+  "settings": {
+    "block": 8,
+    "qim_step": 8,
+    "correction_linf_rgb": 4,
+    "steps": 8,
+    "step_rgb": 1.0
+  },
+  "guided_forward_queries": 19,
+  "guided_backward_queries": 8,
+  "random": {
+    "trace": [
+      {
+        "candidate": 0,
+        "guide_kl": 0.04842509329319
+      },
+      {
+        "candidate": 1,
+        "guide_kl": 0.003072679042816162
+      },
+      {
+        "candidate": 2,
+        "guide_kl": 0.0
+      },
+      {
+        "candidate": 3,
+        "guide_kl": 0.0
+      },
+      {
+        "candidate": 4,
+        "guide_kl": 0.003072679042816162
+      },
+      {
+        "candidate": 5,
+        "guide_kl": 0.003072679042816162
+      },
+      {
+        "candidate": 6,
+        "guide_kl": 0.14369842410087585
+      },
+      {
+        "candidate": 7,
+        "guide_kl": 0.07500030100345612
+      },
+      {
+        "candidate": 8,
+        "guide_kl": 0.0
+      },
+      {
+        "candidate": 9,
+        "guide_kl": 0.10686662793159485
+      },
+      {
+        "candidate": 10,
+        "guide_kl": 0.04842509329319
+      },
+      {
+        "candidate": 11,
+        "guide_kl": 0.10686662793159485
+      },
+      {
+        "candidate": 12,
+        "guide_kl": 0.027430236339569092
+      },
+      {
+        "candidate": 13,
+        "guide_kl": 0.0
+      },
+      {
+        "candidate": 14,
+        "guide_kl": 0.18514391779899597
+      },
+      {
+        "candidate": 15,
+        "guide_kl": 0.003072679042816162
+      },
+      {
+        "candidate": 16,
+        "guide_kl": 0.07500030100345612
+      },
+      {
+        "candidate": 17,
+        "guide_kl": 0.027430236339569092
+      }
+    ],
+    "guide_kl": 0.0,
+    "forward_queries": 19,
+    "backward_queries": 0,
+    "seed": 11,
+    "selection": "strictly lower guide KL; baseline wins ties",
+    "limits": [
+      "Same forward-query count and non-carrier Linf allowance as guided; not compute or energy matched.",
+      "Random magnitudes sampled uniformly over the full integer correction allowance.",
+      "Includes original prediction query and baseline evaluation; no unseen-model selection.",
+      "Better guide KL alone is not clinical or transfer efficacy."
+    ]
+  },
+  "distortion_gate": {
+    "accepted": false,
+    "base_squared_error": 32,
+    "candidate_squared_error": 48,
+    "reason": "abstain_added_distortion",
+    "limit": "Pixel squared error only; not clinical preservation or authentication."
+  },
+  "all_clean_payloads_recovered": true,
+  "finding": "Locking carrier values and changing only previously untouched non-carrier samples strictly increases squared distortion for any nonzero correction. Equal-distortion improvement over this fixed embedding is impossible under these constraints.",
+  "limits": [
+    "Random and guided are forward-query matched, not gradient-compute or energy matched.",
+    "The gate returning baseline is a structural limitation, not successful diagnostic correction.",
+    "No medical efficacy, SOTA, clinical safety or novelty result."
+  ]
+}

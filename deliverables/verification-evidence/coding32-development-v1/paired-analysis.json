@@ -1,0 +1,2031 @@
+{
+  "schema": "paired-coding-development-analysis-v1",
+  "resampling_unit": "source_image_NOT_patient",
+  "bootstrap_repetitions": 10000,
+  "bootstrap_seed": 1201,
+  "groups": [
+    {
+      "method": "bounded289",
+      "case": "intact",
+      "n": 32,
+      "fine_maps": 32,
+      "coverage": 1.0,
+      "coverage_wilson95_descriptive": [
+        0.8928208017449293,
+        1.0
+      ],
+      "mean_verify_seconds_all_cases": 0.04765555484373074
+    },
+    {
+      "method": "index288",
+      "case": "intact",
+      "n": 32,
+      "fine_maps": 32,
+      "coverage": 1.0,
+      "coverage_wilson95_descriptive": [
+        0.8928208017449293,
+        1.0
+      ],
+      "mean_verify_seconds_all_cases": 0.046784644500011296
+    },
+    {
+      "method": "set330",
+      "case": "intact",
+      "n": 32,
+      "fine_maps": 32,
+      "coverage": 1.0,
+      "coverage_wilson95_descriptive": [
+        0.8928208017449293,
+        1.0
+      ],
+      "mean_verify_seconds_all_cases": 0.04660090640624226
+    },
+    {
+      "method": "full4",
+      "case": "intact",
+      "n": 32,
+      "fine_maps": 32,
+      "coverage": 1.0,
+      "coverage_wilson95_descriptive": [
+        0.8928208017449293,
+        1.0
+      ],
+      "mean_verify_seconds_all_cases": 0.05161354709373889
+    },
+    {
+      "method": "bounded289",
+      "case": "one-bit",
+      "n": 32,
+      "fine_maps": 32,
+      "coverage": 1.0,
+      "coverage_wilson95_descriptive": [
+        0.8928208017449293,
+        1.0
+      ],
+      "mean_verify_seconds_all_cases": 1.0815199761562493
+    },
+    {
+      "method": "index288",
+      "case": "one-bit",
+      "n": 32,
+      "fine_maps": 32,
+      "coverage": 1.0,
+      "coverage_wilson95_descriptive": [
+        0.8928208017449293,
+        1.0
+      ],
+      "mean_verify_seconds_all_cases": 0.12811411681249396
+    },
+    {
+      "method": "set330",
+      "case": "one-bit",
+      "n": 32,
+      "fine_maps": 32,
+      "coverage": 1.0,
+      "coverage_wilson95_descriptive": [
+        0.8928208017449293,
+        1.0
+      ],
+      "mean_verify_seconds_all_cases": 0.14730094478125189
+    },
+    {
+      "method": "full4",
+      "case": "one-bit",
+      "n": 32,
+      "fine_maps": 32,
+      "coverage": 1.0,
+      "coverage_wilson95_descriptive": [
+        0.8928208017449293,
+        1.0
+      ],
+      "mean_verify_seconds_all_cases": 0.051463255156239285
+    },
+    {
+      "method": "bounded289",
+      "case": "brightness32",
+      "n": 32,
+      "fine_maps": 32,
+      "coverage": 1.0,
+      "coverage_wilson95_descriptive": [
+        0.8928208017449293,
+        1.0
+      ],
+      "mean_verify_seconds_all_cases": 1.8141949479687476
+    },
+    {
+      "method": "index288",
+      "case": "brightness32",
+      "n": 32,
+      "fine_maps": 32,
+      "coverage": 1.0,
+      "coverage_wilson95_descriptive": [
+        0.8928208017449293,
+        1.0
+      ],
+      "mean_verify_seconds_all_cases": 0.13540693428124229
+    },
+    {
+      "method": "set330",
+      "case": "brightness32",
+      "n": 32,
+      "fine_maps": 32,
+      "coverage": 1.0,
+      "coverage_wilson95_descriptive": [
+        0.8928208017449293,
+        1.0
+      ],
+      "mean_verify_seconds_all_cases": 0.15068946024999263
+    },
+    {
+      "method": "full4",
+      "case": "brightness32",
+      "n": 32,
+      "fine_maps": 32,
+      "coverage": 1.0,
+      "coverage_wilson95_descriptive": [
+        0.8928208017449293,
+        1.0
+      ],
+      "mean_verify_seconds_all_cases": 0.051253630781236126
+    },
+    {
+      "method": "bounded289",
+      "case": "replace64",
+      "n": 32,
+      "fine_maps": 32,
+      "coverage": 1.0,
+      "coverage_wilson95_descriptive": [
+        0.8928208017449293,
+        1.0
+      ],
+      "mean_verify_seconds_all_cases": 3.9801170334375016
+    },
+    {
+      "method": "index288",
+      "case": "replace64",
+      "n": 32,
+      "fine_maps": 0,
+      "coverage": 0.0,
+      "coverage_wilson95_descriptive": [
+        0.0,
+        0.1071791982550706
+      ],
+      "mean_verify_seconds_all_cases": 0.13157444006250252
+    },
+    {
+      "method": "set330",
+      "case": "replace64",
+      "n": 32,
+      "fine_maps": 0,
+      "coverage": 0.0,
+      "coverage_wilson95_descriptive": [
+        0.0,
+        0.1071791982550706
+      ],
+      "mean_verify_seconds_all_cases": 0.14373782678124591
+    },
+    {
+      "method": "full4",
+      "case": "replace64",
+      "n": 32,
+      "fine_maps": 32,
+      "coverage": 1.0,
+      "coverage_wilson95_descriptive": [
+        0.8928208017449293,
+        1.0
+      ],
+      "mean_verify_seconds_all_cases": 0.05245660006249686
+    },
+    {
+      "method": "bounded289",
+      "case": "copy64",
+      "n": 32,
+      "fine_maps": 32,
+      "coverage": 1.0,
+      "coverage_wilson95_descriptive": [
+        0.8928208017449293,
+        1.0
+      ],
+      "mean_verify_seconds_all_cases": 3.974162825437503
+    },
+    {
+      "method": "index288",
+      "case": "copy64",
+      "n": 32,
+      "fine_maps": 0,
+      "coverage": 0.0,
+      "coverage_wilson95_descriptive": [
+        0.0,
+        0.1071791982550706
+      ],
+      "mean_verify_seconds_all_cases": 0.13255106756250257
+    },
+    {
+      "method": "set330",
+      "case": "copy64",
+      "n": 32,
+      "fine_maps": 0,
+      "coverage": 0.0,
+      "coverage_wilson95_descriptive": [
+        0.0,
+        0.1071791982550706
+      ],
+      "mean_verify_seconds_all_cases": 0.14361477656250088
+    },
+    {
+      "method": "full4",
+      "case": "copy64",
+      "n": 32,
+      "fine_maps": 32,
+      "coverage": 1.0,
+      "coverage_wilson95_descriptive": [
+        0.8928208017449293,
+        1.0
+      ],
+      "mean_verify_seconds_all_cases": 0.051428172593748656
+    },
+    {
+      "method": "bounded289",
+      "case": "jpeg75",
+      "n": 32,
+      "fine_maps": 0,
+      "coverage": 0.0,
+      "coverage_wilson95_descriptive": [
+        0.0,
+        0.1071791982550706
+      ],
+      "mean_verify_seconds_all_cases": 1.2948472803437419
+    },
+    {
+      "method": "index288",
+      "case": "jpeg75",
+      "n": 32,
+      "fine_maps": 0,
+      "coverage": 0.0,
+      "coverage_wilson95_descriptive": [
+        0.0,
+        0.1071791982550706
+      ],
+      "mean_verify_seconds_all_cases": 0.1285466800937396
+    },
+    {
+      "method": "set330",
+      "case": "jpeg75",
+      "n": 32,
+      "fine_maps": 0,
+      "coverage": 0.0,
+      "coverage_wilson95_descriptive": [
+        0.0,
+        0.1071791982550706
+      ],
+      "mean_verify_seconds_all_cases": 0.14454725893749476
+    },
+    {
+      "method": "full4",
+      "case": "jpeg75",
+      "n": 32,
+      "fine_maps": 32,
+      "coverage": 1.0,
+      "coverage_wilson95_descriptive": [
+        0.8928208017449293,
+        1.0
+      ],
+      "mean_verify_seconds_all_cases": 0.05250721962499583
+    }
+  ],
+  "paired_comparisons": [
+    {
+      "case": "intact",
+      "method": "bounded289",
+      "minus": "index288",
+      "n": 32,
+      "coverage_difference": {
+        "mean_difference": 0.0,
+        "paired_percentile95": [
+          0.0,
+          0.0
+        ]
+      },
+      "verification_seconds_difference_all_cases": {
+        "mean_difference": 0.0008709103437194443,
+        "paired_percentile95": [
+          -0.0005870679180095983,
+          0.0029977042156011263
+        ]
+      },
+      "timing_warning": "Peeling may abstain; total verification time is not time to a successful fine map."
+    },
+    {
+      "case": "intact",
+      "method": "bounded289",
+      "minus": "set330",
+      "n": 32,
+      "coverage_difference": {
+        "mean_difference": 0.0,
+        "paired_percentile95": [
+          0.0,
+          0.0
+        ]
+      },
+      "verification_seconds_difference_all_cases": {
+        "mean_difference": 0.0010546484374884812,
+        "paired_percentile95": [
+          -0.0009127487328300709,
+          0.003827814798433902
+        ]
+      },
+      "timing_warning": "Peeling may abstain; total verification time is not time to a successful fine map."
+    },
+    {
+      "case": "intact",
+      "method": "bounded289",
+      "minus": "full4",
+      "n": 32,
+      "coverage_difference": {
+        "mean_difference": 0.0,
+        "paired_percentile95": [
+          0.0,
+          0.0
+        ]
+      },
+      "verification_seconds_difference_all_cases": {
+        "mean_difference": -0.003957992250008147,
+        "paired_percentile95": [
+          -0.005686203403918499,
+          -0.0012150965875041397
+        ]
+      },
+      "timing_warning": "Peeling may abstain; total verification time is not time to a successful fine map."
+    },
+    {
+      "case": "one-bit",
+      "method": "bounded289",
+      "minus": "index288",
+      "n": 32,
+      "coverage_difference": {
+        "mean_difference": 0.0,
+        "paired_percentile95": [
+          0.0,
+          0.0
+        ]
+      },
+      "verification_seconds_difference_all_cases": {
+        "mean_difference": 0.9534058593437553,
+        "paired_percentile95": [
+          0.9447499547390553,
+          0.9630352209328071
+        ]
+      },
+      "timing_warning": "Peeling may abstain; total verification time is not time to a successful fine map."
+    },
+    {
+      "case": "one-bit",
+      "method": "bounded289",
+      "minus": "set330",
+      "n": 32,
+      "coverage_difference": {
+        "mean_difference": 0.0,
+        "paired_percentile95": [
+          0.0,
+          0.0
+        ]
+      },
+      "verification_seconds_difference_all_cases": {
+        "mean_difference": 0.9342190313749974,
+        "paired_percentile95": [
+          0.9264402889664116,
+          0.9432069224671826
+        ]
+      },
+      "timing_warning": "Peeling may abstain; total verification time is not time to a successful fine map."
+    },
+    {
+      "case": "one-bit",
+      "method": "bounded289",
+      "minus": "full4",
+      "n": 32,
+      "coverage_difference": {
+        "mean_difference": 0.0,
+        "paired_percentile95": [
+          0.0,
+          0.0
+        ]
+      },
+      "verification_seconds_difference_all_cases": {
+        "mean_difference": 1.03005672100001,
+        "paired_percentile95": [
+          1.0215884354382874,
+          1.0400088268906287
+        ]
+      },
+      "timing_warning": "Peeling may abstain; total verification time is not time to a successful fine map."
+    },
+    {
+      "case": "brightness32",
+      "method": "bounded289",
+      "minus": "index288",
+      "n": 32,
+      "coverage_difference": {
+        "mean_difference": 0.0,
+        "paired_percentile95": [
+          0.0,
+          0.0
+        ]
+      },
+      "verification_seconds_difference_all_cases": {
+        "mean_difference": 1.6787880136875053,
+        "paired_percentile95": [
+          1.6461944270804547,
+          1.7099526280804955
+        ]
+      },
+      "timing_warning": "Peeling may abstain; total verification time is not time to a successful fine map."
+    },
+    {
+      "case": "brightness32",
+      "method": "bounded289",
+      "minus": "set330",
+      "n": 32,
+      "coverage_difference": {
+        "mean_difference": 0.0,
+        "paired_percentile95": [
+          0.0,
+          0.0
+        ]
+      },
+      "verification_seconds_difference_all_cases": {
+        "mean_difference": 1.663505487718755,
+        "paired_percentile95": [
+          1.6310147018234336,
+          1.6947809277351613
+        ]
+      },
+      "timing_warning": "Peeling may abstain; total verification time is not time to a successful fine map."
+    },
+    {
+      "case": "brightness32",
+      "method": "bounded289",
+      "minus": "full4",
+      "n": 32,
+      "coverage_difference": {
+        "mean_difference": 0.0,
+        "paired_percentile95": [
+          0.0,
+          0.0
+        ]
+      },
+      "verification_seconds_difference_all_cases": {
+        "mean_difference": 1.7629413171875115,
+        "paired_percentile95": [
+          1.7300973572437575,
+          1.7946180869101733
+        ]
+      },
+      "timing_warning": "Peeling may abstain; total verification time is not time to a successful fine map."
+    },
+    {
+      "case": "replace64",
+      "method": "bounded289",
+      "minus": "index288",
+      "n": 32,
+      "coverage_difference": {
+        "mean_difference": 1.0,
+        "paired_percentile95": [
+          1.0,
+          1.0
+        ]
+      },
+      "verification_seconds_difference_all_cases": {
+        "mean_difference": 3.848542593374999,
+        "paired_percentile95": [
+          3.799110483049222,
+          3.89463884071719
+        ]
+      },
+      "timing_warning": "Peeling may abstain; total verification time is not time to a successful fine map."
+    },
+    {
+      "case": "replace64",
+      "method": "bounded289",
+      "minus": "set330",
+      "n": 32,
+      "coverage_difference": {
+        "mean_difference": 1.0,
+        "paired_percentile95": [
+          1.0,
+          1.0
+        ]
+      },
+      "verification_seconds_difference_all_cases": {
+        "mean_difference": 3.8363792066562556,
+        "paired_percentile95": [
+          3.7869569510257928,
+          3.882261386860168
+        ]
+      },
+      "timing_warning": "Peeling may abstain; total verification time is not time to a successful fine map."
+    },
+    {
+      "case": "replace64",
+      "method": "bounded289",
+      "minus": "full4",
+      "n": 32,
+      "coverage_difference": {
+        "mean_difference": 0.0,
+        "paired_percentile95": [
+          0.0,
+          0.0
+        ]
+      },
+      "verification_seconds_difference_all_cases": {
+        "mean_difference": 3.9276604333750047,
+        "paired_percentile95": [
+          3.878143194736709,
+          3.973769856739064
+        ]
+      },
+      "timing_warning": "Peeling may abstain; total verification time is not time to a successful fine map."
+    },
+    {
+      "case": "copy64",
+      "method": "bounded289",
+      "minus": "index288",
+      "n": 32,
+      "coverage_difference": {
+        "mean_difference": 1.0,
+        "paired_percentile95": [
+          1.0,
+          1.0
+        ]
+      },
+      "verification_seconds_difference_all_cases": {
+        "mean_difference": 3.8416117578750004,
+        "paired_percentile95": [
+          3.7923100063194988,
+          3.888050820401564
+        ]
+      },
+      "timing_warning": "Peeling may abstain; total verification time is not time to a successful fine map."
+    },
+    {
+      "case": "copy64",
+      "method": "bounded289",
+      "minus": "set330",
+      "n": 32,
+      "coverage_difference": {
+        "mean_difference": 1.0,
+        "paired_percentile95": [
+          1.0,
+          1.0
+        ]
+      },
+      "verification_seconds_difference_all_cases": {
+        "mean_difference": 3.830548048875002,
+        "paired_percentile95": [
+          3.781394305000775,
+          3.876729162164844
+        ]
+      },
+      "timing_warning": "Peeling may abstain; total verification time is not time to a successful fine map."
+    },
+    {
+      "case": "copy64",
+      "method": "bounded289",
+      "minus": "full4",
+      "n": 32,
+      "coverage_difference": {
+        "mean_difference": 0.0,
+        "paired_percentile95": [
+          0.0,
+          0.0
+        ]
+      },
+      "verification_seconds_difference_all_cases": {
+        "mean_difference": 3.9227346528437543,
+        "paired_percentile95": [
+          3.873848913496903,
+          3.9688810653382833
+        ]
+      },
+      "timing_warning": "Peeling may abstain; total verification time is not time to a successful fine map."
+    },
+    {
+      "case": "jpeg75",
+      "method": "bounded289",
+      "minus": "index288",
+      "n": 32,
+      "coverage_difference": {
+        "mean_difference": 0.0,
+        "paired_percentile95": [
+          0.0,
+          0.0
+        ]
+      },
+      "verification_seconds_difference_all_cases": {
+        "mean_difference": 1.1663006002500023,
+        "paired_percentile95": [
+          1.1570268751374984,
+          1.1761924569437512
+        ]
+      },
+      "timing_warning": "Peeling may abstain; total verification time is not time to a successful fine map."
+    },
+    {
+      "case": "jpeg75",
+      "method": "bounded289",
+      "minus": "set330",
+      "n": 32,
+      "coverage_difference": {
+        "mean_difference": 0.0,
+        "paired_percentile95": [
+          0.0,
+          0.0
+        ]
+      },
+      "verification_seconds_difference_all_cases": {
+        "mean_difference": 1.150300021406247,
+        "paired_percentile95": [
+          1.1412465798296845,
+          1.1599409804054643
+        ]
+      },
+      "timing_warning": "Peeling may abstain; total verification time is not time to a successful fine map."
+    },
+    {
+      "case": "jpeg75",
+      "method": "bounded289",
+      "minus": "full4",
+      "n": 32,
+      "coverage_difference": {
+        "mean_difference": -1.0,
+        "paired_percentile95": [
+          -1.0,
+          -1.0
+        ]
+      },
+      "verification_seconds_difference_all_cases": {
+        "mean_difference": 1.242340060718746,
+        "paired_percentile95": [
+          1.2332991729515441,
+          1.2519957063179754
+        ]
+      },
+      "timing_warning": "Peeling may abstain; total verification time is not time to a successful fine map."
+    }
+  ],
+  "classwise": [
+    {
+      "method": "bounded289",
+      "case": "intact",
+      "diagnosis": "AK",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "bounded289",
+      "case": "intact",
+      "diagnosis": "BCC",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "bounded289",
+      "case": "intact",
+      "diagnosis": "BKL",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "bounded289",
+      "case": "intact",
+      "diagnosis": "DF",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "bounded289",
+      "case": "intact",
+      "diagnosis": "MEL",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "bounded289",
+      "case": "intact",
+      "diagnosis": "NV",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "bounded289",
+      "case": "intact",
+      "diagnosis": "SCC",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "bounded289",
+      "case": "intact",
+      "diagnosis": "VASC",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "index288",
+      "case": "intact",
+      "diagnosis": "AK",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "index288",
+      "case": "intact",
+      "diagnosis": "BCC",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "index288",
+      "case": "intact",
+      "diagnosis": "BKL",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "index288",
+      "case": "intact",
+      "diagnosis": "DF",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "index288",
+      "case": "intact",
+      "diagnosis": "MEL",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "index288",
+      "case": "intact",
+      "diagnosis": "NV",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "index288",
+      "case": "intact",
+      "diagnosis": "SCC",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "index288",
+      "case": "intact",
+      "diagnosis": "VASC",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "set330",
+      "case": "intact",
+      "diagnosis": "AK",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "set330",
+      "case": "intact",
+      "diagnosis": "BCC",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "set330",
+      "case": "intact",
+      "diagnosis": "BKL",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "set330",
+      "case": "intact",
+      "diagnosis": "DF",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "set330",
+      "case": "intact",
+      "diagnosis": "MEL",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "set330",
+      "case": "intact",
+      "diagnosis": "NV",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "set330",
+      "case": "intact",
+      "diagnosis": "SCC",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "set330",
+      "case": "intact",
+      "diagnosis": "VASC",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "full4",
+      "case": "intact",
+      "diagnosis": "AK",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "full4",
+      "case": "intact",
+      "diagnosis": "BCC",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "full4",
+      "case": "intact",
+      "diagnosis": "BKL",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "full4",
+      "case": "intact",
+      "diagnosis": "DF",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "full4",
+      "case": "intact",
+      "diagnosis": "MEL",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "full4",
+      "case": "intact",
+      "diagnosis": "NV",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "full4",
+      "case": "intact",
+      "diagnosis": "SCC",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "full4",
+      "case": "intact",
+      "diagnosis": "VASC",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "bounded289",
+      "case": "one-bit",
+      "diagnosis": "AK",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "bounded289",
+      "case": "one-bit",
+      "diagnosis": "BCC",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "bounded289",
+      "case": "one-bit",
+      "diagnosis": "BKL",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "bounded289",
+      "case": "one-bit",
+      "diagnosis": "DF",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "bounded289",
+      "case": "one-bit",
+      "diagnosis": "MEL",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "bounded289",
+      "case": "one-bit",
+      "diagnosis": "NV",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "bounded289",
+      "case": "one-bit",
+      "diagnosis": "SCC",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "bounded289",
+      "case": "one-bit",
+      "diagnosis": "VASC",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "index288",
+      "case": "one-bit",
+      "diagnosis": "AK",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "index288",
+      "case": "one-bit",
+      "diagnosis": "BCC",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "index288",
+      "case": "one-bit",
+      "diagnosis": "BKL",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "index288",
+      "case": "one-bit",
+      "diagnosis": "DF",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "index288",
+      "case": "one-bit",
+      "diagnosis": "MEL",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "index288",
+      "case": "one-bit",
+      "diagnosis": "NV",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "index288",
+      "case": "one-bit",
+      "diagnosis": "SCC",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "index288",
+      "case": "one-bit",
+      "diagnosis": "VASC",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "set330",
+      "case": "one-bit",
+      "diagnosis": "AK",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "set330",
+      "case": "one-bit",
+      "diagnosis": "BCC",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "set330",
+      "case": "one-bit",
+      "diagnosis": "BKL",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "set330",
+      "case": "one-bit",
+      "diagnosis": "DF",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "set330",
+      "case": "one-bit",
+      "diagnosis": "MEL",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "set330",
+      "case": "one-bit",
+      "diagnosis": "NV",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "set330",
+      "case": "one-bit",
+      "diagnosis": "SCC",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "set330",
+      "case": "one-bit",
+      "diagnosis": "VASC",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "full4",
+      "case": "one-bit",
+      "diagnosis": "AK",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "full4",
+      "case": "one-bit",
+      "diagnosis": "BCC",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "full4",
+      "case": "one-bit",
+      "diagnosis": "BKL",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "full4",
+      "case": "one-bit",
+      "diagnosis": "DF",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "full4",
+      "case": "one-bit",
+      "diagnosis": "MEL",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "full4",
+      "case": "one-bit",
+      "diagnosis": "NV",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "full4",
+      "case": "one-bit",
+      "diagnosis": "SCC",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "full4",
+      "case": "one-bit",
+      "diagnosis": "VASC",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "bounded289",
+      "case": "brightness32",
+      "diagnosis": "AK",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "bounded289",
+      "case": "brightness32",
+      "diagnosis": "BCC",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "bounded289",
+      "case": "brightness32",
+      "diagnosis": "BKL",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "bounded289",
+      "case": "brightness32",
+      "diagnosis": "DF",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "bounded289",
+      "case": "brightness32",
+      "diagnosis": "MEL",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "bounded289",
+      "case": "brightness32",
+      "diagnosis": "NV",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "bounded289",
+      "case": "brightness32",
+      "diagnosis": "SCC",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "bounded289",
+      "case": "brightness32",
+      "diagnosis": "VASC",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "index288",
+      "case": "brightness32",
+      "diagnosis": "AK",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "index288",
+      "case": "brightness32",
+      "diagnosis": "BCC",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "index288",
+      "case": "brightness32",
+      "diagnosis": "BKL",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "index288",
+      "case": "brightness32",
+      "diagnosis": "DF",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "index288",
+      "case": "brightness32",
+      "diagnosis": "MEL",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "index288",
+      "case": "brightness32",
+      "diagnosis": "NV",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "index288",
+      "case": "brightness32",
+      "diagnosis": "SCC",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "index288",
+      "case": "brightness32",
+      "diagnosis": "VASC",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "set330",
+      "case": "brightness32",
+      "diagnosis": "AK",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "set330",
+      "case": "brightness32",
+      "diagnosis": "BCC",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "set330",
+      "case": "brightness32",
+      "diagnosis": "BKL",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "set330",
+      "case": "brightness32",
+      "diagnosis": "DF",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "set330",
+      "case": "brightness32",
+      "diagnosis": "MEL",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "set330",
+      "case": "brightness32",
+      "diagnosis": "NV",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "set330",
+      "case": "brightness32",
+      "diagnosis": "SCC",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "set330",
+      "case": "brightness32",
+      "diagnosis": "VASC",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "full4",
+      "case": "brightness32",
+      "diagnosis": "AK",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "full4",
+      "case": "brightness32",
+      "diagnosis": "BCC",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "full4",
+      "case": "brightness32",
+      "diagnosis": "BKL",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "full4",
+      "case": "brightness32",
+      "diagnosis": "DF",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "full4",
+      "case": "brightness32",
+      "diagnosis": "MEL",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "full4",
+      "case": "brightness32",
+      "diagnosis": "NV",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "full4",
+      "case": "brightness32",
+      "diagnosis": "SCC",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "full4",
+      "case": "brightness32",
+      "diagnosis": "VASC",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "bounded289",
+      "case": "replace64",
+      "diagnosis": "AK",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "bounded289",
+      "case": "replace64",
+      "diagnosis": "BCC",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "bounded289",
+      "case": "replace64",
+      "diagnosis": "BKL",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "bounded289",
+      "case": "replace64",
+      "diagnosis": "DF",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "bounded289",
+      "case": "replace64",
+      "diagnosis": "MEL",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "bounded289",
+      "case": "replace64",
+      "diagnosis": "NV",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "bounded289",
+      "case": "replace64",
+      "diagnosis": "SCC",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "bounded289",
+      "case": "replace64",
+      "diagnosis": "VASC",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "index288",
+      "case": "replace64",
+      "diagnosis": "AK",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "index288",
+      "case": "replace64",
+      "diagnosis": "BCC",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "index288",
+      "case": "replace64",
+      "diagnosis": "BKL",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "index288",
+      "case": "replace64",
+      "diagnosis": "DF",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "index288",
+      "case": "replace64",
+      "diagnosis": "MEL",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "index288",
+      "case": "replace64",
+      "diagnosis": "NV",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "index288",
+      "case": "replace64",
+      "diagnosis": "SCC",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "index288",
+      "case": "replace64",
+      "diagnosis": "VASC",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "set330",
+      "case": "replace64",
+      "diagnosis": "AK",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "set330",
+      "case": "replace64",
+      "diagnosis": "BCC",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "set330",
+      "case": "replace64",
+      "diagnosis": "BKL",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "set330",
+      "case": "replace64",
+      "diagnosis": "DF",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "set330",
+      "case": "replace64",
+      "diagnosis": "MEL",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "set330",
+      "case": "replace64",
+      "diagnosis": "NV",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "set330",
+      "case": "replace64",
+      "diagnosis": "SCC",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "set330",
+      "case": "replace64",
+      "diagnosis": "VASC",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "full4",
+      "case": "replace64",
+      "diagnosis": "AK",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "full4",
+      "case": "replace64",
+      "diagnosis": "BCC",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "full4",
+      "case": "replace64",
+      "diagnosis": "BKL",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "full4",
+      "case": "replace64",
+      "diagnosis": "DF",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "full4",
+      "case": "replace64",
+      "diagnosis": "MEL",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "full4",
+      "case": "replace64",
+      "diagnosis": "NV",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "full4",
+      "case": "replace64",
+      "diagnosis": "SCC",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "full4",
+      "case": "replace64",
+      "diagnosis": "VASC",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "bounded289",
+      "case": "copy64",
+      "diagnosis": "AK",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "bounded289",
+      "case": "copy64",
+      "diagnosis": "BCC",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "bounded289",
+      "case": "copy64",
+      "diagnosis": "BKL",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "bounded289",
+      "case": "copy64",
+      "diagnosis": "DF",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "bounded289",
+      "case": "copy64",
+      "diagnosis": "MEL",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "bounded289",
+      "case": "copy64",
+      "diagnosis": "NV",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "bounded289",
+      "case": "copy64",
+      "diagnosis": "SCC",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "bounded289",
+      "case": "copy64",
+      "diagnosis": "VASC",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "index288",
+      "case": "copy64",
+      "diagnosis": "AK",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "index288",
+      "case": "copy64",
+      "diagnosis": "BCC",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "index288",
+      "case": "copy64",
+      "diagnosis": "BKL",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "index288",
+      "case": "copy64",
+      "diagnosis": "DF",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "index288",
+      "case": "copy64",
+      "diagnosis": "MEL",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "index288",
+      "case": "copy64",
+      "diagnosis": "NV",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "index288",
+      "case": "copy64",
+      "diagnosis": "SCC",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "index288",
+      "case": "copy64",
+      "diagnosis": "VASC",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "set330",
+      "case": "copy64",
+      "diagnosis": "AK",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "set330",
+      "case": "copy64",
+      "diagnosis": "BCC",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "set330",
+      "case": "copy64",
+      "diagnosis": "BKL",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "set330",
+      "case": "copy64",
+      "diagnosis": "DF",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "set330",
+      "case": "copy64",
+      "diagnosis": "MEL",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "set330",
+      "case": "copy64",
+      "diagnosis": "NV",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "set330",
+      "case": "copy64",
+      "diagnosis": "SCC",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "set330",
+      "case": "copy64",
+      "diagnosis": "VASC",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "full4",
+      "case": "copy64",
+      "diagnosis": "AK",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "full4",
+      "case": "copy64",
+      "diagnosis": "BCC",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "full4",
+      "case": "copy64",
+      "diagnosis": "BKL",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "full4",
+      "case": "copy64",
+      "diagnosis": "DF",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "full4",
+      "case": "copy64",
+      "diagnosis": "MEL",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "full4",
+      "case": "copy64",
+      "diagnosis": "NV",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "full4",
+      "case": "copy64",
+      "diagnosis": "SCC",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "full4",
+      "case": "copy64",
+      "diagnosis": "VASC",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "bounded289",
+      "case": "jpeg75",
+      "diagnosis": "AK",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "bounded289",
+      "case": "jpeg75",
+      "diagnosis": "BCC",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "bounded289",
+      "case": "jpeg75",
+      "diagnosis": "BKL",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "bounded289",
+      "case": "jpeg75",
+      "diagnosis": "DF",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "bounded289",
+      "case": "jpeg75",
+      "diagnosis": "MEL",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "bounded289",
+      "case": "jpeg75",
+      "diagnosis": "NV",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "bounded289",
+      "case": "jpeg75",
+      "diagnosis": "SCC",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "bounded289",
+      "case": "jpeg75",
+      "diagnosis": "VASC",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "index288",
+      "case": "jpeg75",
+      "diagnosis": "AK",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "index288",
+      "case": "jpeg75",
+      "diagnosis": "BCC",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "index288",
+      "case": "jpeg75",
+      "diagnosis": "BKL",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "index288",
+      "case": "jpeg75",
+      "diagnosis": "DF",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "index288",
+      "case": "jpeg75",
+      "diagnosis": "MEL",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "index288",
+      "case": "jpeg75",
+      "diagnosis": "NV",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "index288",
+      "case": "jpeg75",
+      "diagnosis": "SCC",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "index288",
+      "case": "jpeg75",
+      "diagnosis": "VASC",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "set330",
+      "case": "jpeg75",
+      "diagnosis": "AK",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "set330",
+      "case": "jpeg75",
+      "diagnosis": "BCC",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "set330",
+      "case": "jpeg75",
+      "diagnosis": "BKL",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "set330",
+      "case": "jpeg75",
+      "diagnosis": "DF",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "set330",
+      "case": "jpeg75",
+      "diagnosis": "MEL",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "set330",
+      "case": "jpeg75",
+      "diagnosis": "NV",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "set330",
+      "case": "jpeg75",
+      "diagnosis": "SCC",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "set330",
+      "case": "jpeg75",
+      "diagnosis": "VASC",
+      "n": 4,
+      "fine_maps": 0
+    },
+    {
+      "method": "full4",
+      "case": "jpeg75",
+      "diagnosis": "AK",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "full4",
+      "case": "jpeg75",
+      "diagnosis": "BCC",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "full4",
+      "case": "jpeg75",
+      "diagnosis": "BKL",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "full4",
+      "case": "jpeg75",
+      "diagnosis": "DF",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "full4",
+      "case": "jpeg75",
+      "diagnosis": "MEL",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "full4",
+      "case": "jpeg75",
+      "diagnosis": "NV",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "full4",
+      "case": "jpeg75",
+      "diagnosis": "SCC",
+      "n": 4,
+      "fine_maps": 4
+    },
+    {
+      "method": "full4",
+      "case": "jpeg75",
+      "diagnosis": "VASC",
+      "n": 4,
+      "fine_maps": 4
+    }
+  ],
+  "limitations": [
+    "Development selection: all intervals descriptive, not confirmatory final-study inference.",
+    "Patient/lesion independence unverified; image resampling cannot resolve clustering or selection bias.",
+    "Wilson intervals assume independent Bernoulli units and are descriptive here.",
+    "Bootstrap intervals can be degenerate for all-success/failure samples, not proof of guaranteed coverage.",
+    "No multiplicity correction; do not turn these comparisons into significance-based SOTA claims.",
+    "One timing per input/method/case, no technical-repeat or machine-independent latency guarantee.",
+    "Saved truth consistency is not independent decoding, clinical utility or novelty."
+  ]
+}

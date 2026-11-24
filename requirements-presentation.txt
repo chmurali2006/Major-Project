@@ -1,0 +1,4 @@
+# Optional; needed only to rebuild the exploratory plot and editable draft slides.
+-r requirements.txt
+matplotlib>=3.8,<4
+python-pptx>=1.0,<2

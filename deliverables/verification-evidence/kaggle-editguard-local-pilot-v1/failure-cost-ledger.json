@@ -1,0 +1,623 @@
+{
+  "failure_ledger": {
+    "schema": "comparison-failure-ledger-v1",
+    "rows": [
+      {
+        "method": "EditGuard clean",
+        "case": "intact",
+        "family": "intact",
+        "sources": 8,
+        "changed_sources": 0,
+        "sources_with_missed_pixels": 0,
+        "complete_target_misses": 0,
+        "missed_pixels": 0,
+        "extra_pixels": 38,
+        "worst_by_missed_fraction": []
+      },
+      {
+        "method": "EditGuard clean",
+        "case": "one-bit",
+        "family": "edit",
+        "sources": 8,
+        "changed_sources": 8,
+        "sources_with_missed_pixels": 8,
+        "complete_target_misses": 8,
+        "missed_pixels": 8,
+        "extra_pixels": 38,
+        "worst_by_missed_fraction": [
+          {
+            "source": "ISIC_0026713.png",
+            "changed_pixels": 1,
+            "missed_pixels": 1,
+            "missed_fraction": 1.0
+          },
+          {
+            "source": "ISIC_0029052.png",
+            "changed_pixels": 1,
+            "missed_pixels": 1,
+            "missed_fraction": 1.0
+          },
+          {
+            "source": "ISIC_0031864.png",
+            "changed_pixels": 1,
+            "missed_pixels": 1,
+            "missed_fraction": 1.0
+          }
+        ]
+      },
+      {
+        "method": "EditGuard clean",
+        "case": "brightness32",
+        "family": "edit",
+        "sources": 8,
+        "changed_sources": 8,
+        "sources_with_missed_pixels": 8,
+        "complete_target_misses": 8,
+        "missed_pixels": 8192,
+        "extra_pixels": 38,
+        "worst_by_missed_fraction": [
+          {
+            "source": "ISIC_0026713.png",
+            "changed_pixels": 1024,
+            "missed_pixels": 1024,
+            "missed_fraction": 1.0
+          },
+          {
+            "source": "ISIC_0029052.png",
+            "changed_pixels": 1024,
+            "missed_pixels": 1024,
+            "missed_fraction": 1.0
+          },
+          {
+            "source": "ISIC_0031864.png",
+            "changed_pixels": 1024,
+            "missed_pixels": 1024,
+            "missed_fraction": 1.0
+          }
+        ]
+      },
+      {
+        "method": "EditGuard clean",
+        "case": "replace64",
+        "family": "edit",
+        "sources": 8,
+        "changed_sources": 8,
+        "sources_with_missed_pixels": 8,
+        "complete_target_misses": 0,
+        "missed_pixels": 962,
+        "extra_pixels": 4793,
+        "worst_by_missed_fraction": [
+          {
+            "source": "ISIC_0058884.png",
+            "changed_pixels": 4096,
+            "missed_pixels": 379,
+            "missed_fraction": 0.092529296875
+          },
+          {
+            "source": "ISIC_0029052.png",
+            "changed_pixels": 4096,
+            "missed_pixels": 244,
+            "missed_fraction": 0.0595703125
+          },
+          {
+            "source": "ISIC_0055438.png",
+            "changed_pixels": 4096,
+            "missed_pixels": 123,
+            "missed_fraction": 0.030029296875
+          }
+        ]
+      },
+      {
+        "method": "EditGuard clean",
+        "case": "copy64",
+        "family": "edit",
+        "sources": 8,
+        "changed_sources": 8,
+        "sources_with_missed_pixels": 5,
+        "complete_target_misses": 1,
+        "missed_pixels": 4145,
+        "extra_pixels": 3862,
+        "worst_by_missed_fraction": [
+          {
+            "source": "ISIC_0058884.png",
+            "changed_pixels": 4096,
+            "missed_pixels": 4096,
+            "missed_fraction": 1.0
+          },
+          {
+            "source": "ISIC_0031864.png",
+            "changed_pixels": 4096,
+            "missed_pixels": 43,
+            "missed_fraction": 0.010498046875
+          },
+          {
+            "source": "ISIC_0055438.png",
+            "changed_pixels": 4096,
+            "missed_pixels": 3,
+            "missed_fraction": 0.000732421875
+          }
+        ]
+      },
+      {
+        "method": "EditGuard clean",
+        "case": "jpeg75",
+        "family": "benign-lossy",
+        "sources": 8,
+        "changed_sources": 8,
+        "sources_with_missed_pixels": 0,
+        "complete_target_misses": 0,
+        "missed_pixels": 0,
+        "extra_pixels": 2288,
+        "worst_by_missed_fraction": [
+          {
+            "source": "ISIC_0026713.png",
+            "changed_pixels": 261960,
+            "missed_pixels": 0,
+            "missed_fraction": 0.0
+          },
+          {
+            "source": "ISIC_0029052.png",
+            "changed_pixels": 262028,
+            "missed_pixels": 0,
+            "missed_fraction": 0.0
+          },
+          {
+            "source": "ISIC_0031864.png",
+            "changed_pixels": 261901,
+            "missed_pixels": 0,
+            "missed_fraction": 0.0
+          }
+        ]
+      },
+      {
+        "method": "Classical baseline",
+        "case": "intact",
+        "family": "intact",
+        "sources": 8,
+        "changed_sources": 0,
+        "sources_with_missed_pixels": 0,
+        "complete_target_misses": 0,
+        "missed_pixels": 0,
+        "extra_pixels": 0,
+        "worst_by_missed_fraction": []
+      },
+      {
+        "method": "Classical baseline",
+        "case": "one-bit",
+        "family": "edit",
+        "sources": 8,
+        "changed_sources": 8,
+        "sources_with_missed_pixels": 0,
+        "complete_target_misses": 0,
+        "missed_pixels": 0,
+        "extra_pixels": 504,
+        "worst_by_missed_fraction": [
+          {
+            "source": "ISIC_0026713.png",
+            "changed_pixels": 1,
+            "missed_pixels": 0,
+            "missed_fraction": 0.0
+          },
+          {
+            "source": "ISIC_0029052.png",
+            "changed_pixels": 1,
+            "missed_pixels": 0,
+            "missed_fraction": 0.0
+          },
+          {
+            "source": "ISIC_0031864.png",
+            "changed_pixels": 1,
+            "missed_pixels": 0,
+            "missed_fraction": 0.0
+          }
+        ]
+      },
+      {
+        "method": "Classical baseline",
+        "case": "brightness32",
+        "family": "edit",
+        "sources": 8,
+        "changed_sources": 8,
+        "sources_with_missed_pixels": 0,
+        "complete_target_misses": 0,
+        "missed_pixels": 0,
+        "extra_pixels": 4288,
+        "worst_by_missed_fraction": [
+          {
+            "source": "ISIC_0026713.png",
+            "changed_pixels": 1024,
+            "missed_pixels": 0,
+            "missed_fraction": 0.0
+          },
+          {
+            "source": "ISIC_0029052.png",
+            "changed_pixels": 1024,
+            "missed_pixels": 0,
+            "missed_fraction": 0.0
+          },
+          {
+            "source": "ISIC_0031864.png",
+            "changed_pixels": 1024,
+            "missed_pixels": 0,
+            "missed_fraction": 0.0
+          }
+        ]
+      },
+      {
+        "method": "Classical baseline",
+        "case": "replace64",
+        "family": "edit",
+        "sources": 8,
+        "changed_sources": 8,
+        "sources_with_missed_pixels": 0,
+        "complete_target_misses": 0,
+        "missed_pixels": 0,
+        "extra_pixels": 8128,
+        "worst_by_missed_fraction": [
+          {
+            "source": "ISIC_0026713.png",
+            "changed_pixels": 4096,
+            "missed_pixels": 0,
+            "missed_fraction": 0.0
+          },
+          {
+            "source": "ISIC_0029052.png",
+            "changed_pixels": 4096,
+            "missed_pixels": 0,
+            "missed_fraction": 0.0
+          },
+          {
+            "source": "ISIC_0031864.png",
+            "changed_pixels": 4096,
+            "missed_pixels": 0,
+            "missed_fraction": 0.0
+          }
+        ]
+      },
+      {
+        "method": "Classical baseline",
+        "case": "copy64",
+        "family": "edit",
+        "sources": 8,
+        "changed_sources": 8,
+        "sources_with_missed_pixels": 0,
+        "complete_target_misses": 0,
+        "missed_pixels": 0,
+        "extra_pixels": 8128,
+        "worst_by_missed_fraction": [
+          {
+            "source": "ISIC_0026713.png",
+            "changed_pixels": 4096,
+            "missed_pixels": 0,
+            "missed_fraction": 0.0
+          },
+          {
+            "source": "ISIC_0029052.png",
+            "changed_pixels": 4096,
+            "missed_pixels": 0,
+            "missed_fraction": 0.0
+          },
+          {
+            "source": "ISIC_0031864.png",
+            "changed_pixels": 4096,
+            "missed_pixels": 0,
+            "missed_fraction": 0.0
+          }
+        ]
+      },
+      {
+        "method": "Classical baseline",
+        "case": "jpeg75",
+        "family": "benign-lossy",
+        "sources": 8,
+        "changed_sources": 8,
+        "sources_with_missed_pixels": 0,
+        "complete_target_misses": 0,
+        "missed_pixels": 0,
+        "extra_pixels": 29685,
+        "worst_by_missed_fraction": [
+          {
+            "source": "ISIC_0026713.png",
+            "changed_pixels": 261114,
+            "missed_pixels": 0,
+            "missed_fraction": 0.0
+          },
+          {
+            "source": "ISIC_0029052.png",
+            "changed_pixels": 261186,
+            "missed_pixels": 0,
+            "missed_fraction": 0.0
+          },
+          {
+            "source": "ISIC_0031864.png",
+            "changed_pixels": 260540,
+            "missed_pixels": 0,
+            "missed_fraction": 0.0
+          }
+        ]
+      },
+      {
+        "method": "Signed grid 8",
+        "case": "intact",
+        "family": "intact",
+        "sources": 8,
+        "changed_sources": 0,
+        "sources_with_missed_pixels": 0,
+        "complete_target_misses": 0,
+        "missed_pixels": 0,
+        "extra_pixels": 0,
+        "worst_by_missed_fraction": []
+      },
+      {
+        "method": "Signed grid 8",
+        "case": "one-bit",
+        "family": "edit",
+        "sources": 8,
+        "changed_sources": 8,
+        "sources_with_missed_pixels": 0,
+        "complete_target_misses": 0,
+        "missed_pixels": 0,
+        "extra_pixels": 504,
+        "worst_by_missed_fraction": [
+          {
+            "source": "ISIC_0026713.png",
+            "changed_pixels": 1,
+            "missed_pixels": 0,
+            "missed_fraction": 0.0
+          },
+          {
+            "source": "ISIC_0029052.png",
+            "changed_pixels": 1,
+            "missed_pixels": 0,
+            "missed_fraction": 0.0
+          },
+          {
+            "source": "ISIC_0031864.png",
+            "changed_pixels": 1,
+            "missed_pixels": 0,
+            "missed_fraction": 0.0
+          }
+        ]
+      },
+      {
+        "method": "Signed grid 8",
+        "case": "brightness32",
+        "family": "edit",
+        "sources": 8,
+        "changed_sources": 8,
+        "sources_with_missed_pixels": 0,
+        "complete_target_misses": 0,
+        "missed_pixels": 0,
+        "extra_pixels": 4288,
+        "worst_by_missed_fraction": [
+          {
+            "source": "ISIC_0026713.png",
+            "changed_pixels": 1024,
+            "missed_pixels": 0,
+            "missed_fraction": 0.0
+          },
+          {
+            "source": "ISIC_0029052.png",
+            "changed_pixels": 1024,
+            "missed_pixels": 0,
+            "missed_fraction": 0.0
+          },
+          {
+            "source": "ISIC_0031864.png",
+            "changed_pixels": 1024,
+            "missed_pixels": 0,
+            "missed_fraction": 0.0
+          }
+        ]
+      },
+      {
+        "method": "Signed grid 8",
+        "case": "replace64",
+        "family": "edit",
+        "sources": 8,
+        "changed_sources": 8,
+        "sources_with_missed_pixels": 0,
+        "complete_target_misses": 0,
+        "missed_pixels": 0,
+        "extra_pixels": 8128,
+        "worst_by_missed_fraction": [
+          {
+            "source": "ISIC_0026713.png",
+            "changed_pixels": 4096,
+            "missed_pixels": 0,
+            "missed_fraction": 0.0
+          },
+          {
+            "source": "ISIC_0029052.png",
+            "changed_pixels": 4096,
+            "missed_pixels": 0,
+            "missed_fraction": 0.0
+          },
+          {
+            "source": "ISIC_0031864.png",
+            "changed_pixels": 4096,
+            "missed_pixels": 0,
+            "missed_fraction": 0.0
+          }
+        ]
+      },
+      {
+        "method": "Signed grid 8",
+        "case": "copy64",
+        "family": "edit",
+        "sources": 8,
+        "changed_sources": 8,
+        "sources_with_missed_pixels": 0,
+        "complete_target_misses": 0,
+        "missed_pixels": 0,
+        "extra_pixels": 8129,
+        "worst_by_missed_fraction": [
+          {
+            "source": "ISIC_0026713.png",
+            "changed_pixels": 4095,
+            "missed_pixels": 0,
+            "missed_fraction": 0.0
+          },
+          {
+            "source": "ISIC_0029052.png",
+            "changed_pixels": 4096,
+            "missed_pixels": 0,
+            "missed_fraction": 0.0
+          },
+          {
+            "source": "ISIC_0031864.png",
+            "changed_pixels": 4096,
+            "missed_pixels": 0,
+            "missed_fraction": 0.0
+          }
+        ]
+      },
+      {
+        "method": "Signed grid 8",
+        "case": "jpeg75",
+        "family": "benign-lossy",
+        "sources": 8,
+        "changed_sources": 8,
+        "sources_with_missed_pixels": 0,
+        "complete_target_misses": 0,
+        "missed_pixels": 0,
+        "extra_pixels": 153974,
+        "worst_by_missed_fraction": [
+          {
+            "source": "ISIC_0026713.png",
+            "changed_pixels": 258045,
+            "missed_pixels": 0,
+            "missed_fraction": 0.0
+          },
+          {
+            "source": "ISIC_0029052.png",
+            "changed_pixels": 258486,
+            "missed_pixels": 0,
+            "missed_fraction": 0.0
+          },
+          {
+            "source": "ISIC_0031864.png",
+            "changed_pixels": 255231,
+            "missed_pixels": 0,
+            "missed_fraction": 0.0
+          }
+        ]
+      }
+    ],
+    "limits": [
+      "Complete target miss means zero overlap with changed pixels, even if unrelated pixels are highlighted.",
+      "JPEG rows describe changed RGB under recompression, not benign-tolerance success.",
+      "Counts are descriptive for these selected inputs, not population failure probabilities."
+    ]
+  },
+  "recorded_costs": {
+    "schema": "comparison-recorded-costs-v1",
+    "methods": [
+      {
+        "method": "EditGuard clean",
+        "setup_seconds": {
+          "recorded": 8,
+          "expected": 8,
+          "mean": 6.497143521625013,
+          "maximum": 6.706306749000021
+        },
+        "localization_seconds": {
+          "recorded": 48,
+          "expected": 48,
+          "mean": 6.40516036533334,
+          "maximum": 6.716722701000094
+        },
+        "embedding_psnr_db": {
+          "recorded": 8,
+          "expected": 8,
+          "mean": 29.042310369283364,
+          "maximum": 36.70919454028769
+        },
+        "embedding_mse": {
+          "recorded": 8,
+          "expected": 8,
+          "mean": 134.65677118301392,
+          "maximum": 398.7622350056966
+        },
+        "sidecar_bytes": {
+          "recorded": 8,
+          "expected": 8,
+          "mean": 0,
+          "maximum": 0
+        }
+      },
+      {
+        "method": "Classical baseline",
+        "setup_seconds": {
+          "recorded": 8,
+          "expected": 8,
+          "mean": 0.04132898187497602,
+          "maximum": 0.04242546099999345
+        },
+        "localization_seconds": {
+          "recorded": 48,
+          "expected": 48,
+          "mean": 0.041501627000001186,
+          "maximum": 0.04607759800001077
+        },
+        "embedding_psnr_db": {
+          "recorded": 8,
+          "expected": 8,
+          "mean": 51.13813372958221,
+          "maximum": 51.14553474175729
+        },
+        "embedding_mse": {
+          "recorded": 8,
+          "expected": 8,
+          "mean": 0.5003423690795898,
+          "maximum": 0.5012766520182291
+        },
+        "sidecar_bytes": {
+          "recorded": 8,
+          "expected": 8,
+          "mean": 0,
+          "maximum": 0
+        }
+      },
+      {
+        "method": "Signed grid 8",
+        "setup_seconds": {
+          "recorded": 8,
+          "expected": 8,
+          "mean": 0.01496989650001268,
+          "maximum": 0.016550802999972802
+        },
+        "localization_seconds": {
+          "recorded": 48,
+          "expected": 48,
+          "mean": 0.01784380835416381,
+          "maximum": 0.02009246099999018
+        },
+        "embedding_psnr_db": {
+          "recorded": 0,
+          "expected": 8,
+          "mean": null,
+          "maximum": null
+        },
+        "embedding_mse": {
+          "recorded": 8,
+          "expected": 8,
+          "mean": 0.0,
+          "maximum": 0.0
+        },
+        "sidecar_bytes": {
+          "recorded": 8,
+          "expected": 8,
+          "mean": 274697,
+          "maximum": 274697
+        }
+      }
+    ],
+    "limits": [
+      "Costs are reported by the submitted run, not independently reproduced timings.",
+      "Null PSNR is not automatically zero distortion; consult the method MSE receipt.",
+      "Sidecar bytes exclude keys, model weights and transport overhead; zero sidecar is not zero deployment cost.",
+      "No paired confidence intervals, clinical interpretation or hardware-normalised speed claim."
+    ]
+  }
+}

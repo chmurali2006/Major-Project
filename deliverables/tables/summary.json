@@ -1,0 +1,42 @@
+{
+  "schema": "matched-editguard-validation-summary-v1",
+  "archive_sha256": "33ac519371e373081ae60ddd7f44ff8c55168e6fea43458c6a395297764997a9",
+  "review_status": "audited_with_external_public_key",
+  "public_key_present": true,
+  "public_key_source": "external_file",
+  "images": 500,
+  "localisation_rows": 10000,
+  "diagnostic_rows": 5000,
+  "cases": [
+    "intact",
+    "copy32",
+    "local_blur32_surrogate",
+    "jpeg70",
+    "jpeg85",
+    "jpeg95",
+    "resize90_restore",
+    "contrast90",
+    "contrast110",
+    "gaussian05"
+  ],
+  "methods": [
+    "EditGuard clean",
+    "Signed4 on EditGuard container"
+  ],
+  "distortion_receipts": {
+    "mse_mean_per_image": 170.97158836110432,
+    "mse_median_per_image": 52.742298762003585,
+    "psnr_mean_per_image": 29.59994966642193,
+    "psnr_median_per_image": 30.90922178855146,
+    "psnr_defined_images": 500,
+    "zero_mse_images": 0
+  },
+  "limits": [
+    "Receipt/map audit only: no source pixels, operation replay, EditGuard model re-execution, or classifier re-inference.",
+    "Metrics are validation/development evidence; the classifier was selected using validation.",
+    "Image-level bootstrap is not patient-level inference; no patient independence is established.",
+    "EditGuard and Signed4 have unequal evidence costs; Signed4 adds 524378 bytes/image to the EditGuard-marked representation.",
+    "Signatures verify under the supplied public key; issuer identity is not independently authenticated.",
+    "Embedding MSE/PSNR summaries are computed from returned per-image receipts, not independently recomputed from pixels."
+  ]
+}

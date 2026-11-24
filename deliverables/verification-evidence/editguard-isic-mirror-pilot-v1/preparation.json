@@ -1,0 +1,202 @@
+{
+  "schema": "isic-mirror-pilot-preparation-v1",
+  "scope": "unverified-mirror engineering pilot, not held-out ISIC study",
+  "selection": "per diagnosis, hash-order SHA256(seed/image_id), no model/pixel access",
+  "seed": 29,
+  "per_class": 1,
+  "class_order": [
+    "MEL",
+    "NV",
+    "BCC",
+    "AK",
+    "BKL",
+    "DF",
+    "VASC",
+    "SCC"
+  ],
+  "image_source": {
+    "repository": "Sushma7890creator/ISIC-2019-dataset",
+    "commit": "b9a0b64d02f9d4893fe63b5dd7379f3e0491ec70",
+    "files": 25331
+  },
+  "label_source": {
+    "repository": "UdaykiranReddy-1/FedExBC",
+    "commit": "58db7e4c35a9236a3bdd42093cd3f3d87c81e333",
+    "parts": [
+      {
+        "path": "Dataset/ISIC_2019_Training_Input/split_part_1.csv",
+        "git_blob": "17d992bab9a5fed211323bb2b953f68012c6aef2",
+        "sha256": "d0f32faa6cd573b6096433d196892876eca9bf706dc172f31155eb0a7a44d3fb",
+        "rows": 10000
+      },
+      {
+        "path": "Dataset/ISIC_2019_Training_Input/split_part_2.csv",
+        "git_blob": "08f25470f85cc370bef9e37a35614783f92b8196",
+        "sha256": "19618da5d725a40d641baf5a9beb6765b1179cc9725432b7383e2c845c266355",
+        "rows": 3832
+      },
+      {
+        "path": "Dataset/ISIC_2019_Training_Input/split_part_3.csv",
+        "git_blob": "993660482f30186c47a79f4c197135c335170dbf",
+        "sha256": "68cfacf32efee6647b46fb90d81130e0450d4f33f64d1fd2607bf62b2d96928c",
+        "rows": 3832
+      },
+      {
+        "path": "Dataset/ISIC_2019_Training_Input/split_part_4.csv",
+        "git_blob": "c1c70cedb0fe94b64bc81db76f653c371610f431",
+        "sha256": "54f6c0bc98e5fb962aa2b23d7e4bf7a4243118d968470c3049c21dc20dd01eb8",
+        "rows": 3832
+      },
+      {
+        "path": "Dataset/ISIC_2019_Training_Input/split_part_5.csv",
+        "git_blob": "47d74b180f2387e68fe3789d3720dd6d38b8b8f8",
+        "sha256": "4c06f22f30ebf47ba701d9268329687a398ffb655719c1db1d82479d0323c632",
+        "rows": 3832
+      }
+    ],
+    "rows": 25328,
+    "unique_ids": 20455,
+    "duplicate_rows": 4873
+  },
+  "source_sha256": "7569e7dde8fe5af0b4e6d350912c1549e58b7dcabbdb28aaaa4d332979df3900",
+  "selected": [
+    {
+      "image_id": "ISIC_0070431",
+      "diagnosis": "MEL",
+      "label": 0,
+      "mirror_path": "train-image/image/ISIC_0070431.jpg",
+      "mirror_git_blob": "e3248a84e0c06a11f1bb248892b77c8955749fce",
+      "original_file_sha256": "b9f2af5b44b6efcfdbac25d994c2e6b42253fd50b2a6f40c1dc7c07ab4accffe",
+      "mirror_decoded_size": [
+        224,
+        224
+      ],
+      "mirror_decoded_mode": "RGB",
+      "prepared_file_sha256": "e9093126ee83ef1856cfc3549b51f78f21f00c778910c6880031f4718049b777",
+      "prepared_rgb_sha256": "3b5eeedae52af9c18deb88fcfd9389688c624bff3edaa4e55bd14614d8df1d74",
+      "preparation": "explicit RGB conversion and nearest-neighbour square resize to 512x512; not native originals"
+    },
+    {
+      "image_id": "ISIC_0029485",
+      "diagnosis": "NV",
+      "label": 1,
+      "mirror_path": "train-image/image/ISIC_0029485.jpg",
+      "mirror_git_blob": "507b199e7e379d3e355b3a92c88f232d466ed58e",
+      "original_file_sha256": "0e74d7e0dd6e266fcee70c7c7e4d40ea0e0fe347595bb9dc72d4eaf647185c9c",
+      "mirror_decoded_size": [
+        224,
+        224
+      ],
+      "mirror_decoded_mode": "RGB",
+      "prepared_file_sha256": "7305257293c246ff568f9f4a79121f4cccb624e4cd179170133ab3eae5dc2554",
+      "prepared_rgb_sha256": "1d567ae7b42d427d9e1168c34ccb24bff6429433b866d80956d6402773733c2f",
+      "preparation": "explicit RGB conversion and nearest-neighbour square resize to 512x512; not native originals"
+    },
+    {
+      "image_id": "ISIC_0055325",
+      "diagnosis": "BCC",
+      "label": 2,
+      "mirror_path": "train-image/image/ISIC_0055325.jpg",
+      "mirror_git_blob": "b54ee8cde3efca644589c3ddd1db6703aee79e58",
+      "original_file_sha256": "ff23856c8c1682d6b10225d7f4536385db9a08d06a9ac17aea56db4e325c0f11",
+      "mirror_decoded_size": [
+        224,
+        224
+      ],
+      "mirror_decoded_mode": "RGB",
+      "prepared_file_sha256": "b775772c25376fa1aecca984962bef72af9c07ae394a9a23f0a22a02969b47e0",
+      "prepared_rgb_sha256": "3c75403b016a6929aced5d68c5760533d7a58e8bea8a33450d44378134c61dd9",
+      "preparation": "explicit RGB conversion and nearest-neighbour square resize to 512x512; not native originals"
+    },
+    {
+      "image_id": "ISIC_0067500",
+      "diagnosis": "AK",
+      "label": 3,
+      "mirror_path": "train-image/image/ISIC_0067500.jpg",
+      "mirror_git_blob": "be88d872addd33dca2b391eac1d8fbc8c9fb5d68",
+      "original_file_sha256": "dc9d814287f444f3208df1ad50d6bddc4bd2a0672204b1780b96581775fa592e",
+      "mirror_decoded_size": [
+        224,
+        224
+      ],
+      "mirror_decoded_mode": "RGB",
+      "prepared_file_sha256": "7797ff7e3941e5f17e4eec06418eaf6db8baac4ccad2336ddad02e4ceace45f9",
+      "prepared_rgb_sha256": "f6af248a6cf2bbc9606b3087f466c604d35ed0aa74187eb810fa00eed4a3030e",
+      "preparation": "explicit RGB conversion and nearest-neighbour square resize to 512x512; not native originals"
+    },
+    {
+      "image_id": "ISIC_0061426",
+      "diagnosis": "BKL",
+      "label": 4,
+      "mirror_path": "train-image/image/ISIC_0061426.jpg",
+      "mirror_git_blob": "92efe97f0a08cdea129d7e5d36e5179c86ea133b",
+      "original_file_sha256": "3a89c03db7614ff471a9416c178fbef6a7cb24bb6ca21bbb18544737b77d3224",
+      "mirror_decoded_size": [
+        224,
+        224
+      ],
+      "mirror_decoded_mode": "RGB",
+      "prepared_file_sha256": "89d47797641fed9c90700be79f23712bb3f0a93b8a365ca8c762dabaf42be180",
+      "prepared_rgb_sha256": "07716749dfa97acb53e6c440823030ccf47fe4014fa67ac88ccdc06d417a5a0c",
+      "preparation": "explicit RGB conversion and nearest-neighbour square resize to 512x512; not native originals"
+    },
+    {
+      "image_id": "ISIC_0061305",
+      "diagnosis": "DF",
+      "label": 5,
+      "mirror_path": "train-image/image/ISIC_0061305.jpg",
+      "mirror_git_blob": "89bf208647bca33946acc81ffa7339dfd3ec8d44",
+      "original_file_sha256": "8572acd887354d9e5ae0ae1d4291dc28d4c519a99306a73a115f55d851a463c1",
+      "mirror_decoded_size": [
+        224,
+        224
+      ],
+      "mirror_decoded_mode": "RGB",
+      "prepared_file_sha256": "2c8fa539d4f4083eb98b95a0173bfde9b6de431236ebdec5c69dd7f03de8d5e0",
+      "prepared_rgb_sha256": "1ac07eda3a7225b63d6b2b7e3d57bcc22b1f9cd1c09ffc09dab295b2300635ae",
+      "preparation": "explicit RGB conversion and nearest-neighbour square resize to 512x512; not native originals"
+    },
+    {
+      "image_id": "ISIC_0072012",
+      "diagnosis": "VASC",
+      "label": 6,
+      "mirror_path": "train-image/image/ISIC_0072012.jpg",
+      "mirror_git_blob": "a02140a376b93824794b9927326318342533551b",
+      "original_file_sha256": "3bd99f979fcfc856d254e42d0cf0c7ac8d6d31897e15ed376e5dbbcf440b65ae",
+      "mirror_decoded_size": [
+        224,
+        224
+      ],
+      "mirror_decoded_mode": "RGB",
+      "prepared_file_sha256": "b8eced351b57695e6e05bd0e0589a83eecfff2d3f84692484ef84a5cb6709c72",
+      "prepared_rgb_sha256": "bf74948862bda99e6168aa1d819915d9aab31ed03fe1dbdad5bbad5ed792ee36",
+      "preparation": "explicit RGB conversion and nearest-neighbour square resize to 512x512; not native originals"
+    },
+    {
+      "image_id": "ISIC_0024562",
+      "diagnosis": "SCC",
+      "label": 7,
+      "mirror_path": "train-image/image/ISIC_0024562.jpg",
+      "mirror_git_blob": "88e5eb5a90c2a96db1ec53f5b09ca9a70188c5f1",
+      "original_file_sha256": "ba83d18a93629d40864df2d39a5ef73df43f8c0a510c2b77fc61a96c893a6ecd",
+      "mirror_decoded_size": [
+        224,
+        224
+      ],
+      "mirror_decoded_mode": "RGB",
+      "prepared_file_sha256": "ded0ec0c40e6a79d4c65763f78d9b2883d0e26d9af266e032bce21fa46768437",
+      "prepared_rgb_sha256": "9deeefb95bb62ae433d580e8d96c1305b58c3ba5aecb699b0e872ee0341ce3a3",
+      "preparation": "explicit RGB conversion and nearest-neighbour square resize to 512x512; not native originals"
+    }
+  ],
+  "official_identity_verified": false,
+  "grouping_available": false,
+  "limitations": [
+    "Matching filenames and label consistency do not authenticate original ISIC pixels.",
+    "Image mirror may already have resized/compressed images; dimensions/hashes are recorded.",
+    "Labels are partial overlapping mirror partitions, not full official ground truth.",
+    "One image per class is a smoke pilot, not class-wise performance evidence.",
+    "No lesion/patient grouping or population uncertainty claim; no test-set status."
+  ],
+  "complete": true
+}

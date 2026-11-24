@@ -1,0 +1,160 @@
+{
+  "schema": "signed-evidence-showcase-v1",
+  "all_checks_passed": true,
+  "scope": "Controlled single-input security regression, not a cryptographic security proof",
+  "evidence_bytes": 274697,
+  "input_rgb_sha256": "7780aae24c9719888cda9ae762c15dfb5f901741fdb575fc6ce4f06a34f15609",
+  "limitations": [
+    "Public key and expected version must come from a trusted external source.",
+    "An old valid image/evidence pair verifies if its old version remains accepted.",
+    "Sidecar contains per-tile hashes; storage, key custody and transport are deployment costs.",
+    "No embedding: received pixels are unchanged by signing. No clinical safety claim.",
+    "FAILED_INTEGRITY means valid evidence but different pixels; CANNOT_AUTHENTICATE has no localisation map."
+  ],
+  "cases": [
+    {
+      "case": "intact",
+      "expected": "VERIFIED",
+      "verdict": "VERIFIED",
+      "reason": "signed_pixels_match",
+      "check_passed": true,
+      "failed_blocks": 0,
+      "changed_pixels": 0,
+      "verification_ms": 15.262911000036183
+    },
+    {
+      "case": "one-pixel",
+      "expected": "FAILED_INTEGRITY",
+      "verdict": "FAILED_INTEGRITY",
+      "reason": "received_pixels_differ",
+      "check_passed": true,
+      "failed_blocks": 1,
+      "changed_pixels": 1,
+      "verification_ms": 13.435349000019414
+    },
+    {
+      "case": "brightness",
+      "expected": "FAILED_INTEGRITY",
+      "verdict": "FAILED_INTEGRITY",
+      "reason": "received_pixels_differ",
+      "check_passed": true,
+      "failed_blocks": 1,
+      "changed_pixels": 64,
+      "verification_ms": 14.307403999964663
+    },
+    {
+      "case": "boundary-patch",
+      "expected": "FAILED_INTEGRITY",
+      "verdict": "FAILED_INTEGRITY",
+      "reason": "received_pixels_differ",
+      "check_passed": true,
+      "failed_blocks": 4,
+      "changed_pixels": 15,
+      "verification_ms": 13.374775999977828
+    },
+    {
+      "case": "copy-move",
+      "expected": "FAILED_INTEGRITY",
+      "verdict": "FAILED_INTEGRITY",
+      "reason": "received_pixels_differ",
+      "check_passed": true,
+      "failed_blocks": 1,
+      "changed_pixels": 64,
+      "verification_ms": 13.128734000019904
+    },
+    {
+      "case": "jpeg75",
+      "expected": "FAILED_INTEGRITY",
+      "verdict": "FAILED_INTEGRITY",
+      "reason": "received_pixels_differ",
+      "check_passed": true,
+      "failed_blocks": 4096,
+      "changed_pixels": 251146,
+      "verification_ms": 13.217264999980216
+    },
+    {
+      "case": "missing-evidence",
+      "expected": "CANNOT_AUTHENTICATE",
+      "verdict": "CANNOT_AUTHENTICATE",
+      "reason": "missing_or_oversized_evidence",
+      "check_passed": true,
+      "failed_blocks": null,
+      "changed_pixels": 0,
+      "verification_ms": 0.041893999991771125
+    },
+    {
+      "case": "altered-evidence",
+      "expected": "CANNOT_AUTHENTICATE",
+      "verdict": "CANNOT_AUTHENTICATE",
+      "reason": "invalid_signature_or_untrusted_key",
+      "check_passed": true,
+      "failed_blocks": null,
+      "changed_pixels": 0,
+      "verification_ms": 4.505497999957697
+    },
+    {
+      "case": "wrong-key",
+      "expected": "CANNOT_AUTHENTICATE",
+      "verdict": "CANNOT_AUTHENTICATE",
+      "reason": "invalid_signature_or_untrusted_key",
+      "check_passed": true,
+      "failed_blocks": null,
+      "changed_pixels": 0,
+      "verification_ms": 4.546737999930883
+    },
+    {
+      "case": "missing-trusted-key",
+      "expected": "CANNOT_AUTHENTICATE",
+      "verdict": "CANNOT_AUTHENTICATE",
+      "reason": "trusted_public_key_missing",
+      "check_passed": true,
+      "failed_blocks": null,
+      "changed_pixels": 0,
+      "verification_ms": 0.04326999999193504
+    },
+    {
+      "case": "swapped-evidence",
+      "expected": "CANNOT_AUTHENTICATE",
+      "verdict": "CANNOT_AUTHENTICATE",
+      "reason": "identifier_mismatch",
+      "check_passed": true,
+      "failed_blocks": null,
+      "changed_pixels": 0,
+      "verification_ms": 0.4611249999015854
+    },
+    {
+      "case": "swapped-content-same-id",
+      "expected": "FAILED_INTEGRITY",
+      "verdict": "FAILED_INTEGRITY",
+      "reason": "received_pixels_differ",
+      "check_passed": true,
+      "failed_blocks": 1,
+      "changed_pixels": 0,
+      "verification_ms": 13.262733000033222
+    },
+    {
+      "case": "old-pair-new-expected-version",
+      "expected": "CANNOT_AUTHENTICATE",
+      "verdict": "CANNOT_AUTHENTICATE",
+      "reason": "identifier_mismatch",
+      "check_passed": true,
+      "failed_blocks": null,
+      "changed_pixels": 0,
+      "verification_ms": 0.4155479999781164
+    },
+    {
+      "case": "old-pair-old-expected-version",
+      "expected": "VERIFIED",
+      "verdict": "VERIFIED",
+      "reason": "signed_pixels_match",
+      "check_passed": true,
+      "failed_blocks": 0,
+      "changed_pixels": 0,
+      "verification_ms": 13.258884000038051
+    }
+  ],
+  "source_sha256": "fbd59a0fd6bc544ff52115fee727e7bf6a1048e564e1520073b90d100e2c8e34",
+  "synthetic": true,
+  "input_file_sha256": null,
+  "preprocessing": "none"
+}

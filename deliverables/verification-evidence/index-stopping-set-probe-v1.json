@@ -1,0 +1,251 @@
+{
+  "schema": "index-stopping-set-probe-v1",
+  "synthetic": true,
+  "source_sha256": "ed38a5b1ed4593481b2385b61fb6088eef45ca56f4f13c52682a465a8b6c4310",
+  "searches": [
+    {
+      "index_buckets": 112,
+      "search_seconds": 0.0005981860003885231,
+      "attack": {
+        "indices": [
+          309,
+          315
+        ],
+        "buckets": [
+          17,
+          31,
+          91
+        ],
+        "positions_examined": 316
+      }
+    },
+    {
+      "index_buckets": 448,
+      "search_seconds": 0.006346934000248439,
+      "attack": {
+        "indices": [
+          19,
+          4302
+        ],
+        "buckets": [
+          248,
+          259,
+          284
+        ],
+        "positions_examined": 4303
+      }
+    },
+    {
+      "index_buckets": 1792,
+      "search_seconds": 0.022374305999619537,
+      "attack": null
+    }
+  ],
+  "rows": [
+    {
+      "seed": 401,
+      "index_budget": 112,
+      "method": "index-syndrome",
+      "bytes": 7294,
+      "changed_pixels": 2,
+      "changed_tiles": 2,
+      "verdict": "FAILED_INTEGRITY",
+      "fine_map_available": false,
+      "map_matches_truth": null
+    },
+    {
+      "seed": 401,
+      "index_budget": 112,
+      "method": "set-reconciliation",
+      "bytes": 7294,
+      "changed_pixels": 2,
+      "changed_tiles": 2,
+      "verdict": "FAILED_INTEGRITY",
+      "fine_map_available": true,
+      "map_matches_truth": true
+    },
+    {
+      "seed": 401,
+      "index_budget": 112,
+      "method": "full-signed-grid",
+      "bytes": 524378,
+      "changed_pixels": 2,
+      "changed_tiles": 2,
+      "verdict": "FAILED_INTEGRITY",
+      "fine_map_available": true,
+      "map_matches_truth": true
+    },
+    {
+      "seed": 402,
+      "index_budget": 112,
+      "method": "index-syndrome",
+      "bytes": 7294,
+      "changed_pixels": 2,
+      "changed_tiles": 2,
+      "verdict": "FAILED_INTEGRITY",
+      "fine_map_available": false,
+      "map_matches_truth": null
+    },
+    {
+      "seed": 402,
+      "index_budget": 112,
+      "method": "set-reconciliation",
+      "bytes": 7294,
+      "changed_pixels": 2,
+      "changed_tiles": 2,
+      "verdict": "FAILED_INTEGRITY",
+      "fine_map_available": true,
+      "map_matches_truth": true
+    },
+    {
+      "seed": 402,
+      "index_budget": 112,
+      "method": "full-signed-grid",
+      "bytes": 524378,
+      "changed_pixels": 2,
+      "changed_tiles": 2,
+      "verdict": "FAILED_INTEGRITY",
+      "fine_map_available": true,
+      "map_matches_truth": true
+    },
+    {
+      "seed": 403,
+      "index_budget": 112,
+      "method": "index-syndrome",
+      "bytes": 7294,
+      "changed_pixels": 2,
+      "changed_tiles": 2,
+      "verdict": "FAILED_INTEGRITY",
+      "fine_map_available": false,
+      "map_matches_truth": null
+    },
+    {
+      "seed": 403,
+      "index_budget": 112,
+      "method": "set-reconciliation",
+      "bytes": 7294,
+      "changed_pixels": 2,
+      "changed_tiles": 2,
+      "verdict": "FAILED_INTEGRITY",
+      "fine_map_available": true,
+      "map_matches_truth": true
+    },
+    {
+      "seed": 403,
+      "index_budget": 112,
+      "method": "full-signed-grid",
+      "bytes": 524378,
+      "changed_pixels": 2,
+      "changed_tiles": 2,
+      "verdict": "FAILED_INTEGRITY",
+      "fine_map_available": true,
+      "map_matches_truth": true
+    },
+    {
+      "seed": 401,
+      "index_budget": 448,
+      "method": "index-syndrome",
+      "bytes": 28798,
+      "changed_pixels": 2,
+      "changed_tiles": 2,
+      "verdict": "FAILED_INTEGRITY",
+      "fine_map_available": false,
+      "map_matches_truth": null
+    },
+    {
+      "seed": 401,
+      "index_budget": 448,
+      "method": "set-reconciliation",
+      "bytes": 28798,
+      "changed_pixels": 2,
+      "changed_tiles": 2,
+      "verdict": "FAILED_INTEGRITY",
+      "fine_map_available": true,
+      "map_matches_truth": true
+    },
+    {
+      "seed": 401,
+      "index_budget": 448,
+      "method": "full-signed-grid",
+      "bytes": 524378,
+      "changed_pixels": 2,
+      "changed_tiles": 2,
+      "verdict": "FAILED_INTEGRITY",
+      "fine_map_available": true,
+      "map_matches_truth": true
+    },
+    {
+      "seed": 402,
+      "index_budget": 448,
+      "method": "index-syndrome",
+      "bytes": 28798,
+      "changed_pixels": 2,
+      "changed_tiles": 2,
+      "verdict": "FAILED_INTEGRITY",
+      "fine_map_available": false,
+      "map_matches_truth": null
+    },
+    {
+      "seed": 402,
+      "index_budget": 448,
+      "method": "set-reconciliation",
+      "bytes": 28798,
+      "changed_pixels": 2,
+      "changed_tiles": 2,
+      "verdict": "FAILED_INTEGRITY",
+      "fine_map_available": true,
+      "map_matches_truth": true
+    },
+    {
+      "seed": 402,
+      "index_budget": 448,
+      "method": "full-signed-grid",
+      "bytes": 524378,
+      "changed_pixels": 2,
+      "changed_tiles": 2,
+      "verdict": "FAILED_INTEGRITY",
+      "fine_map_available": true,
+      "map_matches_truth": true
+    },
+    {
+      "seed": 403,
+      "index_budget": 448,
+      "method": "index-syndrome",
+      "bytes": 28798,
+      "changed_pixels": 2,
+      "changed_tiles": 2,
+      "verdict": "FAILED_INTEGRITY",
+      "fine_map_available": false,
+      "map_matches_truth": null
+    },
+    {
+      "seed": 403,
+      "index_budget": 448,
+      "method": "set-reconciliation",
+      "bytes": 28798,
+      "changed_pixels": 2,
+      "changed_tiles": 2,
+      "verdict": "FAILED_INTEGRITY",
+      "fine_map_available": true,
+      "map_matches_truth": true
+    },
+    {
+      "seed": 403,
+      "index_budget": 448,
+      "method": "full-signed-grid",
+      "bytes": 524378,
+      "changed_pixels": 2,
+      "changed_tiles": 2,
+      "verdict": "FAILED_INTEGRITY",
+      "fine_map_available": true,
+      "map_matches_truth": true
+    }
+  ],
+  "conclusions": [
+    "Public fixed-index placement permits targeted low-cardinality stopping sets when duplicate neighbourhoods exist.",
+    "Only fine localisation availability is attacked; all modified images still fail signed integrity.",
+    "No duplicate at1792buckets is NOT proof there are no larger stopping sets or robust availability guarantees.",
+    "Ordinary edit coverage does not justify adaptive-adversary localisation guarantees.",
+    "Randomised public layout needs separate analysis; a public seed alone does not eliminate targeted stopping sets."
+  ]
+}

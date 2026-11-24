@@ -1,0 +1,522 @@
+{
+  "schema": "local-isic-pilot-preparation-v1",
+  "complete": true,
+  "scope": "caller-supplied local ISIC-labelled feasibility pilot, not an independently verified held-out study",
+  "seed": 73,
+  "per_class": 4,
+  "label_rows": 25331,
+  "unique_label_ids": 25331,
+  "labels_sha256": "aa88e9638fe4df9ef330dc4ba22fa4bd475c44af692fffb870c73091ab25cdcd",
+  "metadata_sha256": null,
+  "grouping": "image only; patient/lesion dependence unknown",
+  "excluded_ids": [
+    "ISIC_0024562",
+    "ISIC_0026713",
+    "ISIC_0029052",
+    "ISIC_0029485",
+    "ISIC_0031864",
+    "ISIC_0055325",
+    "ISIC_0055438",
+    "ISIC_0058884",
+    "ISIC_0061305",
+    "ISIC_0061426",
+    "ISIC_0065472",
+    "ISIC_0066051",
+    "ISIC_0067500",
+    "ISIC_0070431",
+    "ISIC_0072012",
+    "ISIC_0072752"
+  ],
+  "excluded_group_count": 16,
+  "selection": "deterministic SHA256(seed/image_id), at most one per supplied group, no model/pixel selection",
+  "official_identity_verified": false,
+  "selected": [
+    {
+      "image_id": "ISIC_0069481",
+      "diagnosis": "MEL",
+      "label": 0,
+      "group": "image:ISIC_0069481",
+      "source_file_sha256": "0adda8c8256ee9aca73ad4f1b902cde49af62b7a5f3e12270cc60c70b70c1e29",
+      "source_decoded_rgb_sha256": "f2839fb96192f871f966cfb1e89602075eee7daf038bedf98693d9b99b2d69a5",
+      "source_dimensions": [
+        1024,
+        1024
+      ],
+      "prepared_file_sha256": "bf803754160b32a4b4ddca2ca12d816fc8455c73cf0386952cec5994c9ef759e",
+      "prepared_rgb_sha256": "11066cf3063091c8c1aef2bdfa6de8b4fdb143afbf633b3028021cf9081fcb27",
+      "preparation": "explicit nearest-neighbour square512 resize from decoded RGB; no implicit source conversion"
+    },
+    {
+      "image_id": "ISIC_0067502",
+      "diagnosis": "MEL",
+      "label": 0,
+      "group": "image:ISIC_0067502",
+      "source_file_sha256": "33d39335eecc56d338aafb996cddadfacc26cd92384f2c4a36212e47ab8659c6",
+      "source_decoded_rgb_sha256": "1794b7a323e3d1ee0b88fcf5ad53069ba59b80d5895fd0025c03b7802567c1ed",
+      "source_dimensions": [
+        1024,
+        1024
+      ],
+      "prepared_file_sha256": "81a6590dfb6443d013269f6d7083295f5e5da4545631e9731d240cebb9e7e93f",
+      "prepared_rgb_sha256": "5e9b59f7285a27b892bf717ecb8b2ec87cb4c6b7142f05a991909db8b22cf5a3",
+      "preparation": "explicit nearest-neighbour square512 resize from decoded RGB; no implicit source conversion"
+    },
+    {
+      "image_id": "ISIC_0055840",
+      "diagnosis": "MEL",
+      "label": 0,
+      "group": "image:ISIC_0055840",
+      "source_file_sha256": "f2f5ea1292c0ad5512fd717405a04b733584aca7e1eaab5abb68a002e09c6e68",
+      "source_decoded_rgb_sha256": "2a7122f5b82d7546beb244d9a2a4d92302b3cf6d2e55add4d8edf49798a8bc23",
+      "source_dimensions": [
+        1024,
+        1024
+      ],
+      "prepared_file_sha256": "7aca8fbe1b418e1bbe8eb816a6d299bcc74ba6cda71d7be2b9376bc1c8002764",
+      "prepared_rgb_sha256": "e6d6352d487f3d76b76a811195bba121aebbd453b13fcdc62686eb00de5619dc",
+      "preparation": "explicit nearest-neighbour square512 resize from decoded RGB; no implicit source conversion"
+    },
+    {
+      "image_id": "ISIC_0062821",
+      "diagnosis": "MEL",
+      "label": 0,
+      "group": "image:ISIC_0062821",
+      "source_file_sha256": "b389246244767ef6be03d08aace2083755fec84cf5f8d2c352092880139c334d",
+      "source_decoded_rgb_sha256": "18fb34c6b2bd2e5da846912aed1b9707699d3e428653156e7b295b7f2b9e0b3f",
+      "source_dimensions": [
+        1024,
+        1024
+      ],
+      "prepared_file_sha256": "50dbe6d34e33031cd89e9b8adabc93ac44903555b0d23f8494719134bdf66e22",
+      "prepared_rgb_sha256": "79a5d5cca17c568bc2fe79119b02ded5260cc10fa437a4ec9952bf375e77fc6e",
+      "preparation": "explicit nearest-neighbour square512 resize from decoded RGB; no implicit source conversion"
+    },
+    {
+      "image_id": "ISIC_0012360_downsampled",
+      "diagnosis": "NV",
+      "label": 1,
+      "group": "image:ISIC_0012360_downsampled",
+      "source_file_sha256": "a6e847e99bff2103e24f801a67e9f8c61758e537efa26f2e515f704356b599b7",
+      "source_decoded_rgb_sha256": "483e0a83cea9ae1240cb442c1f5d2dde8674be3593e4028900e8bf32a1cf2f88",
+      "source_dimensions": [
+        1024,
+        680
+      ],
+      "prepared_file_sha256": "200f6b8e68d99ba66df289a700194c79c2ad8d1f6ab26d9c8e5cf6b3b31b67d2",
+      "prepared_rgb_sha256": "9cc1defaaa6f359d2f27b09902d1325c2413434e01aecb1d4d07f10209f48e48",
+      "preparation": "explicit nearest-neighbour square512 resize from decoded RGB; no implicit source conversion"
+    },
+    {
+      "image_id": "ISIC_0058538",
+      "diagnosis": "NV",
+      "label": 1,
+      "group": "image:ISIC_0058538",
+      "source_file_sha256": "0529a11c71e8b4aa1aefbb38e5ea4478f0b5b62e56cc3f0544c3535973206e38",
+      "source_decoded_rgb_sha256": "8403602e7a257587da2e8a325d78f3017f524b2ce2deaf9459ef4ab5d0cf8157",
+      "source_dimensions": [
+        1024,
+        1024
+      ],
+      "prepared_file_sha256": "3dbc95ccdc3fe7b290a250f5eb857329188d0e9fb824ab15401a0967fffce0f6",
+      "prepared_rgb_sha256": "3f9aba349f0d0d91b5a05a0d4cb8c871c2fa0d7cf83332e29285a16ff8d6f46d",
+      "preparation": "explicit nearest-neighbour square512 resize from decoded RGB; no implicit source conversion"
+    },
+    {
+      "image_id": "ISIC_0025598",
+      "diagnosis": "NV",
+      "label": 1,
+      "group": "image:ISIC_0025598",
+      "source_file_sha256": "232f9514371f539fc6e7be51df7d4a310b9a21b7bc8f432ca8a75ac71def2661",
+      "source_decoded_rgb_sha256": "519ca751e2de77c7e94f528cad19e0354dcc35bcc124582acf47a59a82fe4adb",
+      "source_dimensions": [
+        600,
+        450
+      ],
+      "prepared_file_sha256": "e7854e67bb4f1f78679bac05d6f706725b25537d6693b7a91abe60c8906cdf2a",
+      "prepared_rgb_sha256": "949a4c4eaf4ec75b138784ad0736c8e809fd516018ed58992461d2b8bb701e5a",
+      "preparation": "explicit nearest-neighbour square512 resize from decoded RGB; no implicit source conversion"
+    },
+    {
+      "image_id": "ISIC_0024350",
+      "diagnosis": "NV",
+      "label": 1,
+      "group": "image:ISIC_0024350",
+      "source_file_sha256": "be38e54a21981511afc341d997df9b2e3810bf994319fa3197b4814ad6673bbd",
+      "source_decoded_rgb_sha256": "9be8fc87b14b2eb3f7090f251e0d537897356e7c0f1fe1ef10496f14d2460ea0",
+      "source_dimensions": [
+        600,
+        450
+      ],
+      "prepared_file_sha256": "24193ab8740fb1f532516a9e791d99aef57c29d566444df29f430640abee8105",
+      "prepared_rgb_sha256": "4f35000aa2ac5c7b4408866920f18076e7ec6fc4c539679551b9cf2fcccf0237",
+      "preparation": "explicit nearest-neighbour square512 resize from decoded RGB; no implicit source conversion"
+    },
+    {
+      "image_id": "ISIC_0064864",
+      "diagnosis": "BCC",
+      "label": 2,
+      "group": "image:ISIC_0064864",
+      "source_file_sha256": "edf4dd32a96deeae13496afbbec49623f6df95b77df561f3173a98cc00d82336",
+      "source_decoded_rgb_sha256": "34a6b7b9ccb9fcf05fd6ab8c732d9a435323bf63b53cff1a8bc2427f1d93ac7a",
+      "source_dimensions": [
+        1024,
+        1024
+      ],
+      "prepared_file_sha256": "2676c2a96e30cc42cc4cbe8d0697262eb22b164df4739b296ba879e7f6f97618",
+      "prepared_rgb_sha256": "5eaf5c8f057f6ed64b7904c42b7abb2f5e51b856b7252ffe13f095de1f6b2b39",
+      "preparation": "explicit nearest-neighbour square512 resize from decoded RGB; no implicit source conversion"
+    },
+    {
+      "image_id": "ISIC_0056737",
+      "diagnosis": "BCC",
+      "label": 2,
+      "group": "image:ISIC_0056737",
+      "source_file_sha256": "9225a3f809f9cd448d07982b40dc4b20509c0cec41524ea0da4f10e9d391d088",
+      "source_decoded_rgb_sha256": "03ec6724d32e2ddc9a9ec4d8c898e83ddd15b9088a253e97451d11e4ac63c567",
+      "source_dimensions": [
+        1024,
+        1024
+      ],
+      "prepared_file_sha256": "9227c056814ad30de66b2acc94c49846a341b04dd8ff3005d66af1dbd881e221",
+      "prepared_rgb_sha256": "aaa896472ec821579a50985eae93a62937398a37c248d898320b5b12acd2fb95",
+      "preparation": "explicit nearest-neighbour square512 resize from decoded RGB; no implicit source conversion"
+    },
+    {
+      "image_id": "ISIC_0061400",
+      "diagnosis": "BCC",
+      "label": 2,
+      "group": "image:ISIC_0061400",
+      "source_file_sha256": "caeed7fcc986c2cc4671c5a3dad819d5e5f8beff21020960b04ebb00a559af29",
+      "source_decoded_rgb_sha256": "370d29a8601a24a1732d82376c02f659c87b1c885984a75ab914f7c5c4d985d1",
+      "source_dimensions": [
+        1024,
+        1024
+      ],
+      "prepared_file_sha256": "2aa17304399377c5c574b324fddf99658753af042b07430d1e2b03a300f3098d",
+      "prepared_rgb_sha256": "0f8b6edad115b69511795635f3c6fb5c958e7189e1917f2ab2ed63f2615243ab",
+      "preparation": "explicit nearest-neighbour square512 resize from decoded RGB; no implicit source conversion"
+    },
+    {
+      "image_id": "ISIC_0068302",
+      "diagnosis": "BCC",
+      "label": 2,
+      "group": "image:ISIC_0068302",
+      "source_file_sha256": "b927d54d86a93e3765f039ec7215946c97f005e21eff4e20f692adbd10be74b3",
+      "source_decoded_rgb_sha256": "7f57de38dcc70792b5afd33271604b8f9c5158ad7df98ae1591ce5b6ebc7669e",
+      "source_dimensions": [
+        1024,
+        1024
+      ],
+      "prepared_file_sha256": "eda620b70824fb4d356adf63f75bdc9b76d31d049e6ab2033689cc3f258b68c9",
+      "prepared_rgb_sha256": "8cde06931ad1f5a5b5eacc6a4b3609d5702a55529c802d0c70ba964a85297881",
+      "preparation": "explicit nearest-neighbour square512 resize from decoded RGB; no implicit source conversion"
+    },
+    {
+      "image_id": "ISIC_0061068",
+      "diagnosis": "AK",
+      "label": 3,
+      "group": "image:ISIC_0061068",
+      "source_file_sha256": "bf898a3ebc1eff945dac93fc2d64b8af7377323f0082f01c6f6524e5de4afd49",
+      "source_decoded_rgb_sha256": "ac1378b8b28db8e7395d9de88d3b1e81b8f81fc32a2b3a5d557323a136c1b957",
+      "source_dimensions": [
+        1024,
+        1024
+      ],
+      "prepared_file_sha256": "86160c30a7ee1bc801db129974ec003b368639fb47c254eacae70f8e1576ba7e",
+      "prepared_rgb_sha256": "24414bfe170496f69e1f199b746d7a1133a1fdddd5d7dee5ef9c8344a42274ab",
+      "preparation": "explicit nearest-neighbour square512 resize from decoded RGB; no implicit source conversion"
+    },
+    {
+      "image_id": "ISIC_0055844",
+      "diagnosis": "AK",
+      "label": 3,
+      "group": "image:ISIC_0055844",
+      "source_file_sha256": "6da729c3fb6de8107356c67321e3c49e0156c5b4f8d37d290e8007fba84036b6",
+      "source_decoded_rgb_sha256": "0d990f17ca50d637175b863eab89524190eb86ef1eb2d8c23f6eaf9caf14c484",
+      "source_dimensions": [
+        1024,
+        1024
+      ],
+      "prepared_file_sha256": "6c55bb586917d82a01d14b8779b2d8297da2f88d27820fa5248303369e0507fb",
+      "prepared_rgb_sha256": "81435ef2797629bfcc5874c970e13e8cf9d31c974714508b0314ed10528c1c5e",
+      "preparation": "explicit nearest-neighbour square512 resize from decoded RGB; no implicit source conversion"
+    },
+    {
+      "image_id": "ISIC_0062593",
+      "diagnosis": "AK",
+      "label": 3,
+      "group": "image:ISIC_0062593",
+      "source_file_sha256": "211188545c9ce450b25ee71e1652fc2d80d646a1f9c2322c483ef3a5e3d3690e",
+      "source_decoded_rgb_sha256": "0b010c41c52929f21d4f1f0119b2294a0150cd7bbb96e69d2f15f93b02a73b99",
+      "source_dimensions": [
+        1024,
+        1024
+      ],
+      "prepared_file_sha256": "18ed60ee6ca820a4d04a59ff6f8337b02f3dcd3cf02915765f4b00fa755ee5f4",
+      "prepared_rgb_sha256": "c9fc0043d04aa7af418fd2c643407b091f9330eb7fcba46c2156f04e8153b6a9",
+      "preparation": "explicit nearest-neighbour square512 resize from decoded RGB; no implicit source conversion"
+    },
+    {
+      "image_id": "ISIC_0058320",
+      "diagnosis": "AK",
+      "label": 3,
+      "group": "image:ISIC_0058320",
+      "source_file_sha256": "0b1588b9dda4f1ea2f4a67e1dca67726a560a09ac91c39bcd6f14a3b164636af",
+      "source_decoded_rgb_sha256": "7ab7b5ebbf68d62ac12a1964e885cd15dee9041422a5fc1ce69bbea65b2fb1bd",
+      "source_dimensions": [
+        1024,
+        1024
+      ],
+      "prepared_file_sha256": "363d647ea1d0ce6f574f7b0b2e8f5115f2c1497caceda7f720c1b7d717103312",
+      "prepared_rgb_sha256": "9c29f93c7b82a975765cedf4ccc6da383b5271a94e4e25f3e632f1de855feb5a",
+      "preparation": "explicit nearest-neighbour square512 resize from decoded RGB; no implicit source conversion"
+    },
+    {
+      "image_id": "ISIC_0029126",
+      "diagnosis": "BKL",
+      "label": 4,
+      "group": "image:ISIC_0029126",
+      "source_file_sha256": "67421835f50f34d52011b23a336b0c227a02a8e5a44d57850d749c7e62bb3a71",
+      "source_decoded_rgb_sha256": "e60f76d31bea9cbfc651dc15064a02d98e39da505b38e2a001896f1bb0edc7b0",
+      "source_dimensions": [
+        600,
+        450
+      ],
+      "prepared_file_sha256": "2c6e0c81616c49e68d4adb9a707ba8ce06416af0fc66050fa21d2d251d1a1b32",
+      "prepared_rgb_sha256": "16a49e5237da73070cd8156d6f9aae75064e5d35bfbd890256b0c6faf833b48e",
+      "preparation": "explicit nearest-neighbour square512 resize from decoded RGB; no implicit source conversion"
+    },
+    {
+      "image_id": "ISIC_0025297",
+      "diagnosis": "BKL",
+      "label": 4,
+      "group": "image:ISIC_0025297",
+      "source_file_sha256": "0d7798f92ed60acbaddcb49c0262776fb5e95b4f8e102e34f094404869cd4640",
+      "source_decoded_rgb_sha256": "b8607074a92ffbc14f0f1d0de5b53e2a6dd28844f5e47f7f352cff118a04ccb5",
+      "source_dimensions": [
+        600,
+        450
+      ],
+      "prepared_file_sha256": "af6d131dd4f7a4b943fab3bf78788adf5d0aa433c5d7c74908501b942e00e1c3",
+      "prepared_rgb_sha256": "8ebf05fa6bc242d8bb80f14be7de7a68f4c0ba2100cc36d9e1c44f01bd8927f4",
+      "preparation": "explicit nearest-neighbour square512 resize from decoded RGB; no implicit source conversion"
+    },
+    {
+      "image_id": "ISIC_0069252",
+      "diagnosis": "BKL",
+      "label": 4,
+      "group": "image:ISIC_0069252",
+      "source_file_sha256": "2ce7afbe34e43c40d7892e536031de8191adde9e5b8d5a25701be399fdc0f9d1",
+      "source_decoded_rgb_sha256": "493ed475fe64035e04390e0c2f6884ea305563a418cdfa01b27015698e96f2d9",
+      "source_dimensions": [
+        1024,
+        1024
+      ],
+      "prepared_file_sha256": "f40571dae3ab1967c65406c8d8f938234b73f26abd0a073f4b929e52a1f794c1",
+      "prepared_rgb_sha256": "58bcc42c07db2936c7892de01f0dc50e9f6c5b37cbf81ff7034e753b66917ab9",
+      "preparation": "explicit nearest-neighbour square512 resize from decoded RGB; no implicit source conversion"
+    },
+    {
+      "image_id": "ISIC_0025431",
+      "diagnosis": "BKL",
+      "label": 4,
+      "group": "image:ISIC_0025431",
+      "source_file_sha256": "e97e899d2d4756c38d073cc2a5c79a04bf7cc6b166df5fe3f4bd397f6e1f0eec",
+      "source_decoded_rgb_sha256": "ceae68c7a04aff501b47ffd13b0f37bde009a7721200d1be36a685d06fac1cab",
+      "source_dimensions": [
+        600,
+        450
+      ],
+      "prepared_file_sha256": "913cd75a67b69958cc662d64a611fd77c6af5080ea6685ed165d03bdd541457d",
+      "prepared_rgb_sha256": "4dc4c230aca945da2c656e36f0579544df57181a60926fd80c0580ef214d0fb6",
+      "preparation": "explicit nearest-neighbour square512 resize from decoded RGB; no implicit source conversion"
+    },
+    {
+      "image_id": "ISIC_0054915",
+      "diagnosis": "DF",
+      "label": 5,
+      "group": "image:ISIC_0054915",
+      "source_file_sha256": "f669845f9f22eb4000a069c4086d8cb605cbcbff9f122d4da4b09f480b641b6f",
+      "source_decoded_rgb_sha256": "13ad874a8ec9e83d5e05d42af3d1ac3a03957ba2ade4c541d3d49af6eaa2c2a4",
+      "source_dimensions": [
+        1024,
+        1024
+      ],
+      "prepared_file_sha256": "009067977e22488d0aef1426a42bedfe8ef1128f2f527d4b2e6f10a35ad2f2fe",
+      "prepared_rgb_sha256": "194176add7feb59ff7cd17cd26e8deefb4bd47b3b0edd6c6e4b2695255532f29",
+      "preparation": "explicit nearest-neighbour square512 resize from decoded RGB; no implicit source conversion"
+    },
+    {
+      "image_id": "ISIC_0069303",
+      "diagnosis": "DF",
+      "label": 5,
+      "group": "image:ISIC_0069303",
+      "source_file_sha256": "f9a84292f8b8dd16aca63b953f42c8191296452220f2047db8cf81947356a0ef",
+      "source_decoded_rgb_sha256": "5ea090083aa181d79bde7673c46f583bec02a5559f5e41e88b4b71bad1334bf0",
+      "source_dimensions": [
+        1024,
+        1024
+      ],
+      "prepared_file_sha256": "5706ffdbbf3bae8f88cf3d6230308be8a6b83faa3b1130e0da4643605d9a1a4f",
+      "prepared_rgb_sha256": "e38cf851f4998598ff8a280d25dab6596edb2caee2c0a6158c7abb7b5b4d801b",
+      "preparation": "explicit nearest-neighbour square512 resize from decoded RGB; no implicit source conversion"
+    },
+    {
+      "image_id": "ISIC_0059494",
+      "diagnosis": "DF",
+      "label": 5,
+      "group": "image:ISIC_0059494",
+      "source_file_sha256": "56c68ad2c7ee0f83fdfd739dfca3dd5551718b6672de71679a62d426a5c4a8d9",
+      "source_decoded_rgb_sha256": "9da564db8c662952123e7d655789b36f85e4e185fc5a7e94f32e663bcff96fb0",
+      "source_dimensions": [
+        1024,
+        1024
+      ],
+      "prepared_file_sha256": "058d31f209bfd3bf4c86556cc422c72b6933785a0508b2f440e5bd138654d56a",
+      "prepared_rgb_sha256": "b8be61d444fe28c25b594e51effed0e18df0a9f5776c1a0e121c61e3f97a8cba",
+      "preparation": "explicit nearest-neighbour square512 resize from decoded RGB; no implicit source conversion"
+    },
+    {
+      "image_id": "ISIC_0024553",
+      "diagnosis": "DF",
+      "label": 5,
+      "group": "image:ISIC_0024553",
+      "source_file_sha256": "5966d3a6021d8022e157a251c2782d0400a3d8d8c19e46bdf9b0e3bbdde41571",
+      "source_decoded_rgb_sha256": "fd22ac48bc1213d08ec5859d7fe0971f28ffd9bd2546441de9f26b131a4a6fa0",
+      "source_dimensions": [
+        600,
+        450
+      ],
+      "prepared_file_sha256": "8441c09b69f9a160639ba20b5652359ed4c8b7f74bccc3d098b45a19436004ac",
+      "prepared_rgb_sha256": "9e36973c224807b70e2a85d61383c6fc6f1199ec7b1d3be3d2e89404f393a849",
+      "preparation": "explicit nearest-neighbour square512 resize from decoded RGB; no implicit source conversion"
+    },
+    {
+      "image_id": "ISIC_0027856",
+      "diagnosis": "VASC",
+      "label": 6,
+      "group": "image:ISIC_0027856",
+      "source_file_sha256": "4898406f1bbf66276d56124e6dfc43cd05f9cf463f7433a592065a7d5c327c94",
+      "source_decoded_rgb_sha256": "f709e1af4a7823739cd5772f869d42030dd9a8a7f5af2c83e6ee279166988e1a",
+      "source_dimensions": [
+        600,
+        450
+      ],
+      "prepared_file_sha256": "a50fb9429347fa2007e7ae3a88a40b502a7fa0adf9b9bdcd4a7a06f4658523a8",
+      "prepared_rgb_sha256": "cc21fe9faa8b9c43219ea1dda709b0ddda72b78e2db808dbd30df44c0ef916e1",
+      "preparation": "explicit nearest-neighbour square512 resize from decoded RGB; no implicit source conversion"
+    },
+    {
+      "image_id": "ISIC_0070703",
+      "diagnosis": "VASC",
+      "label": 6,
+      "group": "image:ISIC_0070703",
+      "source_file_sha256": "7c2160539c1a6e034fe04dfe072d91b76c471e9b3a065a3627d73204da1817bc",
+      "source_decoded_rgb_sha256": "fa8fa321953d54eab48331c424c9309e8b8cb181ebd0181792615e296485dabc",
+      "source_dimensions": [
+        1024,
+        1024
+      ],
+      "prepared_file_sha256": "78bc11800e65d15b482c88e2faaafc8a2017cd08f28e2a861035d9124971cd76",
+      "prepared_rgb_sha256": "eb4170c4bd3e774190312d8140bfcd9125f1b14a3af23d3cdf7352959f9a10e2",
+      "preparation": "explicit nearest-neighbour square512 resize from decoded RGB; no implicit source conversion"
+    },
+    {
+      "image_id": "ISIC_0071383",
+      "diagnosis": "VASC",
+      "label": 6,
+      "group": "image:ISIC_0071383",
+      "source_file_sha256": "a69f376f91279f961e1eaa6ab54669752938c52a1d004f54e0c3598514f0ebff",
+      "source_decoded_rgb_sha256": "4722274318b6df4ba4c0d8db2e04aacd0daa343151724ce22220da4a94807ac7",
+      "source_dimensions": [
+        1024,
+        1024
+      ],
+      "prepared_file_sha256": "f7b22078ea18e6700df10d3c5e400fa074244e8ea4a3e81d7197b7cad03e935c",
+      "prepared_rgb_sha256": "3ba95d86b439866a7ed76a4781f20dfba8bbd63bf80d38cf3e8cfed91688177f",
+      "preparation": "explicit nearest-neighbour square512 resize from decoded RGB; no implicit source conversion"
+    },
+    {
+      "image_id": "ISIC_0067807",
+      "diagnosis": "VASC",
+      "label": 6,
+      "group": "image:ISIC_0067807",
+      "source_file_sha256": "d307cb40fbb01737e0967d4d3e228f820cb09960271e7c662a7a1fb9136d17aa",
+      "source_decoded_rgb_sha256": "1edcda59111d2c634ab178e2614decb7cc61f68aa8b9a03b4d94f3853eaae26b",
+      "source_dimensions": [
+        1024,
+        1024
+      ],
+      "prepared_file_sha256": "4d8f9c68a9417c9b10a88518abcd3c4785a8b0c9287b404119ebf95194691872",
+      "prepared_rgb_sha256": "d53947ea5c11fc833ed24383a40feea4501285a79264092725c1df8a84bbc61e",
+      "preparation": "explicit nearest-neighbour square512 resize from decoded RGB; no implicit source conversion"
+    },
+    {
+      "image_id": "ISIC_0032203",
+      "diagnosis": "SCC",
+      "label": 7,
+      "group": "image:ISIC_0032203",
+      "source_file_sha256": "f09e29c1374fade7d03f5d0e0b24fbd2910c0fea67aa01708605cd436bec96db",
+      "source_decoded_rgb_sha256": "0e72300661a2a014fda45240d0607c56db6ebac3705e8ebea99cc6ef81c4d932",
+      "source_dimensions": [
+        600,
+        450
+      ],
+      "prepared_file_sha256": "a42e9eae79c4f030a49e6fb5091698eae947759947012934e25f1fbd49f92b8c",
+      "prepared_rgb_sha256": "0bf0011fc83e3574f8fc87f03103a237f4d91e318ca94ba5dd7587154575ecaa",
+      "preparation": "explicit nearest-neighbour square512 resize from decoded RGB; no implicit source conversion"
+    },
+    {
+      "image_id": "ISIC_0026132",
+      "diagnosis": "SCC",
+      "label": 7,
+      "group": "image:ISIC_0026132",
+      "source_file_sha256": "42597db942df99cd597b27629a34922697f3ae07ab0d051c44603b4bb02eaf4c",
+      "source_decoded_rgb_sha256": "800e4bf8c2825179585d2e24907782424171db02db7088713ca5c33ecc22aad7",
+      "source_dimensions": [
+        600,
+        450
+      ],
+      "prepared_file_sha256": "308a38cc002c667be722403b63462a94729f9313eb041fbacee0544a89a6b94b",
+      "prepared_rgb_sha256": "79f45ce15d4231cb26a8a54e56383e967c0e90d4e312969255ff9554dd473fb5",
+      "preparation": "explicit nearest-neighbour square512 resize from decoded RGB; no implicit source conversion"
+    },
+    {
+      "image_id": "ISIC_0031743",
+      "diagnosis": "SCC",
+      "label": 7,
+      "group": "image:ISIC_0031743",
+      "source_file_sha256": "8d01d48b36fb2410ae64264c8f4d09aad9817087343d82e87ffbe32de7dbc3f3",
+      "source_decoded_rgb_sha256": "2d58aafc357242d7fa8437f79ce062fbf66a844e8849b437666280532cc28410",
+      "source_dimensions": [
+        600,
+        450
+      ],
+      "prepared_file_sha256": "e74ff6da192d0892f2af6be2f12003924b40400766debda6918affa80c8f09ec",
+      "prepared_rgb_sha256": "9ee3a9db67f1dc3a4a8382e87a049672b35ee4259c52d1a1ec74fe08cdee6b79",
+      "preparation": "explicit nearest-neighbour square512 resize from decoded RGB; no implicit source conversion"
+    },
+    {
+      "image_id": "ISIC_0058029",
+      "diagnosis": "SCC",
+      "label": 7,
+      "group": "image:ISIC_0058029",
+      "source_file_sha256": "248d373930724100f222f7b0d3997df20d6ea46eee02394bc4c54b3d25da5ca7",
+      "source_decoded_rgb_sha256": "3aa4a61361846e685582c53cb986229265c1416e07a06178cebc5fb92f872200",
+      "source_dimensions": [
+        1024,
+        1024
+      ],
+      "prepared_file_sha256": "3c44e7e04d25c550ae5b65868ef9ff923b431791430d80d24caaa98e227c0278",
+      "prepared_rgb_sha256": "1184dae9dee7dff2b18d6ea3da16ba8cf45545966b618de66613f919f36c1f31",
+      "preparation": "explicit nearest-neighbour square512 resize from decoded RGB; no implicit source conversion"
+    }
+  ],
+  "limitations": [
+    "A local path or label profile does not authenticate native-original ISIC identity.",
+    "Caller-supplied grouping is not independently verified; lesion grouping is not patient grouping.",
+    "Native dimensions, file hashes and prepared hashes are recorded; no native-original claim inferred.",
+    "Preparation explicitly resizes to512 nearest to match baseline; fidelity is measured against prepared RGB.",
+    "Tiny balanced pilot cannot support population, clinical or per-diagnosis superiority claims."
+  ]
+}

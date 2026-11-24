@@ -1,0 +1,3832 @@
+{
+  "schema": "equal-byte-decoder-development-v1",
+  "synthetic": true,
+  "source_sha256": "c66316e279598f43ef5f86f07262e59c846d6424e00b637b973a9f47ec77198b",
+  "rows": [
+    {
+      "seed": 0,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 16,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.05825167499961026
+    },
+    {
+      "seed": 0,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 16,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.054555945999709365
+    },
+    {
+      "seed": 0,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 16,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.05799385299997084
+    },
+    {
+      "seed": 0,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 16,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.053377868000097806
+    },
+    {
+      "seed": 0,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 32,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.05591012499962744
+    },
+    {
+      "seed": 0,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 32,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.05889657200032161
+    },
+    {
+      "seed": 0,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 32,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.05688867199978631
+    },
+    {
+      "seed": 0,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 32,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.051024718999997276
+    },
+    {
+      "seed": 0,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 64,
+      "pattern": "clustered",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.05560555800002476
+    },
+    {
+      "seed": 0,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 64,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.05025403499985259
+    },
+    {
+      "seed": 0,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 64,
+      "pattern": "distributed",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.06042555300018648
+    },
+    {
+      "seed": 0,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 64,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.05494980999992549
+    },
+    {
+      "seed": 0,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 128,
+      "pattern": "clustered",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.05809121599986611
+    },
+    {
+      "seed": 0,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 128,
+      "pattern": "clustered",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.054837240999859205
+    },
+    {
+      "seed": 0,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 128,
+      "pattern": "distributed",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.0725846889999957
+    },
+    {
+      "seed": 0,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 128,
+      "pattern": "distributed",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.0603395250000176
+    },
+    {
+      "seed": 0,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 256,
+      "pattern": "clustered",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.05888972999991893
+    },
+    {
+      "seed": 0,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 256,
+      "pattern": "clustered",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.053297663999728684
+    },
+    {
+      "seed": 0,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 256,
+      "pattern": "distributed",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.08498215899999195
+    },
+    {
+      "seed": 0,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 256,
+      "pattern": "distributed",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.05339209800013123
+    },
+    {
+      "seed": 0,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 512,
+      "pattern": "clustered",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.058743501999742875
+    },
+    {
+      "seed": 0,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 512,
+      "pattern": "clustered",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.05315589399970122
+    },
+    {
+      "seed": 0,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 512,
+      "pattern": "distributed",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.0620570700002645
+    },
+    {
+      "seed": 0,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 512,
+      "pattern": "distributed",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.05365219600025739
+    },
+    {
+      "seed": 0,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 16,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.05513586899996881
+    },
+    {
+      "seed": 0,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 16,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06495331300038742
+    },
+    {
+      "seed": 0,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 16,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.057778092000262404
+    },
+    {
+      "seed": 0,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 16,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.05461591499988572
+    },
+    {
+      "seed": 0,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 32,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.0596518429997559
+    },
+    {
+      "seed": 0,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 32,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.05842524899981072
+    },
+    {
+      "seed": 0,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 32,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06737514399992506
+    },
+    {
+      "seed": 0,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 32,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.05779365099988354
+    },
+    {
+      "seed": 0,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 64,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06220226600044043
+    },
+    {
+      "seed": 0,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 64,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.05615463699996326
+    },
+    {
+      "seed": 0,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 64,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.05873088499993173
+    },
+    {
+      "seed": 0,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 64,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.057577648000005865
+    },
+    {
+      "seed": 0,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 128,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.05893307899987121
+    },
+    {
+      "seed": 0,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 128,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.05853671500017299
+    },
+    {
+      "seed": 0,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 128,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.07294729999966876
+    },
+    {
+      "seed": 0,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 128,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06413139699998283
+    },
+    {
+      "seed": 0,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 256,
+      "pattern": "clustered",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.06476138299967715
+    },
+    {
+      "seed": 0,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 256,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.07027101199992103
+    },
+    {
+      "seed": 0,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 256,
+      "pattern": "distributed",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.06724264600006791
+    },
+    {
+      "seed": 0,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 256,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06781554300005155
+    },
+    {
+      "seed": 0,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 512,
+      "pattern": "clustered",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.06208954100020492
+    },
+    {
+      "seed": 0,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 512,
+      "pattern": "clustered",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.08003148100033286
+    },
+    {
+      "seed": 0,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 512,
+      "pattern": "distributed",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.09982556799968734
+    },
+    {
+      "seed": 0,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 512,
+      "pattern": "distributed",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.06329630400023234
+    },
+    {
+      "seed": 0,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 16,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.061481931999878725
+    },
+    {
+      "seed": 0,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 16,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.0587759999998525
+    },
+    {
+      "seed": 0,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 16,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.05916118200002529
+    },
+    {
+      "seed": 0,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 16,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.049495482000111224
+    },
+    {
+      "seed": 0,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 32,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.0595210730002691
+    },
+    {
+      "seed": 0,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 32,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.05667200700008834
+    },
+    {
+      "seed": 0,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 32,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06358018500031903
+    },
+    {
+      "seed": 0,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 32,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06879306300015742
+    },
+    {
+      "seed": 0,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 64,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06518176600002334
+    },
+    {
+      "seed": 0,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 64,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06136198500007595
+    },
+    {
+      "seed": 0,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 64,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06573183000000427
+    },
+    {
+      "seed": 0,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 64,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.060307018000003154
+    },
+    {
+      "seed": 0,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 128,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06384722600023451
+    },
+    {
+      "seed": 0,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 128,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06000073299992437
+    },
+    {
+      "seed": 0,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 128,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06639067700007217
+    },
+    {
+      "seed": 0,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 128,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06693832200016914
+    },
+    {
+      "seed": 0,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 256,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06808221299979778
+    },
+    {
+      "seed": 0,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 256,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.07338819999995394
+    },
+    {
+      "seed": 0,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 256,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.0656457190002584
+    },
+    {
+      "seed": 0,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 256,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.0714252189995932
+    },
+    {
+      "seed": 0,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 512,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.07769646299993838
+    },
+    {
+      "seed": 0,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 512,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.07985146999999415
+    },
+    {
+      "seed": 0,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 512,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.07440292499995849
+    },
+    {
+      "seed": 0,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 512,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.07782043499992142
+    },
+    {
+      "seed": 1,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 16,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.05629083999974682
+    },
+    {
+      "seed": 1,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 16,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.05983882900000026
+    },
+    {
+      "seed": 1,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 16,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.05872962299963547
+    },
+    {
+      "seed": 1,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 16,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.05115548200001285
+    },
+    {
+      "seed": 1,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 32,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.05788851900024383
+    },
+    {
+      "seed": 1,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 32,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.05547032999993462
+    },
+    {
+      "seed": 1,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 32,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06266694099986125
+    },
+    {
+      "seed": 1,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 32,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.05455439399975148
+    },
+    {
+      "seed": 1,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 64,
+      "pattern": "clustered",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.05398425600014889
+    },
+    {
+      "seed": 1,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 64,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.050331816999914736
+    },
+    {
+      "seed": 1,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 64,
+      "pattern": "distributed",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.053064562999679765
+    },
+    {
+      "seed": 1,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 64,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.05568920199993954
+    },
+    {
+      "seed": 1,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 128,
+      "pattern": "clustered",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.054043971999817586
+    },
+    {
+      "seed": 1,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 128,
+      "pattern": "clustered",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.04915659200014488
+    },
+    {
+      "seed": 1,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 128,
+      "pattern": "distributed",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.05412131999992198
+    },
+    {
+      "seed": 1,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 128,
+      "pattern": "distributed",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.04774528999996619
+    },
+    {
+      "seed": 1,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 256,
+      "pattern": "clustered",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.0557414750001044
+    },
+    {
+      "seed": 1,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 256,
+      "pattern": "clustered",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.047447367000131635
+    },
+    {
+      "seed": 1,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 256,
+      "pattern": "distributed",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.05307900400021026
+    },
+    {
+      "seed": 1,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 256,
+      "pattern": "distributed",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.04634926400012773
+    },
+    {
+      "seed": 1,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 512,
+      "pattern": "clustered",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.0528623879999941
+    },
+    {
+      "seed": 1,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 512,
+      "pattern": "clustered",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.04568558899973141
+    },
+    {
+      "seed": 1,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 512,
+      "pattern": "distributed",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.05201687299995683
+    },
+    {
+      "seed": 1,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 512,
+      "pattern": "distributed",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.05655823200049781
+    },
+    {
+      "seed": 1,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 16,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06381757899998775
+    },
+    {
+      "seed": 1,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 16,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.0561943570000949
+    },
+    {
+      "seed": 1,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 16,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.062417579999419104
+    },
+    {
+      "seed": 1,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 16,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.052850655999463925
+    },
+    {
+      "seed": 1,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 32,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06042105000051379
+    },
+    {
+      "seed": 1,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 32,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.05640646400024707
+    },
+    {
+      "seed": 1,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 32,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.0593461100006607
+    },
+    {
+      "seed": 1,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 32,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.056535649000579724
+    },
+    {
+      "seed": 1,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 64,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06298259899995173
+    },
+    {
+      "seed": 1,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 64,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06481756500033953
+    },
+    {
+      "seed": 1,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 64,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.05968654499974946
+    },
+    {
+      "seed": 1,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 64,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.053934832999402715
+    },
+    {
+      "seed": 1,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 128,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06200041299962322
+    },
+    {
+      "seed": 1,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 128,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.05287037500056613
+    },
+    {
+      "seed": 1,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 128,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.05521598100040137
+    },
+    {
+      "seed": 1,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 128,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.05536961699999665
+    },
+    {
+      "seed": 1,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 256,
+      "pattern": "clustered",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.06081264899967209
+    },
+    {
+      "seed": 1,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 256,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.05941892500050017
+    },
+    {
+      "seed": 1,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 256,
+      "pattern": "distributed",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.05743601299946022
+    },
+    {
+      "seed": 1,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 256,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06276897200041276
+    },
+    {
+      "seed": 1,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 512,
+      "pattern": "clustered",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.05527080299998488
+    },
+    {
+      "seed": 1,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 512,
+      "pattern": "clustered",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.06342385900006775
+    },
+    {
+      "seed": 1,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 512,
+      "pattern": "distributed",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.07056265299979714
+    },
+    {
+      "seed": 1,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 512,
+      "pattern": "distributed",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.05973807600003056
+    },
+    {
+      "seed": 1,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 16,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.05951696600004652
+    },
+    {
+      "seed": 1,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 16,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.054671871999744326
+    },
+    {
+      "seed": 1,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 16,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06213520300025266
+    },
+    {
+      "seed": 1,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 16,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.0605208560000392
+    },
+    {
+      "seed": 1,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 32,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.07192704099998082
+    },
+    {
+      "seed": 1,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 32,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.05912822900063475
+    },
+    {
+      "seed": 1,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 32,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.07900215399968147
+    },
+    {
+      "seed": 1,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 32,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.060154271999635966
+    },
+    {
+      "seed": 1,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 64,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.07593546399948536
+    },
+    {
+      "seed": 1,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 64,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.0618314069997723
+    },
+    {
+      "seed": 1,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 64,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06505359099992347
+    },
+    {
+      "seed": 1,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 64,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.0592210309996517
+    },
+    {
+      "seed": 1,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 128,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06786012399970787
+    },
+    {
+      "seed": 1,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 128,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06811354900037259
+    },
+    {
+      "seed": 1,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 128,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06775520500013954
+    },
+    {
+      "seed": 1,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 128,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06094807999943441
+    },
+    {
+      "seed": 1,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 256,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.07129780900049809
+    },
+    {
+      "seed": 1,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 256,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06760189699980401
+    },
+    {
+      "seed": 1,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 256,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06930207700042956
+    },
+    {
+      "seed": 1,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 256,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06979339400004392
+    },
+    {
+      "seed": 1,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 512,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.07232699700034573
+    },
+    {
+      "seed": 1,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 512,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.07768481200037058
+    },
+    {
+      "seed": 1,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 512,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06979793299979065
+    },
+    {
+      "seed": 1,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 512,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.08270314400033385
+    },
+    {
+      "seed": 2,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 16,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.0615682880006716
+    },
+    {
+      "seed": 2,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 16,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.056392170000435726
+    },
+    {
+      "seed": 2,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 16,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06967660000009346
+    },
+    {
+      "seed": 2,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 16,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06049101400003565
+    },
+    {
+      "seed": 2,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 32,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06234243900053116
+    },
+    {
+      "seed": 2,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 32,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.05679860300006112
+    },
+    {
+      "seed": 2,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 32,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.0646775670002171
+    },
+    {
+      "seed": 2,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 32,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.05636760199922719
+    },
+    {
+      "seed": 2,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 64,
+      "pattern": "clustered",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.060103981999418465
+    },
+    {
+      "seed": 2,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 64,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06004165899958025
+    },
+    {
+      "seed": 2,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 64,
+      "pattern": "distributed",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.06021194899949478
+    },
+    {
+      "seed": 2,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 64,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.05709236500024417
+    },
+    {
+      "seed": 2,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 128,
+      "pattern": "clustered",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.058279009999751
+    },
+    {
+      "seed": 2,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 128,
+      "pattern": "clustered",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.05292146900046646
+    },
+    {
+      "seed": 2,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 128,
+      "pattern": "distributed",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.05519652199927805
+    },
+    {
+      "seed": 2,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 128,
+      "pattern": "distributed",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.04651576499963994
+    },
+    {
+      "seed": 2,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 256,
+      "pattern": "clustered",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.05683714799943118
+    },
+    {
+      "seed": 2,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 256,
+      "pattern": "clustered",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.05465052099953027
+    },
+    {
+      "seed": 2,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 256,
+      "pattern": "distributed",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.05524067800070043
+    },
+    {
+      "seed": 2,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 256,
+      "pattern": "distributed",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.05200661399976525
+    },
+    {
+      "seed": 2,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 512,
+      "pattern": "clustered",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.058735878000334196
+    },
+    {
+      "seed": 2,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 512,
+      "pattern": "clustered",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.05337979900014034
+    },
+    {
+      "seed": 2,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 512,
+      "pattern": "distributed",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.062097468000501976
+    },
+    {
+      "seed": 2,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 512,
+      "pattern": "distributed",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.054838527999891085
+    },
+    {
+      "seed": 2,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 16,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.0650294170000052
+    },
+    {
+      "seed": 2,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 16,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.05768413700025121
+    },
+    {
+      "seed": 2,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 16,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.061701042000095185
+    },
+    {
+      "seed": 2,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 16,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.05806988899985299
+    },
+    {
+      "seed": 2,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 32,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06558721599958517
+    },
+    {
+      "seed": 2,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 32,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.07193350499983353
+    },
+    {
+      "seed": 2,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 32,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06715733100008947
+    },
+    {
+      "seed": 2,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 32,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.055188905999784765
+    },
+    {
+      "seed": 2,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 64,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06335105800008023
+    },
+    {
+      "seed": 2,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 64,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.05744698899979994
+    },
+    {
+      "seed": 2,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 64,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.059933061999799975
+    },
+    {
+      "seed": 2,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 64,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.052961647999836714
+    },
+    {
+      "seed": 2,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 128,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.0743044099999679
+    },
+    {
+      "seed": 2,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 128,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.0962476559998322
+    },
+    {
+      "seed": 2,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 128,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.10710166199987725
+    },
+    {
+      "seed": 2,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 128,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.08481909199963411
+    },
+    {
+      "seed": 2,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 256,
+      "pattern": "clustered",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.06328305099941645
+    },
+    {
+      "seed": 2,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 256,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.07291559599980246
+    },
+    {
+      "seed": 2,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 256,
+      "pattern": "distributed",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.06661214899941115
+    },
+    {
+      "seed": 2,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 256,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06449557799987815
+    },
+    {
+      "seed": 2,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 512,
+      "pattern": "clustered",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.05690250099996774
+    },
+    {
+      "seed": 2,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 512,
+      "pattern": "clustered",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.05834923800011893
+    },
+    {
+      "seed": 2,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 512,
+      "pattern": "distributed",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.06245551499978319
+    },
+    {
+      "seed": 2,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 512,
+      "pattern": "distributed",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.05946902800042153
+    },
+    {
+      "seed": 2,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 16,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06664240600002813
+    },
+    {
+      "seed": 2,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 16,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06365384000037011
+    },
+    {
+      "seed": 2,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 16,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06424418099959439
+    },
+    {
+      "seed": 2,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 16,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.054029181000259996
+    },
+    {
+      "seed": 2,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 32,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06742733900046005
+    },
+    {
+      "seed": 2,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 32,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.07105189499998232
+    },
+    {
+      "seed": 2,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 32,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.09309867100000702
+    },
+    {
+      "seed": 2,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 32,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.07565752899972722
+    },
+    {
+      "seed": 2,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 64,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.09152903900030651
+    },
+    {
+      "seed": 2,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 64,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06608910799968726
+    },
+    {
+      "seed": 2,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 64,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06762833900029364
+    },
+    {
+      "seed": 2,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 64,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06609979200038651
+    },
+    {
+      "seed": 2,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 128,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.08562362100019527
+    },
+    {
+      "seed": 2,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 128,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06895271499979572
+    },
+    {
+      "seed": 2,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 128,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06820329800029867
+    },
+    {
+      "seed": 2,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 128,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06320617100027448
+    },
+    {
+      "seed": 2,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 256,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06990908199986734
+    },
+    {
+      "seed": 2,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 256,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06819080599962035
+    },
+    {
+      "seed": 2,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 256,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06927983999958087
+    },
+    {
+      "seed": 2,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 256,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.0742772640005569
+    },
+    {
+      "seed": 2,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 512,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.07244838200040249
+    },
+    {
+      "seed": 2,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 512,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.08114491200012708
+    },
+    {
+      "seed": 2,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 512,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.09375798699966253
+    },
+    {
+      "seed": 2,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 512,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.09547572400060744
+    },
+    {
+      "seed": 3,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 16,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.18686089499988157
+    },
+    {
+      "seed": 3,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 16,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.0948383280001508
+    },
+    {
+      "seed": 3,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 16,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06149587399977463
+    },
+    {
+      "seed": 3,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 16,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.056545405000179016
+    },
+    {
+      "seed": 3,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 32,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06277277799927106
+    },
+    {
+      "seed": 3,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 32,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06703134399958799
+    },
+    {
+      "seed": 3,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 32,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.07485748799990688
+    },
+    {
+      "seed": 3,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 32,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.056666992999453214
+    },
+    {
+      "seed": 3,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 64,
+      "pattern": "clustered",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.07802395700036868
+    },
+    {
+      "seed": 3,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 64,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.061167178999312455
+    },
+    {
+      "seed": 3,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 64,
+      "pattern": "distributed",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.07322176400066382
+    },
+    {
+      "seed": 3,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 64,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06401989400001185
+    },
+    {
+      "seed": 3,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 128,
+      "pattern": "clustered",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.06700378699952125
+    },
+    {
+      "seed": 3,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 128,
+      "pattern": "clustered",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.06360685600066063
+    },
+    {
+      "seed": 3,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 128,
+      "pattern": "distributed",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.07301359499979299
+    },
+    {
+      "seed": 3,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 128,
+      "pattern": "distributed",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.061786469999788096
+    },
+    {
+      "seed": 3,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 256,
+      "pattern": "clustered",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.06555642900002567
+    },
+    {
+      "seed": 3,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 256,
+      "pattern": "clustered",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.05689342999994551
+    },
+    {
+      "seed": 3,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 256,
+      "pattern": "distributed",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.06127863299934688
+    },
+    {
+      "seed": 3,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 256,
+      "pattern": "distributed",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.058727241000269714
+    },
+    {
+      "seed": 3,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 512,
+      "pattern": "clustered",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.07238822599993
+    },
+    {
+      "seed": 3,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 512,
+      "pattern": "clustered",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.06395432099998288
+    },
+    {
+      "seed": 3,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 512,
+      "pattern": "distributed",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.06492678199992952
+    },
+    {
+      "seed": 3,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 512,
+      "pattern": "distributed",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.05524301800051035
+    },
+    {
+      "seed": 3,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 16,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.0663868290002938
+    },
+    {
+      "seed": 3,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 16,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06443636099993455
+    },
+    {
+      "seed": 3,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 16,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06495176399948832
+    },
+    {
+      "seed": 3,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 16,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06397318599920254
+    },
+    {
+      "seed": 3,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 32,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.07436287400014407
+    },
+    {
+      "seed": 3,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 32,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06747204599923862
+    },
+    {
+      "seed": 3,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 32,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06776456900024641
+    },
+    {
+      "seed": 3,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 32,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06574948100023903
+    },
+    {
+      "seed": 3,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 64,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06491721899965341
+    },
+    {
+      "seed": 3,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 64,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.059227097000075446
+    },
+    {
+      "seed": 3,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 64,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06505860800007213
+    },
+    {
+      "seed": 3,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 64,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.061594742000124825
+    },
+    {
+      "seed": 3,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 128,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06647806700038927
+    },
+    {
+      "seed": 3,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 128,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06884086300033232
+    },
+    {
+      "seed": 3,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 128,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06819972100038285
+    },
+    {
+      "seed": 3,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 128,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06371843199940486
+    },
+    {
+      "seed": 3,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 256,
+      "pattern": "clustered",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.06487964100051613
+    },
+    {
+      "seed": 3,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 256,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.07052309600021545
+    },
+    {
+      "seed": 3,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 256,
+      "pattern": "distributed",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.08888742099952651
+    },
+    {
+      "seed": 3,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 256,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.09288427399951615
+    },
+    {
+      "seed": 3,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 512,
+      "pattern": "clustered",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.06484264999926381
+    },
+    {
+      "seed": 3,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 512,
+      "pattern": "clustered",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.0840674900000522
+    },
+    {
+      "seed": 3,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 512,
+      "pattern": "distributed",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.06473468300009699
+    },
+    {
+      "seed": 3,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 512,
+      "pattern": "distributed",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.07069126900023548
+    },
+    {
+      "seed": 3,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 16,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.08875400999932026
+    },
+    {
+      "seed": 3,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 16,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.07916933999968023
+    },
+    {
+      "seed": 3,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 16,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.07593736099988746
+    },
+    {
+      "seed": 3,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 16,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06173526500060689
+    },
+    {
+      "seed": 3,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 32,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.0763286519995745
+    },
+    {
+      "seed": 3,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 32,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06179415499991592
+    },
+    {
+      "seed": 3,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 32,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06797972000003938
+    },
+    {
+      "seed": 3,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 32,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.0672563079997417
+    },
+    {
+      "seed": 3,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 64,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06960930700006429
+    },
+    {
+      "seed": 3,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 64,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.061252190999766754
+    },
+    {
+      "seed": 3,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 64,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06825686000047426
+    },
+    {
+      "seed": 3,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 64,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.061066749999554304
+    },
+    {
+      "seed": 3,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 128,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06792962199961039
+    },
+    {
+      "seed": 3,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 128,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06341606600017258
+    },
+    {
+      "seed": 3,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 128,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06735391699930915
+    },
+    {
+      "seed": 3,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 128,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06303566500082525
+    },
+    {
+      "seed": 3,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 256,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.07331264300046314
+    },
+    {
+      "seed": 3,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 256,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.0766014830005588
+    },
+    {
+      "seed": 3,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 256,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.0685163170001033
+    },
+    {
+      "seed": 3,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 256,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06775061999996979
+    },
+    {
+      "seed": 3,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 512,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.07239773399942351
+    },
+    {
+      "seed": 3,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 512,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.07818499200038787
+    },
+    {
+      "seed": 3,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 512,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.07150462399931712
+    },
+    {
+      "seed": 3,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 512,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.08297608799966838
+    },
+    {
+      "seed": 4,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 16,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06075656099983462
+    },
+    {
+      "seed": 4,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 16,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06347184799960814
+    },
+    {
+      "seed": 4,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 16,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.060445676000199455
+    },
+    {
+      "seed": 4,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 16,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.062427607999779866
+    },
+    {
+      "seed": 4,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 32,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06275619100051699
+    },
+    {
+      "seed": 4,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 32,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.0581630420001602
+    },
+    {
+      "seed": 4,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 32,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06514453100044193
+    },
+    {
+      "seed": 4,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 32,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.05808975099989766
+    },
+    {
+      "seed": 4,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 64,
+      "pattern": "clustered",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.05985834100010834
+    },
+    {
+      "seed": 4,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 64,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06219274700015376
+    },
+    {
+      "seed": 4,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 64,
+      "pattern": "distributed",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.062476576999870304
+    },
+    {
+      "seed": 4,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 64,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.05893961499987199
+    },
+    {
+      "seed": 4,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 128,
+      "pattern": "clustered",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.05925702799959254
+    },
+    {
+      "seed": 4,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 128,
+      "pattern": "clustered",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.06300640900008148
+    },
+    {
+      "seed": 4,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 128,
+      "pattern": "distributed",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.05992940099986299
+    },
+    {
+      "seed": 4,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 128,
+      "pattern": "distributed",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.05694032899918966
+    },
+    {
+      "seed": 4,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 256,
+      "pattern": "clustered",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.05952481700023782
+    },
+    {
+      "seed": 4,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 256,
+      "pattern": "clustered",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.05840578099923732
+    },
+    {
+      "seed": 4,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 256,
+      "pattern": "distributed",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.06579868100016029
+    },
+    {
+      "seed": 4,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 256,
+      "pattern": "distributed",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.054705819000446354
+    },
+    {
+      "seed": 4,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 512,
+      "pattern": "clustered",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.059435067999402236
+    },
+    {
+      "seed": 4,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 512,
+      "pattern": "clustered",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.05494135600019945
+    },
+    {
+      "seed": 4,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 7294,
+      "count": 512,
+      "pattern": "distributed",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.05856086800031335
+    },
+    {
+      "seed": 4,
+      "method": "index-syndrome",
+      "sidecar_bytes": 7294,
+      "count": 512,
+      "pattern": "distributed",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.06027146599990374
+    },
+    {
+      "seed": 4,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 16,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06383670400009578
+    },
+    {
+      "seed": 4,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 16,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.0580904680000458
+    },
+    {
+      "seed": 4,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 16,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06287018199964223
+    },
+    {
+      "seed": 4,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 16,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06059532100061915
+    },
+    {
+      "seed": 4,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 32,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06355958299991471
+    },
+    {
+      "seed": 4,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 32,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.05908132799959276
+    },
+    {
+      "seed": 4,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 32,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06648868799948104
+    },
+    {
+      "seed": 4,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 32,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.0593495860002804
+    },
+    {
+      "seed": 4,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 64,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06372994199955428
+    },
+    {
+      "seed": 4,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 64,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06569471799957682
+    },
+    {
+      "seed": 4,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 64,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06410655399940879
+    },
+    {
+      "seed": 4,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 64,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06048757200005639
+    },
+    {
+      "seed": 4,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 128,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06596460900072998
+    },
+    {
+      "seed": 4,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 128,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06775602499965316
+    },
+    {
+      "seed": 4,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 128,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06678039200050989
+    },
+    {
+      "seed": 4,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 128,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06428503500046645
+    },
+    {
+      "seed": 4,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 256,
+      "pattern": "clustered",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.0656157590001385
+    },
+    {
+      "seed": 4,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 256,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06773349499962933
+    },
+    {
+      "seed": 4,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 256,
+      "pattern": "distributed",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.06830956599969795
+    },
+    {
+      "seed": 4,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 256,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.07383284800016554
+    },
+    {
+      "seed": 4,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 512,
+      "pattern": "clustered",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.06434341200019844
+    },
+    {
+      "seed": 4,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 512,
+      "pattern": "clustered",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.06930169899987959
+    },
+    {
+      "seed": 4,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 28798,
+      "count": 512,
+      "pattern": "distributed",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.06639692000044306
+    },
+    {
+      "seed": 4,
+      "method": "index-syndrome",
+      "sidecar_bytes": 28798,
+      "count": 512,
+      "pattern": "distributed",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "verification_seconds": 0.062005655999200826
+    },
+    {
+      "seed": 4,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 16,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.3913115450004625
+    },
+    {
+      "seed": 4,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 16,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.25238484800047445
+    },
+    {
+      "seed": 4,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 16,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06690164100018592
+    },
+    {
+      "seed": 4,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 16,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.0744469500004925
+    },
+    {
+      "seed": 4,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 32,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.09491409900056169
+    },
+    {
+      "seed": 4,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 32,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.05945039699963672
+    },
+    {
+      "seed": 4,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 32,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.10316287200021179
+    },
+    {
+      "seed": 4,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 32,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06423902500046097
+    },
+    {
+      "seed": 4,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 64,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.09850826099955157
+    },
+    {
+      "seed": 4,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 64,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06695407899951533
+    },
+    {
+      "seed": 4,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 64,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.07636776900017139
+    },
+    {
+      "seed": 4,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 64,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06610620800074685
+    },
+    {
+      "seed": 4,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 128,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06650116399941908
+    },
+    {
+      "seed": 4,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 128,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.07084576200031734
+    },
+    {
+      "seed": 4,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 128,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06956274099957227
+    },
+    {
+      "seed": 4,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 128,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.07628111400026683
+    },
+    {
+      "seed": 4,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 256,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.0755816019991471
+    },
+    {
+      "seed": 4,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 256,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.07020623400057957
+    },
+    {
+      "seed": 4,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 256,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06944861600004515
+    },
+    {
+      "seed": 4,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 256,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.06976468500033661
+    },
+    {
+      "seed": 4,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 512,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.07244958899991616
+    },
+    {
+      "seed": 4,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 512,
+      "pattern": "clustered",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.07845359299972188
+    },
+    {
+      "seed": 4,
+      "method": "set-reconciliation",
+      "sidecar_bytes": 114814,
+      "count": 512,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.07178466699951969
+    },
+    {
+      "seed": 4,
+      "method": "index-syndrome",
+      "sidecar_bytes": 114814,
+      "count": 512,
+      "pattern": "distributed",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "verification_seconds": 0.08369641799981764
+    }
+  ],
+  "summary": [
+    {
+      "bytes": 7294,
+      "changed_tiles": 16,
+      "set-reconciliation": {
+        "maps": 10,
+        "trials": 10
+      },
+      "index-syndrome": {
+        "maps": 10,
+        "trials": 10
+      }
+    },
+    {
+      "bytes": 7294,
+      "changed_tiles": 32,
+      "set-reconciliation": {
+        "maps": 10,
+        "trials": 10
+      },
+      "index-syndrome": {
+        "maps": 10,
+        "trials": 10
+      }
+    },
+    {
+      "bytes": 7294,
+      "changed_tiles": 64,
+      "set-reconciliation": {
+        "maps": 0,
+        "trials": 10
+      },
+      "index-syndrome": {
+        "maps": 10,
+        "trials": 10
+      }
+    },
+    {
+      "bytes": 7294,
+      "changed_tiles": 128,
+      "set-reconciliation": {
+        "maps": 0,
+        "trials": 10
+      },
+      "index-syndrome": {
+        "maps": 0,
+        "trials": 10
+      }
+    },
+    {
+      "bytes": 7294,
+      "changed_tiles": 256,
+      "set-reconciliation": {
+        "maps": 0,
+        "trials": 10
+      },
+      "index-syndrome": {
+        "maps": 0,
+        "trials": 10
+      }
+    },
+    {
+      "bytes": 7294,
+      "changed_tiles": 512,
+      "set-reconciliation": {
+        "maps": 0,
+        "trials": 10
+      },
+      "index-syndrome": {
+        "maps": 0,
+        "trials": 10
+      }
+    },
+    {
+      "bytes": 28798,
+      "changed_tiles": 16,
+      "set-reconciliation": {
+        "maps": 10,
+        "trials": 10
+      },
+      "index-syndrome": {
+        "maps": 10,
+        "trials": 10
+      }
+    },
+    {
+      "bytes": 28798,
+      "changed_tiles": 32,
+      "set-reconciliation": {
+        "maps": 10,
+        "trials": 10
+      },
+      "index-syndrome": {
+        "maps": 10,
+        "trials": 10
+      }
+    },
+    {
+      "bytes": 28798,
+      "changed_tiles": 64,
+      "set-reconciliation": {
+        "maps": 10,
+        "trials": 10
+      },
+      "index-syndrome": {
+        "maps": 10,
+        "trials": 10
+      }
+    },
+    {
+      "bytes": 28798,
+      "changed_tiles": 128,
+      "set-reconciliation": {
+        "maps": 10,
+        "trials": 10
+      },
+      "index-syndrome": {
+        "maps": 10,
+        "trials": 10
+      }
+    },
+    {
+      "bytes": 28798,
+      "changed_tiles": 256,
+      "set-reconciliation": {
+        "maps": 0,
+        "trials": 10
+      },
+      "index-syndrome": {
+        "maps": 10,
+        "trials": 10
+      }
+    },
+    {
+      "bytes": 28798,
+      "changed_tiles": 512,
+      "set-reconciliation": {
+        "maps": 0,
+        "trials": 10
+      },
+      "index-syndrome": {
+        "maps": 0,
+        "trials": 10
+      }
+    },
+    {
+      "bytes": 114814,
+      "changed_tiles": 16,
+      "set-reconciliation": {
+        "maps": 10,
+        "trials": 10
+      },
+      "index-syndrome": {
+        "maps": 10,
+        "trials": 10
+      }
+    },
+    {
+      "bytes": 114814,
+      "changed_tiles": 32,
+      "set-reconciliation": {
+        "maps": 10,
+        "trials": 10
+      },
+      "index-syndrome": {
+        "maps": 10,
+        "trials": 10
+      }
+    },
+    {
+      "bytes": 114814,
+      "changed_tiles": 64,
+      "set-reconciliation": {
+        "maps": 10,
+        "trials": 10
+      },
+      "index-syndrome": {
+        "maps": 10,
+        "trials": 10
+      }
+    },
+    {
+      "bytes": 114814,
+      "changed_tiles": 128,
+      "set-reconciliation": {
+        "maps": 10,
+        "trials": 10
+      },
+      "index-syndrome": {
+        "maps": 10,
+        "trials": 10
+      }
+    },
+    {
+      "bytes": 114814,
+      "changed_tiles": 256,
+      "set-reconciliation": {
+        "maps": 10,
+        "trials": 10
+      },
+      "index-syndrome": {
+        "maps": 10,
+        "trials": 10
+      }
+    },
+    {
+      "bytes": 114814,
+      "changed_tiles": 512,
+      "set-reconciliation": {
+        "maps": 10,
+        "trials": 10
+      },
+      "index-syndrome": {
+        "maps": 10,
+        "trials": 10
+      }
+    }
+  ],
+  "limits": [
+    "Known finite-field/XOR sparse recovery ingredients, not a novelty or coding-optimality claim.",
+    "Both decoders reconstruct the full signed commitment before exposing maps.",
+    "Five development seeds/two patterns, not guaranteed capacity or adaptive adversary proof.",
+    "Tile positions are fixed and public; no assumption of semantic edit detection.",
+    "No real-image result, patient independence or clinical claim."
+  ]
+}

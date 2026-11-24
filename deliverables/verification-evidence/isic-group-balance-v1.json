@@ -1,0 +1,36 @@
+{
+  "schema": "isic-cohort-source-balance-and-duplicate-audit-v1",
+  "cohort_sha256": "c524a43fce2951dbd68514a94d60610a8daa4f88fd40b8b93c53ee1f03f5aa42",
+  "preparation_sha256": "1dfa06e0ba69f354e1589dfcd0c1fb096d233667e5421c203f9d744353c42e2a",
+  "counts": {
+    "train": {
+      "0024-0034 range (HAM-family ID-range proxy)": 963,
+      "0053-0073 range (BCN-family ID-range proxy)": 435,
+      "0012-0014 range (MSK/downsampled family; ID-range proxy)": 102
+    },
+    "validation": {
+      "0024-0034 range (HAM-family ID-range proxy)": 314,
+      "0053-0073 range (BCN-family ID-range proxy)": 148,
+      "0012-0014 range (MSK/downsampled family; ID-range proxy)": 38
+    },
+    "test": {
+      "0024-0034 range (HAM-family ID-range proxy)": 291,
+      "0053-0073 range (BCN-family ID-range proxy)": 173,
+      "0012-0014 range (MSK/downsampled family; ID-range proxy)": 36
+    }
+  },
+  "exact_rgb": {
+    "source_decoded_cross_split_duplicate_groups": 0,
+    "source_decoded_duplicate_groups_any_split": 0,
+    "prepared_cross_split_duplicate_groups": 0,
+    "unique_source_decoded_hashes": 2500,
+    "unique_prepared_hashes": 2500,
+    "n": 2500
+  },
+  "pHash": {
+    "status": "not_run_no_source_images_supplied",
+    "method": "32x32 grayscale Lanczos, orthonormal DCT, top-left8x8, AC median threshold, 64-bit Hamming distance",
+    "cross_split_pairs_within_hamming4": null,
+    "minimum_cross_split_distance": null
+  }
+}

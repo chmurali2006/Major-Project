@@ -1,0 +1,8 @@
+{
+  "source_url": "https://download.pytorch.org/models/densenet121-a639ec97.pth",
+  "weights_enum": "DenseNet121_Weights.IMAGENET1K_V1",
+  "original_file_sha256": "a639ec97d7c33b07ae66f0b5fb7d0192f95a3b11b7576c66c0126c2a727c4395",
+  "publisher_verification": "torchvision filename SHA256 prefix, not independently published full hash",
+  "compatible_state_dict_sha256": "2bf68431a4b7e515afe55cb4ee8fb1bc263b55267041a6f9b28bd090285dc2b6",
+  "torchvision": "0.26.0+cu130"
+}

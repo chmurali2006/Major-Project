@@ -1,0 +1,314 @@
+{
+  "schema": "diagnostic-embedding-train12-return-review-v1",
+  "zip_sha256": "2ac8e65a9f1703ec186a2acbf744f5d0290c7bb5da5a5d11b51ed254fa81ae71",
+  "sent_notebook_sha256": "2165b4e1fcde1498129e3f4fea50d00a8ccfbae1323d98b4a472afd222936973",
+  "images": 12,
+  "class_counts": {
+    "0": 10,
+    "1": 2
+  },
+  "rows": 72,
+  "recovery_entries": 720,
+  "packet_signatures_checked": 72,
+  "total_packet_bytes": 37755216,
+  "results": {
+    "fixed_qim": {
+      "mean_mse": 0.06659942203097872,
+      "mean_guide_kl_recomputed_normalized": 0.0005440133785267295,
+      "guide_label_flips": 0,
+      "outputs_identical_to_fixed": 12,
+      "recovery": {
+        "intact": {
+          "bit_errors": 0,
+          "total_bits": 49152
+        },
+        "copy32": {
+          "bit_errors": 100,
+          "total_bits": 49152
+        },
+        "local_blur32_surrogate": {
+          "bit_errors": 95,
+          "total_bits": 49152
+        },
+        "jpeg70": {
+          "bit_errors": 24621,
+          "total_bits": 49152
+        },
+        "jpeg85": {
+          "bit_errors": 24295,
+          "total_bits": 49152
+        },
+        "jpeg95": {
+          "bit_errors": 22855,
+          "total_bits": 49152
+        },
+        "resize90_restore": {
+          "bit_errors": 16601,
+          "total_bits": 49152
+        },
+        "contrast90": {
+          "bit_errors": 33,
+          "total_bits": 49152
+        },
+        "contrast110": {
+          "bit_errors": 1593,
+          "total_bits": 49152
+        },
+        "gaussian05": {
+          "bit_errors": 13613,
+          "total_bits": 49152
+        }
+      }
+    },
+    "uniform_weaker_qim": {
+      "mean_mse": 0.016389105055067275,
+      "mean_guide_kl_recomputed_normalized": 4.698120989436998e-05,
+      "guide_label_flips": 0,
+      "outputs_identical_to_fixed": 0,
+      "recovery": {
+        "intact": {
+          "bit_errors": 0,
+          "total_bits": 49152
+        },
+        "copy32": {
+          "bit_errors": 101,
+          "total_bits": 49152
+        },
+        "local_blur32_surrogate": {
+          "bit_errors": 99,
+          "total_bits": 49152
+        },
+        "jpeg70": {
+          "bit_errors": 24613,
+          "total_bits": 49152
+        },
+        "jpeg85": {
+          "bit_errors": 24463,
+          "total_bits": 49152
+        },
+        "jpeg95": {
+          "bit_errors": 23558,
+          "total_bits": 49152
+        },
+        "resize90_restore": {
+          "bit_errors": 16508,
+          "total_bits": 49152
+        },
+        "contrast90": {
+          "bit_errors": 233,
+          "total_bits": 49152
+        },
+        "contrast110": {
+          "bit_errors": 1800,
+          "total_bits": 49152
+        },
+        "gaussian05": {
+          "bit_errors": 16967,
+          "total_bits": 49152
+        }
+      }
+    },
+    "energy_matched_random": {
+      "mean_mse": 0.5450709660847982,
+      "mean_guide_kl_recomputed_normalized": 0.0012234736809098496,
+      "guide_label_flips": 0,
+      "outputs_identical_to_fixed": 11,
+      "recovery": {
+        "intact": {
+          "bit_errors": 0,
+          "total_bits": 49152
+        },
+        "copy32": {
+          "bit_errors": 99,
+          "total_bits": 49152
+        },
+        "local_blur32_surrogate": {
+          "bit_errors": 95,
+          "total_bits": 49152
+        },
+        "jpeg70": {
+          "bit_errors": 24609,
+          "total_bits": 49152
+        },
+        "jpeg85": {
+          "bit_errors": 24261,
+          "total_bits": 49152
+        },
+        "jpeg95": {
+          "bit_errors": 22652,
+          "total_bits": 49152
+        },
+        "resize90_restore": {
+          "bit_errors": 16588,
+          "total_bits": 49152
+        },
+        "contrast90": {
+          "bit_errors": 33,
+          "total_bits": 49152
+        },
+        "contrast110": {
+          "bit_errors": 1593,
+          "total_bits": 49152
+        },
+        "gaussian05": {
+          "bit_errors": 13477,
+          "total_bits": 49152
+        }
+      }
+    },
+    "diagnostic_correction": {
+      "mean_mse": 0.5450709660847982,
+      "mean_guide_kl_recomputed_normalized": 0.0004660164437856219,
+      "guide_label_flips": 0,
+      "outputs_identical_to_fixed": 11,
+      "recovery": {
+        "intact": {
+          "bit_errors": 0,
+          "total_bits": 49152
+        },
+        "copy32": {
+          "bit_errors": 96,
+          "total_bits": 49152
+        },
+        "local_blur32_surrogate": {
+          "bit_errors": 95,
+          "total_bits": 49152
+        },
+        "jpeg70": {
+          "bit_errors": 24587,
+          "total_bits": 49152
+        },
+        "jpeg85": {
+          "bit_errors": 24276,
+          "total_bits": 49152
+        },
+        "jpeg95": {
+          "bit_errors": 22742,
+          "total_bits": 49152
+        },
+        "resize90_restore": {
+          "bit_errors": 16597,
+          "total_bits": 49152
+        },
+        "contrast90": {
+          "bit_errors": 33,
+          "total_bits": 49152
+        },
+        "contrast110": {
+          "bit_errors": 1593,
+          "total_bits": 49152
+        },
+        "gaussian05": {
+          "bit_errors": 13470,
+          "total_bits": 49152
+        }
+      }
+    },
+    "query_matched_random": {
+      "mean_mse": 2.768288188510471,
+      "mean_guide_kl_recomputed_normalized": 0.00040710208468702747,
+      "guide_label_flips": 0,
+      "outputs_identical_to_fixed": 7,
+      "recovery": {
+        "intact": {
+          "bit_errors": 0,
+          "total_bits": 49152
+        },
+        "copy32": {
+          "bit_errors": 96,
+          "total_bits": 49152
+        },
+        "local_blur32_surrogate": {
+          "bit_errors": 95,
+          "total_bits": 49152
+        },
+        "jpeg70": {
+          "bit_errors": 24589,
+          "total_bits": 49152
+        },
+        "jpeg85": {
+          "bit_errors": 24259,
+          "total_bits": 49152
+        },
+        "jpeg95": {
+          "bit_errors": 21854,
+          "total_bits": 49152
+        },
+        "resize90_restore": {
+          "bit_errors": 16440,
+          "total_bits": 49152
+        },
+        "contrast90": {
+          "bit_errors": 33,
+          "total_bits": 49152
+        },
+        "contrast110": {
+          "bit_errors": 1593,
+          "total_bits": 49152
+        },
+        "gaussian05": {
+          "bit_errors": 13116,
+          "total_bits": 49152
+        }
+      }
+    },
+    "distortion_gated_correction": {
+      "mean_mse": 0.06659942203097872,
+      "mean_guide_kl_recomputed_normalized": 0.0005440133785267295,
+      "guide_label_flips": 0,
+      "outputs_identical_to_fixed": 12,
+      "recovery": {
+        "intact": {
+          "bit_errors": 0,
+          "total_bits": 49152
+        },
+        "copy32": {
+          "bit_errors": 100,
+          "total_bits": 49152
+        },
+        "local_blur32_surrogate": {
+          "bit_errors": 95,
+          "total_bits": 49152
+        },
+        "jpeg70": {
+          "bit_errors": 24621,
+          "total_bits": 49152
+        },
+        "jpeg85": {
+          "bit_errors": 24295,
+          "total_bits": 49152
+        },
+        "jpeg95": {
+          "bit_errors": 22855,
+          "total_bits": 49152
+        },
+        "resize90_restore": {
+          "bit_errors": 16601,
+          "total_bits": 49152
+        },
+        "contrast90": {
+          "bit_errors": 33,
+          "total_bits": 49152
+        },
+        "contrast110": {
+          "bit_errors": 1593,
+          "total_bits": 49152
+        },
+        "gaussian05": {
+          "bit_errors": 13613,
+          "total_bits": 49152
+        }
+      }
+    }
+  },
+  "guided_improves_kl_over_fixed_count": 1,
+  "distortion_gate_rejections": 1,
+  "decision": "Do not scale this unchanged candidate to validation/test. Guide-only changes on TRAIN do not demonstrate useful medical benefit.",
+  "limits": [
+    "No source or received image pixels returned: carrier lock, MSE, bit recovery and operator outputs are receipt checks, not independent pixel replay.",
+    "72 packet signatures checked against the returned key, not an independently trusted issuer identity; no independent binding to unavailable image bytes.",
+    "12 classifier TRAIN images, only2 melanoma; no unseen-model evaluation, no clinical/generalization claim.",
+    "Guide KL selection is not an independent endpoint; random search is forward-query, not gradient-compute or energy matched.",
+    "Strict fixed-carrier non-carrier correction necessarily adds squared error for any nonzero change."
+  ]
+}

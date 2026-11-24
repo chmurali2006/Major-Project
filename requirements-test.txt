@@ -1,0 +1,4 @@
+# Full repository test suite (Torch-backed ML tests plus classical/OpenCV tests).
+-r requirements.txt
+torch>=2.2
+pytest>=8

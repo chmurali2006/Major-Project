@@ -1,0 +1,7 @@
+{
+  "downloaded_file": "densenet121-imagenet-compatible.zip",
+  "bytes": 32527945,
+  "sha256": "2bf68431a4b7e515afe55cb4ee8fb1bc263b55267041a6f9b28bd090285dc2b6",
+  "matches_returned_initialization_receipt": true,
+  "limits": "These are compatible serialized weights, despite the .zip extension. Original torchvision publisher bytes were not supplied and have not been independently rehashed."
+}

@@ -1,0 +1,118 @@
+{
+  "zip_sha256": "c098d5b20273672aafd5f94e35f64d6735ab156f9e27c553354756ad4ee50143",
+  "drive_id": "1rX7kentJGogb7t9kEdCWwZOu45GknuXX",
+  "source_count": 32,
+  "case_count": 384,
+  "checks": "receipt arithmetic, pairing and prior selection hashes matched",
+  "limits": "No maps or original pixels in ZIP: not independent recomputation from predictions. No patient/lesion independence. Timings submitted, not rerun.",
+  "summary": [
+    {
+      "block": 8,
+      "case": "intact",
+      "n": 32,
+      "mean_iou": null,
+      "missed_pixels": 0,
+      "extra_pixels": 0,
+      "mean_seconds": 0.0863327582812552
+    },
+    {
+      "block": 8,
+      "case": "one-bit",
+      "n": 32,
+      "mean_iou": 0.015625,
+      "missed_pixels": 0,
+      "extra_pixels": 2016,
+      "mean_seconds": 0.0876571159062518
+    },
+    {
+      "block": 8,
+      "case": "brightness32",
+      "n": 32,
+      "mean_iou": 0.6975,
+      "missed_pixels": 0,
+      "extra_pixels": 15040,
+      "mean_seconds": 0.0882448150312527
+    },
+    {
+      "block": 8,
+      "case": "replace64",
+      "n": 32,
+      "mean_iou": 0.8248456790123456,
+      "missed_pixels": 0,
+      "extra_pixels": 28608,
+      "mean_seconds": 0.08583856653125466
+    },
+    {
+      "block": 8,
+      "case": "copy64",
+      "n": 32,
+      "mean_iou": 0.8248080029899691,
+      "missed_pixels": 0,
+      "extra_pixels": 28614,
+      "mean_seconds": 0.08569353293750304
+    },
+    {
+      "block": 8,
+      "case": "jpeg75",
+      "n": 32,
+      "mean_iou": 0.981220006942749,
+      "missed_pixels": 0,
+      "extra_pixels": 157538,
+      "mean_seconds": 0.0864936920312509
+    },
+    {
+      "block": 4,
+      "case": "intact",
+      "n": 32,
+      "mean_iou": null,
+      "missed_pixels": 0,
+      "extra_pixels": 0,
+      "mean_seconds": 0.3512235428437531
+    },
+    {
+      "block": 4,
+      "case": "one-bit",
+      "n": 32,
+      "mean_iou": 0.0625,
+      "missed_pixels": 0,
+      "extra_pixels": 480,
+      "mean_seconds": 0.352644311781253
+    },
+    {
+      "block": 4,
+      "case": "brightness32",
+      "n": 32,
+      "mean_iou": 0.8472222222222222,
+      "missed_pixels": 0,
+      "extra_pixels": 6176,
+      "mean_seconds": 0.3551696936875075
+    },
+    {
+      "block": 4,
+      "case": "replace64",
+      "n": 32,
+      "mean_iou": 0.9173875432525952,
+      "missed_pixels": 0,
+      "extra_pixels": 12064,
+      "mean_seconds": 0.3541601034374988
+    },
+    {
+      "block": 4,
+      "case": "copy64",
+      "n": 32,
+      "mean_iou": 0.9173875432525952,
+      "missed_pixels": 0,
+      "extra_pixels": 12064,
+      "mean_seconds": 0.35171525631250056
+    },
+    {
+      "block": 4,
+      "case": "jpeg75",
+      "n": 32,
+      "mean_iou": 0.999728798866272,
+      "missed_pixels": 0,
+      "extra_pixels": 2275,
+      "mean_seconds": 0.3548413372187458
+    }
+  ]
+}

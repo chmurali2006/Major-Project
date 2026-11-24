@@ -1,0 +1,224 @@
+{
+  "schema": "bounded-patch-development-v1",
+  "synthetic": true,
+  "source_sha256": "cac07aa7a5f6e585cac992861c2d5d4b6895ed1b221f57f033ae935568af4ffc",
+  "rows": [
+    {
+      "seed": 1001,
+      "case": "intact",
+      "family": "intact",
+      "radius": 289,
+      "sidecar_bytes": 18620,
+      "changed_tiles": 0,
+      "verdict": "VERIFIED",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "pixel_metrics": {
+        "missed_pixels": 0,
+        "extra_pixels": 0,
+        "iou": null
+      },
+      "verification_seconds": 0.019713298000169743
+    },
+    {
+      "seed": 1001,
+      "case": "one-bit",
+      "family": "edit",
+      "radius": 289,
+      "sidecar_bytes": 18620,
+      "changed_tiles": 1,
+      "verdict": "FAILED_INTEGRITY",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "pixel_metrics": {
+        "missed_pixels": 0,
+        "extra_pixels": 15,
+        "iou": 0.0625
+      },
+      "verification_seconds": 0.7311299809998673
+    },
+    {
+      "seed": 1001,
+      "case": "brightness32",
+      "family": "edit",
+      "radius": 289,
+      "sidecar_bytes": 18620,
+      "changed_tiles": 72,
+      "verdict": "FAILED_INTEGRITY",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "pixel_metrics": {
+        "missed_pixels": 0,
+        "extra_pixels": 128,
+        "iou": 0.8888888888888888
+      },
+      "verification_seconds": 0.9602919489998385
+    },
+    {
+      "seed": 1001,
+      "case": "replace64",
+      "family": "edit",
+      "radius": 289,
+      "sidecar_bytes": 18620,
+      "changed_tiles": 272,
+      "verdict": "FAILED_INTEGRITY",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "pixel_metrics": {
+        "missed_pixels": 0,
+        "extra_pixels": 256,
+        "iou": 0.9411764705882353
+      },
+      "verification_seconds": 2.1969938170004752
+    },
+    {
+      "seed": 1001,
+      "case": "copy64",
+      "family": "edit",
+      "radius": 289,
+      "sidecar_bytes": 18620,
+      "changed_tiles": 272,
+      "verdict": "FAILED_INTEGRITY",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "pixel_metrics": {
+        "missed_pixels": 0,
+        "extra_pixels": 282,
+        "iou": 0.9352022058823529
+      },
+      "verification_seconds": 2.018215861000499
+    },
+    {
+      "seed": 1001,
+      "case": "jpeg75",
+      "family": "benign-lossy",
+      "radius": 289,
+      "sidecar_bytes": 18620,
+      "changed_tiles": 16384,
+      "verdict": "FAILED_INTEGRITY",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "pixel_metrics": null,
+      "verification_seconds": 0.7221598850001101
+    },
+    {
+      "seed": 1002,
+      "case": "intact",
+      "family": "intact",
+      "radius": 289,
+      "sidecar_bytes": 18620,
+      "changed_tiles": 0,
+      "verdict": "VERIFIED",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "pixel_metrics": {
+        "missed_pixels": 0,
+        "extra_pixels": 0,
+        "iou": null
+      },
+      "verification_seconds": 0.019438868999714032
+    },
+    {
+      "seed": 1002,
+      "case": "one-bit",
+      "family": "edit",
+      "radius": 289,
+      "sidecar_bytes": 18620,
+      "changed_tiles": 1,
+      "verdict": "FAILED_INTEGRITY",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "pixel_metrics": {
+        "missed_pixels": 0,
+        "extra_pixels": 15,
+        "iou": 0.0625
+      },
+      "verification_seconds": 0.6397164299996803
+    },
+    {
+      "seed": 1002,
+      "case": "brightness32",
+      "family": "edit",
+      "radius": 289,
+      "sidecar_bytes": 18620,
+      "changed_tiles": 81,
+      "verdict": "FAILED_INTEGRITY",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "pixel_metrics": {
+        "missed_pixels": 0,
+        "extra_pixels": 272,
+        "iou": 0.7901234567901234
+      },
+      "verification_seconds": 0.9996228990003146
+    },
+    {
+      "seed": 1002,
+      "case": "replace64",
+      "family": "edit",
+      "radius": 289,
+      "sidecar_bytes": 18620,
+      "changed_tiles": 289,
+      "verdict": "FAILED_INTEGRITY",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "pixel_metrics": {
+        "missed_pixels": 0,
+        "extra_pixels": 528,
+        "iou": 0.8858131487889274
+      },
+      "verification_seconds": 2.0474947180000527
+    },
+    {
+      "seed": 1002,
+      "case": "copy64",
+      "family": "edit",
+      "radius": 289,
+      "sidecar_bytes": 18620,
+      "changed_tiles": 289,
+      "verdict": "FAILED_INTEGRITY",
+      "fine_map_available": true,
+      "map_matches_truth": true,
+      "pixel_metrics": {
+        "missed_pixels": 0,
+        "extra_pixels": 528,
+        "iou": 0.8858131487889274
+      },
+      "verification_seconds": 2.16411827399952
+    },
+    {
+      "seed": 1002,
+      "case": "jpeg75",
+      "family": "benign-lossy",
+      "radius": 289,
+      "sidecar_bytes": 18620,
+      "changed_tiles": 16384,
+      "verdict": "FAILED_INTEGRITY",
+      "fine_map_available": false,
+      "map_matches_truth": null,
+      "pixel_metrics": null,
+      "verification_seconds": 0.8109028119997674
+    }
+  ],
+  "setup": [
+    {
+      "seed": 1001,
+      "radius": 289,
+      "sidecar_bytes": 18620,
+      "sign_seconds": 0.6586562290003712
+    },
+    {
+      "seed": 1002,
+      "radius": 289,
+      "sidecar_bytes": 18620,
+      "sign_seconds": 0.6515355209994595
+    }
+  ],
+  "limits": [
+    "Two synthetic development images, not real-image or heldout validation.",
+    "Standard bounded code extended in capacity; no novel method or coding-optimality claim.",
+    "No embedding distortion; full signed commitment checked before maps.",
+    "JPEG changes exact pixels and exceeds correction radius, not benign authentication tolerance.",
+    "Single local timing per case; above-radius absence of map remains in results."
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "schema": "study-to-candidate-evidence-ledger-v1",
+  "artifacts": {
+    "classical_validation": {
+      "path": "deliverables/verification-evidence/adapted-validation500-v1/analysis.json",
+      "sha256": "b555eaad5bfef4e155611d359c3e3334b3dbaca986b53bb71d0d8411a820fd28"
+    },
+    "refiner_failures": {
+      "path": "deliverables/verification-evidence/refiner-failure-diagnostic-v3/findings.json",
+      "sha256": "7bf987a72c8930f60d977602445f91170cf529fc7bb51ed979412d4a57c056a8"
+    },
+    "candidate_mechanism": {
+      "path": "deliverables/verification-evidence/diagnostic-embedding-mechanism-v1.json",
+      "sha256": "f04b0bc7b070b42719bcfecbc0873a16f004717a2c1ff30fa9fa6c5581bb164e"
+    }
+  },
+  "claims": [
+    {
+      "claim": "Compact classical evidence trades storage against speed and global localisation coverage.",
+      "status": "measured_validation_development",
+      "evidence": "classical_validation"
+    },
+    {
+      "claim": "Existing refiners require a more careful failure hypothesis, not an attention-based success claim.",
+      "status": "measured_synthetic_diagnostic_plus_earlier_development_failures",
+      "evidence": "refiner_failures"
+    },
+    {
+      "claim": "The studies proved that our medical images suffer clinically significant diagnostic disruption from watermark embedding.",
+      "status": "NOT_ESTABLISHED",
+      "reason": "Current compact validation is nonembedding; classifier and embedding-specific medical results are pending."
+    },
+    {
+      "claim": "Diagnostic-constrained embedding is a new medical-watermarking idea.",
+      "status": "NOT_ESTABLISHED_PRIOR_ART_OVERLAP",
+      "reason": "PFF-WM uses diagnostic saliency/explanation alignment; MedSign already uses pathology-aware embedding preservation."
+    },
+    {
+      "claim": "A payload-preserving quantized correction mechanism is implemented with controlled baselines.",
+      "status": "implemented_fixture_tested_not_medically_validated",
+      "evidence": "candidate_mechanism"
+    },
+    {
+      "claim": "Reducing guide-model KL establishes diagnostic preservation or transfer.",
+      "status": "REFUTED_AS_GENERAL_CLAIM",
+      "evidence": "candidate_mechanism",
+      "reason": "Explicit toy counterexample improves guide KL while worsening unseen-model KL; random control can tie the guide result."
+    },
+    {
+      "claim": "Our study motivated testing diagnostic-constrained embedding under fixed payload constraints.",
+      "status": "prospective_research_rationale_NOT_proven_causal_medical_result"
+    },
+    {
+      "claim": "The candidate is SOTA-superior or clinically safe.",
+      "status": "NOT_ESTABLISHED"
+    }
+  ],
+  "prior_art": [
+    {
+      "title": "Explainable and proactive fragile watermarking for medical Deepfake detection",
+      "url": "https://www.sciencedirect.com/science/article/pii/S2667305326000591",
+      "local_text": "project-context/papers/pff-wm.txt",
+      "verified_overlap": "Diagnostic saliency guides embedding; frozen-classifier Grad-CAM alignment loss in explainability."
+    },
+    {
+      "title": "Pathology-Aware Adaptive Watermarking for Text-Driven Medical Image Synthesis (MedSign)",
+      "url": "https://arxiv.org/html/2503.08346v1",
+      "verified_overlap": "Primary abstract/introduction: pathology localization maps adapt watermark strength and preserve critical regions during diffusion-decoder fine-tuning."
+    }
+  ],
+  "next_required_evidence": [
+    "Reviewed diagnostic classifier with adequate reported class-wise performance, no automatic approval.",
+    "Training-only pilot for numerical feasibility; count no-improvement, increased distortion and recovery failures.",
+    "Second classifier not used in correction; this is not yet available.",
+    "Freeze comparison protocol before validation/final testing; compare payload, margin, distortion, compute and entire authentication evidence cost.",
+    "Do not use a saliency/KL objective alone as a human clinical-fidelity guarantee."
+  ]
+}

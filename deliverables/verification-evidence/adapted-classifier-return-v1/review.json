@@ -1,0 +1,82 @@
+{
+  "schema": "adapted-classifier-return-review-v1",
+  "zip_sha256": "ee481eaad49387678cc74662af9debb0b0fc8146f54be80cbff0214f6a6f2f70",
+  "checkpoint_sha256": "38d52ca825472cb525c4c2745f9f7e2e047ddcbc34a6fe6cdcbfbdc0786ba57e",
+  "cohort_sha256": "c524a43fce2951dbd68514a94d60610a8daa4f88fd40b8b93c53ee1f03f5aa42",
+  "selected_epoch": 3,
+  "validation": {
+    "confusion_matrix": [
+      [
+        399,
+        45
+      ],
+      [
+        23,
+        33
+      ]
+    ],
+    "support": [
+      444,
+      56
+    ],
+    "accuracy": 0.864,
+    "balanced_accuracy": 0.7439671814671815,
+    "macro_f1": 0.7070076867395125,
+    "per_class_sensitivity": [
+      0.8986486486486487,
+      0.5892857142857143
+    ],
+    "binary_roc_auc": 0.8453989703989704
+  },
+  "validation_class_stratified_image_bootstrap95": {
+    "balanced_accuracy": [
+      0.6747888513513514,
+      0.8099501287001285
+    ],
+    "macro_f1": [
+      0.652739915675075,
+      0.7615232246897857
+    ],
+    "melanoma_sensitivity": [
+      0.44642857142857145,
+      0.7142857142857143
+    ],
+    "binary_roc_auc": [
+      0.7946720157657658,
+      0.8922558719433719
+    ]
+  },
+  "bootstrap_repetitions": 2000,
+  "bootstrap_seed": 6101,
+  "always_nonMEL_reference": {
+    "confusion_matrix": [
+      [
+        444,
+        0
+      ],
+      [
+        56,
+        0
+      ]
+    ],
+    "support": [
+      444,
+      56
+    ],
+    "accuracy": 0.888,
+    "balanced_accuracy": 0.5,
+    "macro_f1": 0.4703389830508475,
+    "per_class_sensitivity": [
+      1.0,
+      0.0
+    ]
+  },
+  "model_vs_always_nonMEL_balanced_accuracy": 0.24396718146718155,
+  "review_findings": [],
+  "limits": [
+    "Stored predictions checked arithmetically, not rerun on validation images here.",
+    "Validation selected checkpoint; bootstrap intervals are descriptive and selection-biased, not final.",
+    "Initialization hashes are returned receipts; original source bytes not independently rehashed here.",
+    "No calibrated clinical confidence or diagnostic safety established. Checkpoint consistency is not clinical readiness."
+  ]
+}

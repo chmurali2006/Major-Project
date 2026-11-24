@@ -167,13 +167,32 @@ def test_requested_ablations_are_required_for_study_completeness(tmp_path):
 def test_documentation_stays_small_and_local_links_resolve():
     import re
     expected={'README.md','RUNNING.md','PROTOCOL_V2.md','docs/DESIGN_REVIEW.md',
-              'docs/LITERATURE.md','project-context/README.md'}
+              'docs/LITERATURE.md','project-context/README.md',
+              'docs/STUDY_TO_CONTRIBUTION.md','docs/FACULTY_REVIEW_AND_CLASSIFIER_RETURN.md',
+              'docs/REVIEW_READINESS_PLAN.md','docs/ADAPTED_FINALISATION_ROADMAP.md','FREEZE_PROTOCOL.md',
+              'deliverables/KAGGLE_EXECUTION_GUIDE.md','deliverables/PRESENTATION_DEFENSE_PACK.md',
+              'deliverables/CLAIMS_EVIDENCE_LIMITS.md','deliverables/INDEPENDENT_REVIEW_REPORT.md',
+              'deliverables/TEST_SPLIT_RECOVERY_DECISION.md','deliverables/GATE0_PROVENANCE_STATUS.md',
+              'deliverables/MATCHED_EDITGUARD_VALIDATION_RETURN_REVIEW.md',
+              'docs/ACADEMIC_UPGRADE_IMPLEMENTATION_PLAN.md',
+              'deliverables/PROJECT_FULL_OVERVIEW_AND_GAPS.md',
+              'deliverables/PROJECT_COMPLETE_DOCUMENT_COMPILATION.md'}
     actual={p.relative_to(ROOT).as_posix() for p in ROOT.rglob('*.md')
             if not any(part.startswith('.') or part=='node_modules' for part in p.relative_to(ROOT).parts)}
     assert actual==expected
     for name in expected:
         path=ROOT/name
-        for target in re.findall(r'\[[^\]]+\]\(([^)]+)\)',path.read_text()):
+        lines=path.read_text().splitlines()
+        prose=[]; fence=None
+        for line in lines:
+            marker=re.match(r'^(`{3,}|~{3,})',line)
+            if fence is None and marker:
+                fence=marker.group(1); continue
+            if fence is not None:
+                if line.strip()==fence: fence=None
+                continue
+            prose.append(line)
+        for target in re.findall(r'\[[^\]]+\]\(([^)]+)\)','\n'.join(prose)):
             if '://' not in target and not target.startswith('#'):
                 assert (path.parent/target.split('#')[0]).exists(), (name,target)
 

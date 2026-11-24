@@ -1,0 +1,110 @@
+{
+  "drive_id": "1UoD2Zp2hrvX91oSEfNaIN9WO0oXyAUJC",
+  "zip_sha256": "122ec50926cc800b8ebfa1095cb0ec619886c9ca3f11522417e0441017053fd9",
+  "sources": 32,
+  "cases": 384,
+  "checks": "selection and source/prepared hashes matched, receipt confusion arithmetic checked",
+  "limitations": [
+    "No maps or source pixels included; not independent prediction-map recomputation.",
+    "Manifest byte count agrees with format; binary evidence itself not exported.",
+    "No patient independence, clinical or novelty conclusion."
+  ],
+  "summary": [
+    {
+      "block": 8,
+      "case": "intact",
+      "mean_iou": null,
+      "missed_pixels": 0,
+      "extra_pixels": 0,
+      "mean_seconds": 0.020071662031249105
+    },
+    {
+      "block": 8,
+      "case": "one-bit",
+      "mean_iou": 0.015625,
+      "missed_pixels": 0,
+      "extra_pixels": 2016,
+      "mean_seconds": 0.020597473874985894
+    },
+    {
+      "block": 8,
+      "case": "brightness32",
+      "mean_iou": 0.6975,
+      "missed_pixels": 0,
+      "extra_pixels": 15040,
+      "mean_seconds": 0.020048931593759534
+    },
+    {
+      "block": 8,
+      "case": "replace64",
+      "mean_iou": 0.8248456790123456,
+      "missed_pixels": 0,
+      "extra_pixels": 28608,
+      "mean_seconds": 0.02007181121875945
+    },
+    {
+      "block": 8,
+      "case": "copy64",
+      "mean_iou": 0.8247537495177469,
+      "missed_pixels": 0,
+      "extra_pixels": 28623,
+      "mean_seconds": 0.020003608624996616
+    },
+    {
+      "block": 8,
+      "case": "jpeg75",
+      "mean_iou": 0.8997520783916657,
+      "missed_pixels": 0,
+      "extra_pixels": 831398,
+      "mean_seconds": 0.020113508468753594
+    },
+    {
+      "block": 4,
+      "case": "intact",
+      "mean_iou": null,
+      "missed_pixels": 0,
+      "extra_pixels": 0,
+      "mean_seconds": 0.050890070499999496
+    },
+    {
+      "block": 4,
+      "case": "one-bit",
+      "mean_iou": 0.0625,
+      "missed_pixels": 0,
+      "extra_pixels": 480,
+      "mean_seconds": 0.050836241406248206
+    },
+    {
+      "block": 4,
+      "case": "brightness32",
+      "mean_iou": 0.8472222222222222,
+      "missed_pixels": 0,
+      "extra_pixels": 6176,
+      "mean_seconds": 0.05019432415624081
+    },
+    {
+      "block": 4,
+      "case": "replace64",
+      "mean_iou": 0.9173875432525952,
+      "missed_pixels": 0,
+      "extra_pixels": 12064,
+      "mean_seconds": 0.05056127909374908
+    },
+    {
+      "block": 4,
+      "case": "copy64",
+      "mean_iou": 0.9172840580395761,
+      "missed_pixels": 0,
+      "extra_pixels": 12079,
+      "mean_seconds": 0.05045963940625953
+    },
+    {
+      "block": 4,
+      "case": "jpeg75",
+      "mean_iou": 0.9046738794506568,
+      "missed_pixels": 0,
+      "extra_pixels": 775670,
+      "mean_seconds": 0.05035591778123916
+    }
+  ]
+}

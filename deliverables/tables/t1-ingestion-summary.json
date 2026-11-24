@@ -1,0 +1,13 @@
+{
+  "completed_ingestion": true,
+  "cohort_sha256": "c524a43fce2951dbd68514a94d60610a8daa4f88fd40b8b93c53ee1f03f5aa42",
+  "models": [
+    "densenet121_base",
+    "densenet121_aug",
+    "resnet50_aug"
+  ],
+  "standard_operator_rows": 30,
+  "editguard_contrast_rows": 48,
+  "test_accessed": false,
+  "reference_match": "All three model runs matched the prior validation source/operator hashes and seeds."
+}

@@ -2,20 +2,30 @@
 
 Research prototype for image integrity and tamper localisation, targeting ISIC2019.
 
-**Current research focus:** establish when embedded authentication is justified
-against image-preserving digital signatures, then test whether learning adds finer
-localisation. We do not assume watermarking or deep learning is the better choice.
+**Research focus:** We study exact image integrity, tamper localization, and class-sensitive diagnostic-model impact as separate contracts in dermoscopic imaging. We do not assume that watermarking or deep learning is superior; comparisons must account for their different distortion, evidence, storage, and trust costs.
+
+## Scope and experimental protocol
+
+Our repository contains multiple study lines and their outcomes are not pooled as one benchmark. We evaluated an adapted ISIC 2019 cohort and checked returned validation records against the declared row/protocol structure; we did not rerun source-image transformations or classifier inference locally. A separate historical `isic-study-v2` run evaluated 1,000 test images, but its exact IDs cannot be recovered from retained evidence. Overlap with the later 500-image cohort is unknown, so we exclude that holdout from confirmatory claims and further outcome analysis. The recovery decision and claim limits are in [`deliverables/TEST_SPLIT_RECOVERY_DECISION.md`](deliverables/TEST_SPLIT_RECOVERY_DECISION.md), [`deliverables/GATE0_PROVENANCE_STATUS.md`](deliverables/GATE0_PROVENANCE_STATUS.md), and [`deliverables/CLAIMS_EVIDENCE_LIMITS.md`](deliverables/CLAIMS_EVIDENCE_LIMITS.md).
+
+Historical PH2 work is also present in this repository; we do not describe PH2 as an unused external test cohort until its earlier membership/protocol history is reconciled.
+
+**Project structure:** the repository contains a protocol-v2 embedded RGB-HMAC prototype, detached signed-evidence/localization studies, and separate classifier/embedding experiments. Their protocols and evidence levels differ; refer to the consolidated project overview before combining or comparing their results.
 
 ## Start here
 
-**Next manual step:** [run the prepared Kaggle diagnostic](RUNNING.md#next-action-one-manual-kaggle-diagnostic).
-The standalone notebook needs no token or local installation. Return the exported
-ZIP; execution completion is not a scientific quality approval.
+**Authoritative project state (as of 2026-10-19 UTC):** [Project master context](PROJECT_CONTEXT_MASTER.md). It reconciles the separate experimental strands, evidence levels, critical limits, document map, and safe next steps. Detailed tables and caveats are in [Project overview](deliverables/PROJECT_FULL_OVERVIEW_AND_GAPS.md), [Claims/evidence limits](deliverables/CLAIMS_EVIDENCE_LIMITS.md), and the [T1 validation report](deliverables/T1_VALIDATION_RESULTS.md).
 
-- [Run locally or on Kaggle](RUNNING.md)
-- [Current method and protocol](PROTOCOL_V2.md)
-- [Open questions](docs/DESIGN_REVIEW.md#5-open-questions)
-- [References](docs/LITERATURE.md)
+**T1 status:** the fixed 1,500 TRAIN / 500 validation multi-architecture study was returned and ingested. Results are validation-only; no TEST data were accessed. See the T1 report for metrics, audit checks, and limitations. This T1 classifier notebook is separate from the RGB-HMAC protocol-v2 runner below.
+
+**Historical transition record:** the earlier mid-review/poster concerned a different ISIC 2018 fragile-watermarking study. Its reported figures are archived with limitations and unresolved date/provenance warnings in [the transition record](deliverables/MIDREVIEW_POSTER_TRANSITION_RECORD.md); do not mix them with current T1 results.
+
+- [Current safe run instructions and boundaries](RUNNING.md)
+- [Protocol-v2 method specification](PROTOCOL_V2.md) — separate research line; its historical stage plan is not authorization to access any holdout.
+- [Open technical questions](docs/DESIGN_REVIEW.md#5-open-questions)
+- [References and bibliography caveats](docs/LITERATURE.md)
+- [Complete narrative compilation](deliverables/PROJECT_COMPLETE_DOCUMENT_COMPILATION.md) (documentation-only compilation).
+- [Curated full project context/source bundle](deliverables/PROJECT_CONTEXT_BUNDLE_2026-10-19.zip) with included-file hashes and documented exclusions; not a raw-data or weights package. See [package guide](deliverables/PROJECT_CONTEXT_PACKAGE_README.md).
 
 The current fragile verifier uses block-local RGB HMAC tags. The main learned
 model estimates pixel localisation; the attention-enhanced model and seven

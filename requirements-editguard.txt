@@ -1,0 +1,6 @@
+# Optional isolated published-baseline environment; not needed by classical demo.
+-r requirements.txt
+torch==2.2.2
+torchvision==0.17.2
+einops==0.8.0
+PyYAML>=6,<7

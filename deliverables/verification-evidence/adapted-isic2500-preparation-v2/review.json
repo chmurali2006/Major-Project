@@ -1,0 +1,27 @@
+{
+  "schema": "adapted-preparation-return-review-v1",
+  "zip_bytes": 467386,
+  "zip_sha256": "e73d3884995f263873bffeafca506695d4bc63eba6de49a3b9ec17a01b1d2a6d",
+  "images": 2500,
+  "split_counts": {
+    "test": 500,
+    "train": 1500,
+    "validation": 500
+  },
+  "cross_split_groups": {
+    "lesion_id": 0,
+    "source_decoded_rgb_sha256": 0,
+    "prepared_rgb_sha256": 0
+  },
+  "source_modes": {
+    "RGB": 2500
+  },
+  "unique_prepared_rgb": 2500,
+  "status": "fixed_cohort_receipts_consistent; no_model_training_or_evaluation",
+  "limits": [
+    "Hashes are returned records, not independently recomputed from source images here.",
+    "Exact decoded/prepared duplicate checks do not detect near duplicates or establish patient independence.",
+    "No official source checksum comparison or exact authors reproduction.",
+    "Preparation flag is data readiness only, not research/clinical approval."
+  ]
+}

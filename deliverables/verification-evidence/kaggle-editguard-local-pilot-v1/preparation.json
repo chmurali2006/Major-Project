@@ -1,0 +1,154 @@
+{
+  "schema": "local-isic-pilot-preparation-v1",
+  "complete": true,
+  "scope": "caller-supplied local ISIC-labelled feasibility pilot, not an independently verified held-out study",
+  "seed": 73,
+  "per_class": 1,
+  "label_rows": 25331,
+  "unique_label_ids": 25331,
+  "labels_sha256": "aa88e9638fe4df9ef330dc4ba22fa4bd475c44af692fffb870c73091ab25cdcd",
+  "metadata_sha256": null,
+  "grouping": "image only; patient/lesion dependence unknown",
+  "excluded_ids": [
+    "ISIC_0024562",
+    "ISIC_0029485",
+    "ISIC_0055325",
+    "ISIC_0061305",
+    "ISIC_0061426",
+    "ISIC_0067500",
+    "ISIC_0070431",
+    "ISIC_0072012"
+  ],
+  "excluded_group_count": 8,
+  "selection": "deterministic SHA256(seed/image_id), at most one per supplied group, no model/pixel selection",
+  "official_identity_verified": false,
+  "selected": [
+    {
+      "image_id": "ISIC_0055438",
+      "diagnosis": "MEL",
+      "label": 0,
+      "group": "image:ISIC_0055438",
+      "source_file_sha256": "9f568cc48c5c7bfc0c0ea4d208a18d6000a7b9eed2abc22764cdc1ab7627b5d1",
+      "source_decoded_rgb_sha256": "0f0e4c961600dbdb873c1cbd9d748466f8ac4d3bd1147aea16d55f113bb68e21",
+      "source_dimensions": [
+        1024,
+        1024
+      ],
+      "prepared_file_sha256": "7811512d73ade0f6be5963185f4d5da987fae0caa62d48fe3ed65bc829efda2c",
+      "prepared_rgb_sha256": "8621c07b2ab52f16d975be8fd71be10d281be2419ec96376431e58c2d129784e",
+      "preparation": "explicit nearest-neighbour square512 resize from decoded RGB; no implicit source conversion"
+    },
+    {
+      "image_id": "ISIC_0031864",
+      "diagnosis": "NV",
+      "label": 1,
+      "group": "image:ISIC_0031864",
+      "source_file_sha256": "85a6385a93bd730f8ab68ddfca722e5c17def3414566636a1fd134a47b8adeee",
+      "source_decoded_rgb_sha256": "1801aa2b7ed4041d7e2845438d9897ff5c1c322529b6d92afa7018e0d1554751",
+      "source_dimensions": [
+        600,
+        450
+      ],
+      "prepared_file_sha256": "86b2aec184fbed1162c854d6e3547260f66e1b94a2654350ae8f8eafad523092",
+      "prepared_rgb_sha256": "c1b4ade36b953e7a8c01a9478636affe0fc99b390414f1524f79001ead69c894",
+      "preparation": "explicit nearest-neighbour square512 resize from decoded RGB; no implicit source conversion"
+    },
+    {
+      "image_id": "ISIC_0066051",
+      "diagnosis": "BCC",
+      "label": 2,
+      "group": "image:ISIC_0066051",
+      "source_file_sha256": "91afbd4825ab5cce4a0d6e046765bf0dd0edad7690856bf4fd901f27c7f41482",
+      "source_decoded_rgb_sha256": "2c9b92105bb7a2943d1cea98e9a484e2a9222fedb687e3f423b15e15ef78dff1",
+      "source_dimensions": [
+        1024,
+        1024
+      ],
+      "prepared_file_sha256": "791ee7858b63277d4001af21537e53bec76c51c1ad88de80028650d6f268cd1a",
+      "prepared_rgb_sha256": "32807c7c73dd25b1c485fe93f471125539a6f9bef72daecebc5825a8322c6c22",
+      "preparation": "explicit nearest-neighbour square512 resize from decoded RGB; no implicit source conversion"
+    },
+    {
+      "image_id": "ISIC_0058884",
+      "diagnosis": "AK",
+      "label": 3,
+      "group": "image:ISIC_0058884",
+      "source_file_sha256": "b87103be595720efd4a3c46658a8072695a56f26840c65177865d6fbad450da2",
+      "source_decoded_rgb_sha256": "7de593d9076cd9babc3ab78b408c2b6c4188421f950cac7ebe61e8e82c29f9cf",
+      "source_dimensions": [
+        1024,
+        1024
+      ],
+      "prepared_file_sha256": "ed0ffaf5fdf44484ac4e21bff1cc49a559f05ec5f92a91ba1854d5bf6a61917e",
+      "prepared_rgb_sha256": "4c4a1f3e9b40604c030e0492506f43e0d96e1118336949484a20909bd31e7cfb",
+      "preparation": "explicit nearest-neighbour square512 resize from decoded RGB; no implicit source conversion"
+    },
+    {
+      "image_id": "ISIC_0072752",
+      "diagnosis": "BKL",
+      "label": 4,
+      "group": "image:ISIC_0072752",
+      "source_file_sha256": "743e6d3c592c15d8bcbe45786930987e02fa08618752b905a0afcc19d5789614",
+      "source_decoded_rgb_sha256": "dc0f401c2c9a052aa040daeabedc27f5eb0b2b71faad21b879cd3e50d9beec44",
+      "source_dimensions": [
+        1024,
+        1024
+      ],
+      "prepared_file_sha256": "db5770b5094af016555f6305ff5ca1af35db2a297ee2189a6d68fd0308bc64cf",
+      "prepared_rgb_sha256": "235058a0350996d3e6f7a0a1d1b0002219e34f8632a255c7937f0bff264f6edb",
+      "preparation": "explicit nearest-neighbour square512 resize from decoded RGB; no implicit source conversion"
+    },
+    {
+      "image_id": "ISIC_0029052",
+      "diagnosis": "DF",
+      "label": 5,
+      "group": "image:ISIC_0029052",
+      "source_file_sha256": "35c5a88cea2937d1510f9a340dc5caa570ffc2139923c055cf1b0a4976231d0b",
+      "source_decoded_rgb_sha256": "f053f8c6f84faa87adb805c10c2fa1c7708cad2677badb8ea87024d7b1b3cd9d",
+      "source_dimensions": [
+        600,
+        450
+      ],
+      "prepared_file_sha256": "3c8ddfb12b2ad0ec7cfdad7f05db9331bd304a5275f42929210590e1ee71423d",
+      "prepared_rgb_sha256": "700b4bf13102fdb7f229aa37a35964f0a7c7ec8b11279502a5381dbed59ff6df",
+      "preparation": "explicit nearest-neighbour square512 resize from decoded RGB; no implicit source conversion"
+    },
+    {
+      "image_id": "ISIC_0026713",
+      "diagnosis": "VASC",
+      "label": 6,
+      "group": "image:ISIC_0026713",
+      "source_file_sha256": "485923dc9e484b2f392f8ae01e078532b4d42ca01ac4b28fbfd0f02cc95f78f3",
+      "source_decoded_rgb_sha256": "49988cb981ee6f5d01f216d3d94a3c0ded58c2fd257be828db93282d518a3676",
+      "source_dimensions": [
+        600,
+        450
+      ],
+      "prepared_file_sha256": "7ac0121ccef513fcb1dd289349d2f8716faea235cca54dd4eef3458d82878ba9",
+      "prepared_rgb_sha256": "c72e1335038128498ef1930766e763f558d61280e3c048941a6e4f0dc883edcd",
+      "preparation": "explicit nearest-neighbour square512 resize from decoded RGB; no implicit source conversion"
+    },
+    {
+      "image_id": "ISIC_0065472",
+      "diagnosis": "SCC",
+      "label": 7,
+      "group": "image:ISIC_0065472",
+      "source_file_sha256": "aca11ba6d44a2f6ab6a627a51f8cd26374748f6a4014204d0cb9c0a33ce53db2",
+      "source_decoded_rgb_sha256": "776e6dd7f71164b696e78cc4aaa5b2ede9a975f7ea5206e5d4428e3df0afe6d3",
+      "source_dimensions": [
+        1024,
+        1024
+      ],
+      "prepared_file_sha256": "7e96533fa9d02ab4866d8e9c1587f1fe8d21bfed71c164e04f0de8ff7308b93c",
+      "prepared_rgb_sha256": "a12ff720ae60b0b1e21671b904644a167b167caa5c1a00d5bda54c758c8a754e",
+      "preparation": "explicit nearest-neighbour square512 resize from decoded RGB; no implicit source conversion"
+    }
+  ],
+  "limitations": [
+    "A local path or label profile does not authenticate native-original ISIC identity.",
+    "Caller-supplied grouping is not independently verified; lesion grouping is not patient grouping.",
+    "Native dimensions, file hashes and prepared hashes are recorded; no native-original claim inferred.",
+    "Preparation explicitly resizes to512 nearest to match baseline; fidelity is measured against prepared RGB.",
+    "Tiny balanced pilot cannot support population, clinical or per-diagnosis superiority claims."
+  ]
+}

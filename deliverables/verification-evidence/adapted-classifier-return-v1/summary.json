@@ -1,0 +1,7 @@
+{
+  "completed": true,
+  "selected_validation_balanced_accuracy": 0.7439671814671815,
+  "checkpoint_sha256": "38d52ca825472cb525c4c2745f9f7e2e047ddcbc34a6fe6cdcbfbdc0786ba57e",
+  "epochs": 20,
+  "test_evaluated": false
+}

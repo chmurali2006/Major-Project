@@ -16,6 +16,7 @@ import numpy as np
 from PIL import Image
 from src.persistence import source_digest
 from src.showcase import build_report, render_html
+from src.security_showcase import build_security_report, render_security_html
 
 
 def main():
@@ -62,11 +63,19 @@ def main():
     report, protected, views, original_uri, protected_uri = build_report(rgb, label, args.synthetic)
     report.update({'source_sha256': source_digest(ROOT), 'input_file_sha256': source_sha,
                    'input_shape_before_preprocessing': input_shape, 'preprocessing': preprocessing})
+    security, security_views = build_security_report(rgb)
+    security.update({'source_sha256': source_digest(ROOT), 'synthetic': args.synthetic,
+                     'input_file_sha256': source_sha, 'preprocessing': preprocessing})
+    if not security['all_checks_passed']:
+        raise RuntimeError('Security scenario regression failed; refusing successful showcase export')
     page = render_html(report, views, original_uri, protected_uri)
+    page = page.replace('</header>', '<p><a href="security.html">Inspect signed-evidence failures and replay limitations</a></p></header>', 1)
     out.mkdir(parents=True)
     (out/'protected.png').write_bytes(protected)
     (out/'report.json').write_text(json.dumps(report, indent=2, allow_nan=False)+'\n')
     (out/'index.html').write_text(page)
+    (out/'security-report.json').write_text(json.dumps(security, indent=2, allow_nan=False)+'\n')
+    (out/'security.html').write_text(render_security_html(security, security_views))
     print('Open:', out/'index.html')
     print('Scope:', report['scope'])
     print('Synthetic:', report['synthetic'])

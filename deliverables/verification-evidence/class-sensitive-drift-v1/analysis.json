@@ -1,0 +1,820 @@
+{
+  "schema": "exploratory-class-sensitive-drift-v1",
+  "threshold": 0.5069855451583863,
+  "threshold_selection": "smallest nonnegative score cutoff attaining >=90% intact validation specificity; predict MEL if score>=cutoff; same cutoff all operations",
+  "bootstrap_repetitions": 2000,
+  "bootstrap_seed": 7201,
+  "cases": {
+    "intact": {
+      "class_specific_shift": {
+        "0": {
+          "n": 444,
+          "mean_MEL_probability_shift": 0.0,
+          "paired_image_mean95": [
+            0.0,
+            0.0
+          ]
+        },
+        "1": {
+          "n": 56,
+          "mean_MEL_probability_shift": 0.0,
+          "paired_image_mean95": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "fixed_clean_threshold_metrics": {
+        "confusion_matrix": [
+          [
+            400,
+            44
+          ],
+          [
+            23,
+            33
+          ]
+        ],
+        "support": [
+          444,
+          56
+        ],
+        "accuracy": 0.866,
+        "balanced_accuracy": 0.7450933075933076,
+        "macro_f1": 0.7094813157461126,
+        "per_class_sensitivity": [
+          0.9009009009009009,
+          0.5892857142857143
+        ]
+      },
+      "argmax_metrics": {
+        "confusion_matrix": [
+          [
+            399,
+            45
+          ],
+          [
+            23,
+            33
+          ]
+        ],
+        "support": [
+          444,
+          56
+        ],
+        "accuracy": 0.864,
+        "balanced_accuracy": 0.7439671814671815,
+        "macro_f1": 0.7070076867395125,
+        "per_class_sensitivity": [
+          0.8986486486486487,
+          0.5892857142857143
+        ]
+      },
+      "auc": 0.8453989703989704
+    },
+    "copy32": {
+      "class_specific_shift": {
+        "0": {
+          "n": 444,
+          "mean_MEL_probability_shift": 0.0025328932128645277,
+          "paired_image_mean95": [
+            0.0017353499766548275,
+            0.0033618337970839495
+          ]
+        },
+        "1": {
+          "n": 56,
+          "mean_MEL_probability_shift": 0.0005745504583631243,
+          "paired_image_mean95": [
+            -0.0031996789055743387,
+            0.00430895504541695
+          ]
+        }
+      },
+      "fixed_clean_threshold_metrics": {
+        "confusion_matrix": [
+          [
+            399,
+            45
+          ],
+          [
+            23,
+            33
+          ]
+        ],
+        "support": [
+          444,
+          56
+        ],
+        "accuracy": 0.864,
+        "balanced_accuracy": 0.7439671814671815,
+        "macro_f1": 0.7070076867395125,
+        "per_class_sensitivity": [
+          0.8986486486486487,
+          0.5892857142857143
+        ]
+      },
+      "argmax_metrics": {
+        "confusion_matrix": [
+          [
+            397,
+            47
+          ],
+          [
+            23,
+            33
+          ]
+        ],
+        "support": [
+          444,
+          56
+        ],
+        "accuracy": 0.86,
+        "balanced_accuracy": 0.7417149292149292,
+        "macro_f1": 0.7021377995642701,
+        "per_class_sensitivity": [
+          0.8941441441441441,
+          0.5892857142857143
+        ]
+      },
+      "auc": 0.8434684684684685
+    },
+    "local_blur32_surrogate": {
+      "class_specific_shift": {
+        "0": {
+          "n": 444,
+          "mean_MEL_probability_shift": 0.0012392025306686625,
+          "paired_image_mean95": [
+            0.0007692417305021605,
+            0.0016807830418451679
+          ]
+        },
+        "1": {
+          "n": 56,
+          "mean_MEL_probability_shift": -0.0007403644600084849,
+          "paired_image_mean95": [
+            -0.00270838102192751,
+            0.0011733807357294217
+          ]
+        }
+      },
+      "fixed_clean_threshold_metrics": {
+        "confusion_matrix": [
+          [
+            400,
+            44
+          ],
+          [
+            23,
+            33
+          ]
+        ],
+        "support": [
+          444,
+          56
+        ],
+        "accuracy": 0.866,
+        "balanced_accuracy": 0.7450933075933076,
+        "macro_f1": 0.7094813157461126,
+        "per_class_sensitivity": [
+          0.9009009009009009,
+          0.5892857142857143
+        ]
+      },
+      "argmax_metrics": {
+        "confusion_matrix": [
+          [
+            400,
+            44
+          ],
+          [
+            23,
+            33
+          ]
+        ],
+        "support": [
+          444,
+          56
+        ],
+        "accuracy": 0.866,
+        "balanced_accuracy": 0.7450933075933076,
+        "macro_f1": 0.7094813157461126,
+        "per_class_sensitivity": [
+          0.9009009009009009,
+          0.5892857142857143
+        ]
+      },
+      "auc": 0.8447956885456885
+    },
+    "jpeg70": {
+      "class_specific_shift": {
+        "0": {
+          "n": 444,
+          "mean_MEL_probability_shift": -0.03939075664793317,
+          "paired_image_mean95": [
+            -0.0461435514085859,
+            -0.03240457006094575
+          ]
+        },
+        "1": {
+          "n": 56,
+          "mean_MEL_probability_shift": -0.11359985931111234,
+          "paired_image_mean95": [
+            -0.13982024424310244,
+            -0.08976274758710392
+          ]
+        }
+      },
+      "fixed_clean_threshold_metrics": {
+        "confusion_matrix": [
+          [
+            424,
+            20
+          ],
+          [
+            34,
+            22
+          ]
+        ],
+        "support": [
+          444,
+          56
+        ],
+        "accuracy": 0.892,
+        "balanced_accuracy": 0.6739060489060489,
+        "macro_f1": 0.694556314765374,
+        "per_class_sensitivity": [
+          0.954954954954955,
+          0.39285714285714285
+        ]
+      },
+      "argmax_metrics": {
+        "confusion_matrix": [
+          [
+            424,
+            20
+          ],
+          [
+            34,
+            22
+          ]
+        ],
+        "support": [
+          444,
+          56
+        ],
+        "accuracy": 0.892,
+        "balanced_accuracy": 0.6739060489060489,
+        "macro_f1": 0.694556314765374,
+        "per_class_sensitivity": [
+          0.954954954954955,
+          0.39285714285714285
+        ]
+      },
+      "auc": 0.804456241956242
+    },
+    "jpeg85": {
+      "class_specific_shift": {
+        "0": {
+          "n": 444,
+          "mean_MEL_probability_shift": -0.025381064650745275,
+          "paired_image_mean95": [
+            -0.03035324081780624,
+            -0.020875957005380388
+          ]
+        },
+        "1": {
+          "n": 56,
+          "mean_MEL_probability_shift": -0.06572802817182881,
+          "paired_image_mean95": [
+            -0.08205282261062946,
+            -0.049692697354060206
+          ]
+        }
+      },
+      "fixed_clean_threshold_metrics": {
+        "confusion_matrix": [
+          [
+            414,
+            30
+          ],
+          [
+            27,
+            29
+          ]
+        ],
+        "support": [
+          444,
+          56
+        ],
+        "accuracy": 0.886,
+        "balanced_accuracy": 0.7251447876447876,
+        "macro_f1": 0.7199705232129698,
+        "per_class_sensitivity": [
+          0.9324324324324325,
+          0.5178571428571429
+        ]
+      },
+      "argmax_metrics": {
+        "confusion_matrix": [
+          [
+            412,
+            32
+          ],
+          [
+            26,
+            30
+          ]
+        ],
+        "support": [
+          444,
+          56
+        ],
+        "accuracy": 0.884,
+        "balanced_accuracy": 0.7318211068211068,
+        "macro_f1": 0.7213574695414888,
+        "per_class_sensitivity": [
+          0.9279279279279279,
+          0.5357142857142857
+        ]
+      },
+      "auc": 0.8205839768339769
+    },
+    "jpeg95": {
+      "class_specific_shift": {
+        "0": {
+          "n": 444,
+          "mean_MEL_probability_shift": -0.007439684240264936,
+          "paired_image_mean95": [
+            -0.009804965469457612,
+            -0.005161387062954575
+          ]
+        },
+        "1": {
+          "n": 56,
+          "mean_MEL_probability_shift": -0.011427490306752068,
+          "paired_image_mean95": [
+            -0.020096946281513997,
+            -0.003239587308572875
+          ]
+        }
+      },
+      "fixed_clean_threshold_metrics": {
+        "confusion_matrix": [
+          [
+            402,
+            42
+          ],
+          [
+            24,
+            32
+          ]
+        ],
+        "support": [
+          444,
+          56
+        ],
+        "accuracy": 0.868,
+        "balanced_accuracy": 0.7384169884169884,
+        "macro_f1": 0.7082228116710876,
+        "per_class_sensitivity": [
+          0.9054054054054054,
+          0.5714285714285714
+        ]
+      },
+      "argmax_metrics": {
+        "confusion_matrix": [
+          [
+            401,
+            43
+          ],
+          [
+            22,
+            34
+          ]
+        ],
+        "support": [
+          444,
+          56
+        ],
+        "accuracy": 0.87,
+        "balanced_accuracy": 0.7551480051480051,
+        "macro_f1": 0.7181535152760794,
+        "per_class_sensitivity": [
+          0.9031531531531531,
+          0.6071428571428571
+        ]
+      },
+      "auc": 0.8444739382239382
+    },
+    "resize90_restore": {
+      "class_specific_shift": {
+        "0": {
+          "n": 444,
+          "mean_MEL_probability_shift": -0.029704597623397905,
+          "paired_image_mean95": [
+            -0.03302951733055231,
+            -0.026540082079140253
+          ]
+        },
+        "1": {
+          "n": 56,
+          "mean_MEL_probability_shift": -0.058316731958517005,
+          "paired_image_mean95": [
+            -0.07102055814383286,
+            -0.04665271426617568
+          ]
+        }
+      },
+      "fixed_clean_threshold_metrics": {
+        "confusion_matrix": [
+          [
+            417,
+            27
+          ],
+          [
+            28,
+            28
+          ]
+        ],
+        "support": [
+          444,
+          56
+        ],
+        "accuracy": 0.89,
+        "balanced_accuracy": 0.7195945945945945,
+        "macro_f1": 0.7213186189564142,
+        "per_class_sensitivity": [
+          0.9391891891891891,
+          0.5
+        ]
+      },
+      "argmax_metrics": {
+        "confusion_matrix": [
+          [
+            415,
+            29
+          ],
+          [
+            27,
+            29
+          ]
+        ],
+        "support": [
+          444,
+          56
+        ],
+        "accuracy": 0.888,
+        "balanced_accuracy": 0.7262709137709138,
+        "macro_f1": 0.722783256108669,
+        "per_class_sensitivity": [
+          0.9346846846846847,
+          0.5178571428571429
+        ]
+      },
+      "auc": 0.8339366151866152
+    },
+    "contrast90": {
+      "class_specific_shift": {
+        "0": {
+          "n": 444,
+          "mean_MEL_probability_shift": -0.014663796007700331,
+          "paired_image_mean95": [
+            -0.01649282554453994,
+            -0.012886176533527203
+          ]
+        },
+        "1": {
+          "n": 56,
+          "mean_MEL_probability_shift": -0.024673345099602426,
+          "paired_image_mean95": [
+            -0.029568951088003812,
+            -0.020067642469491283
+          ]
+        }
+      },
+      "fixed_clean_threshold_metrics": {
+        "confusion_matrix": [
+          [
+            406,
+            38
+          ],
+          [
+            23,
+            33
+          ]
+        ],
+        "support": [
+          444,
+          56
+        ],
+        "accuracy": 0.878,
+        "balanced_accuracy": 0.7518500643500643,
+        "macro_f1": 0.7249055208305147,
+        "per_class_sensitivity": [
+          0.9144144144144144,
+          0.5892857142857143
+        ]
+      },
+      "argmax_metrics": {
+        "confusion_matrix": [
+          [
+            403,
+            41
+          ],
+          [
+            23,
+            33
+          ]
+        ],
+        "support": [
+          444,
+          56
+        ],
+        "accuracy": 0.872,
+        "balanced_accuracy": 0.748471685971686,
+        "macro_f1": 0.7170645446507515,
+        "per_class_sensitivity": [
+          0.9076576576576577,
+          0.5892857142857143
+        ]
+      },
+      "auc": 0.8423423423423423
+    },
+    "contrast110": {
+      "class_specific_shift": {
+        "0": {
+          "n": 444,
+          "mean_MEL_probability_shift": 0.010112222837837966,
+          "paired_image_mean95": [
+            0.007710588353933548,
+            0.012603230615721191
+          ]
+        },
+        "1": {
+          "n": 56,
+          "mean_MEL_probability_shift": 0.016243924519845417,
+          "paired_image_mean95": [
+            0.006893100230289357,
+            0.024982963841674578
+          ]
+        }
+      },
+      "fixed_clean_threshold_metrics": {
+        "confusion_matrix": [
+          [
+            393,
+            51
+          ],
+          [
+            21,
+            35
+          ]
+        ],
+        "support": [
+          444,
+          56
+        ],
+        "accuracy": 0.856,
+        "balanced_accuracy": 0.7550675675675675,
+        "macro_f1": 0.7045208312813946,
+        "per_class_sensitivity": [
+          0.8851351351351351,
+          0.625
+        ]
+      },
+      "argmax_metrics": {
+        "confusion_matrix": [
+          [
+            389,
+            55
+          ],
+          [
+            21,
+            35
+          ]
+        ],
+        "support": [
+          444,
+          56
+        ],
+        "accuracy": 0.848,
+        "balanced_accuracy": 0.7505630630630631,
+        "macro_f1": 0.6952295402778224,
+        "per_class_sensitivity": [
+          0.8761261261261262,
+          0.625
+        ]
+      },
+      "auc": 0.8425434362934363
+    },
+    "gaussian05": {
+      "class_specific_shift": {
+        "0": {
+          "n": 444,
+          "mean_MEL_probability_shift": -0.034608872359836694,
+          "paired_image_mean95": [
+            -0.03849709535841955,
+            -0.030935668078700063
+          ]
+        },
+        "1": {
+          "n": 56,
+          "mean_MEL_probability_shift": -0.06967182138136455,
+          "paired_image_mean95": [
+            -0.08247936234942504,
+            -0.0576882421039045
+          ]
+        }
+      },
+      "fixed_clean_threshold_metrics": {
+        "confusion_matrix": [
+          [
+            421,
+            23
+          ],
+          [
+            29,
+            27
+          ]
+        ],
+        "support": [
+          444,
+          56
+        ],
+        "accuracy": 0.896,
+        "balanced_accuracy": 0.7151705276705277,
+        "macro_f1": 0.7256342070828585,
+        "per_class_sensitivity": [
+          0.9481981981981982,
+          0.48214285714285715
+        ]
+      },
+      "argmax_metrics": {
+        "confusion_matrix": [
+          [
+            420,
+            24
+          ],
+          [
+            28,
+            28
+          ]
+        ],
+        "support": [
+          444,
+          56
+        ],
+        "accuracy": 0.896,
+        "balanced_accuracy": 0.722972972972973,
+        "macro_f1": 0.7301112771964791,
+        "per_class_sensitivity": [
+          0.9459459459459459,
+          0.5
+        ]
+      },
+      "auc": 0.8356258043758044
+    },
+    "fgsm4_adapted": {
+      "class_specific_shift": {
+        "0": {
+          "n": 444,
+          "mean_MEL_probability_shift": 0.08421457763593476,
+          "paired_image_mean95": [
+            0.07449299595580931,
+            0.09408846793125744
+          ]
+        },
+        "1": {
+          "n": 56,
+          "mean_MEL_probability_shift": -0.3051140811294317,
+          "paired_image_mean95": [
+            -0.3456153385241383,
+            -0.26661467642323783
+          ]
+        }
+      },
+      "fixed_clean_threshold_metrics": {
+        "confusion_matrix": [
+          [
+            362,
+            82
+          ],
+          [
+            55,
+            1
+          ]
+        ],
+        "support": [
+          444,
+          56
+        ],
+        "accuracy": 0.726,
+        "balanced_accuracy": 0.4165862290862291,
+        "macro_f1": 0.4276355918749321,
+        "per_class_sensitivity": [
+          0.8153153153153153,
+          0.017857142857142856
+        ]
+      },
+      "argmax_metrics": {
+        "confusion_matrix": [
+          [
+            361,
+            83
+          ],
+          [
+            55,
+            1
+          ]
+        ],
+        "support": [
+          444,
+          56
+        ],
+        "accuracy": 0.724,
+        "balanced_accuracy": 0.415460102960103,
+        "macro_f1": 0.4269102990033222,
+        "per_class_sensitivity": [
+          0.8130630630630631,
+          0.017857142857142856
+        ]
+      },
+      "auc": 0.3401705276705277
+    },
+    "pgd4_adapted": {
+      "class_specific_shift": {
+        "0": {
+          "n": 444,
+          "mean_MEL_probability_shift": 0.6395273575693503,
+          "paired_image_mean95": [
+            0.6273843236227713,
+            0.6517268673739153
+          ]
+        },
+        "1": {
+          "n": 56,
+          "mean_MEL_probability_shift": -0.509644628469167,
+          "paired_image_mean95": [
+            -0.5624406590240791,
+            -0.45766772448779586
+          ]
+        }
+      },
+      "fixed_clean_threshold_metrics": {
+        "confusion_matrix": [
+          [
+            2,
+            442
+          ],
+          [
+            56,
+            0
+          ]
+        ],
+        "support": [
+          444,
+          56
+        ],
+        "accuracy": 0.004,
+        "balanced_accuracy": 0.0022522522522522522,
+        "macro_f1": 0.00398406374501992,
+        "per_class_sensitivity": [
+          0.0045045045045045045,
+          0.0
+        ]
+      },
+      "argmax_metrics": {
+        "confusion_matrix": [
+          [
+            2,
+            442
+          ],
+          [
+            56,
+            0
+          ]
+        ],
+        "support": [
+          444,
+          56
+        ],
+        "accuracy": 0.004,
+        "balanced_accuracy": 0.0022522522522522522,
+        "macro_f1": 0.00398406374501992,
+        "per_class_sensitivity": [
+          0.0045045045045045045,
+          0.0
+        ]
+      },
+      "auc": 0.0
+    }
+  },
+  "limits": [
+    "Post-hoc descriptive validation analysis after seeing original results; not an independently preregistered clinical operating point.",
+    "Specificity is targeted only on intact validation, not re-fitted on each operation. Actual received specificity is reported.",
+    "Probability drift/AUC do not establish feature destruction, calibration error or causal mechanism.",
+    "Paired image intervals conditional on class support, not patient-level; no multiplicity correction."
+  ],
+  "source_gzip_sha256": "a785b30b148eef8bf31583fbadc3242f9b4c19eab40514bc8da3839c90893a50"
+}

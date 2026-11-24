@@ -1,0 +1,15 @@
+{
+  "scope": "notebook configuration/preflight bug fix, not model accuracy evidence",
+  "notebook_sha256": "ed5b9a806a8e91486b78a582ac8c4149728d865c87ca6a1f7d0cb235be80a95a",
+  "embedded_archive_sha256": "2fe94f65a784272780946992ef8e72b2187eb0ebb77e96e8e4bf8a6250229ef7",
+  "validation": {
+    "passed": 357,
+    "cuda_skipped": 1,
+    "seconds": 40.06
+  },
+  "notebook_bootstrap_and_preflight_executed_with_fixtures": true,
+  "kaggle_replay_executed": false,
+  "frozen_study_changed": false,
+  "failure_addressed": "DATA=None path guard ran after clone; unique attachment discovery now precedes setup.",
+  "grouping_automatically_weakened": false
+}

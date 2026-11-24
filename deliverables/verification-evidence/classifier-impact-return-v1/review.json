@@ -1,0 +1,31 @@
+{
+  "schema": "classifier-impact-return-review-v1",
+  "zip_sha256": "ab49421ea76a2d193be4d7e0cdf79f835ce2d4bc1f76e70680c298d913cc1e20",
+  "sent_notebook_sha256": "133c17e5ed472b70cdc284c27d916dfc60469a4ceba0da5ed8010b42c37fb242",
+  "checkpoint_sha256": "38d52ca825472cb525c4c2745f9f7e2e047ddcbc34a6fe6cdcbfbdc0786ba57e",
+  "images": 500,
+  "rows": 6000,
+  "cases": [
+    "intact",
+    "copy32",
+    "local_blur32_surrogate",
+    "jpeg70",
+    "jpeg85",
+    "jpeg95",
+    "resize90_restore",
+    "contrast90",
+    "contrast110",
+    "gaussian05",
+    "fgsm4_adapted",
+    "pgd4_adapted"
+  ],
+  "max_clean_probability_difference_from_training_receipt": 9.5367431640625e-07,
+  "findings": [],
+  "limits": [
+    "No returned code executed; source identity and receipt arithmetic checked.",
+    "Images, operator outputs and attacks are not independently replayed here.",
+    "Validation selected checkpoint: all results are development evidence.",
+    "Original-image operator effects do not measure embedding-caused effects.",
+    "Source consistency is not independent trust, clinical safety or novelty."
+  ]
+}
