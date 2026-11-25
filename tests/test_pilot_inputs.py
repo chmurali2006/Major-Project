@@ -39,10 +39,10 @@ def test_image_ambiguity_requires_explicit_root(attached):
     assert P.resolve_inputs(root,data=images)['data']==images
 
 
-def test_missing_checkpoint_has_actionable_official_link(attached):
+def test_missing_checkpoint_has_actionable_source_guidance(attached):
     root,_,_,checkpoint=attached;checkpoint.unlink()
     with pytest.raises(ValueError,match='Attach official EditGuard clean.pth') as error:P.resolve_inputs(root)
-    assert P.CHECKPOINT_URL in str(error.value)
+    assert P.CHECKPOINT_SOURCE in str(error.value)
 
 
 def test_wrong_checkpoint_rejected_without_model_loading(attached):

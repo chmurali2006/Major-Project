@@ -5,7 +5,7 @@ import os
 from pathlib import Path
 CLASSES=('MEL','NV','BCC','AK','BKL','DF','VASC','SCC')
 CLEAN_MD5='fd8c6987d67071d3e629133499b44765'
-CHECKPOINT_URL='https://drive.google.com/file/d/1w4e1gpdInAv7Lj_NQ7EGgmMuInyfUYgi/view'
+CHECKPOINT_SOURCE='the official EditGuard clean.pth obtained through an authorized source'
 
 
 def resolve_inputs(root,*,data=None,labels=None,checkpoint=None):
@@ -53,10 +53,10 @@ def resolve_inputs(root,*,data=None,labels=None,checkpoint=None):
         stems.add(p.stem)
     if checkpoint is None:
         candidates=[p for p in all_files if p.is_file() and p.name=='clean.pth']
-        if len(candidates)!=1:raise ValueError('Attach official EditGuard clean.pth or set CHECKPOINT explicitly. Candidates: '+str([str(p) for p in candidates])+'. Official link: '+CHECKPOINT_URL)
+        if len(candidates)!=1:raise ValueError('Attach official EditGuard clean.pth or set CHECKPOINT explicitly. Candidates: '+str([str(p) for p in candidates])+'. Expected source: '+CHECKPOINT_SOURCE)
         checkpoint=candidates[0]
     checkpoint=Path(checkpoint)
-    if not checkpoint.is_file():raise ValueError('CHECKPOINT does not exist: '+str(checkpoint)+'. Official link: '+CHECKPOINT_URL)
+    if not checkpoint.is_file():raise ValueError('CHECKPOINT does not exist: '+str(checkpoint)+'. Expected source: '+CHECKPOINT_SOURCE)
     digest=hashlib.md5()
     with checkpoint.open('rb') as f:
         for block in iter(lambda:f.read(1024*1024),b''):digest.update(block)
